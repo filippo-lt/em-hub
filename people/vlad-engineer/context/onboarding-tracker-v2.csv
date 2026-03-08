@@ -1,0 +1,67 @@
+,,,,,,
+,"Role: Software Engineer (AI-powered)
+Phases:
+- Phase 1: Orientation & Ramp-Up (Weeks 1–2)
+- Phase 2: POC Kick-Off (Weeks 2–3)
+- Phase 3: POC Execution (Weeks 3–8)
+3-month target: 2 apps shipped to store",,,,,
+,,,,,,
+,Week,Category,Type,Task / Deliverable,Status,Notes
+,PHASE 1: ORIENTATION & RAMP-UP,,,,,
+,WEEK 1: Foundations + FaceAI Shadowing + Cursor Setup,,,,,
+,Week 1,Foundations,Process,"Set up tooling access: Jira, repos, CI/CD, comms channels",Not Started,
+,Week 1,Foundations,Process,Walk through SE role definition — expectations / autonomy / communication cadence / escalation,Not Started,
+,Week 1,Foundations,Process,Walk through Jira ticket lifecycle end-to-end: creation → refinement → estimation → build → QA → ship,Not Started,
+,Week 1,FaceAI,Exploration,Shadow Filippo in FaceAI ceremonies (observe — dailies / refinement / planning),Not Started,Purpose: learn product process — transferable to future apps
+,Week 1,FaceAI,Exploration,"Get access to FaceAI repos, pipelines, project boards",Not Started,
+,Week 1,FaceAI,Exploration,Observe PO interactions — how product requirements flow into engineering work,Not Started,
+,Week 1,Stakeholders,Relationship,Meet Staff Engineers — understand technical standards / architecture patterns,Not Started,One-off introduction
+,Week 1,Stakeholders,Relationship,Meet Lead QA — understand QA process / expectations / dev interaction model,Not Started,One-off introduction
+,Week 1,Stakeholders,Relationship,Complete Week 1 company inductions,Not Started,
+,Week 1,Cursor,Tooling,Set up Cursor and learn core workflows (editing / AI chat / inline edits),Not Started,
+,Week 1,Cursor,Tooling,Start reviewing FaceAI PRs using Cursor,Not Started,Real code — low stakes — good learning exercise
+,WEEK 2: FaceAI Shadowing Continues + Linting Task Begins + Cursor Deepening,,,,,
+,Week 2,FaceAI,Exploration,Continue shadowing Filippo in FaceAI ceremonies,Not Started,
+,Week 2,FaceAI,Exploration,Audit FaceAI code quality and review user stories,Not Started,
+,Week 2,FaceAI Linting,Hands-on,Audit current FaceAI linting rules — what exists / what's enforced / what's ignored,Not Started,
+,Week 2,FaceAI Linting,Hands-on,Use Cursor to fix existing lint violations across the FaceAI codebase,Not Started,Primary Cursor learning exercise
+,Week 2,FaceAI CI/CD,Hands-on,Coordinate with Andrey on CI/CD pipeline — understand current setup,Not Started,
+,Week 2,FaceAI CI/CD,Exploration,Identify where and how to integrate linter enforcement in the pipeline,Not Started,
+,Week 2,Stakeholders,Relationship,Complete Week 2 company inductions,Not Started,
+,Week 2,Cursor,Tooling,Continue deepening Cursor usage — bulk edits / AI-assisted refactoring,Not Started,
+,"🎯 MILESTONE: Understands how product works (Jira → PO → Dev → QA → Ship). Has met key stakeholders. Cursor basics solid. Linting audit complete.",,,,,
+,PHASE 2: POC KICK-OFF,,,,,
+,WEEK 2–3: POC Scope & Project Setup,,,,,
+,Week 2-3,POC,Process,Filippo aligns with David on POC scope and success criteria,Not Started,Dependency: Filippo + David
+,Week 2-3,POC,Process,"Filippo briefs Vlad on POC: what the app is / who it's for / what done means",Not Started,
+,Week 2-3,POC,Process,"Define together: tech stack / architecture approach / AI tooling strategy",Not Started,
+,Week 2-3,POC,Deliverable,Set up POC project: repo / CI/CD skeleton / project board,Not Started,
+,Week 2-3,FaceAI Linting,Hands-on,Enforce linting rules in FaceAI CI/CD pipeline,Not Started,Coordinate with Andrey
+,Week 2-3,FaceAI Linting,Deliverable,Document linting setup for reuse in future apps,Not Started,
+,Week 2-3,FaceAI,Exploration,Continue FaceAI shadowing (begin tapering as POC ramps up),Not Started,
+,Week 2-3,Process,Hands-on,"Apply product knowledge: create own Jira tickets, write own stories for POC",Not Started,
+,"🎯 MILESTONE: POC scope defined. Project scaffolded. Linting enforced in FaceAI pipeline. Vlad transitions from observer to builder.",,,,,
+,PHASE 3: POC EXECUTION,,,,,
+,WEEKS 3–5: Build — Core Features,,,,,
+,Week 3-5,POC,Hands-on,Build core app features independently using Cursor and AI tooling,Not Started,
+,Week 3-5,POC,Process,Lightweight check-ins with Filippo (async-first / minimal meetings),Not Started,
+,Week 3-5,POC,Process,Interact with Product/QA as needed — as a peer,Not Started,
+,Week 3-5,POC,Process,Manage own Jira board — tickets / status updates / story points,Not Started,
+,Week 3-5,FaceAI,Exploration,Attend FaceAI ceremonies only if still adding value — otherwise stop,Not Started,
+,"🎯 CHECKPOINT (End of Week 4): Functional prototype — core features working.",,,,,
+,WEEKS 5–7: Polish — Store-Ready,,,,,
+,Week 5-7,POC,Hands-on,Polish app — edge cases / error handling / UI refinement,Not Started,
+,Week 5-7,POC,Hands-on,Testing — unit tests / integration tests / QA pass,Not Started,
+,Week 5-7,POC,Deliverable,Prepare store submission — assets / metadata / compliance,Not Started,
+,Week 5-7,POC,Deliverable,Ship to store,Not Started,
+,"🎯 CHECKPOINT (End of Week 6): Store-ready build — polished / tested / submittable.",,,,,
+,WEEK 8: Review & Next Steps,,,,,
+,Week 8,Review,Deliverable,"8-week retro: what worked / what didn't / data for David",Not Started,
+,Week 8,Review,Deliverable,Assess SE role model — is it validated? What needs adjusting?,Not Started,
+,Week 8,Planning,Deliverable,Define scope for second app,Not Started,3-month target: 2 apps shipped
+,"🎯 MILESTONE: First app shipped to store. Enough data to present SE model to David for Phase 2 strategy.",,,,,
+,ONGOING,,,,,
+,Ongoing,Training,Process,Company training (continues in parallel),Not Started,
+,Ongoing,Feedback,Process,Filippo checks in with POs and teams on Vlad's integration,Not Started,
+,Ongoing,Coaching,Process,"Coach on SE-specific skills: autonomous delivery / AI tooling / scope management",Not Started,
+,Ongoing,Communication,Process,"Lightweight async updates to Filippo (daily Slack update, weekly 15-min sync TBD)",Not Started,

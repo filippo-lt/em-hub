@@ -1,0 +1,1064 @@
+{
+  "period": {
+    "start": "2026-02-01",
+    "end": "2026-02-28"
+  },
+  "generated": "2026-03-08T16:53:12Z",
+  "developers": [
+    {
+      "name": "Xiaochun Mou",
+      "github_username": "xiaochunmou-debug",
+      "vendor": "57 Blocks",
+      "skills": "iOS",
+      "projects": [
+        "Tattooist"
+      ],
+      "totals": {
+        "total_commits": 134,
+        "total_prs_merged": 56,
+        "total_prs_reviewed": 16,
+        "total_avg_pr_size": 418.9,
+        "total_avg_ttm_hours": 1.2
+      },
+      "repos": {
+        "leadtechcorp/tattoo_infra": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 2,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/tattoo-android": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 14,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/tattoo": {
+          "commits": 134,
+          "prs_merged_count": 56,
+          "prs_merged": [
+            {
+              "number": 321,
+              "additions": 336,
+              "deletions": 286,
+              "createdAt": "2026-02-28T06:35:26Z",
+              "mergedAt": "2026-02-28T06:39:13Z"
+            },
+            {
+              "number": 319,
+              "additions": 187,
+              "deletions": 148,
+              "createdAt": "2026-02-27T11:00:50Z",
+              "mergedAt": "2026-02-28T02:06:37Z"
+            },
+            {
+              "number": 318,
+              "additions": 49,
+              "deletions": 85,
+              "createdAt": "2026-02-27T08:08:42Z",
+              "mergedAt": "2026-02-27T08:25:10Z"
+            },
+            {
+              "number": 317,
+              "additions": 57,
+              "deletions": 21,
+              "createdAt": "2026-02-27T07:42:59Z",
+              "mergedAt": "2026-02-27T07:44:08Z"
+            },
+            {
+              "number": 316,
+              "additions": 62,
+              "deletions": 44,
+              "createdAt": "2026-02-27T05:15:40Z",
+              "mergedAt": "2026-02-27T05:42:17Z"
+            },
+            {
+              "number": 315,
+              "additions": 0,
+              "deletions": 1,
+              "createdAt": "2026-02-27T02:39:38Z",
+              "mergedAt": "2026-02-27T02:41:16Z"
+            },
+            {
+              "number": 314,
+              "additions": 175,
+              "deletions": 39,
+              "createdAt": "2026-02-26T07:35:43Z",
+              "mergedAt": "2026-02-26T07:39:04Z"
+            },
+            {
+              "number": 313,
+              "additions": 186,
+              "deletions": 81,
+              "createdAt": "2026-02-26T05:30:15Z",
+              "mergedAt": "2026-02-26T05:36:02Z"
+            },
+            {
+              "number": 312,
+              "additions": 39,
+              "deletions": 40,
+              "createdAt": "2026-02-26T02:03:49Z",
+              "mergedAt": "2026-02-26T03:52:50Z"
+            },
+            {
+              "number": 311,
+              "additions": 1235,
+              "deletions": 238,
+              "createdAt": "2026-02-25T06:24:07Z",
+              "mergedAt": "2026-02-25T06:28:44Z"
+            },
+            {
+              "number": 310,
+              "additions": 1,
+              "deletions": 0,
+              "createdAt": "2026-02-24T06:38:51Z",
+              "mergedAt": "2026-02-24T07:10:19Z"
+            },
+            {
+              "number": 309,
+              "additions": 13,
+              "deletions": 2,
+              "createdAt": "2026-02-24T05:31:28Z",
+              "mergedAt": "2026-02-24T07:10:28Z"
+            },
+            {
+              "number": 308,
+              "additions": 136,
+              "deletions": 31,
+              "createdAt": "2026-02-24T03:33:02Z",
+              "mergedAt": "2026-02-24T04:10:32Z"
+            },
+            {
+              "number": 306,
+              "additions": 576,
+              "deletions": 236,
+              "createdAt": "2026-02-14T09:51:45Z",
+              "mergedAt": "2026-02-14T09:52:22Z"
+            },
+            {
+              "number": 305,
+              "additions": 1206,
+              "deletions": 54,
+              "createdAt": "2026-02-13T10:20:50Z",
+              "mergedAt": "2026-02-13T10:22:26Z"
+            },
+            {
+              "number": 304,
+              "additions": 1065,
+              "deletions": 878,
+              "createdAt": "2026-02-13T02:25:09Z",
+              "mergedAt": "2026-02-13T02:30:18Z"
+            },
+            {
+              "number": 303,
+              "additions": 232,
+              "deletions": 905,
+              "createdAt": "2026-02-13T01:47:12Z",
+              "mergedAt": "2026-02-13T01:48:34Z"
+            },
+            {
+              "number": 302,
+              "additions": 1015,
+              "deletions": 258,
+              "createdAt": "2026-02-12T03:13:43Z",
+              "mergedAt": "2026-02-13T01:44:42Z"
+            },
+            {
+              "number": 301,
+              "additions": 7,
+              "deletions": 10,
+              "createdAt": "2026-02-11T03:28:45Z",
+              "mergedAt": "2026-02-11T03:36:54Z"
+            },
+            {
+              "number": 300,
+              "additions": 6,
+              "deletions": 31,
+              "createdAt": "2026-02-11T03:08:23Z",
+              "mergedAt": "2026-02-11T03:10:32Z"
+            },
+            {
+              "number": 299,
+              "additions": 6,
+              "deletions": 31,
+              "createdAt": "2026-02-11T02:58:49Z",
+              "mergedAt": "2026-02-11T03:04:12Z"
+            },
+            {
+              "number": 298,
+              "additions": 153,
+              "deletions": 29,
+              "createdAt": "2026-02-11T02:07:39Z",
+              "mergedAt": "2026-02-11T02:10:07Z"
+            },
+            {
+              "number": 297,
+              "additions": 5,
+              "deletions": 4,
+              "createdAt": "2026-02-10T13:57:00Z",
+              "mergedAt": "2026-02-10T14:00:25Z"
+            },
+            {
+              "number": 296,
+              "additions": 138,
+              "deletions": 25,
+              "createdAt": "2026-02-10T11:08:54Z",
+              "mergedAt": "2026-02-10T11:10:38Z"
+            },
+            {
+              "number": 295,
+              "additions": 10,
+              "deletions": 0,
+              "createdAt": "2026-02-10T05:42:03Z",
+              "mergedAt": "2026-02-10T05:45:43Z"
+            },
+            {
+              "number": 294,
+              "additions": 66,
+              "deletions": 9,
+              "createdAt": "2026-02-09T08:31:47Z",
+              "mergedAt": "2026-02-09T08:33:01Z"
+            },
+            {
+              "number": 293,
+              "additions": 158,
+              "deletions": 707,
+              "createdAt": "2026-02-09T07:21:08Z",
+              "mergedAt": "2026-02-09T07:32:44Z"
+            },
+            {
+              "number": 292,
+              "additions": 443,
+              "deletions": 237,
+              "createdAt": "2026-02-09T06:54:36Z",
+              "mergedAt": "2026-02-09T06:58:43Z"
+            },
+            {
+              "number": 291,
+              "additions": 1,
+              "deletions": 1,
+              "createdAt": "2026-02-09T05:38:42Z",
+              "mergedAt": "2026-02-09T05:40:19Z"
+            },
+            {
+              "number": 290,
+              "additions": 1755,
+              "deletions": 8,
+              "createdAt": "2026-02-09T05:36:11Z",
+              "mergedAt": "2026-02-09T05:40:31Z"
+            },
+            {
+              "number": 288,
+              "additions": 5,
+              "deletions": 1,
+              "createdAt": "2026-02-06T09:26:29Z",
+              "mergedAt": "2026-02-06T09:29:42Z"
+            },
+            {
+              "number": 287,
+              "additions": 132,
+              "deletions": 122,
+              "createdAt": "2026-02-06T08:56:29Z",
+              "mergedAt": "2026-02-06T09:01:17Z"
+            },
+            {
+              "number": 285,
+              "additions": 439,
+              "deletions": 288,
+              "createdAt": "2026-02-06T04:47:31Z",
+              "mergedAt": "2026-02-06T07:26:43Z"
+            },
+            {
+              "number": 284,
+              "additions": 28,
+              "deletions": 5,
+              "createdAt": "2026-02-06T01:38:01Z",
+              "mergedAt": "2026-02-06T01:40:40Z"
+            },
+            {
+              "number": 283,
+              "additions": 2,
+              "deletions": 0,
+              "createdAt": "2026-02-05T11:37:23Z",
+              "mergedAt": "2026-02-05T11:43:34Z"
+            },
+            {
+              "number": 282,
+              "additions": 33,
+              "deletions": 4,
+              "createdAt": "2026-02-05T11:18:41Z",
+              "mergedAt": "2026-02-05T11:20:10Z"
+            },
+            {
+              "number": 281,
+              "additions": 6,
+              "deletions": 3,
+              "createdAt": "2026-02-05T11:00:04Z",
+              "mergedAt": "2026-02-05T11:00:57Z"
+            },
+            {
+              "number": 280,
+              "additions": 1,
+              "deletions": 10,
+              "createdAt": "2026-02-05T10:31:36Z",
+              "mergedAt": "2026-02-05T10:32:55Z"
+            },
+            {
+              "number": 279,
+              "additions": 1,
+              "deletions": 1,
+              "createdAt": "2026-02-05T10:23:01Z",
+              "mergedAt": "2026-02-05T10:24:18Z"
+            },
+            {
+              "number": 278,
+              "additions": 317,
+              "deletions": 201,
+              "createdAt": "2026-02-05T10:13:05Z",
+              "mergedAt": "2026-02-05T10:14:17Z"
+            },
+            {
+              "number": 277,
+              "additions": 0,
+              "deletions": 1,
+              "createdAt": "2026-02-05T10:06:03Z",
+              "mergedAt": "2026-02-05T10:14:04Z"
+            },
+            {
+              "number": 276,
+              "additions": 46,
+              "deletions": 20,
+              "createdAt": "2026-02-05T09:45:01Z",
+              "mergedAt": "2026-02-05T09:50:07Z"
+            },
+            {
+              "number": 275,
+              "additions": 14,
+              "deletions": 2,
+              "createdAt": "2026-02-05T07:15:32Z",
+              "mergedAt": "2026-02-05T07:17:09Z"
+            },
+            {
+              "number": 274,
+              "additions": 4,
+              "deletions": 2,
+              "createdAt": "2026-02-05T07:10:02Z",
+              "mergedAt": "2026-02-05T07:10:51Z"
+            },
+            {
+              "number": 273,
+              "additions": 12,
+              "deletions": 8,
+              "createdAt": "2026-02-05T06:54:54Z",
+              "mergedAt": "2026-02-05T07:02:24Z"
+            },
+            {
+              "number": 272,
+              "additions": 292,
+              "deletions": 9,
+              "createdAt": "2026-02-05T06:42:40Z",
+              "mergedAt": "2026-02-05T06:50:51Z"
+            },
+            {
+              "number": 271,
+              "additions": 393,
+              "deletions": 322,
+              "createdAt": "2026-02-05T06:25:52Z",
+              "mergedAt": "2026-02-05T06:40:53Z"
+            },
+            {
+              "number": 270,
+              "additions": 139,
+              "deletions": 145,
+              "createdAt": "2026-02-05T04:06:08Z",
+              "mergedAt": "2026-02-05T04:13:39Z"
+            },
+            {
+              "number": 269,
+              "additions": 2,
+              "deletions": 1,
+              "createdAt": "2026-02-05T03:44:29Z",
+              "mergedAt": "2026-02-05T04:13:55Z"
+            },
+            {
+              "number": 268,
+              "additions": 479,
+              "deletions": 291,
+              "createdAt": "2026-02-05T02:50:28Z",
+              "mergedAt": "2026-02-05T03:39:33Z"
+            },
+            {
+              "number": 266,
+              "additions": 1,
+              "deletions": 0,
+              "createdAt": "2026-02-04T08:16:27Z",
+              "mergedAt": "2026-02-05T03:00:15Z"
+            },
+            {
+              "number": 264,
+              "additions": 240,
+              "deletions": 154,
+              "createdAt": "2026-02-04T05:31:56Z",
+              "mergedAt": "2026-02-04T05:32:59Z"
+            },
+            {
+              "number": 262,
+              "additions": 15,
+              "deletions": 91,
+              "createdAt": "2026-02-03T11:25:39Z",
+              "mergedAt": "2026-02-03T11:31:35Z"
+            },
+            {
+              "number": 261,
+              "additions": 10,
+              "deletions": 3,
+              "createdAt": "2026-02-03T10:52:39Z",
+              "mergedAt": "2026-02-03T11:26:58Z"
+            },
+            {
+              "number": 260,
+              "additions": 4619,
+              "deletions": 775,
+              "createdAt": "2026-02-03T10:27:16Z",
+              "mergedAt": "2026-02-03T10:31:29Z"
+            },
+            {
+              "number": 258,
+              "additions": 4,
+              "deletions": 8,
+              "createdAt": "2026-02-03T02:49:59Z",
+              "mergedAt": "2026-02-03T02:50:50Z"
+            }
+          ],
+          "prs_reviewed": 0,
+          "avg_pr_size": 418.9,
+          "avg_time_to_merge_hours": 1.2
+        }
+      }
+    },
+    {
+      "name": "Edward Liu",
+      "github_username": "edwardliu-coder",
+      "vendor": "57 Blocks",
+      "skills": "Android",
+      "projects": [
+        "Tattooist"
+      ],
+      "totals": {
+        "total_commits": 19,
+        "total_prs_merged": 19,
+        "total_prs_reviewed": 19,
+        "total_avg_pr_size": 564.6,
+        "total_avg_ttm_hours": 1.4
+      },
+      "repos": {
+        "leadtechcorp/tattoo_infra": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/tattoo-android": {
+          "commits": 19,
+          "prs_merged_count": 19,
+          "prs_merged": [
+            {
+              "number": 146,
+              "additions": 171,
+              "deletions": 31,
+              "createdAt": "2026-02-27T08:07:22Z",
+              "mergedAt": "2026-02-27T11:21:22Z"
+            },
+            {
+              "number": 145,
+              "additions": 22,
+              "deletions": 18,
+              "createdAt": "2026-02-27T04:12:15Z",
+              "mergedAt": "2026-02-27T05:43:06Z"
+            },
+            {
+              "number": 144,
+              "additions": 119,
+              "deletions": 129,
+              "createdAt": "2026-02-26T09:40:35Z",
+              "mergedAt": "2026-02-26T09:42:33Z"
+            },
+            {
+              "number": 143,
+              "additions": 232,
+              "deletions": 181,
+              "createdAt": "2026-02-26T02:57:27Z",
+              "mergedAt": "2026-02-26T03:05:51Z"
+            },
+            {
+              "number": 142,
+              "additions": 2032,
+              "deletions": 780,
+              "createdAt": "2026-02-24T07:19:10Z",
+              "mergedAt": "2026-02-24T07:22:39Z"
+            },
+            {
+              "number": 141,
+              "additions": 2299,
+              "deletions": 1731,
+              "createdAt": "2026-02-24T02:39:39Z",
+              "mergedAt": "2026-02-24T04:01:07Z"
+            },
+            {
+              "number": 140,
+              "additions": 1,
+              "deletions": 0,
+              "createdAt": "2026-02-09T09:27:48Z",
+              "mergedAt": "2026-02-09T09:29:13Z"
+            },
+            {
+              "number": 139,
+              "additions": 4,
+              "deletions": 2,
+              "createdAt": "2026-02-09T05:53:53Z",
+              "mergedAt": "2026-02-09T06:08:33Z"
+            },
+            {
+              "number": 138,
+              "additions": 4,
+              "deletions": 1,
+              "createdAt": "2026-02-06T02:53:00Z",
+              "mergedAt": "2026-02-06T02:56:48Z"
+            },
+            {
+              "number": 137,
+              "additions": 87,
+              "deletions": 7,
+              "createdAt": "2026-02-05T09:26:32Z",
+              "mergedAt": "2026-02-05T10:05:48Z"
+            },
+            {
+              "number": 136,
+              "additions": 45,
+              "deletions": 19,
+              "createdAt": "2026-02-05T08:49:06Z",
+              "mergedAt": "2026-02-05T09:06:32Z"
+            },
+            {
+              "number": 135,
+              "additions": 966,
+              "deletions": 231,
+              "createdAt": "2026-02-05T07:12:42Z",
+              "mergedAt": "2026-02-05T07:17:17Z"
+            },
+            {
+              "number": 134,
+              "additions": 80,
+              "deletions": 24,
+              "createdAt": "2026-02-04T08:22:30Z",
+              "mergedAt": "2026-02-04T08:48:26Z"
+            },
+            {
+              "number": 133,
+              "additions": 194,
+              "deletions": 54,
+              "createdAt": "2026-02-03T09:39:44Z",
+              "mergedAt": "2026-02-04T01:48:02Z"
+            },
+            {
+              "number": 132,
+              "additions": 96,
+              "deletions": 12,
+              "createdAt": "2026-02-03T09:27:50Z",
+              "mergedAt": "2026-02-03T09:37:32Z"
+            },
+            {
+              "number": 131,
+              "additions": 21,
+              "deletions": 79,
+              "createdAt": "2026-02-03T08:48:28Z",
+              "mergedAt": "2026-02-03T09:03:58Z"
+            },
+            {
+              "number": 130,
+              "additions": 63,
+              "deletions": 45,
+              "createdAt": "2026-02-03T03:35:57Z",
+              "mergedAt": "2026-02-03T04:29:48Z"
+            },
+            {
+              "number": 129,
+              "additions": 116,
+              "deletions": 21,
+              "createdAt": "2026-02-03T00:44:52Z",
+              "mergedAt": "2026-02-03T02:15:34Z"
+            },
+            {
+              "number": 128,
+              "additions": 645,
+              "deletions": 165,
+              "createdAt": "2026-02-02T08:56:11Z",
+              "mergedAt": "2026-02-02T09:18:30Z"
+            }
+          ],
+          "prs_reviewed": 0,
+          "avg_pr_size": 564.6,
+          "avg_time_to_merge_hours": 1.4
+        },
+        "rosseca/tattoo": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 19,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        }
+      }
+    },
+    {
+      "name": "Shu Zhang",
+      "github_username": "shuzhang-57b",
+      "vendor": "57 Blocks",
+      "skills": "Backend",
+      "projects": [
+        "Tattooist"
+      ],
+      "totals": {
+        "total_commits": 0,
+        "total_prs_merged": 3,
+        "total_prs_reviewed": 45,
+        "total_avg_pr_size": 1531,
+        "total_avg_ttm_hours": 63.2
+      },
+      "repos": {
+        "leadtechcorp/tattoo_infra": {
+          "commits": 0,
+          "prs_merged_count": 3,
+          "prs_merged": [
+            {
+              "number": 106,
+              "additions": 816,
+              "deletions": 100,
+              "createdAt": "2026-02-27T08:38:19Z",
+              "mergedAt": "2026-02-28T08:09:26Z"
+            },
+            {
+              "number": 105,
+              "additions": 446,
+              "deletions": 311,
+              "createdAt": "2026-02-25T07:26:41Z",
+              "mergedAt": "2026-02-27T08:27:13Z"
+            },
+            {
+              "number": 104,
+              "additions": 2508,
+              "deletions": 412,
+              "createdAt": "2026-02-05T11:46:05Z",
+              "mergedAt": "2026-02-10T08:56:35Z"
+            }
+          ],
+          "prs_reviewed": 0,
+          "avg_pr_size": 1531,
+          "avg_time_to_merge_hours": 63.2
+        },
+        "rosseca/tattoo-android": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 5,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/tattoo": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 40,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        }
+      }
+    },
+    {
+      "name": "Artem Shyianov",
+      "github_username": "artemshyianov-art",
+      "vendor": "Anadea",
+      "skills": "iOS",
+      "projects": [
+        "iMote"
+      ],
+      "totals": {
+        "total_commits": 25,
+        "total_prs_merged": 11,
+        "total_prs_reviewed": 6,
+        "total_avg_pr_size": 335.9,
+        "total_avg_ttm_hours": 78.9
+      },
+      "repos": {
+        "rosseca/imote-android": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/imote": {
+          "commits": 25,
+          "prs_merged_count": 11,
+          "prs_merged": [
+            {
+              "number": 412,
+              "additions": 39,
+              "deletions": 15,
+              "createdAt": "2026-02-27T08:34:55Z",
+              "mergedAt": "2026-02-27T10:17:03Z"
+            },
+            {
+              "number": 411,
+              "additions": 3,
+              "deletions": 0,
+              "createdAt": "2026-02-26T16:37:41Z",
+              "mergedAt": "2026-02-27T08:39:19Z"
+            },
+            {
+              "number": 410,
+              "additions": 1,
+              "deletions": 1,
+              "createdAt": "2026-02-26T08:27:13Z",
+              "mergedAt": "2026-02-26T09:15:59Z"
+            },
+            {
+              "number": 409,
+              "additions": 73,
+              "deletions": 207,
+              "createdAt": "2026-02-25T13:02:44Z",
+              "mergedAt": "2026-02-26T07:55:06Z"
+            },
+            {
+              "number": 408,
+              "additions": 5,
+              "deletions": 13,
+              "createdAt": "2026-02-25T12:08:28Z",
+              "mergedAt": "2026-02-25T12:35:11Z"
+            },
+            {
+              "number": 407,
+              "additions": 188,
+              "deletions": 91,
+              "createdAt": "2026-02-25T11:30:21Z",
+              "mergedAt": "2026-02-25T11:46:00Z"
+            },
+            {
+              "number": 403,
+              "additions": 108,
+              "deletions": 140,
+              "createdAt": "2026-02-23T14:53:32Z",
+              "mergedAt": "2026-02-24T13:20:19Z"
+            },
+            {
+              "number": 402,
+              "additions": 41,
+              "deletions": 4,
+              "createdAt": "2026-02-19T14:19:42Z",
+              "mergedAt": "2026-02-19T14:54:32Z"
+            },
+            {
+              "number": 401,
+              "additions": 245,
+              "deletions": 186,
+              "createdAt": "2026-02-19T12:26:15Z",
+              "mergedAt": "2026-02-20T10:30:10Z"
+            },
+            {
+              "number": 397,
+              "additions": 365,
+              "deletions": 156,
+              "createdAt": "2026-02-18T14:31:52Z",
+              "mergedAt": "2026-02-24T11:27:30Z"
+            },
+            {
+              "number": 379,
+              "additions": 1303,
+              "deletions": 511,
+              "createdAt": "2026-01-20T17:38:11Z",
+              "mergedAt": "2026-02-16T13:04:25Z"
+            }
+          ],
+          "prs_reviewed": 6,
+          "avg_pr_size": 335.9,
+          "avg_time_to_merge_hours": 78.9
+        }
+      }
+    },
+    {
+      "name": "Serhii Kostrykin",
+      "github_username": "sk-leadtech",
+      "vendor": "Anadea",
+      "skills": "iOS",
+      "projects": [
+        "Screen Mirroring",
+        "iMote"
+      ],
+      "totals": {
+        "total_commits": 29,
+        "total_prs_merged": 12,
+        "total_prs_reviewed": 9,
+        "total_avg_pr_size": 482.8,
+        "total_avg_ttm_hours": 23.5
+      },
+      "repos": {
+        "leadtechcorp/screenmirroring_backend": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/imote-android": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/imote": {
+          "commits": 29,
+          "prs_merged_count": 12,
+          "prs_merged": [
+            {
+              "number": 404,
+              "additions": 2967,
+              "deletions": 1370,
+              "createdAt": "2026-02-25T08:44:35Z",
+              "mergedAt": "2026-02-25T08:49:43Z"
+            },
+            {
+              "number": 399,
+              "additions": 41,
+              "deletions": 48,
+              "createdAt": "2026-02-18T18:01:42Z",
+              "mergedAt": "2026-02-19T09:18:20Z"
+            },
+            {
+              "number": 396,
+              "additions": 5,
+              "deletions": 5,
+              "createdAt": "2026-02-18T08:14:40Z",
+              "mergedAt": "2026-02-18T08:56:56Z"
+            },
+            {
+              "number": 395,
+              "additions": 42,
+              "deletions": 14,
+              "createdAt": "2026-02-13T14:00:59Z",
+              "mergedAt": "2026-02-16T08:03:20Z"
+            },
+            {
+              "number": 394,
+              "additions": 31,
+              "deletions": 61,
+              "createdAt": "2026-02-13T07:54:08Z",
+              "mergedAt": "2026-02-16T09:16:44Z"
+            },
+            {
+              "number": 393,
+              "additions": 46,
+              "deletions": 39,
+              "createdAt": "2026-02-13T07:49:53Z",
+              "mergedAt": "2026-02-16T09:16:31Z"
+            },
+            {
+              "number": 391,
+              "additions": 46,
+              "deletions": 16,
+              "createdAt": "2026-02-12T12:31:08Z",
+              "mergedAt": "2026-02-12T12:34:52Z"
+            },
+            {
+              "number": 390,
+              "additions": 10,
+              "deletions": 41,
+              "createdAt": "2026-02-10T18:07:54Z",
+              "mergedAt": "2026-02-11T09:25:27Z"
+            },
+            {
+              "number": 388,
+              "additions": 64,
+              "deletions": 2,
+              "createdAt": "2026-02-09T13:53:15Z",
+              "mergedAt": "2026-02-09T14:47:21Z"
+            },
+            {
+              "number": 387,
+              "additions": 521,
+              "deletions": 220,
+              "createdAt": "2026-02-06T00:39:02Z",
+              "mergedAt": "2026-02-06T12:37:53Z"
+            },
+            {
+              "number": 386,
+              "additions": 65,
+              "deletions": 1,
+              "createdAt": "2026-02-03T14:12:15Z",
+              "mergedAt": "2026-02-03T16:19:10Z"
+            },
+            {
+              "number": 385,
+              "additions": 121,
+              "deletions": 18,
+              "createdAt": "2026-02-01T12:10:49Z",
+              "mergedAt": "2026-02-02T11:12:12Z"
+            }
+          ],
+          "prs_reviewed": 9,
+          "avg_pr_size": 482.8,
+          "avg_time_to_merge_hours": 23.5
+        },
+        "rosseca/screenmirroring": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        }
+      }
+    },
+    {
+      "name": "Anton Shkuray",
+      "github_username": "MisterBlackcore",
+      "vendor": "Gilzor",
+      "skills": "iOS",
+      "projects": [
+        "Face AI"
+      ],
+      "totals": {
+        "total_commits": 49,
+        "total_prs_merged": 0,
+        "total_prs_reviewed": 0,
+        "total_avg_pr_size": 0,
+        "total_avg_ttm_hours": 0
+      },
+      "repos": {
+        "leadtechcorp/faceai_backend": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/faceai_ios": {
+          "commits": 49,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        }
+      }
+    },
+    {
+      "name": "Andrew Laminski",
+      "github_username": "andrewlaminski-beep",
+      "vendor": "Gilzor",
+      "skills": "Backend",
+      "projects": [
+        "Face AI"
+      ],
+      "totals": {
+        "total_commits": 10,
+        "total_prs_merged": 9,
+        "total_prs_reviewed": 1,
+        "total_avg_pr_size": 4032.9,
+        "total_avg_ttm_hours": 30.2
+      },
+      "repos": {
+        "leadtechcorp/faceai_backend": {
+          "commits": 10,
+          "prs_merged_count": 9,
+          "prs_merged": [
+            {
+              "number": 74,
+              "additions": 18320,
+              "deletions": 4942,
+              "createdAt": "2026-02-27T09:06:24Z",
+              "mergedAt": "2026-02-27T09:06:35Z"
+            },
+            {
+              "number": 72,
+              "additions": 344,
+              "deletions": 47,
+              "createdAt": "2026-02-20T10:38:59Z",
+              "mergedAt": "2026-02-20T12:41:17Z"
+            },
+            {
+              "number": 71,
+              "additions": 2094,
+              "deletions": 1025,
+              "createdAt": "2026-02-18T14:17:20Z",
+              "mergedAt": "2026-02-19T07:30:36Z"
+            },
+            {
+              "number": 70,
+              "additions": 45,
+              "deletions": 151,
+              "createdAt": "2026-02-16T08:23:32Z",
+              "mergedAt": "2026-02-16T09:46:18Z"
+            },
+            {
+              "number": 69,
+              "additions": 51,
+              "deletions": 34,
+              "createdAt": "2026-02-13T12:15:02Z",
+              "mergedAt": "2026-02-13T12:21:35Z"
+            },
+            {
+              "number": 68,
+              "additions": 1835,
+              "deletions": 432,
+              "createdAt": "2026-02-11T15:23:20Z",
+              "mergedAt": "2026-02-12T08:46:23Z"
+            },
+            {
+              "number": 67,
+              "additions": 3631,
+              "deletions": 490,
+              "createdAt": "2026-02-06T13:22:41Z",
+              "mergedAt": "2026-02-09T11:04:08Z"
+            },
+            {
+              "number": 66,
+              "additions": 434,
+              "deletions": 79,
+              "createdAt": "2026-02-03T13:46:56Z",
+              "mergedAt": "2026-02-04T07:15:59Z"
+            },
+            {
+              "number": 64,
+              "additions": 2183,
+              "deletions": 159,
+              "createdAt": "2026-01-27T09:45:24Z",
+              "mergedAt": "2026-02-02T11:49:51Z"
+            }
+          ],
+          "prs_reviewed": 1,
+          "avg_pr_size": 4032.9,
+          "avg_time_to_merge_hours": 30.2
+        },
+        "rosseca/faceai_ios": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        }
+      }
+    }
+  ]
+}

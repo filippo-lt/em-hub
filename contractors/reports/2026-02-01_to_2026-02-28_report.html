@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contractor Performance Report — Feb 2026</title>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --border: #dee2e6;
+    --text: #212529;
+    --text-muted: #6c757d;
+    --primary: #0d6efd;
+    --success: #198754;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --info: #0dcaf0;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 2rem; max-width: 1400px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .subtitle { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
+
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+  .card-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .card-value { font-size: 1.75rem; font-weight: 700; margin-top: 0.25rem; }
+  .card-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+  .flags { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 2rem; }
+  .flags h2 { font-size: 1rem; margin-bottom: 0.75rem; }
+  .flag { display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.4rem 0; font-size: 0.9rem; }
+  .flag-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 0.45rem; }
+  .flag-dot.red { background: var(--danger); }
+  .flag-dot.yellow { background: var(--warning); }
+  .flag-dot.blue { background: var(--info); }
+
+  .filters { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .filters select, .filters input { padding: 0.4rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.9rem; background: var(--card); }
+
+  .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; margin-bottom: 2rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { background: var(--bg); text-align: left; padding: 0.75rem 1rem; border-bottom: 2px solid var(--border); cursor: pointer; white-space: nowrap; user-select: none; }
+  th:hover { background: #e9ecef; }
+  th.sorted-asc::after { content: ' \u25B2'; font-size: 0.7rem; }
+  th.sorted-desc::after { content: ' \u25BC'; font-size: 0.7rem; }
+  td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f1f3f5; }
+
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge-ios { background: #e3f2fd; color: #1565c0; }
+  .badge-android { background: #e8f5e9; color: #2e7d32; }
+  .badge-backend { background: #fff3e0; color: #e65100; }
+
+  .detail-row { display: none; }
+  .detail-row.open { display: table-row; }
+  .detail-row td { background: #f8f9fa; padding: 1rem; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .detail-section h4 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .detail-section p { font-size: 0.9rem; }
+  .metric-row { display: flex; justify-content: space-between; padding: 0.2rem 0; }
+
+  .good { color: var(--success); font-weight: 600; }
+  .warn { color: #b86e00; font-weight: 600; }
+  .bad { color: var(--danger); font-weight: 600; }
+  .neutral { color: var(--text); }
+  .muted { color: var(--text-muted); }
+
+  .toggle-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0; }
+
+  .notes { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 2rem; }
+  .notes h2 { font-size: 1rem; margin-bottom: 0.75rem; }
+  .notes ul { padding-left: 1.25rem; }
+  .notes li { margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--text-muted); }
+
+  .section-title { font-size: 1.1rem; font-weight: 600; margin: 2rem 0 1rem; }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+  @media (max-width: 768px) {
+    body { padding: 1rem; }
+    .detail-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Contractor Performance Report</h1>
+<p class="subtitle">1 Feb &ndash; 28 Feb 2026 &middot; Generated 8 Mar 2026</p>
+
+<!-- ===== SUMMARY CARDS ===== -->
+<div class="summary">
+  <div class="card">
+    <div class="card-label">Developers</div>
+    <div class="card-value">7</div>
+    <div class="card-note">across 3 vendors</div>
+  </div>
+  <div class="card">
+    <div class="card-label">PRs Merged</div>
+    <div class="card-value">110</div>
+    <div class="card-note">15.7 avg per dev</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Story Points</div>
+    <div class="card-value">99</div>
+    <div class="card-note">14.1 avg per dev*</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Tickets Delivered</div>
+    <div class="card-value">61</div>
+    <div class="card-note">stories + bugs</div>
+  </div>
+  <div class="card">
+    <div class="card-label">QA Bounce Rate</div>
+    <div class="card-value good">1.6%</div>
+    <div class="card-note">1 bounce / 61 tickets</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Avg Time to Merge</div>
+    <div class="card-value">0.6d</div>
+    <div class="card-note">weighted avg (15.5h)</div>
+  </div>
+</div>
+
+<!-- ===== FLAGS ===== -->
+<div class="flags">
+  <h2>Flags &amp; Anomalies</h2>
+  <div class="flag"><span class="flag-dot red"></span> <strong>Anton Shkuray</strong> &mdash; 49 commits but 0 PRs merged and 0 PR reviews. Pushing directly to branch without pull requests; no code review participation.</div>
+  <div class="flag"><span class="flag-dot red"></span> <strong>Artem Shyianov &amp; Serhii Kostrykin</strong> (Anadea) &mdash; 0 Jira tickets delivered despite active GitHub output (11 &amp; 12 PRs). Likely a Jira query mismatch &mdash; check if their display names or board assignments differ.</div>
+  <div class="flag"><span class="flag-dot yellow"></span> <strong>Andrew Laminski</strong> &mdash; avg PR size 4,033 lines. One PR (#74: 23,262 lines) heavily skews this; excluding it brings the avg to 1,038. Still large &mdash; review burden is high.</div>
+  <div class="flag"><span class="flag-dot yellow"></span> <strong>Shu Zhang</strong> &mdash; 0 commits, 3 PRs, 1 Jira ticket, but 45 PR reviews. Avg TTM 2.6 days (above 3-day threshold when rounding). Low delivery output but heavy reviewer role.</div>
+  <div class="flag"><span class="flag-dot yellow"></span> <strong>Edward Liu</strong> &mdash; avg PR size 565 lines (above 500-line threshold). 32 of 34 tickets have no story points &mdash; SP total (20) severely underrepresents effort.</div>
+  <div class="flag"><span class="flag-dot yellow"></span> <strong>Artem Shyianov</strong> &mdash; avg TTM 3.3 days (above 3-day threshold). One long-lived PR (#379: 27 days) skews the average.</div>
+  <div class="flag"><span class="flag-dot blue"></span> <strong>Story point coverage</strong> &mdash; 51 of 61 tickets (84%) have no story points. SP totals undercount actual effort, particularly for 57 Blocks (Tattooist).</div>
+  <div class="flag"><span class="flag-dot blue"></span> <strong>Serhii Kostrykin</strong> &mdash; assigned to Screen Mirroring but 0 activity in SM repos; all 12 PRs were in iMote. May have shifted focus.</div>
+</div>
+
+<!-- ===== FILTERS ===== -->
+<div class="filters">
+  <select id="filter-vendor" onchange="filterTable()">
+    <option value="">All Vendors</option>
+    <option value="57 Blocks">57 Blocks</option>
+    <option value="Anadea">Anadea</option>
+    <option value="Gilzor">Gilzor</option>
+  </select>
+  <select id="filter-project" onchange="filterTable()">
+    <option value="">All Projects</option>
+    <option value="Tattooist">Tattooist</option>
+    <option value="iMote">iMote</option>
+    <option value="Face AI">Face AI</option>
+    <option value="Screen Mirroring">Screen Mirroring</option>
+  </select>
+  <select id="filter-skill" onchange="filterTable()">
+    <option value="">All Skills</option>
+    <option value="iOS">iOS</option>
+    <option value="Android">Android</option>
+    <option value="Backend">Backend</option>
+  </select>
+  <input type="text" id="filter-name" placeholder="Search by name..." oninput="filterTable()">
+</div>
+
+<!-- ===== MAIN TABLE ===== -->
+<div class="table-wrap">
+  <table id="main-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th data-sort="name" onclick="sortTable(this)">Developer</th>
+        <th data-sort="vendor" onclick="sortTable(this)">Vendor</th>
+        <th data-sort="project" onclick="sortTable(this)">Project</th>
+        <th data-sort="skills">Skills</th>
+        <th data-sort="sp" onclick="sortTable(this)">Story Pts</th>
+        <th data-sort="tickets" onclick="sortTable(this)">Tickets</th>
+        <th data-sort="noqa" onclick="sortTable(this)">QA Bounces</th>
+        <th data-sort="commits" onclick="sortTable(this)">Commits</th>
+        <th data-sort="prs" onclick="sortTable(this)">PRs Merged</th>
+        <th data-sort="reviews" onclick="sortTable(this)">PR Reviews</th>
+        <th data-sort="prsize" onclick="sortTable(this)">Avg PR Size</th>
+        <th data-sort="ttm" onclick="sortTable(this)">Avg TTM</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- Xiaochun Mou -->
+      <tr class="data-row" data-vendor="57 Blocks" data-project="Tattooist" data-skills="iOS">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Xiaochun Mou">Xiaochun Mou</td>
+        <td>57 Blocks</td>
+        <td>Tattooist</td>
+        <td><span class="badge badge-ios">iOS</span></td>
+        <td data-sort-value="25" class="warn">25*</td>
+        <td data-sort-value="22">22</td>
+        <td data-sort-value="1" class="good">1 (4.5%)</td>
+        <td data-sort-value="134">134</td>
+        <td data-sort-value="56">56</td>
+        <td data-sort-value="16">16</td>
+        <td data-sort-value="418.9" class="neutral">419</td>
+        <td data-sort-value="1.2" class="good">0.1d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="13">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>2</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>20</span></div>
+              <div class="metric-row"><span>Story points</span><span>25 (19 of 22 items missing SP)</span></div>
+              <div class="metric-row"><span>QA bounces</span><span>1 (TTIOSMAU-184)</span></div>
+              <div class="metric-row"><span>QA bounce rate</span><span>4.5%</span></div>
+              <div class="metric-row"><span>Key stories</span><span>TATA-1258 New Profile Tab (18 SP), TATA-1335 Profile Tab Changes (5 SP)</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown</h4>
+              <div class="metric-row"><span>Commits</span><span>134 (rosseca/tattoo)</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>56 (rosseca/tattoo)</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>16 (14 Android, 2 infra)</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>419</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>1.2h</span></div>
+              <div class="metric-row"><span>Largest PR</span><span>#260: 5,394 lines</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Edward Liu -->
+      <tr class="data-row" data-vendor="57 Blocks" data-project="Tattooist" data-skills="Android">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Edward Liu">Edward Liu</td>
+        <td>57 Blocks</td>
+        <td>Tattooist</td>
+        <td><span class="badge badge-android">Android</span></td>
+        <td data-sort-value="20" class="warn">20*</td>
+        <td data-sort-value="34">34</td>
+        <td data-sort-value="0" class="good">0</td>
+        <td data-sort-value="19">19</td>
+        <td data-sort-value="19">19</td>
+        <td data-sort-value="19">19</td>
+        <td data-sort-value="564.6" class="warn">565</td>
+        <td data-sort-value="1.4" class="good">0.1d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="13">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>2</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>32</span></div>
+              <div class="metric-row"><span>Story points</span><span>20 (32 of 34 items missing SP)</span></div>
+              <div class="metric-row"><span>QA bounces</span><span>0</span></div>
+              <div class="metric-row"><span>Key stories</span><span>TATA-1832 New Profile Tab (18 SP), TATA-1833 Profile Tab Changes (2 SP)</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown</h4>
+              <div class="metric-row"><span>Commits</span><span>19 (rosseca/tattoo-android)</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>19 (rosseca/tattoo-android)</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>19 (rosseca/tattoo — iOS code)</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>565</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>1.4h</span></div>
+              <div class="metric-row"><span>Largest PR</span><span>#141: 4,030 lines</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Shu Zhang -->
+      <tr class="data-row" data-vendor="57 Blocks" data-project="Tattooist" data-skills="Backend">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Shu Zhang">Shu Zhang</td>
+        <td>57 Blocks</td>
+        <td>Tattooist</td>
+        <td><span class="badge badge-backend">Backend</span></td>
+        <td data-sort-value="0" class="bad">0</td>
+        <td data-sort-value="1">1</td>
+        <td data-sort-value="0" class="good">0</td>
+        <td data-sort-value="0" class="muted">0</td>
+        <td data-sort-value="3">3</td>
+        <td data-sort-value="45" class="good">45</td>
+        <td data-sort-value="1531" class="bad">1,531</td>
+        <td data-sort-value="63.2" class="warn">2.6d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="13">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>0</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>1 (TATA-2117 — 500 error on generate)</span></div>
+              <div class="metric-row"><span>Story points</span><span>0 (1 item missing SP)</span></div>
+              <div class="metric-row"><span>QA bounces</span><span>0</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown</h4>
+              <div class="metric-row"><span>Commits</span><span>0</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>3 (leadtechcorp/tattoo_infra)</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>45 (40 iOS, 5 Android)</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>1,531</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>63.2h (2.6d)</span></div>
+              <div class="metric-row"><span>Largest PR</span><span>#104: 2,920 lines</span></div>
+              <div class="metric-row"><span>Note</span><span>0 commits despite 3 merged PRs — may use squash-merge or co-author</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Artem Shyianov -->
+      <tr class="data-row" data-vendor="Anadea" data-project="iMote" data-skills="iOS">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Artem Shyianov">Artem Shyianov</td>
+        <td>Anadea</td>
+        <td>iMote</td>
+        <td><span class="badge badge-ios">iOS</span></td>
+        <td data-sort-value="0" class="bad">0*</td>
+        <td data-sort-value="0" class="bad">0*</td>
+        <td data-sort-value="0" class="muted">&mdash;</td>
+        <td data-sort-value="25">25</td>
+        <td data-sort-value="11">11</td>
+        <td data-sort-value="6">6</td>
+        <td data-sort-value="335.9" class="neutral">336</td>
+        <td data-sort-value="78.9" class="bad">3.3d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="13">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>0</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>0</span></div>
+              <div class="metric-row"><span>Story points</span><span>0</span></div>
+              <div class="metric-row"><span>Note</span><span style="color:var(--danger)">Jira returned 0 items &mdash; possible display name or board mismatch (queried IMIOSMAU/IMANDMAU)</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown</h4>
+              <div class="metric-row"><span>Commits</span><span>25 (rosseca/imote)</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>11 (rosseca/imote)</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>6</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>336</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>78.9h (3.3d)</span></div>
+              <div class="metric-row"><span>Longest PR</span><span>#379: opened 20 Jan, merged 16 Feb (27 days)</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Serhii Kostrykin -->
+      <tr class="data-row" data-vendor="Anadea" data-project="Screen Mirroring, iMote" data-skills="iOS">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Serhii Kostrykin">Serhii Kostrykin</td>
+        <td>Anadea</td>
+        <td>SM, iMote</td>
+        <td><span class="badge badge-ios">iOS</span></td>
+        <td data-sort-value="0" class="bad">0*</td>
+        <td data-sort-value="0" class="bad">0*</td>
+        <td data-sort-value="0" class="muted">&mdash;</td>
+        <td data-sort-value="29">29</td>
+        <td data-sort-value="12">12</td>
+        <td data-sort-value="9">9</td>
+        <td data-sort-value="482.8" class="neutral">483</td>
+        <td data-sort-value="23.5" class="neutral">1.0d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="13">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>0</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>0</span></div>
+              <div class="metric-row"><span>Story points</span><span>0</span></div>
+              <div class="metric-row"><span>Note</span><span style="color:var(--danger)">Jira returned 0 items &mdash; possible display name or board mismatch (queried SMIOSMAU/IMIOSMAU/IMANDMAU)</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown</h4>
+              <div class="metric-row"><span>Commits</span><span>29 (all in rosseca/imote)</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>12 (all in rosseca/imote &mdash; 0 in Screen Mirroring repos)</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>9</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>483</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>23.5h (1.0d)</span></div>
+              <div class="metric-row"><span>Largest PR</span><span>#404: 4,337 lines</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Anton Shkuray -->
+      <tr class="data-row" data-vendor="Gilzor" data-project="Face AI" data-skills="iOS">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Anton Shkuray">Anton Shkuray</td>
+        <td>Gilzor</td>
+        <td>Face AI</td>
+        <td><span class="badge badge-ios">iOS</span></td>
+        <td data-sort-value="27" class="good">27</td>
+        <td data-sort-value="2">2</td>
+        <td data-sort-value="0" class="good">0</td>
+        <td data-sort-value="49">49</td>
+        <td data-sort-value="0" class="bad">0</td>
+        <td data-sort-value="0" class="bad">0</td>
+        <td data-sort-value="0" class="muted">&mdash;</td>
+        <td data-sort-value="0" class="muted">&mdash;</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="13">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>2</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>0</span></div>
+              <div class="metric-row"><span>Story points</span><span>27 (all items have SP)</span></div>
+              <div class="metric-row"><span>QA bounces</span><span>0</span></div>
+              <div class="metric-row"><span>Key stories</span><span>BTY-833 Image Filters Abstraction (21 SP), BTY-816 Facial Recognition (6 SP)</span></div>
+              <div class="metric-row"><span>Note</span><span>Tickets are on BTY board, not FAIOSMAU</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown</h4>
+              <div class="metric-row"><span>Commits</span><span>49 (rosseca/faceai_ios)</span></div>
+              <div class="metric-row"><span>PRs merged</span><span style="color:var(--danger)">0 &mdash; all 49 commits appear to be direct pushes</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span style="color:var(--danger)">0</span></div>
+              <div class="metric-row"><span>Note</span><span style="color:var(--danger)">No PR-based workflow. Code is not going through review before merge.</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Andrew Laminski -->
+      <tr class="data-row" data-vendor="Gilzor" data-project="Face AI" data-skills="Backend">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Andrew Laminski">Andrew Laminski</td>
+        <td>Gilzor</td>
+        <td>Face AI</td>
+        <td><span class="badge badge-backend">Backend</span></td>
+        <td data-sort-value="27" class="good">27</td>
+        <td data-sort-value="2">2</td>
+        <td data-sort-value="0" class="good">0</td>
+        <td data-sort-value="10">10</td>
+        <td data-sort-value="9">9</td>
+        <td data-sort-value="1">1</td>
+        <td data-sort-value="4032.9" class="bad">4,033</td>
+        <td data-sort-value="30.2" class="neutral">1.3d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="13">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>1</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>1</span></div>
+              <div class="metric-row"><span>Story points</span><span>27 (all items have SP)</span></div>
+              <div class="metric-row"><span>QA bounces</span><span>0</span></div>
+              <div class="metric-row"><span>Key stories</span><span>BTY-662 Gemini Prompt Config Service (24 SP), FAIOSMAU-261 Image Size Limits (3 SP)</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown</h4>
+              <div class="metric-row"><span>Commits</span><span>10 (leadtechcorp/faceai_backend)</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>9 (leadtechcorp/faceai_backend)</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>1</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>4,033</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>30.2h (1.3d)</span></div>
+              <div class="metric-row"><span>Largest PR</span><span>#74: 23,262 lines &mdash; likely auto-generated or large migration</span></div>
+              <div class="metric-row"><span>Avg PR size excl. #74</span><span>1,038 lines &mdash; still large</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== PROJECT BREAKDOWN ===== -->
+<h3 class="section-title">By Project</h3>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Vendor</th>
+        <th>Devs</th>
+        <th>PRs Merged</th>
+        <th>PR Reviews</th>
+        <th>Commits</th>
+        <th>Jira Tickets</th>
+        <th>Story Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Tattooist</strong></td>
+        <td>57 Blocks</td>
+        <td>3</td>
+        <td>78</td>
+        <td>80</td>
+        <td>153</td>
+        <td>57</td>
+        <td>45</td>
+      </tr>
+      <tr>
+        <td><strong>iMote</strong></td>
+        <td>Anadea</td>
+        <td>2</td>
+        <td>23</td>
+        <td>15</td>
+        <td>54</td>
+        <td>0*</td>
+        <td>0*</td>
+      </tr>
+      <tr>
+        <td><strong>Face AI</strong></td>
+        <td>Gilzor</td>
+        <td>2</td>
+        <td>9</td>
+        <td>1</td>
+        <td>59</td>
+        <td>4</td>
+        <td>54</td>
+      </tr>
+      <tr>
+        <td><strong>Screen Mirroring</strong></td>
+        <td>Anadea</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0*</td>
+        <td>0*</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== VENDOR BREAKDOWN ===== -->
+<h3 class="section-title">By Vendor</h3>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Vendor</th>
+        <th>Devs</th>
+        <th>PRs Merged</th>
+        <th>PR Reviews</th>
+        <th>Commits</th>
+        <th>Jira Tickets</th>
+        <th>Story Points</th>
+        <th>Avg PR Size</th>
+        <th>Avg TTM</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>57 Blocks</strong></td>
+        <td>3</td>
+        <td>78</td>
+        <td>80</td>
+        <td>153</td>
+        <td>57</td>
+        <td>45</td>
+        <td>497</td>
+        <td>1.6h</td>
+      </tr>
+      <tr>
+        <td><strong>Anadea</strong></td>
+        <td>2</td>
+        <td>23</td>
+        <td>15</td>
+        <td>54</td>
+        <td>0*</td>
+        <td>0*</td>
+        <td>415</td>
+        <td>47.0h</td>
+      </tr>
+      <tr>
+        <td><strong>Gilzor</strong></td>
+        <td>2</td>
+        <td>9</td>
+        <td>1</td>
+        <td>59</td>
+        <td>4</td>
+        <td>54</td>
+        <td>4,033</td>
+        <td>30.2h</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== DATA NOTES ===== -->
+<div class="notes">
+  <h2>Data Collection Notes</h2>
+  <ul>
+    <li>GitHub data collected via <code>gh-metrics.sh</code> &mdash; 19 dev&times;repo pairs queried, all successful</li>
+    <li>Jira data collected via <code>jira-sprint-metrics.sh --month 2026-02</code></li>
+    <li><strong>Anadea (Artem, Serhii):</strong> Jira returned 0 items. Their display names in Jira may differ, or their tickets may be on unqueried boards. Recommend verifying Jira identities for next review.</li>
+    <li><strong>Story point gaps:</strong> 51 of 61 Jira tickets (84%) have no story points assigned. SP totals severely underrepresent effort, especially for 57 Blocks/Tattooist where bugs are rarely estimated.</li>
+    <li><strong>Anton Shkuray:</strong> Jira tickets appear on BTY board (not the expected FAIOSMAU). This board was still captured by the user-based Jira query.</li>
+    <li>* = data likely incomplete or query mismatch</li>
+  </ul>
+</div>
+
+<footer>Generated by EM Hub &middot; Contractor Review Workflow &middot; 8 Mar 2026</footer>
+
+<script>
+function toggleDetail(btn) {
+  const dataRow = btn.closest('tr');
+  const detailRow = dataRow.nextElementSibling;
+  if (detailRow && detailRow.classList.contains('detail-row')) {
+    detailRow.classList.toggle('open');
+    btn.textContent = detailRow.classList.contains('open') ? '\u2212' : '+';
+  }
+}
+
+function sortTable(th) {
+  const table = document.getElementById('main-table');
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr.data-row'));
+  const colIndex = Array.from(th.parentElement.children).indexOf(th);
+  const isNumeric = !['name', 'vendor', 'project', 'skills'].includes(th.dataset.sort);
+
+  const wasAsc = th.classList.contains('sorted-asc');
+  table.querySelectorAll('th').forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+  const dir = wasAsc ? 'desc' : 'asc';
+  th.classList.add('sorted-' + dir);
+
+  rows.sort((a, b) => {
+    const aCell = a.children[colIndex];
+    const bCell = b.children[colIndex];
+    let aVal = aCell.dataset.sortValue || aCell.textContent.trim();
+    let bVal = bCell.dataset.sortValue || bCell.textContent.trim();
+    if (isNumeric) { aVal = parseFloat(aVal) || 0; bVal = parseFloat(bVal) || 0; }
+    if (aVal < bVal) return dir === 'asc' ? -1 : 1;
+    if (aVal > bVal) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  rows.forEach(row => {
+    const detail = row.nextElementSibling;
+    tbody.appendChild(row);
+    if (detail && detail.classList.contains('detail-row')) tbody.appendChild(detail);
+  });
+}
+
+function filterTable() {
+  const vendor = document.getElementById('filter-vendor').value;
+  const project = document.getElementById('filter-project').value.toLowerCase();
+  const skill = document.getElementById('filter-skill').value.toLowerCase();
+  const name = document.getElementById('filter-name').value.toLowerCase();
+
+  document.querySelectorAll('#main-table tbody tr.data-row').forEach(row => {
+    const matchVendor = !vendor || (row.dataset.vendor || '') === vendor;
+    const matchProject = !project || (row.dataset.project || '').toLowerCase().includes(project);
+    const matchSkill = !skill || (row.dataset.skills || '').toLowerCase().includes(skill);
+    const matchName = !name || row.children[1].textContent.toLowerCase().includes(name);
+    const show = matchVendor && matchProject && matchSkill && matchName;
+
+    row.style.display = show ? '' : 'none';
+    const detail = row.nextElementSibling;
+    if (detail && detail.classList.contains('detail-row')) {
+      if (!show) { detail.style.display = 'none'; detail.classList.remove('open'); }
+      else { detail.style.display = ''; }
+    }
+  });
+}
+</script>
+</body>
+</html>
