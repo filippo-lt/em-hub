@@ -100,8 +100,8 @@
   </div>
   <div class="card">
     <div class="card-label">PRs Merged</div>
-    <div class="card-value">110</div>
-    <div class="card-note">15.7 avg per dev</div>
+    <div class="card-value">132</div>
+    <div class="card-note">18.9 avg per dev</div>
   </div>
   <div class="card">
     <div class="card-label">Story Points</div>
@@ -121,14 +121,14 @@
   <div class="card">
     <div class="card-label">Avg Time to Merge</div>
     <div class="card-value">0.6d</div>
-    <div class="card-note">weighted avg (15.5h)</div>
+    <div class="card-note">weighted avg (13.5h)</div>
   </div>
 </div>
 
 <!-- ===== FLAGS ===== -->
 <div class="flags">
   <h2>Flags &amp; Anomalies</h2>
-  <div class="flag"><span class="flag-dot red"></span> <strong>Anton Shkuray</strong> &mdash; 49 commits but 0 PRs merged and 0 PR reviews. Pushing directly to branch without pull requests; no code review participation.</div>
+  <div class="flag"><span class="flag-dot yellow"></span> <strong>Anton Shkuray</strong> &mdash; uses two GitHub accounts: <code>MisterBlackcore</code> (commits) and <code>AntonShkurayExtLeadtech</code> (PRs). Avg PR size 562 lines (above 500 threshold). Only 2 PR reviews &mdash; low code review participation.</div>
   <div class="flag"><span class="flag-dot red"></span> <strong>Artem Shyianov &amp; Serhii Kostrykin</strong> (Anadea) &mdash; 0 Jira tickets delivered despite active GitHub output (11 &amp; 12 PRs). Likely a Jira query mismatch &mdash; check if their display names or board assignments differ.</div>
   <div class="flag"><span class="flag-dot yellow"></span> <strong>Andrew Laminski</strong> &mdash; avg PR size 4,033 lines. One PR (#74: 23,262 lines) heavily skews this; excluding it brings the avg to 1,038. Still large &mdash; review burden is high.</div>
   <div class="flag"><span class="flag-dot yellow"></span> <strong>Shu Zhang</strong> &mdash; 0 commits, 3 PRs, 1 Jira ticket, but 45 PR reviews. Avg TTM 2.6 days (above 3-day threshold when rounding). Low delivery output but heavy reviewer role.</div>
@@ -394,10 +394,10 @@
         <td data-sort-value="2">2</td>
         <td data-sort-value="0" class="good">0</td>
         <td data-sort-value="49">49</td>
-        <td data-sort-value="0" class="bad">0</td>
-        <td data-sort-value="0" class="bad">0</td>
-        <td data-sort-value="0" class="muted">&mdash;</td>
-        <td data-sort-value="0" class="muted">&mdash;</td>
+        <td data-sort-value="22">22</td>
+        <td data-sort-value="2">2</td>
+        <td data-sort-value="562" class="warn">562</td>
+        <td data-sort-value="3.6" class="good">0.2d</td>
       </tr>
       <tr class="detail-row">
         <td colspan="13">
@@ -413,10 +413,13 @@
             </div>
             <div class="detail-section">
               <h4>GitHub Breakdown</h4>
-              <div class="metric-row"><span>Commits</span><span>49 (rosseca/faceai_ios)</span></div>
-              <div class="metric-row"><span>PRs merged</span><span style="color:var(--danger)">0 &mdash; all 49 commits appear to be direct pushes</span></div>
-              <div class="metric-row"><span>PRs reviewed</span><span style="color:var(--danger)">0</span></div>
-              <div class="metric-row"><span>Note</span><span style="color:var(--danger)">No PR-based workflow. Code is not going through review before merge.</span></div>
+              <div class="metric-row"><span>Commits</span><span>49 (rosseca/faceai_ios, via <code>MisterBlackcore</code>)</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>22 (rosseca/faceai_ios, via <code>AntonShkurayExtLeadtech</code>)</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>2</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>562</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>3.6h</span></div>
+              <div class="metric-row"><span>Largest PRs</span><span>#187: 3,484 lines, #191: 3,017 lines</span></div>
+              <div class="metric-row"><span>Note</span><span style="color:var(--warning)">Uses two GitHub accounts &mdash; commits as <code>MisterBlackcore</code>, PRs as <code>AntonShkurayExtLeadtech</code></span></div>
             </div>
           </div>
         </td>
@@ -508,8 +511,8 @@
         <td><strong>Face AI</strong></td>
         <td>Gilzor</td>
         <td>2</td>
-        <td>9</td>
-        <td>1</td>
+        <td>31</td>
+        <td>3</td>
         <td>59</td>
         <td>4</td>
         <td>54</td>
@@ -571,13 +574,13 @@
       <tr>
         <td><strong>Gilzor</strong></td>
         <td>2</td>
-        <td>9</td>
-        <td>1</td>
+        <td>31</td>
+        <td>3</td>
         <td>59</td>
         <td>4</td>
         <td>54</td>
-        <td>4,033</td>
-        <td>30.2h</td>
+        <td>1,570</td>
+        <td>11.3h</td>
       </tr>
     </tbody>
   </table>
@@ -592,6 +595,7 @@
     <li><strong>Anadea (Artem, Serhii):</strong> Jira returned 0 items. Their display names in Jira may differ, or their tickets may be on unqueried boards. Recommend verifying Jira identities for next review.</li>
     <li><strong>Story point gaps:</strong> 51 of 61 Jira tickets (84%) have no story points assigned. SP totals severely underrepresent effort, especially for 57 Blocks/Tattooist where bugs are rarely estimated.</li>
     <li><strong>Anton Shkuray:</strong> Jira tickets appear on BTY board (not the expected FAIOSMAU). This board was still captured by the user-based Jira query.</li>
+    <li><strong>Anton Shkuray:</strong> Uses two GitHub accounts &mdash; <code>MisterBlackcore</code> for commits and <code>AntonShkurayExtLeadtech</code> for PRs. Registry updated to use the PR account. Initial script run missed his 22 PRs; data was corrected manually.</li>
     <li>* = data likely incomplete or query mismatch</li>
   </ul>
 </div>

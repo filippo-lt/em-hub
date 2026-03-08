@@ -11,7 +11,7 @@
 | Shu Zhang | 57 Blocks | Backend | Tattooist | shuzhang-57b | shu.zhang@ext.leadtech.com | Yes |
 | Artem Shyianov | Anadea | iOS | iMote | artemshyianov-art | artem.shyianov@ext.leadtech.com | Yes |
 | Serhii Kostrykin | Anadea | iOS | Screen Mirroring, iMote | sk-leadtech | serhii.kostrykin@ext.leadtech.com | Yes |
-| Anton Shkuray | Gilzor | iOS | Face AI | MisterBlackcore | anton.shkuray@ext.leadtech.com | Yes |
+| Anton Shkuray | Gilzor | iOS | Face AI | AntonShkurayExtLeadtech | anton.shkuray@ext.leadtech.com | Yes |
 | Andrew Laminski | Gilzor | Backend | Face AI | andrewlaminski-beep | andrew.laminski@ext.leadtech.com | Yes |
 
 
