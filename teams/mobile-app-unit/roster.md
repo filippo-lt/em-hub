@@ -12,6 +12,9 @@
 | David Matellano | Technical Director | Internal | Line Manager |
 | André Montenegro | Engineering Manager | Internal | Peer |
 | David Catalá | Engineering Manager | Internal | Peer |
+| Victor Jalencas | Staff Engineer | Internal | Peer |
+| Sergio Durban | Staff Engineer | Internal | Peer |
+| David Sanchez | Head of Martech | Internal | Peer |
 
 ## Apps Owned
 - Tattooist

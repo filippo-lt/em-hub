@@ -10,9 +10,16 @@
 ## Key Stakeholders
 | Name | Role | Relationship to me | Notes |
 |------|------|-------------------|-------|
-| David | Technical Director | My manager | |
-| Andrey | iOS Developer Advisor | My direct report | |
-| Vlad | iOS Developer Advisor | My direct report | |
+| David Matellano | Technical Director | My manager | |
+| Andrey Marinov | iOS Developer Advisor | My direct report | |
+| Vlad Krut | iOS Developer Advisor | Second direct report | |
+| Andrey Marinov | iOS Developer Advisor | First direct report |
+| André Montenegro | Engineering Manager | Peer | |
+| David Catalá | Engineering Manager | Internal | Peer | |
+| Victor Jalencas | Staff Engineer | Peer | |
+| Sergio Durban | Staff Engineer | Peer | |
+| David Sanchez | Head of Martech | Peer | Different department, handles Martech |
+
 
 ## Vendor Contacts
 | Name | Company | Role | Notes |
