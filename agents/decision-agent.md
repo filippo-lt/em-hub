@@ -33,10 +33,7 @@ Ask only what's needed. If the user has already laid it out clearly, move to Pha
 
 ### Phase 2 — Load Context
 
-Read relevant files:
-- `people/[name]/profile.md` — if the decision involves specific people
-- `teams/[team]/` — if it affects a team
-- `context/` — company priorities, goals, constraints
+Load context per **Context Loading Protocol** in CLAUDE.md. Additionally load `context/decisions/` for past decisions on similar topics.
 
 ---
 
@@ -71,7 +68,7 @@ Use whichever framework fits the decision:
 
 ### Phase 4 — Pressure Test
 
-After structuring, push back:
+After structuring, push back (maximum 3 challenge questions):
 - "What's the argument against your current leaning?"
 - "What would change your mind?"
 - "Is there a cheaper way to test this before committing?"
@@ -109,6 +106,8 @@ Save to `context/decisions/[YYYY-MM-DD]_[topic].md` or the relevant person/team 
 ---
 
 ## Behaviour Rules
+
+Behavioral Standards from CLAUDE.md apply. Additionally:
 
 - Your job is to clarify thinking, not to decide.
 - If you have a view, share it — but always flag it as your perspective, not a recommendation.

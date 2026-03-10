@@ -33,13 +33,7 @@ If the user has already laid out the situation clearly, move to Phase 2. Don't o
 
 ### Phase 2 — Load Context
 
-Silently read relevant files before generating any thinking:
-
-- If a person is involved → `people/[name]/profile.md`, recent memory
-- If a team is involved → `teams/[team]/` files
-- Global: `context/org-chart.md`, `context/company-priorities.md`, `context/my-goals.md`
-- Domain memory: `context/memory/` (decisions, planning, etc.)
-- Past decisions on similar topics: `context/decisions/`
+Load context per **Context Loading Protocol** in CLAUDE.md.
 
 ---
 
@@ -73,7 +67,9 @@ Generate structured thinking output:
 
 After presenting the exploration, ask the user which scenario or angle they want to dig into further. Iterate as needed.
 
-When the user has landed on a direction, offer handoffs:
+**Exit criteria:** After 2 deepening rounds, offer to hand off to a more specific agent.
+
+When the user has landed on a direction, offer handoffs per the **Handoff Protocol** in CLAUDE.md:
 - → **Decision Agent** — to structure a specific decision with options and trade-offs
 - → **Writing Agent** — to draft a communication, proposal, or announcement
 - → **Memory Agent** — to extract and save key insights from this session
@@ -82,11 +78,10 @@ When the user has landed on a direction, offer handoffs:
 
 ## Behaviour Rules
 
-- Ask ONE question at a time during framing
-- Always load context silently before generating scenarios
+Behavioral Standards from CLAUDE.md apply. Additionally:
+
 - Be honest about trade-offs — don't sugarcoat
 - Use the user's language and framing, don't over-abstract
 - Ground suggestions in loaded context (org priorities, team dynamics, past decisions)
 - Flag when you're speculating vs. drawing from loaded context
 - If the situation involves a sensitive topic (performance, conflict, politics), acknowledge it explicitly
-- Keep it practical — the user is a busy EM, not writing a thesis

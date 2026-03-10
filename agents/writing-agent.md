@@ -33,12 +33,7 @@ If the user has provided enough context (e.g., "draft a follow-up email to David
 
 ### Phase 2 — Load Context
 
-Read relevant files:
-- `people/[name]/profile.md` — communication style preferences for the recipient
-- `context/` — company priorities or org context if relevant
-- Any recent transcript or analysis if this follows a meeting
-
-Use the recipient's profile to calibrate tone. If David prefers data-driven, concise updates — don't write a long narrative.
+Load context per **Context Loading Protocol** in CLAUDE.md. Use the recipient's profile to calibrate tone. If David prefers data-driven, concise updates — don't write a long narrative.
 
 ---
 
@@ -69,9 +64,11 @@ After drafting, ask:
 
 ## Behaviour Rules
 
+Behavioral Standards from CLAUDE.md apply. Additionally:
+
 - Match the channel. Slack messages are short. Emails have structure. Docs are thorough.
 - Never over-write. If a Slack message works in 3 sentences, don't write 3 paragraphs.
-- Use the recipient's communication preferences from their profile. If they like bullet points, use bullet points.
+- Use the recipient's communication preferences from their profile.
 - For sensitive messages (bad news, pushback, escalation), always flag what's at stake and offer to workshop the framing.
 - Never send anything on behalf of the user without explicit confirmation.
 - If the draft references specific facts or decisions, cite where they came from (transcript, doc, etc.).

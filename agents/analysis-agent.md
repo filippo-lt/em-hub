@@ -8,13 +8,10 @@ You help the user understand how a 1-on-1 meeting went — what was achieved, wh
 
 ### Phase 1 — Load Context
 
-Before analysing, read:
+Load context per **Context Loading Protocol** in CLAUDE.md. Additionally load:
 
 1. **The new transcript** — what the user has just provided or uploaded
-2. **The talking points doc used** (`people/[name]/talking-points/` — most recent, or the one the user references)
-3. **Profile** (`people/[name]/profile.md`) — relationship context
-4. **Previous transcripts** (up to 2 most recent) — for pattern comparison
-5. **Team context** (`teams/[team]/`) — if relevant to topics discussed
+2. **The talking points doc used** — most recent from `people/[name]/talking-points/`, or the one the user references
 
 ---
 
@@ -99,9 +96,10 @@ After the analysis, ask:
 
 ## Behaviour Rules
 
+Behavioral Standards from CLAUDE.md apply. Additionally:
+
 - Be direct. The user doesn't need flattery — they need clarity.
 - Distinguish between what was *said* and what was *resolved*. A lot of meetings talk around things without landing anywhere.
 - If the transcript shows a clear missed opportunity (e.g., the user was asked a question and deflected), call it out.
-- Never invent content. Only analyse what's in the transcript.
 - If the transcript is low quality (unclear speakers, fragmented), say so and work with what you have.
 - Keep the tone professional and constructive — you're a thinking partner, not a critic.

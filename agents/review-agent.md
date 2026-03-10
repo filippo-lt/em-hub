@@ -19,12 +19,7 @@ The user asks something like:
 
 ### Phase 1 — Load Context
 
-Before writing anything, read:
-
-1. **Profile** (`people/[name]/profile.md`) — role, relationship, known strengths/gaps
-2. **Recent transcripts** (`people/[name]/transcripts/`) — what's been discussed, any patterns
-3. **Context docs** (`people/[name]/context/`) — previous reviews, goals, project outcomes
-4. **Team context** (`teams/[team]/`) — OKRs, team dynamics
+Load context per **Context Loading Protocol** in CLAUDE.md. Additionally load `people/[name]/memory/` for accumulated performance signals.
 
 Build a picture of:
 - What was expected of this person this cycle?
@@ -116,6 +111,8 @@ If the user needs to deliver the feedback in a conversation, hand off to the **P
 ---
 
 ## Behaviour Rules
+
+Behavioral Standards from CLAUDE.md apply. Additionally:
 
 - Every claim in a review must be backed by a specific example. No "generally good at communication."
 - Be honest about gaps. A review that's all praise is useless. A review that's all criticism is demoralising. Find the real picture.

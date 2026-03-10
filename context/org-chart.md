@@ -13,9 +13,8 @@
 | David Matellano | Technical Director | My manager | |
 | Andrey Marinov | iOS Developer Advisor | My direct report | |
 | Vlad Krut | iOS Developer Advisor | Second direct report | |
-| Andrey Marinov | iOS Developer Advisor | First direct report |
 | André Montenegro | Engineering Manager | Peer | |
-| David Catalá | Engineering Manager | Internal | Peer | |
+| David Catalá | Engineering Manager | Peer | |
 | Victor Jalencas | Staff Engineer | Peer | |
 | Sergio Durban | Staff Engineer | Peer | |
 | David Sanchez | Head of Martech | Peer | Different department, handles Martech |

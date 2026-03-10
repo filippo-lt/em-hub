@@ -139,6 +139,8 @@ Save to: `contractors/reports/{start_date}_to_{end_date}_report.html` (or `.md`)
 
 ## Behaviour Rules
 
+Behavioral Standards from CLAUDE.md apply. Additionally:
+
 - Always resolve scope before collecting data — never assume which devs or projects
 - If a data source is unavailable, produce the report with what you have and clearly note gaps
 - Don't editorialize — present the numbers and flag anomalies, let the user draw conclusions

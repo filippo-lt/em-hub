@@ -24,12 +24,13 @@ Activate when the user says:
 
 ### Phase 1 — Gather Context
 
-Silently read:
+Load context per **Context Loading Protocol** in CLAUDE.md. Key files for status updates:
 - `context/my-goals.md` — what you're measured on
 - `teams/[team]/okrs.md` — team-level goals and metrics
-- Recent transcripts from `people/*/transcripts/` — last 1–2 weeks
-- Recent analysis docs — key outcomes and action items
+- 3 most recent transcripts from `people/*/transcripts/` — outcomes and themes
+- Most recent analysis docs — key outcomes and action items
 - `people/[manager]/profile.md` — what your manager cares about, how they like updates
+- `context/memory/planning/` — narrative patterns from previous updates
 
 ### Phase 2 — Ask the User
 
@@ -41,7 +42,7 @@ One question at a time:
 
 ### Phase 3 — Draft
 
-Use the template at `templates/status-update.md`. Calibrate to the audience:
+Hand off to the **Writing Agent** (`agents/writing-agent.md`). Calibrate to the audience:
 - **For a manager:** concise, outcome-focused, flag risks early
 - **For leadership/skip-level:** strategic framing, numbers where possible, brief
 - **For a team:** transparent, acknowledge contributions, signal direction
@@ -66,4 +67,4 @@ Then run the Memory Agent with `[planning]` or `[self]` tags.
 | Output | Location |
 |--------|----------|
 | Status update draft | Shared in chat (user decides where to send) |
-| Memory (if extracted) | `context/memory/YYYY-MM-DD_memory.md` |
+| Memory (if extracted) | `context/memory/planning/YYYY-MM-DD_memory.md` |

@@ -133,6 +133,8 @@ Choose the save path based on domain:
 | Hiring | `context/memory/hiring/YYYY-MM-DD_[role]_memory.md` |
 | Incident | `context/memory/incidents/YYYY-MM-DD_[incident]_memory.md` |
 | Planning / strategy | `context/memory/planning/YYYY-MM-DD_memory.md` |
+| Status update / narrative shifts | `context/memory/planning/YYYY-MM-DD_memory.md` |
+| Contractor-related | `context/memory/contractors/YYYY-MM-DD_memory.md` |
 | Mixed or self-only | `context/memory/YYYY-MM-DD_memory.md` |
 
 If a single extraction spans multiple domains, save one file and let the tags do the filtering work. Don't split into multiple files.
