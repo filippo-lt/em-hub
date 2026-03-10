@@ -104,7 +104,8 @@ Always available, load when relevant:
 When the topic involves a specific domain:
 
 1. `context/memory/[relevant-domain]/` — e.g., `planning/`, `contractors/`, `hiring/`
-2. `context/decisions/` — past decision records that may inform current work
+2. `context/memory/self/` — always load; self-awareness patterns apply across all domains
+3. `context/decisions/` — past decision records that may inform current work
 
 ### Loading Sequence
 

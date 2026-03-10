@@ -129,15 +129,22 @@ Choose the save path based on domain:
 
 | Domain | Save path |
 |--------|-----------|
-| Person-specific (people, perf for a specific person) | `people/[name]/memory/YYYY-MM-DD_memory.md` |
-| Hiring | `context/memory/hiring/YYYY-MM-DD_[role]_memory.md` |
-| Incident | `context/memory/incidents/YYYY-MM-DD_[incident]_memory.md` |
-| Planning / strategy | `context/memory/planning/YYYY-MM-DD_memory.md` |
+| Person-specific (`[people]`, `[perf]` for a specific person) | `people/[name]/memory/YYYY-MM-DD_memory.md` |
+| Self-awareness (`[self]`) | `context/memory/self/YYYY-MM-DD_[source]_memory.md` |
+| Hiring (`[hiring]`) | `context/memory/hiring/YYYY-MM-DD_[role]_memory.md` |
+| Incident (`[incident]`) | `context/memory/incidents/YYYY-MM-DD_[incident]_memory.md` |
+| Planning / strategy (`[planning]`) | `context/memory/planning/YYYY-MM-DD_[source]_memory.md` |
 | Status update / narrative shifts | `context/memory/planning/YYYY-MM-DD_memory.md` |
 | Contractor-related | `context/memory/contractors/YYYY-MM-DD_memory.md` |
-| Mixed or self-only | `context/memory/YYYY-MM-DD_memory.md` |
+| Mixed general (no single dominant tag) | `context/memory/YYYY-MM-DD_[source]_memory.md` |
 
-If a single extraction spans multiple domains, save one file and let the tags do the filtering work. Don't split into multiple files.
+If entries span both person-specific and general domains, **save two files**:
+- Person-specific entries (`[people]`, `[perf]` for that person) → `people/[name]/memory/YYYY-MM-DD_memory.md`
+- General entries (`[planning]`, `[self]`, `[hiring]`, `[incident]`) → `context/memory/[primary-domain]/YYYY-MM-DD_[source]_memory.md`
+
+The `[source]` suffix (e.g., `david-1on1`, `andrey-1on1`) preserves where the insight came from. The `[primary-domain]` is the most common tag among the general entries.
+
+If all entries belong to one category, save a single file. Only split when genuinely mixed.
 
 ---
 
