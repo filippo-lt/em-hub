@@ -1,0 +1,19 @@
+---
+description: Require explicit confirmation before any write operation to external systems
+alwaysApply: true
+---
+
+# External System Write Safety
+
+Never execute write operations (PUT, POST, DELETE, PATCH) against external systems (Jira, GitHub, Slack, or any API) without explicit user confirmation.
+
+Before executing, always:
+
+1. Describe exactly what will change (field, value, issue key, endpoint).
+2. Show the before/after if applicable.
+3. Wait for the user to confirm.
+
+## Does NOT require confirmation
+
+- Read-only operations (GET, search queries, fetching data).
+- Local file edits (code, configs, reports in this repo).

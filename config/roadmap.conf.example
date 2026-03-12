@@ -1,0 +1,25 @@
+# Roadmap status config — copy to roadmap.conf and edit.
+#
+# Projects come from config/projects.conf (shared across tools).
+# This file only contains roadmap-specific settings.
+#
+# Jira custom field ID for "Target Date" (find yours with jira-sprint-metrics-debug):
+TARGET_DATE_FIELD=customfield_10015
+#
+# Standard Jira due date field (usually fine as-is):
+DUE_DATE_FIELD=duedate
+#
+# Statuses that count as closed (comma-separated):
+CLOSED_STATUSES=Done,Closed
+#
+# Statuses that are closed but NOT delivered (excluded from "Recently Delivered"):
+DENIED_STATUSES=Denied
+#
+# How far back to look for recently delivered epics (days):
+DELIVERED_WINDOW_DAYS=30
+#
+# Ignore epics created more than this many days ago:
+MAX_EPIC_AGE_DAYS=365
+#
+# Jira custom field ID for Story Points (used in at-risk calculation):
+SP_FIELD=customfield_10004

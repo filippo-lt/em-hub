@@ -52,6 +52,8 @@ If a pre-generated JSON already exists at that path for the requested timeframe,
 
 The JSON also includes per-PR detail (number, additions, deletions, createdAt, mergedAt) for drill-down.
 
+**Supplementary: dev-progress-weekly-report** — For richer per-developer detail including Jira story/epic linkage and PR-to-ticket mapping, also consider running `scripts/delivery/dev-progress-weekly-report`. This produces a markdown report linking each developer's git commits and PRs to the Jira stories and epics they relate to, plus an Epic Overview showing contributor activity per epic. Use this to cross-reference with gh-metrics data.
+
 **Fallback — manual `gh` CLI commands** (if the script is unavailable):
 
 ```bash

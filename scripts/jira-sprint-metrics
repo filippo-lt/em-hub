@@ -1,0 +1,419 @@
+#!/bin/bash
+# jira-sprint-metrics — Monthly delivery metrics per developer
+#
+# Usage:
+#   ./jira-sprint-metrics --month 2026-01 --users "Jane Smith,John Doe"
+#   ./jira-sprint-metrics --config sprint-metrics.conf
+#
+# Options:
+#   --config FILE             Load MONTH, USERS (and optional options) from file
+#   --month YYYY-MM           Month to report on (required unless in config)
+#   --users "Name1,Name2"     Comma-separated list of display names (required unless in config)
+#   --delivered-status NAMES  Status(es) that count as "delivered", comma-separated (default: "PO REVIEW/APPROVAL")
+#   --qa-from-status NAME     QA review status name (default: "QA Review")
+#   --qa-to-status NAMES      Bounce-back target status(es), comma-separated (default: "In Progress"). e.g. "NO QA, NO-QA PASS"
+#   --sp-field FIELD_ID       Custom field ID for story points (default: customfield_10004)
+#   --issue-types "T1,T2"     Issue types to include (default: "Story,Bug")
+#   --json                    Output raw JSON instead of formatted tables
+#
+# Credentials: JIRA_EMAIL, JIRA_API_TOKEN in ~/.config/jira/.env (or path in JIRA_ENV_FILE).
+# JIRA_BASE_URL must be set in .env (e.g. https://yourcompany.atlassian.net).
+
+set -euo pipefail
+
+# ─── Defaults ───────────────────────────────────────────────────────────────
+
+DELIVERED_STATUS="PO REVIEW/APPROVAL"
+QA_FROM_STATUS="QA Review"
+QA_TO_STATUS="In Progress"
+SP_FIELD="customfield_10004"
+ISSUE_TYPES="Story,Bug"
+OUTPUT_JSON=false
+MONTH=""
+USERS=""
+
+# ─── Load config file ───────────────────────────────────────────────────────
+
+load_config_file() {
+    local file="$1"
+    local key value
+    if [[ ! -f "$file" ]]; then
+        echo "Error: Config file not found: $file" >&2
+        exit 1
+    fi
+    while IFS= read -r line; do
+        [[ "$line" =~ ^#.*$ ]] && continue
+        [[ "$line" =~ ^[[:space:]]*$ ]] && continue
+        if [[ "$line" =~ ^([A-Za-z_][A-Za-z0-9_]*)=(.*)$ ]]; then
+            key="${BASH_REMATCH[1]}"
+            value="${BASH_REMATCH[2]}"
+            value="${value#"${value%%[![:space:]]*}"}"
+            value="${value%"${value##*[![:space:]]}"}"
+            value="${value#\"}"; value="${value%\"}"
+            value="${value#\'}"; value="${value%\'}"
+            case "$key" in
+                MONTH)            MONTH="$value" ;;
+                USERS)            USERS="$value" ;;
+                DELIVERED_STATUS) DELIVERED_STATUS="$value" ;;
+                QA_FROM_STATUS)   QA_FROM_STATUS="$value" ;;
+                QA_TO_STATUS)     QA_TO_STATUS="$value" ;;
+                SP_FIELD)         SP_FIELD="$value" ;;
+                ISSUE_TYPES)     ISSUE_TYPES="$value" ;;
+            esac
+        fi
+    done < "$file"
+}
+
+# ─── Parse args ─────────────────────────────────────────────────────────────
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --config)          load_config_file "$2"; shift 2 ;;
+        --month)           MONTH="$2";            shift 2 ;;
+        --users)           USERS="$2";            shift 2 ;;
+        --delivered-status) DELIVERED_STATUS="$2"; shift 2 ;;
+        --qa-from-status)  QA_FROM_STATUS="$2";   shift 2 ;;
+        --qa-to-status)    QA_TO_STATUS="$2";     shift 2 ;;
+        --sp-field)        SP_FIELD="$2";         shift 2 ;;
+        --issue-types)     ISSUE_TYPES="$2";      shift 2 ;;
+        --json)            OUTPUT_JSON=true;       shift   ;;
+        -h|--help)
+            sed -n '2,/^$/p' "$0" | sed 's/^# \?//'
+            exit 0 ;;
+        *) echo "Unknown option: $1" >&2; exit 1 ;;
+    esac
+done
+
+# If still missing month/users, try default config next to script
+if [[ -z "$MONTH" || -z "$USERS" ]]; then
+    DEFAULT_CONFIG="$(cd "$(dirname "$0")/.." && pwd)/config/sprint-metrics.conf"
+    if [[ -f "$DEFAULT_CONFIG" ]]; then
+        load_config_file "$DEFAULT_CONFIG"
+    fi
+fi
+
+if [[ -z "$MONTH" || -z "$USERS" ]]; then
+    echo "Error: --month and --users are required (or provide them in a config file)." >&2
+    echo "Run with --help for usage." >&2
+    exit 1
+fi
+
+# ─── Load Jira credentials ─────────────────────────────────────────────────
+
+ENV_FILE="${JIRA_ENV_FILE:-$HOME/.config/jira/.env}"
+
+if [[ ! -f "$ENV_FILE" ]]; then
+    echo "Error: $ENV_FILE not found." >&2
+    echo "Create it with JIRA_EMAIL and JIRA_API_TOKEN." >&2
+    exit 1
+fi
+
+source "$ENV_FILE"
+
+JIRA_BASE_URL="${JIRA_BASE_URL:-https://leadtech.atlassian.net}"
+JIRA_BASE_URL="${JIRA_BASE_URL%/}"
+
+if [[ -z "${JIRA_EMAIL:-}" || -z "${JIRA_API_TOKEN:-}" ]]; then
+    echo "Error: Missing JIRA_EMAIL or JIRA_API_TOKEN in .env." >&2
+    exit 1
+fi
+AUTH=$(echo -n "${JIRA_EMAIL}:${JIRA_API_TOKEN}" | base64)
+
+# ─── Compute date range ────────────────────────────────────────────────────
+
+DATE_FROM="${MONTH}-01"
+# Last day of month
+DATE_TO=$(date -j -v+1m -v-1d -f "%Y-%m-%d" "${DATE_FROM}" "+%Y-%m-%d" 2>/dev/null \
+    || date -d "${DATE_FROM} +1 month -1 day" "+%Y-%m-%d" 2>/dev/null)
+
+# ─── Run all queries via Python ─────────────────────────────────────────────
+
+python3 - "$AUTH" "$JIRA_BASE_URL" "$MONTH" "$DATE_FROM" "$DATE_TO" \
+    "$DELIVERED_STATUS" "$QA_FROM_STATUS" "$QA_TO_STATUS" \
+    "$SP_FIELD" "$ISSUE_TYPES" "$OUTPUT_JSON" "$USERS" << 'PYEOF'
+import json, subprocess, sys
+from datetime import datetime
+
+AUTH         = sys.argv[1]
+BASE_URL     = sys.argv[2]
+MONTH        = sys.argv[3]
+DATE_FROM    = sys.argv[4]
+DATE_TO      = sys.argv[5]
+DEL_STATUS   = sys.argv[6]
+QA_FROM      = sys.argv[7]
+QA_TO_RAW    = sys.argv[8]
+SP_FIELD     = sys.argv[9]
+ISSUE_TYPES  = sys.argv[10]
+OUTPUT_JSON  = sys.argv[11] == "true"
+USERS_RAW    = sys.argv[12]
+
+# QA bounce "to" statuses: comma-separated (e.g. "In Progress, NO QA, NO-QA PASS")
+QA_TO_LIST   = [s.strip() for s in QA_TO_RAW.split(",") if s.strip()]
+user_names = [u.strip() for u in USERS_RAW.split(",")]
+issue_types_jql = ", ".join(f'"{t.strip()}"' if " " in t.strip() else t.strip() for t in ISSUE_TYPES.split(","))
+
+
+def jira_search(jql, fields, max_results=100):
+    """Execute a JQL search and return the issues list."""
+    body = json.dumps({"jql": jql, "fields": fields, "maxResults": max_results})
+    result = subprocess.run([
+        "curl", "-s", "-X", "POST",
+        "-H", f"Authorization: Basic {AUTH}",
+        "-H", "Content-Type: application/json",
+        f"{BASE_URL}/rest/api/3/search/jql",
+        "-d", body
+    ], capture_output=True, text=True)
+    data = json.loads(result.stdout)
+    if "errorMessages" in data:
+        print(f"  JQL Error: {data['errorMessages']}", file=sys.stderr)
+        return []
+    return data.get("issues", [])
+
+
+def jira_get_account_id(display_name):
+    """Resolve a display name to a Jira account ID."""
+    from urllib.parse import quote
+    encoded_name = quote(display_name)
+    result = subprocess.run([
+        "curl", "-s",
+        "-H", f"Authorization: Basic {AUTH}",
+        "-H", "Content-Type: application/json",
+        f"{BASE_URL}/rest/api/3/user/search?query={encoded_name}"
+    ], capture_output=True, text=True)
+    if not result.stdout.strip():
+        return None
+    users = json.loads(result.stdout)
+    for u in users:
+        if u.get("displayName", "").lower() == display_name.lower():
+            return u["accountId"]
+    # Fallback: return first active match
+    for u in users:
+        if u.get("active"):
+            return u["accountId"]
+    return None
+
+
+def get_changelog_bounces(issue_key, date_from, date_to, from_status, to_statuses):
+    """Fetch changelog for an issue and count QA bounces (from_status -> any of to_statuses) in the date range.
+    to_statuses: list of status names (e.g. ['In Progress', 'NO QA', 'NO-QA PASS'])."""
+    result = subprocess.run([
+        "curl", "-s",
+        "-H", f"Authorization: Basic {AUTH}",
+        "-H", "Content-Type: application/json",
+        f"{BASE_URL}/rest/api/3/issue/{issue_key}?expand=changelog&fields=key"
+    ], capture_output=True, text=True)
+    data = json.loads(result.stdout)
+    histories = data.get("changelog", {}).get("histories", [])
+
+    dt_from = datetime.strptime(date_from, "%Y-%m-%d")
+    dt_to = datetime.strptime(date_to, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+
+    bounces = []
+    for history in histories:
+        created = history.get("created", "")
+        try:
+            dt = datetime.fromisoformat(created.replace("+0100", "+01:00").replace("+0000", "+00:00").replace("+0200", "+02:00"))
+            dt_naive = dt.replace(tzinfo=None)
+        except Exception:
+            continue
+
+        if dt_naive < dt_from or dt_naive > dt_to:
+            continue
+
+        for item in history.get("items", []):
+            if (item.get("field") == "status"
+                    and item.get("fromString") == from_status
+                    and item.get("toString") in to_statuses):
+                bounces.append({
+                    "date": created[:16],
+                    "by": history.get("author", {}).get("displayName", "Unknown")
+                })
+    return bounces
+
+
+# ─── Resolve user account IDs ──────────────────────────────────────────────
+
+print(f"Resolving users...", file=sys.stderr)
+user_map = {}  # display_name -> account_id
+unresolved = []
+for name in user_names:
+    aid = jira_get_account_id(name)
+    if not aid:
+        print(f"  Warning: Could not find account for '{name}'", file=sys.stderr)
+        unresolved.append(name)
+    else:
+        user_map[name] = aid
+
+if not user_map:
+    print("Error: No valid users found.", file=sys.stderr)
+    sys.exit(1)
+
+# ─── Collect metrics ───────────────────────────────────────────────────────
+
+all_results = {}
+
+for name, account_id in sorted(user_map.items(), key=lambda x: x[0].lower()):
+    print(f"Querying {name} ({account_id})...", file=sys.stderr)
+    metrics = {
+        "user": name,
+        "account_id": account_id,
+        "month": MONTH,
+        "delivered": {"stories": 0, "bugs": 0, "total_items": 0, "total_sp": 0, "stories_sp": 0, "bugs_sp": 0, "no_sp_count": 0, "items": []},
+        "qa_bounces": {"total_tickets": 0, "total_bounces": 0, "items": []}
+    }
+
+    # 1) Delivered items (status changed to any of the delivered statuses)
+    del_statuses = [s.strip() for s in DEL_STATUS.split(',')]
+    del_clauses = ' OR '.join(
+        f'status changed to "{s}" DURING ("{DATE_FROM}", "{DATE_TO}")'
+        for s in del_statuses
+    )
+    jql = (
+        f'assignee = "{account_id}" '
+        f'AND ({del_clauses}) '
+        f'AND status != "Denied" '
+        f'AND issuetype in ({issue_types_jql})'
+    )
+    issues = jira_search(jql, ["key", "summary", "status", "issuetype", SP_FIELD])
+
+    for issue in issues:
+        fields = issue.get("fields", {})
+        itype = fields.get("issuetype", {}).get("name", "")
+        sp = fields.get(SP_FIELD) or 0
+
+        entry = {
+            "key": issue["key"],
+            "type": itype,
+            "summary": fields.get("summary", ""),
+            "status": fields.get("status", {}).get("name", ""),
+            "story_points": sp if sp else None,
+        }
+        metrics["delivered"]["items"].append(entry)
+        metrics["delivered"]["total_items"] += 1
+        metrics["delivered"]["total_sp"] += sp
+
+        if sp == 0:
+            metrics["delivered"]["no_sp_count"] += 1
+
+        if itype == "Story":
+            metrics["delivered"]["stories"] += 1
+            metrics["delivered"]["stories_sp"] += sp
+        elif itype == "Bug":
+            metrics["delivered"]["bugs"] += 1
+            metrics["delivered"]["bugs_sp"] += sp
+
+    # 2) QA bouncebacks (status changed from QA to any of QA_TO_LIST: e.g. In Progress, NO QA, NO-QA PASS)
+    bounce_issues_by_key = {}
+    for qa_to in QA_TO_LIST:
+        jql = (
+            f'assignee = "{account_id}" '
+            f'AND status changed from "{QA_FROM}" to "{qa_to}" DURING ("{DATE_FROM}", "{DATE_TO}") '
+            f'AND issuetype in ({issue_types_jql})'
+        )
+        for issue in jira_search(jql, ["key", "summary", "issuetype"]):
+            bounce_issues_by_key[issue["key"]] = issue
+
+    for key, issue in bounce_issues_by_key.items():
+        bounces = get_changelog_bounces(key, DATE_FROM, DATE_TO, QA_FROM, QA_TO_LIST)
+        entry = {
+            "key": key,
+            "type": issue["fields"]["issuetype"]["name"],
+            "summary": issue["fields"]["summary"],
+            "bounce_count": len(bounces),
+            "bounces": bounces,
+        }
+        metrics["qa_bounces"]["items"].append(entry)
+        metrics["qa_bounces"]["total_tickets"] += 1
+        metrics["qa_bounces"]["total_bounces"] += len(bounces)
+
+    all_results[name] = metrics
+
+# ─── Output ─────────────────────────────────────────────────────────────────
+
+if OUTPUT_JSON:
+    print(json.dumps(all_results, indent=2))
+    sys.exit(0)
+
+# Formatted table output
+print(f"\n{'#' * 75}")
+print(f"  SPRINT METRICS — {MONTH}")
+del_display = ", ".join(f'"{s}"' for s in [s.strip() for s in DEL_STATUS.split(',')])
+print(f"  Delivered status: {del_display}")
+qa_to_display = ", ".join(f'"{s}"' for s in QA_TO_LIST)
+print(f"  QA bounce: \"{QA_FROM}\" → {qa_to_display}")
+print(f"{'#' * 75}")
+
+if unresolved:
+    print(f"\n  ⚠ UNRESOLVED ASSIGNEE(S) — not found in Jira (check spelling / display name):")
+    for n in unresolved:
+        print(f"     • {n}")
+    print(f"  Update the name in your config (--users or USERS=) to match Jira's display name exactly.")
+    print(f"{'─' * 75}")
+
+# ─── Resolved users (name → account ID) ──────────────────────────────────────
+
+print(f"\n  Resolved users (Jira account ID per person):")
+print(f"  {'─' * 73}")
+print(f"  {'Person':25s} | {'Account ID'}")
+print(f"  {'─' * 73}")
+for name, m in sorted(all_results.items(), key=lambda x: x[0].lower()):
+    print(f"  {name:25s} | {m['account_id']}")
+print(f"{'─' * 73}")
+
+# ─── Per-developer detail (ticket titles, etc.) ───────────────────────────────
+
+for name, m in sorted(all_results.items(), key=lambda x: x[0].lower()):
+    d = m["delivered"]
+    q = m["qa_bounces"]
+
+    print(f"\n{'='*75}")
+    print(f"  {name}")
+    print(f"{'='*75}")
+    print(f"  Delivered:  {d['total_items']} items  |  {d['total_sp']:.0f} SP  (Stories: {d['stories']}/{d['stories_sp']:.0f} SP, Bugs: {d['bugs']}/{d['bugs_sp']:.0f} SP)")
+    if d["no_sp_count"]:
+        print(f"  ⚠  {d['no_sp_count']} item(s) have no story points assigned")
+
+    if d["items"]:
+        print(f"\n  {'Key':12s} | {'Type':8s} | {'SP':>5s} | Summary")
+        print(f"  {'-'*70}")
+        for item in d["items"]:
+            sp_str = str(item["story_points"]) if item["story_points"] else "-"
+            url = f"{BASE_URL}/browse/{item['key']}"
+            print(f"  {item['key']:12s} | {item['type']:8s} | {sp_str:>5s} | {item['summary'][:45]}")
+            print(f"  {url}")
+
+    print(f"\n  QA Bouncebacks: {q['total_tickets']} ticket(s), {q['total_bounces']} bounce(s)")
+    if q["items"]:
+        for item in q["items"]:
+            print(f"    {item['key']} ({item['type']}) — {item['bounce_count']} bounce(s): {item['summary'][:45]}")
+            for b in item["bounces"]:
+                print(f"      → {b['date']}  (by {b['by']})")
+
+# ─── Performance table (Person | Story Points | Tasks | NOQA) — at end ────────
+
+print(f"\n{'─' * 75}")
+print(f"  {'Person':25s} | {'Story Points':>12s} | {'Tasks':>6s} | {'NOQA':>6s}")
+print(f"  {'─' * 55}")
+
+team_sp = 0; team_tasks = 0; team_noqa = 0
+
+for name, m in sorted(all_results.items(), key=lambda x: x[0].lower()):
+    d = m["delivered"]
+    q = m["qa_bounces"]
+    sp = d["total_sp"]
+    tasks = d["total_items"]
+    noqa = q["total_bounces"]
+    print(f"  {name:25s} | {sp:>12.0f} | {tasks:>6d} | {noqa:>6d}")
+    team_sp += sp
+    team_tasks += tasks
+    team_noqa += noqa
+
+print(f"  {'─' * 55}")
+print(f"  {'TEAM TOTAL':25s} | {team_sp:>12.0f} | {team_tasks:>6d} | {team_noqa:>6d}")
+print(f"{'─' * 75}")
+if team_tasks == 0 and not unresolved:
+    print(f"  Tip: If you expected results, set DELIVERED_STATUS in config to your Jira 'done' status (e.g. Closed).")
+    print(f"  Run ./delivery/jira-sprint-metrics-debug to list your Jira status names.")
+
+print()
+PYEOF

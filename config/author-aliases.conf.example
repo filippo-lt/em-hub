@@ -1,0 +1,12 @@
+# Author aliases — copy to author-aliases.conf and edit.
+# Merge duplicate git author names and GitHub usernames into one canonical name.
+#
+# Format (tab-separated):
+#   Canonical Name	alias1	alias2
+#
+# First column = name used in reports. Other columns = git author names or
+# GitHub usernames that should be merged (case-insensitive).
+# Add new aliases when you spot duplicates in report output.
+
+Jane Smith	jsmith-gh	jane.smith@company.com
+John Doe	johndoe-work	JohnDoe

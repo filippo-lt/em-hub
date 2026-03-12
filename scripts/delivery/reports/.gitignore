@@ -1,0 +1,4 @@
+# Generated reports — not tracked
+*.md
+*.json
+!.gitkeep

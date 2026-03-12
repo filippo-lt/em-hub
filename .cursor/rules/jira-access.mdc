@@ -1,0 +1,25 @@
+---
+description: Jira API access is available in this workspace
+alwaysApply: true
+---
+
+# Jira API Access
+
+This workspace has Jira REST API access. Credentials are stored in ~/.config/jira/.env (JIRA_EMAIL, JIRA_API_TOKEN, JIRA_BASE_URL).
+
+When the user asks about Jira issues, epics, boards, or sprints, query the API directly. Do not say you lack access.
+
+## How to call the API
+
+```bash
+source ~/.config/jira/.env
+curl -s -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  "$JIRA_BASE_URL/rest/api/3/..."
+```
+
+For JQL searches, POST to /rest/api/3/search/jql with a JSON body containing "jql", "fields", and "maxResults".
+
+## Project context
+
+The workspace tracks multiple Jira projects defined in config/projects.conf. Each project maps to one or more Jira board keys. When the user references an issue key, use the API to look it up directly.

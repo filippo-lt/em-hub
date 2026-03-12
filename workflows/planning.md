@@ -33,6 +33,11 @@ Read:
 - `context/my-goals.md` — personal goals
 - Recent transcripts with manager — any direction given
 
+**Delivery data (automated):**
+Run `scripts/delivery/roadmap-status | scripts/delivery/roadmap-report` to get current epic status across all projects. The report surfaces delayed epics, at-risk items, recent deliveries, and warnings (empty epics, missing dates, etc.). Load the generated report as objective context for the planning discussion.
+
+Optionally run `scripts/delivery/dev-progress-weekly-report` to see who is working on what and identify workload imbalances.
+
 ### Phase 2 — Review & Reflect
 Ask the user:
 1. What worked last cycle? What didn't?

@@ -20,7 +20,9 @@ em-hub/
 ├── people/          ← per-person context (profiles, transcripts, talking points)
 ├── teams/           ← team-level context (rosters, OKRs, context docs)
 ├── contractors/     ← external dev registry, project mappings, and performance reports
-├── scripts/         ← automation scripts (gh-metrics collection, etc.)
+├── scripts/         ← automation scripts (gh-metrics, sprint metrics, delivery tools)
+│   └── delivery/    ← roadmap-status, roadmap-report, dev-progress-weekly-report
+├── config/          ← shared config for delivery tools (projects, repos, aliases)
 └── context/         ← global context (org chart, company priorities, personal goals)
 ```
 
@@ -41,6 +43,18 @@ Read what the user is asking and match to the right **workflow** first. If no wo
 | "We had an incident" / "Help me write a postmortem" / "Draft incident comms" | Incident response | `workflows/incident-response.md` |
 | "Help me plan the quarter" / "Roadmap review" / "Sprint planning prep" | Planning | `workflows/planning.md` |
 | "Run a contractor review" / "External dev metrics" / "How are the contractors performing?" | Contractor review | `workflows/contractor-review.md` |
+
+### Delivery Tools (Direct)
+
+These are not workflows or agents — they are CLI scripts that produce reports. Run them directly when the user asks for delivery data.
+
+| User says something like… | Tool | Command |
+|---------------------------|------|---------|
+| "Show me the roadmap" / "What epics are delayed?" / "Roadmap status" | Roadmap status | `scripts/delivery/roadmap-report` (auto-runs roadmap-status) |
+| "What did the team ship this week?" / "Developer progress" / "Weekly dev report" | Dev progress | `scripts/delivery/dev-progress-weekly-report` |
+| "Sprint metrics for [month]" / "How many story points?" / "QA bouncebacks" | Sprint metrics | `scripts/jira-sprint-metrics` |
+
+These tools read shared config from `config/` (projects, repos, aliases). Reports are saved to `scripts/delivery/reports/`.
 
 ### Standalone Agent Routing
 

@@ -1,0 +1,16 @@
+# Sprint metrics input — copy to sprint-metrics.conf and edit.
+#
+# Required:
+MONTH=2026-01
+USERS=Jane Smith, John Doe, Alice Chen
+#
+# Optional — status that counts as "delivered" (script default: PO REVIEW/APPROVAL).
+# Use Waiting for Deployment to count story points at that stage.
+# Run jira-sprint-metrics-debug to list your Jira statuses:
+DELIVERED_STATUS=Waiting for Deployment
+#
+# Optional — QA bounce = from QA back to dev; comma-separated "to" statuses:
+QA_TO_STATUS=In Progress, NO QA, NO-QA PASS
+# QA_FROM_STATUS=QA Review
+# SP_FIELD=customfield_10004
+# ISSUE_TYPES=Story,Bug

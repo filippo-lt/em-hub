@@ -1,0 +1,98 @@
+#!/bin/bash
+# Debug helper: list Jira statuses and issue types so you can match
+# sprint-metrics config (DELIVERED_STATUS, QA_FROM_STATUS, QA_TO_STATUS, ISSUE_TYPES).
+# Usage: ./delivery/jira-sprint-metrics-debug
+
+set -euo pipefail
+
+ENV_FILE="${JIRA_ENV_FILE:-$HOME/.config/jira/.env}"
+[[ -f "$ENV_FILE" ]] || { echo "Error: $ENV_FILE not found." >&2; exit 1; }
+source "$ENV_FILE"
+JIRA_BASE_URL="${JIRA_BASE_URL:-https://leadtech.atlassian.net}"
+JIRA_BASE_URL="${JIRA_BASE_URL%/}"
+[[ -n "${JIRA_EMAIL:-}" && -n "${JIRA_API_TOKEN:-}" ]] || { echo "Error: JIRA_EMAIL and JIRA_API_TOKEN required in .env" >&2; exit 1; }
+AUTH=$(echo -n "${JIRA_EMAIL}:${JIRA_API_TOKEN}" | base64)
+
+echo "=== Jira base: $JIRA_BASE_URL ==="
+echo ""
+
+echo "--- All statuses (use these for DELIVERED_STATUS, QA_FROM_STATUS, QA_TO_STATUS) ---"
+curl -s -H "Authorization: Basic $AUTH" -H "Accept: application/json" \
+  "$JIRA_BASE_URL/rest/api/3/status" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+for s in data:
+    print('  ', s.get('name',''))
+print()
+"
+
+echo "--- Issue types (use these for ISSUE_TYPES, e.g. Story,Bug) ---"
+curl -s -H "Authorization: Basic $AUTH" -H "Accept: application/json" \
+  "$JIRA_BASE_URL/rest/api/3/issuetype" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+for t in data:
+    print('  ', t.get('name',''))
+print()
+"
+
+echo "--- JQL probe (first user, Jan 2026) ---"
+# Get first user and resolve account ID using same logic as main script
+FIRST_USER="Jayden Huang"
+CONFIG_DIR="$(cd "$(dirname "$0")/.." && pwd)/config"
+if [[ -f "$CONFIG_DIR/sprint-metrics.conf.example" ]]; then
+  USERS_LINE=$(grep -E '^USERS=' "$CONFIG_DIR/sprint-metrics.conf.example" | head -1)
+  [[ -n "$USERS_LINE" ]] && FIRST_USER=$(echo "$USERS_LINE" | sed 's/^USERS=//' | cut -d',' -f1 | sed 's/^ *//')
+fi
+ENC=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$FIRST_USER'))")
+RESP=$(curl -s -H "Authorization: Basic $AUTH" -H "Accept: application/json" \
+  "$JIRA_BASE_URL/rest/api/3/user/search?query=$ENC")
+AID=$(echo "$RESP" | python3 -c "
+import json,sys
+data = json.load(sys.stdin)
+for u in data:
+    if u.get('displayName','').lower() == '$FIRST_USER'.lower():
+        print(u.get('accountId','')); break
+else:
+    if data and data[0].get('active'): print(data[0].get('accountId',''))
+")
+[[ -z "$AID" ]] && { echo "  Could not resolve user: $FIRST_USER"; exit 0; }
+echo "  First user: $FIRST_USER (accountId: ${AID:0:20}...)"
+DATE_FROM="2026-01-01"
+DATE_TO="2026-01-31"
+# 1) Loose query: any issue assigned, updated in Jan 2026
+JQL_LOOSE="assignee = \"$AID\" AND updated >= \"$DATE_FROM\" AND updated <= \"$DATE_TO\""
+echo "  (1) Loose JQL (any issue updated in $DATE_FROM to $DATE_TO):"
+echo "      $JQL_LOOSE"
+BODY=$(python3 -c "import json; print(json.dumps({'jql':'$JQL_LOOSE','maxResults':5,'fields':['key','status','summary']}))")
+TOTAL_LOOSE=$(curl -s -X POST -H "Authorization: Basic $AUTH" -H "Content-Type: application/json" \
+  "$JIRA_BASE_URL/rest/api/3/search/jql" -d "$BODY" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+print(d.get('total', '?'))
+for i in d.get('issues', [])[:3]:
+    s=i.get('fields',{}).get('status',{}).get('name','')
+    print('      →', i.get('key'), s, '-', (i.get('fields',{}).get('summary') or '')[:40])
+" 2>/dev/null)
+echo "      Total: $TOTAL_LOOSE"
+# 2) Exact delivered JQL from main script
+JQL_DEL="assignee = \"$AID\" AND status changed to \"PO REVIEW/APPROVAL\" DURING (\"$DATE_FROM\", \"$DATE_TO\") AND issuetype in (Story, Bug)"
+echo "  (2) Delivered JQL (status changed to PO REVIEW/APPROVAL in period):"
+echo "      $JQL_DEL"
+BODY2=$(printf '%s' "$JQL_DEL" | python3 -c "
+import json, sys
+jql = sys.stdin.read().strip()
+print(json.dumps({'jql': jql, 'maxResults': 10, 'fields': ['key', 'summary', 'status']}))
+")
+TOTAL_DEL=$(curl -s -X POST -H "Authorization: Basic $AUTH" -H "Content-Type: application/json" \
+  "$JIRA_BASE_URL/rest/api/3/search/jql" -d "$BODY2" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+err=d.get('errorMessages',[])
+if err: print('Error:', err)
+else: print('Total:', d.get('total', 0))
+" 2>/dev/null)
+echo "      $TOTAL_DEL"
+echo ""
+echo "If (1) shows 0: no activity for that user in that month (or try another month)."
+echo "If (1) shows issues but (2) shows 0: status name or workflow may differ; set DELIVERED_STATUS in config (e.g. Closed)."

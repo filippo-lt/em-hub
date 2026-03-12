@@ -32,6 +32,9 @@ Load context per **Context Loading Protocol** in CLAUDE.md. Key files for status
 - `people/[manager]/profile.md` — what your manager cares about, how they like updates
 - `context/memory/planning/` — narrative patterns from previous updates
 
+**Delivery data (automated):**
+Run `scripts/delivery/dev-progress-weekly-report` for the current period to see what the team shipped (commits, PRs, Jira ticket linkage per developer). Run `scripts/delivery/roadmap-report` for epic-level status (delayed, at-risk, recently delivered). Use both as concrete input for the Writing Agent so status updates reference actual delivery data rather than memory alone.
+
 ### Phase 2 — Ask the User
 
 One question at a time:

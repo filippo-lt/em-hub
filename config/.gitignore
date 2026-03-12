@@ -1,0 +1,4 @@
+# Actual configs contain project-specific data — only .example files are tracked
+*.conf
+!warnings.conf
+!*.conf.example

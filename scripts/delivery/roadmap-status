@@ -1,0 +1,465 @@
+#!/usr/bin/env python3
+# roadmap-status — Query Jira for roadmap epic status
+#
+# Fetches epics across all configured projects, classifies them (delayed, due soon,
+# delivered, upcoming), computes warnings, and outputs structured JSON to stdout.
+# Pipe to roadmap-report to generate a markdown report.
+#
+# Usage:
+#   ./roadmap-status                          # JSON to stdout
+#   ./roadmap-status | ./roadmap-report       # pipe to markdown report
+#   ./roadmap-status > data.json              # save raw data
+#   ./roadmap-status | jq '.warnings'         # inspect with jq
+#
+# Options:
+#   --projects FILE  Projects config (default: config/projects.conf)
+#   --config FILE    Roadmap settings config (default: config/roadmap.conf)
+#   --help
+#
+# Credentials: JIRA_EMAIL, JIRA_API_TOKEN in ~/.config/jira/.env
+# JIRA_BASE_URL defaults to https://leadtech.atlassian.net
+
+import argparse
+import base64
+import configparser
+import json
+import os
+import sys
+import urllib.request
+import urllib.error
+from datetime import date, datetime, timedelta
+from collections import defaultdict
+
+# ─── Paths ────────────────────────────────────────────────────────────────────
+
+SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT   = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+CONFIG_DIR  = os.path.join(REPO_ROOT, "config")
+
+# ─── Argument parsing ─────────────────────────────────────────────────────────
+
+parser = argparse.ArgumentParser(
+    description="Query Jira for roadmap epic status (outputs JSON)",
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    epilog=(
+        "Examples:\n"
+        "  ./roadmap-status                      # JSON to stdout\n"
+        "  ./roadmap-status | ./roadmap-report    # generate markdown report\n"
+        "  ./roadmap-status | jq '.warnings'      # inspect warnings"
+    ),
+)
+parser.add_argument("--projects", default=None, help="Projects config file")
+parser.add_argument("--config",   default=None, help="Roadmap settings config file")
+parser.add_argument("--warnings", default=None, help="Warning definitions config file")
+args = parser.parse_args()
+
+# ─── Config loaders ───────────────────────────────────────────────────────────
+
+def load_projects_conf(path):
+    if not path or not os.path.isfile(path):
+        return {}
+    cp = configparser.ConfigParser(allow_no_value=True)
+    cp.read(path)
+    groups = {}
+    for section in cp.sections():
+        jira_raw  = cp.get(section, "jira",  fallback="")
+        repos_raw = cp.get(section, "repos", fallback="")
+        groups[section] = {
+            "jira":  [k.strip() for k in jira_raw.split(",")  if k.strip()],
+            "repos": [r.strip() for r in repos_raw.split(",") if r.strip()],
+        }
+    return groups
+
+def load_simple_conf(path):
+    settings = {}
+    if not path or not os.path.isfile(path):
+        return settings
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, _, v = line.partition("=")
+            settings[k.strip()] = v.strip()
+    return settings
+
+# ─── Load configs ─────────────────────────────────────────────────────────────
+
+projects_path = args.projects or os.path.join(CONFIG_DIR, "projects.conf")
+conf_path     = args.config or os.path.join(CONFIG_DIR, "roadmap.conf")
+warnings_path = args.warnings or os.path.join(CONFIG_DIR, "warnings.conf")
+
+project_groups = load_projects_conf(projects_path)
+settings       = load_simple_conf(conf_path)
+
+if not project_groups:
+    print(f"Error: No project groups found. Check {projects_path}", file=sys.stderr)
+    sys.exit(1)
+
+def load_warnings_conf(path):
+    defs = {}
+    if not path or not os.path.isfile(path):
+        return defs
+    cp = configparser.RawConfigParser()
+    cp.read(path)
+    for section in cp.sections():
+        defs[section] = {
+            "title":       cp.get(section, "title", fallback=section),
+            "description": cp.get(section, "description", fallback=""),
+        }
+    return defs
+
+warning_defs = load_warnings_conf(warnings_path)
+
+TARGET_DATE_FIELD  = settings.get("TARGET_DATE_FIELD", "customfield_10015")
+DUE_DATE_FIELD     = settings.get("DUE_DATE_FIELD", "duedate")
+CLOSED_STATUSES    = [s.strip() for s in settings.get("CLOSED_STATUSES", "Done,Closed").split(",")]
+DENIED_STATUSES    = [s.strip() for s in settings.get("DENIED_STATUSES", "Denied").split(",")]
+MAX_EPIC_AGE_DAYS  = int(settings.get("MAX_EPIC_AGE_DAYS", "365"))
+DELIVERED_WINDOW   = int(settings.get("DELIVERED_WINDOW_DAYS", "30"))
+SP_FIELD           = settings.get("SP_FIELD", "customfield_10004")
+
+jira_to_project = {}
+for project_name, group in project_groups.items():
+    for proj in group["jira"]:
+        jira_to_project[proj.upper()] = project_name
+
+all_projects = list(jira_to_project.keys())
+
+if not all_projects:
+    print("Error: No Jira project keys found in projects config.", file=sys.stderr)
+    sys.exit(1)
+
+# ─── Jira credentials ─────────────────────────────────────────────────────────
+
+jira_env    = os.environ.get("JIRA_ENV_FILE", os.path.expanduser("~/.config/jira/.env"))
+jira_config = load_simple_conf(jira_env)
+
+if not os.path.isfile(jira_env):
+    print(f"Error: {jira_env} not found.", file=sys.stderr)
+    print("Create it with JIRA_EMAIL and JIRA_API_TOKEN.", file=sys.stderr)
+    sys.exit(1)
+
+JIRA_EMAIL     = jira_config.get("JIRA_EMAIL", "")
+JIRA_API_TOKEN = jira_config.get("JIRA_API_TOKEN", "")
+BASE_URL       = jira_config.get("JIRA_BASE_URL", "https://leadtech.atlassian.net").rstrip("/")
+
+if not JIRA_EMAIL or not JIRA_API_TOKEN:
+    print("Error: Missing JIRA_EMAIL or JIRA_API_TOKEN in .env", file=sys.stderr)
+    sys.exit(1)
+
+AUTH_HEADER = "Basic " + base64.b64encode(f"{JIRA_EMAIL}:{JIRA_API_TOKEN}".encode()).decode()
+
+# ─── Jira API helpers ─────────────────────────────────────────────────────────
+
+def jira_search(jql, fields, max_results=100):
+    issues    = []
+    start_at  = 0
+    page_size = min(max_results, 100)
+
+    while True:
+        body = json.dumps({
+            "jql":        jql,
+            "fields":     fields,
+            "maxResults": page_size,
+        }).encode()
+
+        url = f"{BASE_URL}/rest/api/3/search/jql?startAt={start_at}"
+        req = urllib.request.Request(
+            url, data=body,
+            headers={"Authorization": AUTH_HEADER, "Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req) as resp:
+                data = json.loads(resp.read())
+        except urllib.error.HTTPError as e:
+            print(f"  Jira API error {e.code}: {e.read().decode()}", file=sys.stderr)
+            break
+
+        batch = data.get("issues", [])
+        issues.extend(batch)
+
+        total = data.get("total", 0)
+        start_at += len(batch)
+        if start_at >= total or not batch:
+            break
+
+    return issues
+
+def jira_search_single(jql, fields, max_results=500):
+    """Single-page search for JQL operators like 'parent in' where total is unreliable."""
+    body = json.dumps({"jql": jql, "fields": fields, "maxResults": max_results}).encode()
+    url = f"{BASE_URL}/rest/api/3/search/jql?startAt=0"
+    req = urllib.request.Request(
+        url, data=body,
+        headers={"Authorization": AUTH_HEADER, "Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req) as resp:
+            data = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        print(f"  Jira API error {e.code}: {e.read().decode()}", file=sys.stderr)
+        return []
+    return data.get("issues", [])
+
+# ─── Date helpers ─────────────────────────────────────────────────────────────
+
+today          = date.today()
+in_14_days     = today + timedelta(days=14)
+delivered_ago  = today - timedelta(days=DELIVERED_WINDOW)
+max_age_cutoff = today - timedelta(days=MAX_EPIC_AGE_DAYS)
+
+def parse_date(s):
+    if not s:
+        return None
+    try:
+        return datetime.strptime(s[:10], "%Y-%m-%d").date()
+    except ValueError:
+        return None
+
+def get_epic_date(fields):
+    if TARGET_DATE_FIELD != DUE_DATE_FIELD:
+        target = parse_date(fields.get(TARGET_DATE_FIELD))
+        if target:
+            return target, "Target"
+    due = parse_date(fields.get(DUE_DATE_FIELD))
+    if due:
+        return due, "Due"
+    return None, None
+
+# ─── Epic data extraction ─────────────────────────────────────────────────────
+
+def epic_dict(issue):
+    fields        = issue.get("fields", {})
+    proj_key      = issue.get("key", "").split("-")[0].upper()
+    project_name  = jira_to_project.get(proj_key, proj_key)
+    d, label = get_epic_date(fields)
+    return {
+        "key":        issue["key"],
+        "project":    project_name,
+        "summary":    fields.get("summary", ""),
+        "status":     fields.get("status", {}).get("name", ""),
+        "date":       d.isoformat() if d else None,
+        "date_label": label,
+        "url":        f"{BASE_URL}/browse/{issue['key']}",
+    }
+
+# ─── Build JQL scope ──────────────────────────────────────────────────────────
+
+proj_list   = ", ".join(all_projects)
+closed_jql  = ", ".join(f'"{s}"' for s in CLOSED_STATUSES)
+denied_jql  = ", ".join(f'"{s}"' for s in DENIED_STATUSES)
+delivered_jql = ", ".join(f'"{s}"' for s in [s for s in CLOSED_STATUSES if s not in DENIED_STATUSES])
+base_scope  = f'issuetype = Epic AND project in ({proj_list}) AND created >= "{max_age_cutoff}"'
+
+FIELDS = ["summary", "status", "project", TARGET_DATE_FIELD, DUE_DATE_FIELD, "resolutiondate", "created"]
+
+NOT_STARTED_STATUSES = {"Created", "Open", "To Do", "Approved"}
+IN_PROGRESS_STATUSES = {"In Progress", "In Review", "In Development", "Ready for Testing",
+                        "QA Review", "Waiting for Approval", "Waiting for Deployment", "Pending"}
+
+# ─── Fetch epics ──────────────────────────────────────────────────────────────
+
+print("Fetching epics from Jira...", file=sys.stderr)
+
+print("  Querying delayed epics...", file=sys.stderr)
+delayed_issues = jira_search(
+    f'{base_scope} AND status not in ({closed_jql})'
+    f' AND ({TARGET_DATE_FIELD} < "{today}" OR {DUE_DATE_FIELD} < "{today}")'
+    f' ORDER BY {TARGET_DATE_FIELD} ASC, {DUE_DATE_FIELD} ASC',
+    FIELDS,
+)
+
+print("  Querying due-soon epics...", file=sys.stderr)
+due_soon_issues = jira_search(
+    f'{base_scope} AND status not in ({closed_jql})'
+    f' AND ('
+    f'  ({TARGET_DATE_FIELD} >= "{today}" AND {TARGET_DATE_FIELD} <= "{in_14_days}")'
+    f'  OR ({DUE_DATE_FIELD} >= "{today}" AND {DUE_DATE_FIELD} <= "{in_14_days}")'
+    f') ORDER BY {TARGET_DATE_FIELD} ASC, {DUE_DATE_FIELD} ASC',
+    FIELDS,
+)
+
+print("  Querying recently delivered epics...", file=sys.stderr)
+delivered_issues = jira_search(
+    f'{base_scope} AND status in ({delivered_jql})'
+    f' AND status changed to ({delivered_jql}) AFTER "{delivered_ago}"'
+    f' ORDER BY updated DESC',
+    FIELDS,
+)
+
+print("  Querying in-progress epics...", file=sys.stderr)
+in_progress_statuses_jql = ", ".join(f'"{s}"' for s in IN_PROGRESS_STATUSES)
+in_progress_issues = jira_search(
+    f'{base_scope} AND status in ({in_progress_statuses_jql})'
+    f' AND ('
+    f'  {TARGET_DATE_FIELD} >= "{today}"'
+    f'  OR {DUE_DATE_FIELD} >= "{today}"'
+    f') ORDER BY {TARGET_DATE_FIELD} ASC, {DUE_DATE_FIELD} ASC',
+    FIELDS,
+)
+delayed_keys = {i["key"] for i in delayed_issues}
+due_soon_keys = {i["key"] for i in due_soon_issues}
+in_progress_issues = [i for i in in_progress_issues if i["key"] not in delayed_keys and i["key"] not in due_soon_keys]
+
+print("  Querying upcoming epics...", file=sys.stderr)
+upcoming_issues = jira_search(
+    f'{base_scope} AND status not in ({closed_jql})'
+    f' AND ('
+    f'  {TARGET_DATE_FIELD} > "{in_14_days}"'
+    f'  OR {DUE_DATE_FIELD} > "{in_14_days}"'
+    f') ORDER BY {TARGET_DATE_FIELD} ASC, {DUE_DATE_FIELD} ASC',
+    FIELDS,
+)
+in_progress_keys = {i["key"] for i in in_progress_issues}
+upcoming_issues = [i for i in upcoming_issues if i["key"] not in in_progress_keys]
+
+print(f"  Done: {len(delayed_issues)} delayed, {len(due_soon_issues)} due soon, "
+      f"{len(in_progress_issues)} in progress, {len(delivered_issues)} delivered, "
+      f"{len(upcoming_issues)} upcoming", file=sys.stderr)
+
+# ─── Fetch children for warnings ──────────────────────────────────────────────
+
+all_open_epics = {}
+for issue in delayed_issues + due_soon_issues + in_progress_issues + upcoming_issues:
+    all_open_epics[issue["key"]] = issue
+
+print("  Querying open epics with no date...", file=sys.stderr)
+no_date_issues = jira_search(
+    f'{base_scope} AND status not in ({closed_jql})'
+    f' AND {DUE_DATE_FIELD} is EMPTY AND {TARGET_DATE_FIELD} is EMPTY'
+    f' ORDER BY updated DESC',
+    FIELDS,
+)
+for issue in no_date_issues:
+    all_open_epics[issue["key"]] = issue
+
+epic_children = defaultdict(list)
+
+if all_open_epics:
+    epic_keys = list(all_open_epics.keys())
+    print(f"  Fetching children for {len(epic_keys)} open epic(s)...", file=sys.stderr)
+    BATCH_SIZE = 30
+    for i in range(0, len(epic_keys), BATCH_SIZE):
+        batch = epic_keys[i:i + BATCH_SIZE]
+        keys_jql = ", ".join(batch)
+        child_fields = ["summary", "status", "issuetype", "parent", "customfield_10008", SP_FIELD]
+        children = jira_search(
+            f'parentEpic in ({keys_jql})',
+            child_fields,
+        )
+        pe_keys = {c["key"] for c in children}
+        PARENT_BATCH = 10
+        for pi in range(0, len(batch), PARENT_BATCH):
+            pbatch = batch[pi:pi + PARENT_BATCH]
+            pk_jql = ", ".join(pbatch)
+            pc = jira_search_single(
+                f'parent in ({pk_jql}) AND issuetype != Epic',
+                child_fields,
+            )
+            children.extend(c for c in pc if c["key"] not in pe_keys)
+            pe_keys.update(c["key"] for c in pc)
+        seen_children = set()
+        for child in children:
+            if child["key"] in seen_children:
+                continue
+            seen_children.add(child["key"])
+            cf = child.get("fields", {})
+            status_name = cf.get("status", {}).get("name", "")
+            child_info = {
+                "key":    child["key"],
+                "status": status_name,
+                "type":   cf.get("issuetype", {}).get("name", ""),
+                "sp":     cf.get(SP_FIELD) or 0,
+            }
+            parent_key = (cf.get("parent") or {}).get("key")
+            epic_link_val = cf.get("customfield_10008")
+            if parent_key and parent_key in all_open_epics:
+                epic_children[parent_key].append(child_info)
+            elif epic_link_val and epic_link_val in all_open_epics:
+                epic_children[epic_link_val].append(child_info)
+            elif parent_key:
+                epic_children[parent_key].append(child_info)
+
+# ─── Compute warnings ────────────────────────────────────────────────────────
+
+closed_set = set(CLOSED_STATUSES)
+
+warnings = {
+    "not_started":     [],
+    "ready_close":     [],
+    "no_date":         [],
+    "empty":           [],
+    "at_risk":         [],
+    "due_not_started": [],
+}
+
+for key, issue in all_open_epics.items():
+    e = epic_dict(issue)
+    children = epic_children.get(key, [])
+    child_statuses = [c["status"] for c in children]
+    n_children = len(children)
+    n_done = sum(1 for s in child_statuses if s in closed_set)
+    d = parse_date(e["date"])
+
+    if e["status"] in NOT_STARTED_STATUSES:
+        in_prog = [c for c in children if c["status"] in IN_PROGRESS_STATUSES]
+        if in_prog:
+            warnings["not_started"].append({**e, "children_in_progress": len(in_prog)})
+
+    if e["status"] not in NOT_STARTED_STATUSES and e["status"] not in closed_set:
+        if n_children > 0 and n_done == n_children:
+            warnings["ready_close"].append({**e, "children_done": n_done})
+
+    if not d:
+        warnings["no_date"].append(e)
+
+    if e["status"] not in NOT_STARTED_STATUSES and e["status"] not in closed_set:
+        if n_children == 0:
+            warnings["empty"].append(e)
+
+    if d and d <= in_14_days and d >= today:
+        sp_total = sum(c["sp"] for c in children if c["sp"] > 0)
+        sp_done  = sum(c["sp"] for c in children if c["sp"] > 0 and c["status"] in closed_set)
+        if sp_total > 0 and (sp_done / sp_total) < 0.5:
+            pct = int(100 * sp_done / sp_total)
+            fmt_done  = int(sp_done) if sp_done == int(sp_done) else sp_done
+            fmt_total = int(sp_total) if sp_total == int(sp_total) else sp_total
+            warnings["at_risk"].append({**e, "done_sp": fmt_done, "total_sp": fmt_total, "pct": pct})
+
+    if e["status"] in NOT_STARTED_STATUSES and d and d <= in_14_days:
+        days_left = (d - today).days
+        warnings["due_not_started"].append({
+            **e, "days_left": days_left,
+            "children_total": n_children, "children_done": n_done,
+        })
+
+total_warnings = sum(len(v) for v in warnings.values())
+print(f"  Warnings: {total_warnings} total", file=sys.stderr)
+
+# ─── Output JSON ──────────────────────────────────────────────────────────────
+
+output = {
+    "generated":            datetime.now().isoformat(timespec="minutes"),
+    "jira_url":             BASE_URL,
+    "projects":             sorted(project_groups.keys()),
+    "delivered_window_days": DELIVERED_WINDOW,
+    "delayed":              [epic_dict(i) for i in delayed_issues],
+    "due_soon":             [epic_dict(i) for i in due_soon_issues],
+    "in_progress":          [epic_dict(i) for i in in_progress_issues],
+    "delivered":            [epic_dict(i) for i in delivered_issues],
+    "upcoming":             [epic_dict(i) for i in upcoming_issues],
+    "warning_defs":         warning_defs,
+    "warnings":             warnings,
+}
+
+json.dump(output, sys.stdout, indent=2)
+sys.stdout.write("\n")
+
+total = (len(output["delayed"]) + len(output["due_soon"]) + len(output["in_progress"])
+         + len(output["delivered"]) + len(output["upcoming"]))
+print(f"\nDone. {total} epics — {len(output['delayed'])} delayed, {len(output['due_soon'])} due soon, "
+      f"{len(output['in_progress'])} in progress, {len(output['delivered'])} delivered, "
+      f"{len(output['upcoming'])} upcoming, {total_warnings} warning(s).", file=sys.stderr)

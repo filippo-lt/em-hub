@@ -1,0 +1,21 @@
+# Project groups — copy to projects.conf and edit.
+# Single source of truth for project names, Jira board keys, and git repos.
+# Used by roadmap-status, dev-progress-weekly-report, and other tools.
+#
+# Each [section] is a project. Fields:
+#   jira  = comma-separated Jira project keys (active first, then legacy)
+#   repos = comma-separated repo directory names (matching repos.conf col 2)
+#
+# Projects with no jira field still appear in git-based reports.
+# Projects with no repos field still appear in Jira-based reports.
+
+[My App iOS]
+jira  = MYAPPIOS, MYLEGACY
+repos = my-app-ios, my-app-backend
+
+[My App Android]
+jira  = MYAPPAND
+repos = my-app-android
+
+[My App - Backend]
+repos = my-app-backend

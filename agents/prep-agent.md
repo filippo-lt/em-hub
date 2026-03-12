@@ -18,6 +18,8 @@ From loaded context, build a mental model of:
 - Relationship dynamics / tension points
 - Gaps: things that haven't been addressed in a while
 
+**For direct reports:** If a recent dev-progress-weekly-report exists in `scripts/delivery/reports/`, check it for this person's recent commits, PRs, and Jira tickets. This gives you concrete data on what they've been working on and can inform questions about progress, blockers, or priorities.
+
 ---
 
 ### Phase 2 — Opening Statement
