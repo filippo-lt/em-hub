@@ -1,0 +1,49 @@
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-weekend: #f0f0f0;
+  --bg-today: rgba(59, 130, 246, 0.1);
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --border-color: #e0e0e0;
+  --grid-line: #e5e5e5;
+  --grid-line-today: #3b82f6;
+  --milestone-line: #f59e0b;
+  --milestone-bg: #fef3c7;
+  --accent-primary: #3b82f6;
+  --accent-hover: #2563eb;
+  --button-bg: #f3f4f6;
+  --button-hover: #e5e7eb;
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --success-color: #10b981;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #252525;
+  --bg-weekend: #2a2a2a;
+  --bg-today: rgba(59, 130, 246, 0.15);
+  --text-primary: #e5e5e5;
+  --text-secondary: #a0a0a0;
+  --text-muted: #666666;
+  --border-color: #404040;
+  --grid-line: #333333;
+  --grid-line-today: #60a5fa;
+  --milestone-line: #fbbf24;
+  --milestone-bg: rgba(251, 191, 36, 0.2);
+  --accent-primary: #60a5fa;
+  --accent-hover: #3b82f6;
+  --button-bg: #333333;
+  --button-hover: #404040;
+  --danger-color: #f87171;
+  --danger-hover: #ef4444;
+  --success-color: #34d399;
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
