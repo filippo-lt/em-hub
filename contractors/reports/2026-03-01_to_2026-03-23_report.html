@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contractor Performance Report — 2026-03-01 to 2026-03-23</title>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --border: #dee2e6;
+    --text: #212529;
+    --text-muted: #6c757d;
+    --primary: #0d6efd;
+    --success: #198754;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --info: #0dcaf0;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 2rem; max-width: 1400px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .subtitle { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
+
+  /* Summary cards */
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+  .card-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .card-value { font-size: 1.75rem; font-weight: 700; margin-top: 0.25rem; }
+  .card-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+  /* Flags */
+  .flags { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 2rem; }
+  .flags h2 { font-size: 1rem; margin-bottom: 0.75rem; }
+  .flag { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0; font-size: 0.9rem; }
+  .flag-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .flag-dot.red { background: var(--danger); }
+  .flag-dot.yellow { background: var(--warning); }
+  .flag-dot.blue { background: var(--info); }
+
+  /* Filters */
+  .filters { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .filters select, .filters input { padding: 0.4rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.9rem; background: var(--card); }
+
+  /* Tables */
+  .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; margin-bottom: 2rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { background: var(--bg); text-align: left; padding: 0.75rem 1rem; border-bottom: 2px solid var(--border); cursor: pointer; white-space: nowrap; user-select: none; }
+  th:hover { background: #e9ecef; }
+  th.sorted-asc::after { content: ' \25B2'; font-size: 0.7rem; }
+  th.sorted-desc::after { content: ' \25BC'; font-size: 0.7rem; }
+  td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f1f3f5; }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge-ios { background: #e3f2fd; color: #1565c0; }
+  .badge-android { background: #e8f5e9; color: #2e7d32; }
+  .badge-backend { background: #fff3e0; color: #e65100; }
+
+  /* Expandable rows */
+  .detail-row { display: none; }
+  .detail-row.open { display: table-row; }
+  .detail-row td { background: #f8f9fa; padding: 1rem; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .detail-section h4 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .detail-section p { font-size: 0.9rem; }
+  .metric-row { display: flex; justify-content: space-between; padding: 0.2rem 0; }
+
+  /* Colour-coded cells */
+  .good { color: var(--success); font-weight: 600; }
+  .warn { color: #b86e00; font-weight: 600; }
+  .bad { color: var(--danger); font-weight: 600; }
+  .neutral { color: var(--text); }
+
+  .toggle-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0; }
+
+  /* Notes */
+  .notes { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 2rem; }
+  .notes h2 { font-size: 1rem; margin-bottom: 0.75rem; }
+  .notes ul { padding-left: 1.25rem; }
+  .notes li { margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--text-muted); }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+  @media (max-width: 768px) {
+    body { padding: 1rem; }
+    .detail-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Contractor Performance Report</h1>
+<p class="subtitle">2026-03-01 to 2026-03-23 (23 days) &middot; Generated 2026-03-23</p>
+
+<!-- ===== SUMMARY CARDS ===== -->
+<div class="summary">
+  <div class="card">
+    <div class="card-label">Developers</div>
+    <div class="card-value">7</div>
+    <div class="card-note">across 3 vendors</div>
+  </div>
+  <div class="card">
+    <div class="card-label">PRs Merged</div>
+    <div class="card-value">173</div>
+    <div class="card-note">24.7 avg per dev</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Story Points</div>
+    <div class="card-value">N/A</div>
+    <div class="card-note">not populated in Jira</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Tickets Delivered</div>
+    <div class="card-value">82</div>
+    <div class="card-note">stories + bugs</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Total No-QA</div>
+    <div class="card-value">13</div>
+    <div class="card-note">transitions across all devs</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Avg Time to Merge</div>
+    <div class="card-value">0.4d</div>
+    <div class="card-note">calendar days (median)</div>
+  </div>
+</div>
+
+<!-- ===== FLAGS ===== -->
+<div class="flags">
+  <h2>Flags &amp; Anomalies</h2>
+  <div class="flag"><span class="flag-dot red"></span> <strong>Anton Shkuray (Gilzor / Face AI)</strong> &mdash; 11 No QA Pass transitions on 9 delivered tickets (122%). Some tickets bounced through No QA Pass multiple times. Highest rework rate on the team by a wide margin.</div>
+  <div class="flag"><span class="flag-dot red"></span> <strong>Andrew Laminski (Gilzor / Face AI)</strong> &mdash; avg PR size 1,414 lines. Very large PRs are hard to review and a risk for defect introduction. Only 8 PRs merged and 1 ticket resolved in 23 days.</div>
+  <div class="flag"><span class="flag-dot red"></span> <strong>Shu Zhang (57 Blocks / Tattooist)</strong> &mdash; 0 commits despite 11 PRs merged and 51 PRs reviewed. Unusually high review volume relative to own output. Possible pairing, branch strategy, or cherry-pick workflow worth clarifying.</div>
+  <div class="flag"><span class="flag-dot yellow"></span> <strong>Artem Shyianov (Anadea / iMote)</strong> &mdash; avg time to merge 32.9 hours (1.4 days), well above the team median. Only 4 PR reviews in the period &mdash; low collaboration signal for a senior iOS contributor.</div>
+  <div class="flag"><span class="flag-dot yellow"></span> <strong>Anton Shkuray (Gilzor / Face AI)</strong> &mdash; only 2 PR reviews in the period. Not participating meaningfully in team code review.</div>
+  <div class="flag"><span class="flag-dot yellow"></span> <strong>Andrew Laminski (Gilzor / Face AI)</strong> &mdash; only 1 PR review in the period. Not participating in code review.</div>
+  <div class="flag"><span class="flag-dot blue"></span> <strong>Serhii Kostrykin (Anadea / Screen Mirroring &amp; iMote)</strong> &mdash; low volume across both GitHub (4 PRs, 10 commits) and Jira (4 tickets). Active across two projects but output is limited. May reflect the early phase of Screen Mirroring project.</div>
+  <div class="flag"><span class="flag-dot blue"></span> <strong>Shu Zhang (57 Blocks / Tattooist)</strong> &mdash; Jira shows only 4 tickets resolved, which is low relative to the team. Possible mismatch with GitHub output (11 PRs). Worth cross-checking ticket assignment accuracy.</div>
+</div>
+
+<!-- ===== FILTERS ===== -->
+<div class="filters">
+  <select id="filter-vendor" onchange="filterTable()">
+    <option value="">All Vendors</option>
+    <option value="57 Blocks">57 Blocks</option>
+    <option value="Anadea">Anadea</option>
+    <option value="Gilzor">Gilzor</option>
+  </select>
+  <select id="filter-project" onchange="filterTable()">
+    <option value="">All Projects</option>
+    <option value="Tattooist">Tattooist</option>
+    <option value="iMote">iMote</option>
+    <option value="Face AI">Face AI</option>
+    <option value="Screen Mirroring">Screen Mirroring</option>
+  </select>
+  <select id="filter-skill" onchange="filterTable()">
+    <option value="">All Skills</option>
+    <option value="iOS">iOS</option>
+    <option value="Android">Android</option>
+    <option value="Backend">Backend</option>
+  </select>
+  <input type="text" id="filter-name" placeholder="Search by name..." oninput="filterTable()">
+</div>
+
+<!-- ===== MAIN TABLE ===== -->
+<div class="table-wrap">
+  <table id="main-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th data-sort="name" onclick="sortTable(this)">Developer</th>
+        <th data-sort="vendor" onclick="sortTable(this)">Vendor</th>
+        <th data-sort="project" onclick="sortTable(this)">Project</th>
+        <th data-sort="skills">Skills</th>
+        <th data-sort="tickets" onclick="sortTable(this)">Tickets</th>
+        <th data-sort="noqa" onclick="sortTable(this)">No-QA</th>
+        <th data-sort="commits" onclick="sortTable(this)">Commits</th>
+        <th data-sort="prs" onclick="sortTable(this)">PRs Merged</th>
+        <th data-sort="reviews" onclick="sortTable(this)">PR Reviews</th>
+        <th data-sort="prsize" onclick="sortTable(this)">Avg PR Size</th>
+        <th data-sort="ttm" onclick="sortTable(this)">Avg TTM</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- Xiaochun Mou -->
+      <tr class="data-row" data-vendor="57 Blocks" data-project="Tattooist" data-skills="iOS">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Xiaochun Mou">Xiaochun Mou</td>
+        <td>57 Blocks</td>
+        <td>Tattooist</td>
+        <td><span class="badge badge-ios">iOS</span></td>
+        <td data-sort-value="23" class="good">23</td>
+        <td data-sort-value="0" class="good">0 (0%)</td>
+        <td data-sort-value="161" class="good">161</td>
+        <td data-sort-value="63" class="good">63</td>
+        <td data-sort-value="40" class="good">40</td>
+        <td data-sort-value="389" class="neutral">389</td>
+        <td data-sort-value="0.05" class="good">&lt;0.1d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="12">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown (TTIOSMAU)</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>0</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>23</span></div>
+              <div class="metric-row"><span>Story points</span><span>N/A (not populated)</span></div>
+              <div class="metric-row"><span>No-QA Pass transitions</span><span>0</span></div>
+              <div class="metric-row"><span>No-QA rate</span><span>0%</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown (rosseca/tattoo)</h4>
+              <div class="metric-row"><span>Commits</span><span>161</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>63</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>40 (cross-repo)</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>389</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>1.2 hrs (&lt;0.1 days)</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Edward Liu -->
+      <tr class="data-row" data-vendor="57 Blocks" data-project="Tattooist" data-skills="Android">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Edward Liu">Edward Liu</td>
+        <td>57 Blocks</td>
+        <td>Tattooist</td>
+        <td><span class="badge badge-android">Android</span></td>
+        <td data-sort-value="38" class="good">38</td>
+        <td data-sort-value="1" class="good">1 (3%)</td>
+        <td data-sort-value="43">43</td>
+        <td data-sort-value="41" class="good">41</td>
+        <td data-sort-value="28" class="good">28</td>
+        <td data-sort-value="336" class="neutral">336</td>
+        <td data-sort-value="0.3" class="good">0.3d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="12">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown (TTIOSMAU)</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>0</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>38</span></div>
+              <div class="metric-row"><span>Story points</span><span>N/A (not populated)</span></div>
+              <div class="metric-row"><span>No-QA Pass transitions</span><span>1 (TTIOSMAU-4)</span></div>
+              <div class="metric-row"><span>No-QA rate</span><span>3%</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown (rosseca/tattoo-android)</h4>
+              <div class="metric-row"><span>Commits</span><span>43</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>41</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>28 (cross-repo)</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>336</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>7.5 hrs (0.3 days)</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Shu Zhang -->
+      <tr class="data-row" data-vendor="57 Blocks" data-project="Tattooist" data-skills="Backend">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Shu Zhang">Shu Zhang</td>
+        <td>57 Blocks</td>
+        <td>Tattooist</td>
+        <td><span class="badge badge-backend">Backend</span></td>
+        <td data-sort-value="4">4</td>
+        <td data-sort-value="0" class="good">0 (0%)</td>
+        <td data-sort-value="0" class="bad">0 *</td>
+        <td data-sort-value="11">11</td>
+        <td data-sort-value="51" class="good">51</td>
+        <td data-sort-value="1078" class="bad">1,078 *</td>
+        <td data-sort-value="0.07" class="good">1.6 hrs</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="12">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown (TTIOSMAU)</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>0</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>4</span></div>
+              <div class="metric-row"><span>Story points</span><span>N/A (not populated)</span></div>
+              <div class="metric-row"><span>No-QA Pass transitions</span><span>0</span></div>
+              <div class="metric-row"><span>No-QA rate</span><span>0%</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown (leadtechcorp/tattoo_infra)</h4>
+              <div class="metric-row"><span>Commits</span><span>0 (flagged)</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>11</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>51 (highest on team)</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>1,078 (flagged)</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>1.6 hrs</span></div>
+              <div class="metric-row"><span>Note</span><span>Zero commits is anomalous. May use squash merges, cherry-picks, or pairing. Verify git author attribution.</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Artem Shyianov -->
+      <tr class="data-row" data-vendor="Anadea" data-project="iMote" data-skills="iOS">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Artem Shyianov">Artem Shyianov</td>
+        <td>Anadea</td>
+        <td>iMote</td>
+        <td><span class="badge badge-ios">iOS</span></td>
+        <td data-sort-value="3">3</td>
+        <td data-sort-value="0" class="good">0 (0%)</td>
+        <td data-sort-value="23">23</td>
+        <td data-sort-value="14">14</td>
+        <td data-sort-value="4" class="warn">4 *</td>
+        <td data-sort-value="323" class="neutral">323</td>
+        <td data-sort-value="1.4" class="warn">1.4d *</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="12">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown (IMOEXT)</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>3</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>0</span></div>
+              <div class="metric-row"><span>Story points</span><span>N/A (not populated)</span></div>
+              <div class="metric-row"><span>No-QA Pass transitions</span><span>0</span></div>
+              <div class="metric-row"><span>No-QA rate</span><span>0%</span></div>
+              <div class="metric-row"><span>Note</span><span>Active project is IMOEXT, not IMIOSMAU/IMANDMAU which are empty.</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown (rosseca/imote)</h4>
+              <div class="metric-row"><span>Commits</span><span>23</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>14</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>4 (low)</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>323</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>32.9 hrs (1.4 days)</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Serhii Kostrykin -->
+      <tr class="data-row" data-vendor="Anadea" data-project="Screen Mirroring, iMote" data-skills="iOS">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Serhii Kostrykin">Serhii Kostrykin</td>
+        <td>Anadea</td>
+        <td>Screen Mirroring, iMote</td>
+        <td><span class="badge badge-ios">iOS</span></td>
+        <td data-sort-value="4">4</td>
+        <td data-sort-value="0" class="good">0 (0%)</td>
+        <td data-sort-value="10">10</td>
+        <td data-sort-value="4">4</td>
+        <td data-sort-value="8">8</td>
+        <td data-sort-value="43" class="good">43</td>
+        <td data-sort-value="0.4" class="good">0.4d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="12">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown (SMIOSMAU + IMOEXT)</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>4 (2 SMIOSMAU + 2 IMOEXT)</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>0</span></div>
+              <div class="metric-row"><span>Story points</span><span>N/A (not populated)</span></div>
+              <div class="metric-row"><span>No-QA Pass transitions</span><span>0</span></div>
+              <div class="metric-row"><span>No-QA rate</span><span>0%</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown (rosseca/screenmirroring + rosseca/imote)</h4>
+              <div class="metric-row"><span>Commits</span><span>10</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>4</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>8</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>43 (very focused PRs)</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>9.4 hrs (0.4 days)</span></div>
+              <div class="metric-row"><span>Note</span><span>Split across two projects. Low absolute volume may reflect SM project early stage and transition period.</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Anton Shkuray -->
+      <tr class="data-row" data-vendor="Gilzor" data-project="Face AI" data-skills="iOS">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Anton Shkuray">Anton Shkuray</td>
+        <td>Gilzor</td>
+        <td>Face AI</td>
+        <td><span class="badge badge-ios">iOS</span></td>
+        <td data-sort-value="9">9</td>
+        <td data-sort-value="11" class="bad">11 (122%) *</td>
+        <td data-sort-value="33">33</td>
+        <td data-sort-value="32">32</td>
+        <td data-sort-value="2" class="bad">2 *</td>
+        <td data-sort-value="149" class="good">149</td>
+        <td data-sort-value="0.23" class="good">0.2d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="12">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown (FAIOSMAU)</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>0</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>9</span></div>
+              <div class="metric-row"><span>Story points</span><span>N/A (not populated)</span></div>
+              <div class="metric-row"><span>No-QA Pass transitions</span><span>11 across 9 tickets (some multi-bounce)</span></div>
+              <div class="metric-row"><span>No-QA rate</span><span>122% (flagged)</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown (rosseca/faceai_ios)</h4>
+              <div class="metric-row"><span>Commits</span><span>33</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>32</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>2 (very low)</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>149 (good)</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>5.5 hrs (0.2 days)</span></div>
+              <div class="metric-row"><span>Note</span><span>High merge cadence but high rework. Nearly absent from code review. Recommend 1-on-1 to understand QA failure patterns.</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Andrew Laminski -->
+      <tr class="data-row" data-vendor="Gilzor" data-project="Face AI" data-skills="Backend">
+        <td><button class="toggle-btn" onclick="toggleDetail(this)">+</button></td>
+        <td data-sort-value="Andrew Laminski">Andrew Laminski</td>
+        <td>Gilzor</td>
+        <td>Face AI</td>
+        <td><span class="badge badge-backend">Backend</span></td>
+        <td data-sort-value="1" class="warn">1</td>
+        <td data-sort-value="1" class="warn">1 (100%) *</td>
+        <td data-sort-value="45">45</td>
+        <td data-sort-value="8">8</td>
+        <td data-sort-value="1" class="bad">1 *</td>
+        <td data-sort-value="1414" class="bad">1,414 *</td>
+        <td data-sort-value="0.52" class="warn">0.5d</td>
+      </tr>
+      <tr class="detail-row">
+        <td colspan="12">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>Jira Breakdown (FAIOSMAU)</h4>
+              <div class="metric-row"><span>Stories delivered</span><span>0</span></div>
+              <div class="metric-row"><span>Bugs fixed</span><span>1</span></div>
+              <div class="metric-row"><span>Story points</span><span>N/A (not populated)</span></div>
+              <div class="metric-row"><span>No-QA Pass transitions</span><span>1 (FAIOSMAU-312)</span></div>
+              <div class="metric-row"><span>No-QA rate</span><span>100% of resolved tickets</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>GitHub Breakdown (leadtechcorp/faceai_backend)</h4>
+              <div class="metric-row"><span>Commits</span><span>45</span></div>
+              <div class="metric-row"><span>PRs merged</span><span>8</span></div>
+              <div class="metric-row"><span>PRs reviewed</span><span>1 (very low)</span></div>
+              <div class="metric-row"><span>Avg PR size (lines)</span><span>1,414 (flagged — very large)</span></div>
+              <div class="metric-row"><span>Avg time to merge</span><span>12.5 hrs (0.5 days)</span></div>
+              <div class="metric-row"><span>Note</span><span>45 commits into 8 PRs = large batch sizes. Only 1 Jira ticket resolved despite substantial code output. Possible work-in-progress that has not reached Done yet, or ticket attribution gap.</span></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== DATA NOTES ===== -->
+<div class="notes">
+  <h2>Data Collection Notes</h2>
+  <ul>
+    <li>GitHub data collected via <code>scripts/gh-metrics.sh</code> on 2026-03-23. All 7 developers and 19 repo/dev pairs queried. Data file: <code>contractors/reports/2026-03-01_to_2026-03-23_gh-metrics.json</code>.</li>
+    <li>Jira data collected via Jira REST API (Jira Cloud, leadtech.atlassian.net) on 2026-03-23.</li>
+    <li>No-QA status is called "No QA Pass" across all boards in this org.</li>
+    <li>Story points: the <code>customfield_10016</code> field (story points) is not populated on any resolved ticket across all boards in this period. SP column shows N/A throughout; the team appears to track delivery by ticket count only.</li>
+    <li>Tattooist boards (TTIOSMAU, TATA): TATA board had no resolved tickets in scope. All Tattooist contractor delivery flows through TTIOSMAU.</li>
+    <li>iMote: the active delivery board is IMOEXT (an external project board), not IMIOSMAU or IMANDMAU, which are empty. IMOEXT data was retrieved to capture Artem Shyianov and Serhii Kostrykin's iMote delivery.</li>
+    <li>Screen Mirroring (SMIOSMAU): Serhii Kostrykin resolved 2 User Stories in March. Other SMIOSMAU resolved items belong to internal team members (QA, Design, PM).</li>
+    <li>No-QA rate for Anton Shkuray exceeds 100% because some tickets transitioned to "No QA Pass" more than once (multi-bounce rework).</li>
+    <li>Shu Zhang commit count is 0 despite 11 PRs merged. This may indicate commits are attributed to a different git author, squash-merge workflows that drop author info, or cherry-picks from a shared branch. Recommend verifying with the dev.</li>
+    <li>Andrew Laminski Jira vs GitHub mismatch: 45 commits and 8 PRs merged, but only 1 Jira ticket resolved. Possible large in-progress body of work not yet transitioned to Done, or ticket attribution issue.</li>
+  </ul>
+</div>
+
+<footer>Generated by EM Hub &middot; Contractor Review Workflow &middot; 2026-03-23</footer>
+
+<script>
+// ===== Expand/collapse detail rows =====
+function toggleDetail(btn) {
+  const dataRow = btn.closest('tr');
+  const detailRow = dataRow.nextElementSibling;
+  if (detailRow && detailRow.classList.contains('detail-row')) {
+    detailRow.classList.toggle('open');
+    btn.textContent = detailRow.classList.contains('open') ? '\u2212' : '+';
+  }
+}
+
+// ===== Sort table by column =====
+function sortTable(th) {
+  const table = document.getElementById('main-table');
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr.data-row'));
+  const colIndex = Array.from(th.parentElement.children).indexOf(th);
+  const isNumeric = !['name', 'vendor', 'project', 'skills'].includes(th.dataset.sort);
+
+  const wasAsc = th.classList.contains('sorted-asc');
+  table.querySelectorAll('th').forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+  const dir = wasAsc ? 'desc' : 'asc';
+  th.classList.add('sorted-' + dir);
+
+  rows.sort((a, b) => {
+    const aCell = a.children[colIndex];
+    const bCell = b.children[colIndex];
+    let aVal = aCell.dataset.sortValue || aCell.textContent.trim();
+    let bVal = bCell.dataset.sortValue || bCell.textContent.trim();
+    if (isNumeric) { aVal = parseFloat(aVal) || 0; bVal = parseFloat(bVal) || 0; }
+    if (aVal < bVal) return dir === 'asc' ? -1 : 1;
+    if (aVal > bVal) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  rows.forEach(row => {
+    const detail = row.nextElementSibling;
+    tbody.appendChild(row);
+    if (detail && detail.classList.contains('detail-row')) tbody.appendChild(detail);
+  });
+}
+
+// ===== Filter table =====
+function filterTable() {
+  const vendor = document.getElementById('filter-vendor').value.toLowerCase();
+  const project = document.getElementById('filter-project').value.toLowerCase();
+  const skill = document.getElementById('filter-skill').value.toLowerCase();
+  const name = document.getElementById('filter-name').value.toLowerCase();
+
+  document.querySelectorAll('#main-table tbody tr.data-row').forEach(row => {
+    const matchVendor = !vendor || (row.dataset.vendor || '').toLowerCase() === vendor;
+    const matchProject = !project || (row.dataset.project || '').toLowerCase().includes(project);
+    const matchSkill = !skill || (row.dataset.skills || '').toLowerCase().includes(skill);
+    const matchName = !name || row.children[1].textContent.toLowerCase().includes(name);
+    const show = matchVendor && matchProject && matchSkill && matchName;
+
+    row.style.display = show ? '' : 'none';
+    const detail = row.nextElementSibling;
+    if (detail && detail.classList.contains('detail-row')) {
+      if (!show) { detail.style.display = 'none'; detail.classList.remove('open'); }
+      else { detail.style.display = ''; }
+    }
+  });
+}
+</script>
+</body>
+</html>

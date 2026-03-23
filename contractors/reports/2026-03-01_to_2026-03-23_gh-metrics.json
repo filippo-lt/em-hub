@@ -1,0 +1,1507 @@
+{
+  "period": {
+    "start": "2026-03-01",
+    "end": "2026-03-23"
+  },
+  "generated": "2026-03-23T09:13:48Z",
+  "developers": [
+    {
+      "name": "Xiaochun Mou",
+      "github_username": "xiaochunmou-debug",
+      "vendor": "57 Blocks",
+      "skills": "iOS",
+      "projects": [
+        "Tattooist"
+      ],
+      "totals": {
+        "total_commits": 161,
+        "total_prs_merged": 63,
+        "total_prs_reviewed": 40,
+        "total_avg_pr_size": 389.4,
+        "total_avg_ttm_hours": 1.2
+      },
+      "repos": {
+        "leadtechcorp/tattoo_infra": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 8,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/tattoo-android": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 31,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/tattoo": {
+          "commits": 161,
+          "prs_merged_count": 63,
+          "prs_merged": [
+            {
+              "number": 387,
+              "additions": 288,
+              "deletions": 32,
+              "createdAt": "2026-03-23T09:04:14Z",
+              "mergedAt": "2026-03-23T09:05:47Z"
+            },
+            {
+              "number": 386,
+              "additions": 30,
+              "deletions": 17,
+              "createdAt": "2026-03-23T05:29:13Z",
+              "mergedAt": "2026-03-23T06:05:20Z"
+            },
+            {
+              "number": 385,
+              "additions": 251,
+              "deletions": 157,
+              "createdAt": "2026-03-23T02:51:31Z",
+              "mergedAt": "2026-03-23T02:52:54Z"
+            },
+            {
+              "number": 384,
+              "additions": 36,
+              "deletions": 32,
+              "createdAt": "2026-03-20T12:36:06Z",
+              "mergedAt": "2026-03-20T12:51:15Z"
+            },
+            {
+              "number": 383,
+              "additions": 51,
+              "deletions": 26,
+              "createdAt": "2026-03-20T09:48:17Z",
+              "mergedAt": "2026-03-20T09:49:11Z"
+            },
+            {
+              "number": 382,
+              "additions": 34,
+              "deletions": 628,
+              "createdAt": "2026-03-20T08:03:11Z",
+              "mergedAt": "2026-03-20T08:04:29Z"
+            },
+            {
+              "number": 381,
+              "additions": 1,
+              "deletions": 6,
+              "createdAt": "2026-03-20T07:07:06Z",
+              "mergedAt": "2026-03-20T07:07:55Z"
+            },
+            {
+              "number": 380,
+              "additions": 369,
+              "deletions": 126,
+              "createdAt": "2026-03-20T06:34:21Z",
+              "mergedAt": "2026-03-20T06:42:51Z"
+            },
+            {
+              "number": 379,
+              "additions": 46,
+              "deletions": 6,
+              "createdAt": "2026-03-20T03:35:29Z",
+              "mergedAt": "2026-03-20T06:16:01Z"
+            },
+            {
+              "number": 378,
+              "additions": 14,
+              "deletions": 14,
+              "createdAt": "2026-03-20T03:18:47Z",
+              "mergedAt": "2026-03-20T03:21:34Z"
+            },
+            {
+              "number": 377,
+              "additions": 5,
+              "deletions": 1082,
+              "createdAt": "2026-03-20T02:52:16Z",
+              "mergedAt": "2026-03-20T02:56:35Z"
+            },
+            {
+              "number": 376,
+              "additions": 86,
+              "deletions": 48,
+              "createdAt": "2026-03-20T02:22:59Z",
+              "mergedAt": "2026-03-20T02:23:51Z"
+            },
+            {
+              "number": 375,
+              "additions": 2,
+              "deletions": 3,
+              "createdAt": "2026-03-19T08:31:23Z",
+              "mergedAt": "2026-03-19T08:32:04Z"
+            },
+            {
+              "number": 374,
+              "additions": 531,
+              "deletions": 274,
+              "createdAt": "2026-03-19T08:23:30Z",
+              "mergedAt": "2026-03-19T08:24:29Z"
+            },
+            {
+              "number": 373,
+              "additions": 1056,
+              "deletions": 522,
+              "createdAt": "2026-03-18T08:45:52Z",
+              "mergedAt": "2026-03-18T08:46:36Z"
+            },
+            {
+              "number": 371,
+              "additions": 2210,
+              "deletions": 438,
+              "createdAt": "2026-03-18T03:34:17Z",
+              "mergedAt": "2026-03-18T04:05:14Z"
+            },
+            {
+              "number": 370,
+              "additions": 41,
+              "deletions": 2,
+              "createdAt": "2026-03-16T06:14:28Z",
+              "mergedAt": "2026-03-16T06:31:35Z"
+            },
+            {
+              "number": 369,
+              "additions": 3,
+              "deletions": 4,
+              "createdAt": "2026-03-16T06:06:17Z",
+              "mergedAt": "2026-03-16T06:25:25Z"
+            },
+            {
+              "number": 368,
+              "additions": 3,
+              "deletions": 4,
+              "createdAt": "2026-03-16T06:01:46Z",
+              "mergedAt": "2026-03-16T06:05:40Z"
+            },
+            {
+              "number": 367,
+              "additions": 40,
+              "deletions": 22,
+              "createdAt": "2026-03-16T02:08:58Z",
+              "mergedAt": "2026-03-16T02:11:12Z"
+            },
+            {
+              "number": 366,
+              "additions": 40,
+              "deletions": 22,
+              "createdAt": "2026-03-16T01:49:33Z",
+              "mergedAt": "2026-03-16T01:59:43Z"
+            },
+            {
+              "number": 365,
+              "additions": 1,
+              "deletions": 1,
+              "createdAt": "2026-03-13T13:38:14Z",
+              "mergedAt": "2026-03-13T13:39:43Z"
+            },
+            {
+              "number": 364,
+              "additions": 1,
+              "deletions": 3484,
+              "createdAt": "2026-03-13T11:18:49Z",
+              "mergedAt": "2026-03-13T11:20:49Z"
+            },
+            {
+              "number": 363,
+              "additions": 2,
+              "deletions": 3485,
+              "createdAt": "2026-03-13T11:17:55Z",
+              "mergedAt": "2026-03-16T01:32:40Z"
+            },
+            {
+              "number": 362,
+              "additions": 496,
+              "deletions": 180,
+              "createdAt": "2026-03-13T10:41:06Z",
+              "mergedAt": "2026-03-13T10:42:06Z"
+            },
+            {
+              "number": 361,
+              "additions": 300,
+              "deletions": 119,
+              "createdAt": "2026-03-13T09:12:54Z",
+              "mergedAt": "2026-03-13T09:13:56Z"
+            },
+            {
+              "number": 360,
+              "additions": 14,
+              "deletions": 13,
+              "createdAt": "2026-03-13T06:48:41Z",
+              "mergedAt": "2026-03-13T06:51:47Z"
+            },
+            {
+              "number": 359,
+              "additions": 695,
+              "deletions": 299,
+              "createdAt": "2026-03-13T02:26:00Z",
+              "mergedAt": "2026-03-13T02:33:04Z"
+            },
+            {
+              "number": 357,
+              "additions": 3,
+              "deletions": 3,
+              "createdAt": "2026-03-10T08:19:11Z",
+              "mergedAt": "2026-03-10T08:24:47Z"
+            },
+            {
+              "number": 356,
+              "additions": 170,
+              "deletions": 5,
+              "createdAt": "2026-03-10T07:13:41Z",
+              "mergedAt": "2026-03-10T07:53:56Z"
+            },
+            {
+              "number": 355,
+              "additions": 166,
+              "deletions": 2,
+              "createdAt": "2026-03-10T07:04:18Z",
+              "mergedAt": "2026-03-10T07:06:20Z"
+            },
+            {
+              "number": 354,
+              "additions": 102,
+              "deletions": 89,
+              "createdAt": "2026-03-10T01:17:53Z",
+              "mergedAt": "2026-03-10T01:20:30Z"
+            },
+            {
+              "number": 353,
+              "additions": 72,
+              "deletions": 75,
+              "createdAt": "2026-03-09T07:08:32Z",
+              "mergedAt": "2026-03-09T07:09:45Z"
+            },
+            {
+              "number": 352,
+              "additions": 15,
+              "deletions": 9,
+              "createdAt": "2026-03-09T05:50:34Z",
+              "mergedAt": "2026-03-09T05:55:06Z"
+            },
+            {
+              "number": 351,
+              "additions": 15,
+              "deletions": 5,
+              "createdAt": "2026-03-06T12:01:06Z",
+              "mergedAt": "2026-03-06T12:15:02Z"
+            },
+            {
+              "number": 350,
+              "additions": 0,
+              "deletions": 13,
+              "createdAt": "2026-03-06T07:35:04Z",
+              "mergedAt": "2026-03-06T07:40:04Z"
+            },
+            {
+              "number": 349,
+              "additions": 3,
+              "deletions": 1,
+              "createdAt": "2026-03-06T06:50:29Z",
+              "mergedAt": "2026-03-06T07:02:04Z"
+            },
+            {
+              "number": 348,
+              "additions": 3,
+              "deletions": 1,
+              "createdAt": "2026-03-06T06:25:10Z",
+              "mergedAt": "2026-03-06T06:54:27Z"
+            },
+            {
+              "number": 347,
+              "additions": 1,
+              "deletions": 0,
+              "createdAt": "2026-03-06T06:01:52Z",
+              "mergedAt": "2026-03-06T07:01:01Z"
+            },
+            {
+              "number": 346,
+              "additions": 0,
+              "deletions": 5,
+              "createdAt": "2026-03-06T05:44:12Z",
+              "mergedAt": "2026-03-06T05:45:26Z"
+            },
+            {
+              "number": 345,
+              "additions": 278,
+              "deletions": 251,
+              "createdAt": "2026-03-06T05:39:48Z",
+              "mergedAt": "2026-03-06T05:43:02Z"
+            },
+            {
+              "number": 344,
+              "additions": 22,
+              "deletions": 7,
+              "createdAt": "2026-03-06T04:08:20Z",
+              "mergedAt": "2026-03-06T04:10:24Z"
+            },
+            {
+              "number": 343,
+              "additions": 11,
+              "deletions": 2,
+              "createdAt": "2026-03-06T02:57:20Z",
+              "mergedAt": "2026-03-06T02:58:47Z"
+            },
+            {
+              "number": 342,
+              "additions": 94,
+              "deletions": 40,
+              "createdAt": "2026-03-06T02:31:01Z",
+              "mergedAt": "2026-03-06T02:32:35Z"
+            },
+            {
+              "number": 341,
+              "additions": 40,
+              "deletions": 3,
+              "createdAt": "2026-03-05T07:38:29Z",
+              "mergedAt": "2026-03-05T07:41:56Z"
+            },
+            {
+              "number": 340,
+              "additions": 172,
+              "deletions": 139,
+              "createdAt": "2026-03-05T05:58:00Z",
+              "mergedAt": "2026-03-05T07:03:36Z"
+            },
+            {
+              "number": 339,
+              "additions": 12,
+              "deletions": 7,
+              "createdAt": "2026-03-05T03:07:22Z",
+              "mergedAt": "2026-03-05T03:15:39Z"
+            },
+            {
+              "number": 338,
+              "additions": 183,
+              "deletions": 105,
+              "createdAt": "2026-03-05T02:42:10Z",
+              "mergedAt": "2026-03-05T02:45:15Z"
+            },
+            {
+              "number": 337,
+              "additions": 29,
+              "deletions": 17,
+              "createdAt": "2026-03-04T07:22:45Z",
+              "mergedAt": "2026-03-04T07:23:28Z"
+            },
+            {
+              "number": 336,
+              "additions": 23,
+              "deletions": 50,
+              "createdAt": "2026-03-04T06:59:56Z",
+              "mergedAt": "2026-03-04T07:01:47Z"
+            },
+            {
+              "number": 335,
+              "additions": 409,
+              "deletions": 63,
+              "createdAt": "2026-03-04T06:16:15Z",
+              "mergedAt": "2026-03-04T06:32:12Z"
+            },
+            {
+              "number": 334,
+              "additions": 2376,
+              "deletions": 531,
+              "createdAt": "2026-03-04T04:20:46Z",
+              "mergedAt": "2026-03-04T05:50:09Z"
+            },
+            {
+              "number": 333,
+              "additions": 95,
+              "deletions": 27,
+              "createdAt": "2026-03-04T02:55:18Z",
+              "mergedAt": "2026-03-04T03:03:25Z"
+            },
+            {
+              "number": 332,
+              "additions": 69,
+              "deletions": 22,
+              "createdAt": "2026-03-03T07:53:10Z",
+              "mergedAt": "2026-03-03T07:58:57Z"
+            },
+            {
+              "number": 330,
+              "additions": 23,
+              "deletions": 7,
+              "createdAt": "2026-03-03T06:42:05Z",
+              "mergedAt": "2026-03-03T06:43:23Z"
+            },
+            {
+              "number": 329,
+              "additions": 3,
+              "deletions": 3,
+              "createdAt": "2026-03-03T05:07:52Z",
+              "mergedAt": "2026-03-03T05:34:08Z"
+            },
+            {
+              "number": 328,
+              "additions": 2,
+              "deletions": 2,
+              "createdAt": "2026-03-03T03:17:52Z",
+              "mergedAt": "2026-03-03T03:19:31Z"
+            },
+            {
+              "number": 327,
+              "additions": 7,
+              "deletions": 1,
+              "createdAt": "2026-03-03T02:22:05Z",
+              "mergedAt": "2026-03-03T02:38:17Z"
+            },
+            {
+              "number": 326,
+              "additions": 32,
+              "deletions": 18,
+              "createdAt": "2026-03-03T01:58:16Z",
+              "mergedAt": "2026-03-03T01:59:16Z"
+            },
+            {
+              "number": 325,
+              "additions": 20,
+              "deletions": 4,
+              "createdAt": "2026-03-02T09:24:28Z",
+              "mergedAt": "2026-03-02T09:26:08Z"
+            },
+            {
+              "number": 324,
+              "additions": 67,
+              "deletions": 24,
+              "createdAt": "2026-03-02T07:27:03Z",
+              "mergedAt": "2026-03-02T07:29:39Z"
+            },
+            {
+              "number": 323,
+              "additions": 182,
+              "deletions": 19,
+              "createdAt": "2026-03-02T06:53:54Z",
+              "mergedAt": "2026-03-02T06:55:03Z"
+            },
+            {
+              "number": 322,
+              "additions": 319,
+              "deletions": 272,
+              "createdAt": "2026-03-02T04:44:30Z",
+              "mergedAt": "2026-03-02T06:31:54Z"
+            }
+          ],
+          "prs_reviewed": 1,
+          "avg_pr_size": 389.4,
+          "avg_time_to_merge_hours": 1.2
+        }
+      }
+    },
+    {
+      "name": "Edward Liu",
+      "github_username": "edwardliu-coder",
+      "vendor": "57 Blocks",
+      "skills": "Android",
+      "projects": [
+        "Tattooist"
+      ],
+      "totals": {
+        "total_commits": 43,
+        "total_prs_merged": 41,
+        "total_prs_reviewed": 28,
+        "total_avg_pr_size": 335.8,
+        "total_avg_ttm_hours": 7.5
+      },
+      "repos": {
+        "leadtechcorp/tattoo_infra": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/tattoo-android": {
+          "commits": 42,
+          "prs_merged_count": 41,
+          "prs_merged": [
+            {
+              "number": 188,
+              "additions": 24,
+              "deletions": 4,
+              "createdAt": "2026-03-23T04:41:59Z",
+              "mergedAt": "2026-03-23T05:00:51Z"
+            },
+            {
+              "number": 187,
+              "additions": 47,
+              "deletions": 28,
+              "createdAt": "2026-03-20T10:48:14Z",
+              "mergedAt": "2026-03-20T12:38:24Z"
+            },
+            {
+              "number": 186,
+              "additions": 1,
+              "deletions": 1,
+              "createdAt": "2026-03-20T08:43:17Z",
+              "mergedAt": "2026-03-20T08:45:48Z"
+            },
+            {
+              "number": 185,
+              "additions": 15,
+              "deletions": 11,
+              "createdAt": "2026-03-20T06:56:36Z",
+              "mergedAt": "2026-03-20T06:58:33Z"
+            },
+            {
+              "number": 184,
+              "additions": 52,
+              "deletions": 24,
+              "createdAt": "2026-03-20T06:00:13Z",
+              "mergedAt": "2026-03-20T06:24:04Z"
+            },
+            {
+              "number": 183,
+              "additions": 543,
+              "deletions": 552,
+              "createdAt": "2026-03-19T08:20:41Z",
+              "mergedAt": "2026-03-19T08:29:27Z"
+            },
+            {
+              "number": 182,
+              "additions": 58,
+              "deletions": 28,
+              "createdAt": "2026-03-19T07:58:20Z",
+              "mergedAt": "2026-03-19T09:55:27Z"
+            },
+            {
+              "number": 181,
+              "additions": 5,
+              "deletions": 21,
+              "createdAt": "2026-03-19T02:39:19Z",
+              "mergedAt": "2026-03-19T03:32:16Z"
+            },
+            {
+              "number": 180,
+              "additions": 493,
+              "deletions": 301,
+              "createdAt": "2026-03-19T02:37:49Z",
+              "mergedAt": "2026-03-19T04:11:08Z"
+            },
+            {
+              "number": 179,
+              "additions": 81,
+              "deletions": 62,
+              "createdAt": "2026-03-18T09:25:03Z",
+              "mergedAt": "2026-03-18T13:28:38Z"
+            },
+            {
+              "number": 178,
+              "additions": 109,
+              "deletions": 22,
+              "createdAt": "2026-03-18T09:05:48Z",
+              "mergedAt": "2026-03-18T09:07:49Z"
+            },
+            {
+              "number": 177,
+              "additions": 2916,
+              "deletions": 628,
+              "createdAt": "2026-03-18T07:03:44Z",
+              "mergedAt": "2026-03-18T07:04:45Z"
+            },
+            {
+              "number": 176,
+              "additions": 69,
+              "deletions": 56,
+              "createdAt": "2026-03-13T07:56:14Z",
+              "mergedAt": "2026-03-13T08:00:08Z"
+            },
+            {
+              "number": 175,
+              "additions": 47,
+              "deletions": 34,
+              "createdAt": "2026-03-13T06:50:46Z",
+              "mergedAt": "2026-03-13T06:52:25Z"
+            },
+            {
+              "number": 174,
+              "additions": 29,
+              "deletions": 7,
+              "createdAt": "2026-03-13T03:29:09Z",
+              "mergedAt": "2026-03-16T03:24:17Z"
+            },
+            {
+              "number": 173,
+              "additions": 5,
+              "deletions": 7,
+              "createdAt": "2026-03-12T23:53:42Z",
+              "mergedAt": "2026-03-16T03:24:32Z"
+            },
+            {
+              "number": 172,
+              "additions": 83,
+              "deletions": 175,
+              "createdAt": "2026-03-12T14:31:32Z",
+              "mergedAt": "2026-03-12T14:34:56Z"
+            },
+            {
+              "number": 171,
+              "additions": 1021,
+              "deletions": 1811,
+              "createdAt": "2026-03-12T01:15:47Z",
+              "mergedAt": "2026-03-16T03:12:47Z"
+            },
+            {
+              "number": 170,
+              "additions": 20,
+              "deletions": 20,
+              "createdAt": "2026-03-10T07:42:35Z",
+              "mergedAt": "2026-03-10T07:48:05Z"
+            },
+            {
+              "number": 169,
+              "additions": 10,
+              "deletions": 9,
+              "createdAt": "2026-03-10T04:00:50Z",
+              "mergedAt": "2026-03-10T04:25:34Z"
+            },
+            {
+              "number": 168,
+              "additions": 1,
+              "deletions": 1,
+              "createdAt": "2026-03-10T02:27:10Z",
+              "mergedAt": "2026-03-10T02:29:02Z"
+            },
+            {
+              "number": 167,
+              "additions": 2,
+              "deletions": 3,
+              "createdAt": "2026-03-10T02:14:00Z",
+              "mergedAt": "2026-03-10T02:17:17Z"
+            },
+            {
+              "number": 166,
+              "additions": 18,
+              "deletions": 15,
+              "createdAt": "2026-03-09T08:24:50Z",
+              "mergedAt": "2026-03-09T08:25:40Z"
+            },
+            {
+              "number": 164,
+              "additions": 16,
+              "deletions": 9,
+              "createdAt": "2026-03-06T11:54:54Z",
+              "mergedAt": "2026-03-06T13:31:43Z"
+            },
+            {
+              "number": 163,
+              "additions": 43,
+              "deletions": 38,
+              "createdAt": "2026-03-06T09:28:48Z",
+              "mergedAt": "2026-03-06T13:31:20Z"
+            },
+            {
+              "number": 162,
+              "additions": 39,
+              "deletions": 4,
+              "createdAt": "2026-03-06T03:26:58Z",
+              "mergedAt": "2026-03-06T08:07:50Z"
+            },
+            {
+              "number": 161,
+              "additions": 20,
+              "deletions": 0,
+              "createdAt": "2026-03-06T02:53:31Z",
+              "mergedAt": "2026-03-06T02:56:11Z"
+            },
+            {
+              "number": 160,
+              "additions": 26,
+              "deletions": 8,
+              "createdAt": "2026-03-06T02:22:09Z",
+              "mergedAt": "2026-03-06T02:25:06Z"
+            },
+            {
+              "number": 159,
+              "additions": 39,
+              "deletions": 17,
+              "createdAt": "2026-03-05T08:02:51Z",
+              "mergedAt": "2026-03-05T08:06:55Z"
+            },
+            {
+              "number": 158,
+              "additions": 36,
+              "deletions": 9,
+              "createdAt": "2026-03-05T07:04:22Z",
+              "mergedAt": "2026-03-05T07:24:15Z"
+            },
+            {
+              "number": 157,
+              "additions": 28,
+              "deletions": 23,
+              "createdAt": "2026-03-05T01:58:49Z",
+              "mergedAt": "2026-03-05T02:04:23Z"
+            },
+            {
+              "number": 156,
+              "additions": 6,
+              "deletions": 2,
+              "createdAt": "2026-03-05T00:28:27Z",
+              "mergedAt": "2026-03-05T01:59:03Z"
+            },
+            {
+              "number": 155,
+              "additions": 2343,
+              "deletions": 752,
+              "createdAt": "2026-03-04T08:59:32Z",
+              "mergedAt": "2026-03-04T09:03:41Z"
+            },
+            {
+              "number": 154,
+              "additions": 10,
+              "deletions": 6,
+              "createdAt": "2026-03-04T03:28:17Z",
+              "mergedAt": "2026-03-04T03:31:17Z"
+            },
+            {
+              "number": 153,
+              "additions": 91,
+              "deletions": 35,
+              "createdAt": "2026-03-04T02:28:00Z",
+              "mergedAt": "2026-03-04T02:59:16Z"
+            },
+            {
+              "number": 152,
+              "additions": 22,
+              "deletions": 10,
+              "createdAt": "2026-03-02T09:22:59Z",
+              "mergedAt": "2026-03-02T09:25:51Z"
+            },
+            {
+              "number": 151,
+              "additions": 4,
+              "deletions": 38,
+              "createdAt": "2026-03-02T08:50:06Z",
+              "mergedAt": "2026-03-02T09:00:09Z"
+            },
+            {
+              "number": 150,
+              "additions": 14,
+              "deletions": 5,
+              "createdAt": "2026-03-02T04:19:41Z",
+              "mergedAt": "2026-03-02T07:42:10Z"
+            },
+            {
+              "number": 149,
+              "additions": 4,
+              "deletions": 12,
+              "createdAt": "2026-03-02T00:24:46Z",
+              "mergedAt": "2026-03-02T02:10:37Z"
+            },
+            {
+              "number": 148,
+              "additions": 159,
+              "deletions": 142,
+              "createdAt": "2026-03-01T11:02:44Z",
+              "mergedAt": "2026-03-02T02:10:11Z"
+            },
+            {
+              "number": 147,
+              "additions": 240,
+              "deletions": 48,
+              "createdAt": "2026-03-01T10:45:43Z",
+              "mergedAt": "2026-03-02T02:09:58Z"
+            }
+          ],
+          "prs_reviewed": 0,
+          "avg_pr_size": 335.8,
+          "avg_time_to_merge_hours": 7.5
+        },
+        "rosseca/tattoo": {
+          "commits": 1,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 28,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        }
+      }
+    },
+    {
+      "name": "Shu Zhang",
+      "github_username": "shuzhang-57b",
+      "vendor": "57 Blocks",
+      "skills": "Backend",
+      "projects": [
+        "Tattooist"
+      ],
+      "totals": {
+        "total_commits": 0,
+        "total_prs_merged": 11,
+        "total_prs_reviewed": 51,
+        "total_avg_pr_size": 1077.7,
+        "total_avg_ttm_hours": 1.6
+      },
+      "repos": {
+        "leadtechcorp/tattoo_infra": {
+          "commits": 0,
+          "prs_merged_count": 11,
+          "prs_merged": [
+            {
+              "number": 117,
+              "additions": 10,
+              "deletions": 21,
+              "createdAt": "2026-03-20T03:25:13Z",
+              "mergedAt": "2026-03-20T03:26:22Z"
+            },
+            {
+              "number": 116,
+              "additions": 185,
+              "deletions": 65,
+              "createdAt": "2026-03-19T07:18:39Z",
+              "mergedAt": "2026-03-19T07:19:32Z"
+            },
+            {
+              "number": 115,
+              "additions": 488,
+              "deletions": 31,
+              "createdAt": "2026-03-18T05:17:27Z",
+              "mergedAt": "2026-03-18T05:45:11Z"
+            },
+            {
+              "number": 114,
+              "additions": 1111,
+              "deletions": 158,
+              "createdAt": "2026-03-17T06:36:40Z",
+              "mergedAt": "2026-03-17T06:38:17Z"
+            },
+            {
+              "number": 113,
+              "additions": 24,
+              "deletions": 0,
+              "createdAt": "2026-03-16T08:59:09Z",
+              "mergedAt": "2026-03-16T09:02:14Z"
+            },
+            {
+              "number": 112,
+              "additions": 24,
+              "deletions": 0,
+              "createdAt": "2026-03-16T07:52:06Z",
+              "mergedAt": "2026-03-16T07:53:19Z"
+            },
+            {
+              "number": 111,
+              "additions": 655,
+              "deletions": 351,
+              "createdAt": "2026-03-13T10:23:19Z",
+              "mergedAt": "2026-03-13T10:26:06Z"
+            },
+            {
+              "number": 110,
+              "additions": 5974,
+              "deletions": 1078,
+              "createdAt": "2026-03-10T08:16:03Z",
+              "mergedAt": "2026-03-10T08:19:11Z"
+            },
+            {
+              "number": 109,
+              "additions": 72,
+              "deletions": 16,
+              "createdAt": "2026-03-10T02:22:18Z",
+              "mergedAt": "2026-03-10T02:24:07Z"
+            },
+            {
+              "number": 108,
+              "additions": 1101,
+              "deletions": 88,
+              "createdAt": "2026-03-09T08:24:18Z",
+              "mergedAt": "2026-03-10T01:34:02Z"
+            },
+            {
+              "number": 107,
+              "additions": 401,
+              "deletions": 2,
+              "createdAt": "2026-03-04T03:27:24Z",
+              "mergedAt": "2026-03-04T03:28:41Z"
+            }
+          ],
+          "prs_reviewed": 0,
+          "avg_pr_size": 1077.7,
+          "avg_time_to_merge_hours": 1.6
+        },
+        "rosseca/tattoo-android": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 10,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/tattoo": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 41,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        }
+      }
+    },
+    {
+      "name": "Artem Shyianov",
+      "github_username": "artemshyianov-art",
+      "vendor": "Anadea",
+      "skills": "iOS",
+      "projects": [
+        "iMote"
+      ],
+      "totals": {
+        "total_commits": 23,
+        "total_prs_merged": 14,
+        "total_prs_reviewed": 4,
+        "total_avg_pr_size": 323.2,
+        "total_avg_ttm_hours": 32.9
+      },
+      "repos": {
+        "rosseca/imote-android": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/imote": {
+          "commits": 23,
+          "prs_merged_count": 14,
+          "prs_merged": [
+            {
+              "number": 434,
+              "additions": 157,
+              "deletions": 289,
+              "createdAt": "2026-03-20T12:22:51Z",
+              "mergedAt": "2026-03-20T12:51:27Z"
+            },
+            {
+              "number": 433,
+              "additions": 534,
+              "deletions": 510,
+              "createdAt": "2026-03-19T11:35:55Z",
+              "mergedAt": "2026-03-20T08:47:05Z"
+            },
+            {
+              "number": 432,
+              "additions": 1,
+              "deletions": 1,
+              "createdAt": "2026-03-19T09:29:16Z",
+              "mergedAt": "2026-03-19T09:49:56Z"
+            },
+            {
+              "number": 431,
+              "additions": 310,
+              "deletions": 277,
+              "createdAt": "2026-03-18T17:50:04Z",
+              "mergedAt": "2026-03-19T09:28:16Z"
+            },
+            {
+              "number": 430,
+              "additions": 25,
+              "deletions": 151,
+              "createdAt": "2026-03-18T13:04:39Z",
+              "mergedAt": "2026-03-18T13:41:15Z"
+            },
+            {
+              "number": 429,
+              "additions": 46,
+              "deletions": 37,
+              "createdAt": "2026-03-17T12:16:52Z",
+              "mergedAt": "2026-03-18T08:47:32Z"
+            },
+            {
+              "number": 428,
+              "additions": 109,
+              "deletions": 260,
+              "createdAt": "2026-03-17T08:03:27Z",
+              "mergedAt": "2026-03-17T11:30:30Z"
+            },
+            {
+              "number": 427,
+              "additions": 158,
+              "deletions": 311,
+              "createdAt": "2026-03-12T16:46:25Z",
+              "mergedAt": "2026-03-19T08:50:30Z"
+            },
+            {
+              "number": 425,
+              "additions": 72,
+              "deletions": 59,
+              "createdAt": "2026-03-11T11:44:22Z",
+              "mergedAt": "2026-03-11T12:34:19Z"
+            },
+            {
+              "number": 423,
+              "additions": 584,
+              "deletions": 134,
+              "createdAt": "2026-03-10T13:40:39Z",
+              "mergedAt": "2026-03-12T16:43:56Z"
+            },
+            {
+              "number": 421,
+              "additions": 24,
+              "deletions": 31,
+              "createdAt": "2026-03-09T16:31:03Z",
+              "mergedAt": "2026-03-09T17:02:32Z"
+            },
+            {
+              "number": 419,
+              "additions": 2,
+              "deletions": 2,
+              "createdAt": "2026-03-05T12:46:40Z",
+              "mergedAt": "2026-03-09T11:43:47Z"
+            },
+            {
+              "number": 415,
+              "additions": 138,
+              "deletions": 1,
+              "createdAt": "2026-03-02T16:33:42Z",
+              "mergedAt": "2026-03-03T09:40:26Z"
+            },
+            {
+              "number": 413,
+              "additions": 264,
+              "deletions": 38,
+              "createdAt": "2026-02-27T10:19:15Z",
+              "mergedAt": "2026-03-02T11:54:26Z"
+            }
+          ],
+          "prs_reviewed": 4,
+          "avg_pr_size": 323.2,
+          "avg_time_to_merge_hours": 32.9
+        }
+      }
+    },
+    {
+      "name": "Serhii Kostrykin",
+      "github_username": "sk-leadtech",
+      "vendor": "Anadea",
+      "skills": "iOS",
+      "projects": [
+        "Screen Mirroring",
+        "iMote"
+      ],
+      "totals": {
+        "total_commits": 10,
+        "total_prs_merged": 4,
+        "total_prs_reviewed": 8,
+        "total_avg_pr_size": 42.5,
+        "total_avg_ttm_hours": 9.4
+      },
+      "repos": {
+        "leadtechcorp/screenmirroring_backend": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/imote-android": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/imote": {
+          "commits": 6,
+          "prs_merged_count": 2,
+          "prs_merged": [
+            {
+              "number": 418,
+              "additions": 55,
+              "deletions": 27,
+              "createdAt": "2026-03-03T18:31:46Z",
+              "mergedAt": "2026-03-04T10:57:30Z"
+            },
+            {
+              "number": 417,
+              "additions": 40,
+              "deletions": 3,
+              "createdAt": "2026-03-03T15:04:59Z",
+              "mergedAt": "2026-03-03T16:03:25Z"
+            }
+          ],
+          "prs_reviewed": 8,
+          "avg_pr_size": 62.5,
+          "avg_time_to_merge_hours": 8.7
+        },
+        "rosseca/screenmirroring": {
+          "commits": 4,
+          "prs_merged_count": 2,
+          "prs_merged": [
+            {
+              "number": 68,
+              "additions": 33,
+              "deletions": 11,
+              "createdAt": "2026-03-19T09:49:59Z",
+              "mergedAt": "2026-03-19T13:59:05Z"
+            },
+            {
+              "number": 66,
+              "additions": 0,
+              "deletions": 1,
+              "createdAt": "2026-03-10T17:23:32Z",
+              "mergedAt": "2026-03-11T09:20:12Z"
+            }
+          ],
+          "prs_reviewed": 0,
+          "avg_pr_size": 22.5,
+          "avg_time_to_merge_hours": 10
+        }
+      }
+    },
+    {
+      "name": "Anton Shkuray",
+      "github_username": "AntonShkurayExtLeadtech",
+      "vendor": "Gilzor",
+      "skills": "iOS",
+      "projects": [
+        "Face AI"
+      ],
+      "totals": {
+        "total_commits": 33,
+        "total_prs_merged": 32,
+        "total_prs_reviewed": 2,
+        "total_avg_pr_size": 149,
+        "total_avg_ttm_hours": 5.5
+      },
+      "repos": {
+        "leadtechcorp/faceai_backend": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        },
+        "rosseca/faceai_ios": {
+          "commits": 33,
+          "prs_merged_count": 32,
+          "prs_merged": [
+            {
+              "number": 265,
+              "additions": 7,
+              "deletions": 5,
+              "createdAt": "2026-03-20T11:25:20Z",
+              "mergedAt": "2026-03-20T11:40:38Z"
+            },
+            {
+              "number": 264,
+              "additions": 252,
+              "deletions": 151,
+              "createdAt": "2026-03-19T16:52:34Z",
+              "mergedAt": "2026-03-20T09:33:43Z"
+            },
+            {
+              "number": 263,
+              "additions": 2,
+              "deletions": 3,
+              "createdAt": "2026-03-18T11:34:51Z",
+              "mergedAt": "2026-03-18T11:56:58Z"
+            },
+            {
+              "number": 261,
+              "additions": 16,
+              "deletions": 15,
+              "createdAt": "2026-03-16T15:55:14Z",
+              "mergedAt": "2026-03-16T16:01:00Z"
+            },
+            {
+              "number": 260,
+              "additions": 59,
+              "deletions": 88,
+              "createdAt": "2026-03-16T13:09:10Z",
+              "mergedAt": "2026-03-16T13:11:40Z"
+            },
+            {
+              "number": 259,
+              "additions": 3,
+              "deletions": 3,
+              "createdAt": "2026-03-16T09:23:37Z",
+              "mergedAt": "2026-03-16T12:59:17Z"
+            },
+            {
+              "number": 257,
+              "additions": 43,
+              "deletions": 42,
+              "createdAt": "2026-03-13T16:05:02Z",
+              "mergedAt": "2026-03-13T17:05:12Z"
+            },
+            {
+              "number": 256,
+              "additions": 43,
+              "deletions": 147,
+              "createdAt": "2026-03-13T12:19:49Z",
+              "mergedAt": "2026-03-13T16:01:41Z"
+            },
+            {
+              "number": 252,
+              "additions": 25,
+              "deletions": 13,
+              "createdAt": "2026-03-13T10:37:52Z",
+              "mergedAt": "2026-03-13T11:59:41Z"
+            },
+            {
+              "number": 248,
+              "additions": 41,
+              "deletions": 18,
+              "createdAt": "2026-03-12T15:05:05Z",
+              "mergedAt": "2026-03-12T15:08:22Z"
+            },
+            {
+              "number": 244,
+              "additions": 4,
+              "deletions": 5,
+              "createdAt": "2026-03-11T14:51:49Z",
+              "mergedAt": "2026-03-11T16:48:24Z"
+            },
+            {
+              "number": 243,
+              "additions": 1,
+              "deletions": 0,
+              "createdAt": "2026-03-11T13:49:39Z",
+              "mergedAt": "2026-03-11T14:49:01Z"
+            },
+            {
+              "number": 242,
+              "additions": 2,
+              "deletions": 1,
+              "createdAt": "2026-03-11T12:15:52Z",
+              "mergedAt": "2026-03-11T13:47:42Z"
+            },
+            {
+              "number": 240,
+              "additions": 3,
+              "deletions": 3,
+              "createdAt": "2026-03-11T11:34:20Z",
+              "mergedAt": "2026-03-11T11:53:57Z"
+            },
+            {
+              "number": 237,
+              "additions": 52,
+              "deletions": 14,
+              "createdAt": "2026-03-11T10:35:12Z",
+              "mergedAt": "2026-03-11T10:58:43Z"
+            },
+            {
+              "number": 236,
+              "additions": 2,
+              "deletions": 2,
+              "createdAt": "2026-03-10T18:27:59Z",
+              "mergedAt": "2026-03-11T08:17:53Z"
+            },
+            {
+              "number": 235,
+              "additions": 108,
+              "deletions": 8,
+              "createdAt": "2026-03-10T15:59:08Z",
+              "mergedAt": "2026-03-10T16:09:35Z"
+            },
+            {
+              "number": 234,
+              "additions": 22,
+              "deletions": 2,
+              "createdAt": "2026-03-10T12:33:13Z",
+              "mergedAt": "2026-03-10T13:23:34Z"
+            },
+            {
+              "number": 232,
+              "additions": 1,
+              "deletions": 1,
+              "createdAt": "2026-03-10T08:34:01Z",
+              "mergedAt": "2026-03-10T09:11:34Z"
+            },
+            {
+              "number": 230,
+              "additions": 167,
+              "deletions": 233,
+              "createdAt": "2026-03-09T15:32:13Z",
+              "mergedAt": "2026-03-10T08:04:04Z"
+            },
+            {
+              "number": 229,
+              "additions": 2,
+              "deletions": 2,
+              "createdAt": "2026-03-09T13:23:25Z",
+              "mergedAt": "2026-03-09T14:37:32Z"
+            },
+            {
+              "number": 226,
+              "additions": 7,
+              "deletions": 8,
+              "createdAt": "2026-03-09T12:04:08Z",
+              "mergedAt": "2026-03-09T12:29:07Z"
+            },
+            {
+              "number": 222,
+              "additions": 205,
+              "deletions": 152,
+              "createdAt": "2026-03-06T15:02:02Z",
+              "mergedAt": "2026-03-06T15:44:42Z"
+            },
+            {
+              "number": 221,
+              "additions": 18,
+              "deletions": 12,
+              "createdAt": "2026-03-06T13:59:31Z",
+              "mergedAt": "2026-03-06T14:34:10Z"
+            },
+            {
+              "number": 220,
+              "additions": 9,
+              "deletions": 4,
+              "createdAt": "2026-03-06T10:56:22Z",
+              "mergedAt": "2026-03-06T11:31:41Z"
+            },
+            {
+              "number": 219,
+              "additions": 96,
+              "deletions": 10,
+              "createdAt": "2026-03-05T15:19:34Z",
+              "mergedAt": "2026-03-05T16:49:52Z"
+            },
+            {
+              "number": 218,
+              "additions": 37,
+              "deletions": 22,
+              "createdAt": "2026-03-05T12:58:40Z",
+              "mergedAt": "2026-03-05T13:30:40Z"
+            },
+            {
+              "number": 217,
+              "additions": 129,
+              "deletions": 96,
+              "createdAt": "2026-03-04T15:21:53Z",
+              "mergedAt": "2026-03-05T09:58:06Z"
+            },
+            {
+              "number": 216,
+              "additions": 55,
+              "deletions": 48,
+              "createdAt": "2026-03-03T16:55:37Z",
+              "mergedAt": "2026-03-04T09:47:14Z"
+            },
+            {
+              "number": 214,
+              "additions": 654,
+              "deletions": 24,
+              "createdAt": "2026-03-02T15:56:31Z",
+              "mergedAt": "2026-03-02T16:43:52Z"
+            },
+            {
+              "number": 213,
+              "additions": 16,
+              "deletions": 1,
+              "createdAt": "2026-03-02T10:31:50Z",
+              "mergedAt": "2026-03-02T12:40:09Z"
+            },
+            {
+              "number": 212,
+              "additions": 1099,
+              "deletions": 455,
+              "createdAt": "2026-02-27T12:54:07Z",
+              "mergedAt": "2026-03-02T10:02:52Z"
+            }
+          ],
+          "prs_reviewed": 2,
+          "avg_pr_size": 149,
+          "avg_time_to_merge_hours": 5.5
+        }
+      }
+    },
+    {
+      "name": "Andrew Laminski",
+      "github_username": "andrewlaminski-beep",
+      "vendor": "Gilzor",
+      "skills": "Backend",
+      "projects": [
+        "Face AI"
+      ],
+      "totals": {
+        "total_commits": 45,
+        "total_prs_merged": 8,
+        "total_prs_reviewed": 1,
+        "total_avg_pr_size": 1414,
+        "total_avg_ttm_hours": 12.5
+      },
+      "repos": {
+        "leadtechcorp/faceai_backend": {
+          "commits": 45,
+          "prs_merged_count": 8,
+          "prs_merged": [
+            {
+              "number": 83,
+              "additions": 79,
+              "deletions": 4,
+              "createdAt": "2026-03-20T09:26:58Z",
+              "mergedAt": "2026-03-20T09:50:32Z"
+            },
+            {
+              "number": 82,
+              "additions": 0,
+              "deletions": 1,
+              "createdAt": "2026-03-15T18:38:24Z",
+              "mergedAt": "2026-03-15T18:38:33Z"
+            },
+            {
+              "number": 81,
+              "additions": 0,
+              "deletions": 0,
+              "createdAt": "2026-03-15T18:24:11Z",
+              "mergedAt": "2026-03-15T18:24:18Z"
+            },
+            {
+              "number": 80,
+              "additions": 3506,
+              "deletions": 2215,
+              "createdAt": "2026-03-12T13:36:07Z",
+              "mergedAt": "2026-03-12T13:36:20Z"
+            },
+            {
+              "number": 78,
+              "additions": 770,
+              "deletions": 640,
+              "createdAt": "2026-03-09T08:50:49Z",
+              "mergedAt": "2026-03-09T12:53:24Z"
+            },
+            {
+              "number": 77,
+              "additions": 80,
+              "deletions": 11,
+              "createdAt": "2026-03-05T08:51:24Z",
+              "mergedAt": "2026-03-05T08:51:31Z"
+            },
+            {
+              "number": 76,
+              "additions": 2314,
+              "deletions": 1638,
+              "createdAt": "2026-03-05T08:23:06Z",
+              "mergedAt": "2026-03-09T08:00:34Z"
+            },
+            {
+              "number": 75,
+              "additions": 45,
+              "deletions": 9,
+              "createdAt": "2026-03-03T11:39:02Z",
+              "mergedAt": "2026-03-03T11:47:36Z"
+            }
+          ],
+          "prs_reviewed": 1,
+          "avg_pr_size": 1414,
+          "avg_time_to_merge_hours": 12.5
+        },
+        "rosseca/faceai_ios": {
+          "commits": 0,
+          "prs_merged_count": 0,
+          "prs_merged": [],
+          "prs_reviewed": 0,
+          "avg_pr_size": 0,
+          "avg_time_to_merge_hours": 0
+        }
+      }
+    }
+  ]
+}
