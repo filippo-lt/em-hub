@@ -45,20 +45,15 @@ Don't dwell — one slide. Everyone in the room already feels this.
 
 **Message:** We're moving from a collection of apps that each reinvent the wheel to a portfolio that shares infrastructure. The approach: cloud services + client libraries that any app can plug into.
 
-Four shared components are already in motion:
-
-- **Parapet** — quota, auth, tokens (live)
-- **AI Gateway** — centralised AI access (in progress)
-- **TVFoundationSDK** — shared TV platform capabilities (in progress)
-- **MartechSDK** — shared martech for apps (in progress)
+**Parapet** is the first shared component — live now with quota, auth, and tokens. More components are coming, but this is where we start.
 
 This is a repeatable pattern, not a one-off project.
 
-**Format:** A matrix-style infographic showing which apps adopt which shared components — not everything is for everyone. The visual should also convey that more components are coming. This is the slide that makes C-level lean in — make the vision tangible.
+**Format:** A matrix-style infographic focused on Parapet. Show which apps adopt Parapet today, with visual indication that more shared components will follow (grayed/faded columns for future components).
 
 **🖼 Image prompt:**
 
-> [Style prefix] + "An adoption matrix on white background. No title. COLUMNS (left to right): 'Parapet' (teal header), 'AI Gateway' (teal header), 'TVFoundationSDK' (teal header), 'MartechSDK' (teal header), then two additional columns with no label — just a subtle '?' or '...' in soft grey, representing unnamed future components. ROWS: 6-8 app names listed vertically on the left side in dark charcoal text (e.g. Photo Up, Face AI, Tattooist, App 4, App 5, App 6, App 7, App 8). At each intersection, show a filled teal dot where the app adopts that component, and an empty/absent dot where it doesn't. The key pattern: the 'MartechSDK' column is fully filled (every app has a dot) — it's universal. The 'Parapet' and 'TVFoundationSDK' columns have dots for only some apps (roughly half). The 'AI Gateway' column has dots for a few apps. The two unnamed future columns have no dots yet — they are visually lighter and faded, showing the platform is growing. The overall impression: a shared platform with selective adoption per component, and room to grow. Clean grid lines, generous spacing, no clutter."
+> [Style prefix] + "An adoption matrix on white background. No title. COLUMNS (left to right): 'Parapet' (teal header, fully saturated), then three additional columns with headers 'AI Gateway', 'TVFoundationSDK', 'MartechSDK' that are visually blurred, desaturated, or grayed out — these represent future components not yet the focus. Then two additional columns with no label — just a subtle '?' or '...' in very light grey. ROWS: 6-8 app names listed vertically on the left side in dark charcoal text (e.g. Photo Up, Face AI, Tattooist, App 4, App 5, App 6, App 7, App 8). At each intersection with the Parapet column, show a filled teal dot where the app adopts it, and an empty/absent dot where it doesn't. The grayed/blurred future columns have no dots or very faint placeholder dots. The overall impression: Parapet is the clear focus, with the broader platform hinted at but visually secondary. Clean grid lines, generous spacing, no clutter."
 
 ---
 
@@ -154,29 +149,7 @@ Client libraries ship with Parapet for iOS, Android, and Flutter (Web ready, loo
 
 ---
 
-## Slide 8 — Built in 2 Days with AI
-
-**Title:** Built in 2 Days
-
-**Message:** Parapet wasn't built over months by a large team. The core platform — cloud services, client libraries, Control Center — was built in 2 days by a single engineer working with AI.
-
-This isn't a shortcut story. It's a preview of how we build going forward:
-
-- AI handles the scaffolding, boilerplate, and integration plumbing
-- Engineers focus on architecture decisions and domain logic
-- What used to require a team and a quarter now requires focus and the right tools
-
-Parapet is both a shared component *and* a proof point for the AI-assisted development model. The same approach applies to AI Gateway, MartechSDK, and whatever comes next.
-
-**Format:** Simple, high-impact. Left side: "2 days / 1 engineer / AI-assisted" as bold stats. Right side: brief breakdown of what AI accelerated vs what required human judgment. Keep it honest — not "AI wrote everything", but "AI changed the economics of building this."
-
-**🖼 Image prompt:**
-
-> [Style prefix] + "Split layout on white background. LEFT SIDE: three large bold stats stacked vertically — '2 Days' in teal, '1 Engineer' in dark charcoal, 'AI-Assisted' in coral. Each stat has a thin horizontal line beneath it. RIGHT SIDE: two columns side by side. Left column header 'AI Accelerated' (teal) with 4 short items: 'API scaffolding', 'Client libraries', 'Dashboard UI', 'Integration tests'. Right column header 'Human Decisions' (coral) with 4 short items: 'Architecture', 'Security model', 'Multi-tenancy design', 'Domain logic'. The visual contrast shows the partnership between AI speed and human judgment."
-
----
-
-## Slide 9 — Already Live
+## Slide 8 — Already Live
 
 **Title:** Already Live
 
@@ -198,7 +171,7 @@ This is the credibility slide. Proof over promises. Don't frame the remaining po
 
 ---
 
-## Slide 10 — Ready When You Are
+## Slide 9 — Ready When You Are
 
 **Title:** Ready When You Are
 
@@ -221,7 +194,52 @@ No rollout plan, no mandated timeline. When a product team is ready to move, we'
 
 ---
 
-## Slide 11 — The Bigger Picture
+## Slide 10 — Built in 2 Days with AI
+
+**Title:** Built in 2 Days
+
+**Message:** Parapet wasn't built over months by a large team. The core platform — cloud services, client libraries, Control Center — was built in 2 days by a single engineer working with AI.
+
+This isn't a shortcut story. It's a preview of how we build going forward:
+
+- AI handles the scaffolding, boilerplate, and integration plumbing
+- Engineers focus on architecture decisions and domain logic
+- What used to require a team and a quarter now requires focus and the right tools
+
+Parapet is both a shared component *and* a proof point for the AI-assisted development model. The same approach applies to AI Gateway, MartechSDK, and whatever comes next.
+
+**Format:** Simple, high-impact. Left side: "2 days / 1 engineer / AI-assisted" as bold stats. Right side: brief breakdown of what AI accelerated vs what required human judgment. Keep it honest — not "AI wrote everything", but "AI changed the economics of building this."
+
+**🖼 Image prompt:**
+
+> [Style prefix] + "Split layout on white background. LEFT SIDE: three large bold stats stacked vertically — '2 Days' in teal, '1 Engineer' in dark charcoal, 'AI-Assisted' in coral. Each stat has a thin horizontal line beneath it. RIGHT SIDE: two columns side by side. Left column header 'AI Accelerated' (teal) with 4 short items: 'API scaffolding', 'Client libraries', 'Dashboard UI', 'Integration tests'. Right column header 'Human Decisions' (coral) with 4 short items: 'Architecture', 'Security model', 'Multi-tenancy design', 'Domain logic'. The visual contrast shows the partnership between AI speed and human judgment."
+
+---
+
+## Slide 11 — The Platform: Build Once, Integrate Everywhere
+
+**Title:** The Platform: Build Once, Integrate Everywhere
+
+**Message:** We're building a portfolio that shares infrastructure — cloud services + client libraries that any app can plug into.
+
+Four shared components are already in motion:
+
+- **Parapet** — quota, auth, tokens (live)
+- **AI Gateway** — centralised AI access (in progress)
+- **TVFoundationSDK** — shared TV platform capabilities (in progress)
+- **MartechSDK** — shared martech for apps (in progress)
+
+This is a repeatable pattern, not a one-off project.
+
+**Format:** A matrix-style infographic showing which apps adopt which shared components — not everything is for everyone. The visual should also convey that more components are coming. This is the slide that makes C-level lean in — make the vision tangible.
+
+**🖼 Image prompt:**
+
+> [Style prefix] + "An adoption matrix on white background. No title. COLUMNS (left to right): 'Parapet' (teal header), 'AI Gateway' (teal header), 'TVFoundationSDK' (teal header), 'MartechSDK' (teal header), then two additional columns with no label — just a subtle '?' or '...' in soft grey, representing unnamed future components. ROWS: 6-8 app names listed vertically on the left side in dark charcoal text (e.g. Photo Up, Face AI, Tattooist, App 4, App 5, App 6, App 7, App 8). At each intersection, show a filled teal dot where the app adopts that component, and an empty/absent dot where it doesn't. The key pattern: the 'MartechSDK' column is fully filled (every app has a dot) — it's universal. The 'Parapet' and 'TVFoundationSDK' columns have dots for only some apps (roughly half). The 'AI Gateway' column has dots for a few apps. The two unnamed future columns have no dots yet — they are visually lighter and faded, showing the platform is growing. The overall impression: a shared platform with selective adoption per component, and room to grow. Clean grid lines, generous spacing, no clutter."
+
+---
+
+## Slide 12 — The Bigger Picture
 
 **Title:** The Bigger Picture
 
@@ -242,7 +260,7 @@ End on the vision: we're building a portfolio, not a collection of apps.
 
 ---
 
-## Slide 12 — Close
+## Slide 13 — Close
 
 **Title:** Thank You / Q&A
 
