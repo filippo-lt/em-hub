@@ -1,0 +1,80 @@
+
+<style>
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1.5rem;}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.card{border-radius:12px;padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:10px;}
+.card-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.card-title{font-size:13px;font-weight:500;margin:0;}
+.card-body{font-size:11px;line-height:1.6;margin:0;}
+</style>
+
+<div class="sw">
+
+  <div style="text-align:center;">
+    <p style="font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.025em;margin:0 0 5px;">Ready when you are</p>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin:0;">Parapet is built, proven, and available — here's what any app gets from day one</p>
+  </div>
+
+  <div class="card-grid">
+
+    <div class="card" style="background:#E1F5EE;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="card-icon" style="background:#9FE1CB;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="#085041" stroke-width="1.5" fill="none"/><path d="M9 6V9L11 11" stroke="#085041" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <p class="card-title" style="color:#085041;"><b>Quota management</b></p>
+      </div>
+      <p class="card-body" style="color:#0F6E56;">Configure usage limits and reset schedules per feature, no sprint, no deploy. Changes take effect immediately from the Control Center.</p>
+    </div>
+
+    <div class="card" style="background:#FAEEDA;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="card-icon" style="background:#FAC775;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#633806" stroke-width="1.5" fill="none"/><text x="9" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#633806">$</text></svg>
+        </div>
+        <p class="card-title" style="color:#633806;"><b>Token system</b></p>
+      </div>
+      <p class="card-body" style="color:#854F0B;">Offer consumable credit packs from day one. Purchased via RevenueCat, credited automatically. No custom development needed.</p>
+    </div>
+
+    <div class="card" style="background:#FAECE7;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="card-icon" style="background:#F5C4B3;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M14 9A5 5 0 0 1 4 9" stroke="#712B13" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M4 9A5 5 0 0 1 14 9" stroke="#712B13" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="2 2"/><path d="M14 7L14 9L12 9" stroke="#712B13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 11L4 9L6 9" stroke="#712B13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="card-title" style="color:#712B13;"><b>Subscription sync</b></p>
+      </div>
+      <p class="card-body" style="color:#993C1D;">RevenueCat integration handled automatically. Purchases, renewals, cancellations and refunds update quota and token state without manual handling.</p>
+    </div>
+
+    <div class="card" style="background:#EEEDFE;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="card-icon" style="background:#CECBF6;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="4" width="12" height="10" rx="2" stroke="#3C3489" stroke-width="1.5" fill="none"/><path d="M6 8H12M6 11H10" stroke="#3C3489" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <p class="card-title" style="color:#3C3489;"><b>Control Center access</b></p>
+      </div>
+      <p class="card-body" style="color:#534AB7;">Product and support teams can look up any user, adjust limits, and debug issues directly, no engineering ticket needed.</p>
+    </div>
+
+  </div>
+  <!-- <div style="background:#F1EFE8;border-radius:10px;padding:0.85rem 1.5rem;text-align:center;">
+    <p style="font-size:12px;font-weight:500;color:#444441;margin:0;"><b>Available now</b></p>
+  </div> -->
+
+  <div style="display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;">
+    <span style="font-size:10px;color:var(--color-text-secondary);margin-right:4px;">Integration via</span>
+    <span style="font-size:10px;font-weight:500;padding:4px 12px;border-radius:100px;background:#E1F5EE;color:#085041;">iOS</span>
+    <span style="font-size:10px;font-weight:500;padding:4px 12px;border-radius:100px;background:#E1F5EE;color:#085041;">Android</span>
+    <span style="font-size:10px;font-weight:500;padding:4px 12px;border-radius:100px;background:#E1F5EE;color:#085041;">Flutter</span>
+    <span style="font-size:10px;font-weight:500;padding:4px 12px;border-radius:100px;background:#E1F5EE;color:#085041;">Backend</span>
+    <span style="font-size:10px;font-weight:500;padding:4px 12px;border-radius:100px;background:#FAEEDA;color:#633806;">Web — coming soon</span>
+  </div>
+
+
+  <div style="border-top:0.5px solid var(--color-border-tertiary);padding-top:0.75rem;display:flex;justify-content:space-between;">
+    <p style="font-size:10px;color:var(--color-text-secondary);margin:0;">No mandated timeline — integrate when it makes sense for your app</p>
+    <p style="font-size:10px;font-weight:500;color:var(--color-text-secondary);margin:0;">Parapet</p>
+  </div>
+
+</div>

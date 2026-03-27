@@ -1,0 +1,91 @@
+
+<style>
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1.5rem;}
+.chip{border-radius:7px;padding:5px 12px;font-size:10px;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;}
+.chip-neutral{background:#F1EFE8;color:#5F5E5A;border:0.5px solid #D3D1C7;}
+.chip-live{background:#E1F5EE;color:#085041;border:0.5px solid #9FE1CB;}
+.chip-wip{background:#FAEEDA;color:#633806;border:0.5px solid #FAC775;}
+.group{border:1.5px dashed #D3D1C7;border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:7px;background:#FDFCF9;}
+.group-title{font-size:8px;font-weight:500;color:#888780;letter-spacing:0.1em;text-transform:uppercase;}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;}
+</style>
+
+<div class="sw">
+
+  <div style="text-align:center;">
+    <p style="font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.025em;margin:0 0 5px;">The bigger picture</p>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin:0;">The infrastructure layer for the whole portfolio.</p>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;">
+      <div class="group">
+        <div class="group-title">Infrastructure</div>
+        <div class="chip chip-neutral">Repo</div>
+        <div class="chip chip-neutral">Pipes</div>
+        <div class="chip chip-neutral">Cloud</div>
+      </div>
+      <div class="group">
+        <div class="group-title">Identity</div>
+        <div class="chip chip-neutral">Auth</div>
+        <div class="chip chip-neutral">User Reg</div>
+        <div class="chip chip-neutral">User Mgt</div>
+      </div>
+      <div class="group">
+        <div class="group-title">Monetisation</div>
+        <div class="chip chip-live"><div class="dot" style="background:#5DCAA5;"></div>Quota & Tokens</div>
+        <div class="chip chip-live"><div class="dot" style="background:#5DCAA5;"></div>Subscription Sync</div>
+        <div class="chip chip-neutral">Billing</div>
+      </div>
+      <div class="group">
+        <div class="group-title">AI</div>
+        <div class="chip chip-wip"><div class="dot" style="background:#FAC775;"></div>AI Gateway</div>
+        <div class="chip chip-neutral">AI Service</div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="display:flex;flex-direction:column;gap:7px;flex:0 0 auto;">
+        <div class="chip chip-neutral">Landing Page</div>
+        <div class="chip chip-neutral">Home Page</div>
+      </div>
+
+      <div style="flex:1;border-radius:14px;border:2px solid #378ADD;background:#fff;padding:1.25rem;display:flex;align-items:center;justify-content:center;min-height:80px;">
+        <span style="font-size:16px;font-weight:500;color:#185FA5;letter-spacing:-0.02em;">Core App</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:7px;flex:0 0 auto;">
+        <div class="chip chip-wip"><div class="dot" style="background:#FAC775;"></div>TV Foundation Kit</div>
+        <div class="chip chip-neutral">CMS</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;">
+      <div class="chip chip-wip" style="justify-content:center;"><div class="dot" style="background:#FAC775;"></div>Martech SDK</div>
+      <div class="chip chip-neutral" style="justify-content:center;">CRM</div>
+      <div class="chip chip-neutral" style="justify-content:center;">Data</div>
+      <div class="chip chip-neutral" style="justify-content:center;">Experimentation</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+      <div class="chip chip-neutral" style="justify-content:center;">Comms</div>
+      <div class="chip chip-neutral" style="justify-content:center;">Push Notifications</div>
+      <div class="chip chip-neutral" style="justify-content:center;">Analytics</div>
+    </div>
+
+  </div>
+
+  <div style="display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap;">
+    <span style="font-size:10px;color:var(--color-text-secondary);display:flex;align-items:center;"><span class="legend-dot" style="background:#5DCAA5;"></span>Shared — live</span>
+    <span style="font-size:10px;color:var(--color-text-secondary);display:flex;align-items:center;"><span class="legend-dot" style="background:#FAC775;"></span>Shared — in progress</span>
+    <span style="font-size:10px;color:var(--color-text-secondary);display:flex;align-items:center;"><span class="legend-dot" style="background:#D3D1C7;"></span>App-specific</span>
+  </div>
+
+  <div style="border-top:0.5px solid var(--color-border-tertiary);padding-top:0.75rem;display:flex;justify-content:space-between;">
+    <p style="font-size:10px;color:var(--color-text-secondary);margin:0;">We're building a portfolio, not a collection of apps</p>
+    <p style="font-size:10px;font-weight:500;color:var(--color-text-secondary);margin:0;">Parapet</p>
+  </div>
+
+</div>

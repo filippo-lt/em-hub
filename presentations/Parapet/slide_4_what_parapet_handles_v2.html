@@ -1,0 +1,79 @@
+
+<style>
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1.5rem;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.card{border-radius:12px;padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:10px;}
+.card-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.card-title{font-size:15px;font-weight:500;margin:0;}
+.card-body{font-size:11px;line-height:1.6;margin:0;}
+.platform-pill{font-size:10px;font-weight:500;padding:4px 12px;border-radius:100px;background:var(--color-background-secondary);color:var(--color-text-secondary);display:inline-block;}
+.platform-pill.ready{background:#E1F5EE;color:#085041;}
+.platform-pill.soon{background:#FAEEDA;color:#633806;}
+</style>
+
+<div class="sw">
+
+  <div style="text-align:center;">
+    <p style="font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.025em;margin:0 0 5px;">What Parapet handles</p>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin:0;">Four capabilities, one system — so your apps don't have to build any of them</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card" style="background:#E1F5EE;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="card-icon" style="background:#9FE1CB;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L4 4.5V9C4 12 6.5 14.5 9 16C11.5 14.5 14 12 14 9V4.5L9 2Z" stroke="#085041" stroke-width="1.5" fill="none"/><path d="M7 9L8.5 10.5L11.5 7.5" stroke="#085041" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <p class="card-title" style="color:#085041;">Device authentication</p>
+      </div>
+      <p class="card-body" style="color:#0F6E56;">Verifies real users on real devices via Firebase App Check and Apple App Attest. Fraud prevention at the platform level.</p>
+    </div>
+
+    <div class="card" style="background:#EEEDFE;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="card-icon" style="background:#CECBF6;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="#3C3489" stroke-width="1.5" fill="none"/><path d="M9 6V9L11 11" stroke="#3C3489" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <p class="card-title" style="color:#3C3489;">Quota management</p>
+      </div>
+      <p class="card-body" style="color:#534AB7;">Tracks feature usage limits per user. Configurable per app: daily, weekly, monthly, or billing cycle resets. No code changes needed.</p>
+    </div>
+
+    <div class="card" style="background:#FAEEDA;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="card-icon" style="background:#FAC775;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#633806" stroke-width="1.5" fill="none"/><text x="9" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#633806">$</text></svg>
+        </div>
+        <p class="card-title" style="color:#633806;">Token system</p>
+      </div>
+      <p class="card-body" style="color:#854F0B;">Persistent credits purchased via in-app purchase. Independent of subscriptions, available to any user. Backend controls pricing and cost per feature.</p>
+    </div>
+
+    <div class="card" style="background:#FAECE7;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="card-icon" style="background:#F5C4B3;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M14 9A5 5 0 0 1 4 9" stroke="#712B13" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M4 9A5 5 0 0 1 14 9" stroke="#712B13" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="2 2"/><path d="M14 7L14 9L12 9" stroke="#712B13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 11L4 9L6 9" stroke="#712B13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="card-title" style="color:#712B13;">Subscription sync</p>
+      </div>
+      <p class="card-body" style="color:#993C1D;">RevenueCat integration keeps quota and token state in sync automatically: purchases, renewals, cancellations, refunds. No manual handling.</p>
+    </div>
+
+  </div>
+
+  <div style="display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;">
+    <span style="font-size:10px;color:var(--color-text-secondary);margin-right:4px;">Platform support</span>
+    <span class="platform-pill ready">iOS</span>
+    <span class="platform-pill ready">Android</span>
+    <span class="platform-pill ready">Flutter</span>
+    <span class="platform-pill ready">Backend</span>
+    <span class="platform-pill soon">Web — coming soon</span>
+  </div>
+
+  <div style="border-top:0.5px solid var(--color-border-tertiary);padding-top:0.75rem;display:flex;justify-content:space-between;">
+    <p style="font-size:10px;color:var(--color-text-secondary);margin:0;">Multi-tenant — one system, all apps</p>
+    <p style="font-size:10px;font-weight:500;color:var(--color-text-secondary);margin:0;">Parapet</p>
+  </div>
+
+</div>

@@ -45,10 +45,11 @@ Don't dwell — one slide. Everyone in the room already feels this.
 
 **Message:** We're moving from a collection of apps that each reinvent the wheel to a portfolio that shares infrastructure. The approach: cloud services + client libraries that any app can plug into.
 
-Three shared components are already in motion:
+Four shared components are already in motion:
 
 - **Parapet** — quota, auth, tokens (live)
 - **AI Gateway** — centralised AI access (in progress)
+- **TVFoundationSDK** — shared TV platform capabilities (in progress)
 - **MartechSDK** — shared martech for apps (in progress)
 
 This is a repeatable pattern, not a one-off project.
@@ -153,63 +154,74 @@ Client libraries ship with Parapet for iOS, Android, and Flutter (Web ready, loo
 
 ---
 
-## Slide 8 — Live Today: Photo Up & Face AI
+## Slide 8 — Built in 2 Days with AI
 
-**Title:** Live Today: Photo Up & Face AI
+**Title:** Built in 2 Days
+
+**Message:** Parapet wasn't built over months by a large team. The core platform — cloud services, client libraries, Control Center — was built in 2 days by a single engineer working with AI.
+
+This isn't a shortcut story. It's a preview of how we build going forward:
+
+- AI handles the scaffolding, boilerplate, and integration plumbing
+- Engineers focus on architecture decisions and domain logic
+- What used to require a team and a quarter now requires focus and the right tools
+
+Parapet is both a shared component *and* a proof point for the AI-assisted development model. The same approach applies to AI Gateway, MartechSDK, and whatever comes next.
+
+**Format:** Simple, high-impact. Left side: "2 days / 1 engineer / AI-assisted" as bold stats. Right side: brief breakdown of what AI accelerated vs what required human judgment. Keep it honest — not "AI wrote everything", but "AI changed the economics of building this."
+
+**🖼 Image prompt:**
+
+> [Style prefix] + "Split layout on white background. LEFT SIDE: three large bold stats stacked vertically — '2 Days' in teal, '1 Engineer' in dark charcoal, 'AI-Assisted' in coral. Each stat has a thin horizontal line beneath it. RIGHT SIDE: two columns side by side. Left column header 'AI Accelerated' (teal) with 4 short items: 'API scaffolding', 'Client libraries', 'Dashboard UI', 'Integration tests'. Right column header 'Human Decisions' (coral) with 4 short items: 'Architecture', 'Security model', 'Multi-tenancy design', 'Domain logic'. The visual contrast shows the partnership between AI speed and human judgment."
+
+---
+
+## Slide 9 — Already Live
+
+**Title:** Already Live
 
 **Message:** Parapet is not a proposal — it's running in production.
 
 - **Photo Up** — live, quota management active
 - **Face AI** — live, quota management active
-- **Tattooist** — next in line
+- **Tattooist & 1 more app** — already planned for integration
 
 Share any concrete data or learnings from the live apps if available (e.g. integration went smoothly, support tickets reduced, specific issues caught early via Control Center).
 
-This is the credibility slide. Proof over promises.
+This is the credibility slide. Proof over promises. Don't frame the remaining portfolio as a backlog — frame it as an open door.
 
-**Format:** Text with app names/icons. If there's any data to share (even anecdotal), include it. A simple timeline showing "done → next → planned" reinforces momentum.
-
-**📊 Graph description (build as a styled graphic in your slide tool):**
-
-> Horizontal progress bar / timeline on white background. Three segments from left to right:
->
-> - **Photo Up** — teal filled, checkmark icon, label "Live" ✓
-> - **Face AI** — teal filled, checkmark icon, label "Live" ✓
-> - **Tattooist** — soft gold outlined (not filled), arrow icon, label "Next"
->
-> Below the bar, a subtle row of greyed-out app placeholders labelled "Remaining portfolio" to show the pipeline ahead. The visual should feel like momentum — things are moving left to right.
-
----
-
-## Slide 9 — The Rollout
-
-**Title:** The Rollout
-
-**Message:** Three phases:
-
-- **Phase 1 (now):** 2 apps live, Tattooist next — validating the model
-- **Phase 2 (next):** 4-6 more apps, batch onboarding 2-3 per quarter
-- **Phase 3 (scale):** Remaining apps, decommission legacy implementations
-
-Target: full portfolio coverage by Q3 2026.
-
-**The ask:** Product teams need to prioritise their app's integration slot. This works best when apps come in planned waves, not ad hoc.
-
-**Format:** A simple timeline or roadmap visual (3 phases). Keep it clean — phases with rough scope and target dates. The ask should be explicit and clear.
+**Format:** Text with app names/icons. Show what's live and what's committed. The rest of the portfolio is deliberately left open — no timeline, no pressure. The visual should feel like "this is ready" not "this is coming for you."
 
 **📊 Graph description (build as a styled graphic in your slide tool):**
 
-> Horizontal three-phase roadmap on white background. Three wide rounded rectangles arranged left-to-right with subtle arrow connectors between them:
->
-> - **Phase 1 — Now** (teal filled): "2 apps live, Tattooist next" — label "Validating"
-> - **Phase 2 — Next** (soft gold filled): "4-6 more apps, 2-3 per quarter" — label "Scaling"
-> - **Phase 3 — Scale** (light grey outlined): "Full portfolio, decommission legacy" — label "Complete"
->
-> Below the phases, a thin timeline arrow pointing right with "Q1 2026" under Phase 1, "Q2 2026" under Phase 2, and "Q3 2026" under Phase 3. Clean, forward-moving feel.
+> On white background, two groups separated by a subtle vertical dashed line. LEFT GROUP titled "Live" (teal): Photo Up and Face AI app icons with teal checkmarks. RIGHT GROUP titled "Planned" (soft gold): Tattooist and one more app icon with soft gold arrow icons. No further pipeline, no greyed-out placeholders. Clean and contained — shows what exists, not what's being imposed.
 
 ---
 
-## Slide 10 — The Bigger Picture
+## Slide 10 — Ready When You Are
+
+**Title:** Ready When You Are
+
+**Message:** Parapet is built, proven, and available. Any app in the portfolio can integrate — here's what that looks like:
+
+- **Quota management** — configure limits and resets without a sprint
+- **Token system** — offer consumable credits from day one
+- **Subscription sync** — RevenueCat integration handled automatically
+- **Control Center access** — product and support can self-serve immediately
+
+Integration is lightweight: client libraries for iOS, Android, Flutter (Web ready). Engineering estimates a few days per app, not weeks.
+
+No rollout plan, no mandated timeline. When a product team is ready to move, we're ready to support.
+
+**Format:** This is the "menu" slide — show what's on offer, not what's being scheduled. The tone is invitational, not directive. Think of it as an internal product page: here's what you get, here's how easy it is, come talk to us.
+
+**🖼 Image prompt:**
+
+> [Style prefix] + "On white background, a clean card layout. Four rounded rectangle cards in a row, each with a simple teal line icon and a label: 'Quota Management', 'Token System', 'Subscription Sync', 'Control Center'. Below the cards, a single line of text in dark charcoal: 'Available now — integrate when you're ready.' The overall tone is calm and invitational, not urgent. No timelines, no phases, no arrows pushing forward."
+
+---
+
+## Slide 11 — The Bigger Picture
 
 **Title:** The Bigger Picture
 
@@ -224,15 +236,13 @@ This is how we stop building the same thing ten times. Each shared component sav
 
 End on the vision: we're building a portfolio, not a collection of apps.
 
-**Format:** A callback to the Slide 3 adoption matrix — but now shown in a forward-looking, expanding state. This should feel strategic — the closing image the audience takes away.
+**Format:** A platform architecture map showing where Parapet sits within the broader app infrastructure. Grouped by domain (Infrastructure, Identity, Monetisation, AI, Martech, etc.) with a central "Core App" block. Shared components that are live or in progress are highlighted; everything else is neutral. This should feel strategic — the closing image the audience takes away.
 
-**🖼 Image prompt:**
-
-> [Style prefix] + "Same adoption matrix style as Slide 3, but evolved to show momentum and growth. On white background, no title. COLUMNS: 'Parapet' (teal header, checkmark badge — live), 'AI Gateway' (soft gold header, progress badge), 'TVFoundationSDK' (soft gold header, progress badge), 'MartechSDK' (soft gold header, progress badge), then three additional columns with '?' headers in light grey — unnamed future components. ROWS: 6-8 app names on the left. Teal filled dots at intersections where apps adopt a component. MartechSDK column is fully filled (all apps). Other named columns are partially filled. The unnamed '?' columns have no dots but show faint dotted-circle placeholders — the platform is ready to grow. Compared to Slide 3, this version has slightly more dots filled in (more adoption) and one extra unnamed column, reinforcing that the platform keeps expanding. The overall feel is forward-looking: a growing, compounding shared platform. Clean, strategic, the final image the audience remembers."
+**🖼 Visual note:** Use the platform architecture diagram (slide_11_bigger_picture_v4.html). The layout shows domain groups (Infrastructure, Identity, Monetisation, AI) across the top, the Core App in the centre flanked by supporting services, and cross-cutting concerns (Martech SDK, CRM, Data, Experimentation, Comms, Push, Analytics) along the bottom. Parapet's components (Quota & Tokens, Subscription Sync) are marked as "live" in teal; AI Gateway, TV Foundation Kit, and Martech SDK are marked "in progress" in gold; everything else is neutral grey. The visual reinforces that Parapet is one piece of a growing shared platform.
 
 ---
 
-## Slide 11 — Close
+## Slide 12 — Close
 
 **Title:** Thank You / Q&A
 

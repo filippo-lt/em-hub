@@ -1,0 +1,85 @@
+
+<style>
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1.5rem;}
+.split{display:grid;grid-template-columns:1fr 1.4fr;gap:16px;}
+.stat-block{display:flex;flex-direction:column;gap:10px;}
+.stat{border-radius:11px;padding:1rem 1.25rem;}
+.stat-num{font-size:22px;font-weight:500;letter-spacing:-0.03em;line-height:1;margin:0 0 5px;}
+.stat-desc{font-size:11px;line-height:1.5;margin:0;}
+.right-panel{background:#F1EFE8;border-radius:12px;padding:1.25rem 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.col-divider{width:0.5px;background:rgba(95,94,90,0.2);margin:0 16px;}
+.panel-col{display:flex;flex-direction:column;gap:8px;}
+.panel-head{font-size:13px;font-weight:500;padding-bottom:8px;border-bottom:0.5px solid rgba(95,94,90,0.15);margin-bottom:2px;}
+.panel-item{display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--color-text-primary);line-height:1.4;}
+.bullet{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+</style>
+
+<div class="sw">
+
+  <div style="text-align:center;">
+    <p style="font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.025em;margin:0 0 5px;">Built in 2 days</p>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin:0;">A proof point for how we build going forward — not just what Parapet is, but how it was made</p>
+  </div>
+
+  <div class="split">
+
+    <div class="stat-block">
+      <div class="stat" style="background:#E1F5EE;">
+        <p class="stat-num" style="color:#085041;">2 days</p>
+        <p class="stat-desc" style="color:#0F6E56;">Core platform built end-to-end — cloud services, client libraries, Control Center</p>
+      </div>
+      <div class="stat" style="background:#EEEDFE;">
+        <p class="stat-num" style="color:#3C3489;">1 engineer</p>
+        <p class="stat-desc" style="color:#534AB7;">No large team, no long sprint — one person with the right tools and focus</p>
+      </div>
+      <div class="stat" style="background:#FAEEDA;">
+        <p class="stat-num" style="color:#633806;">AI-assisted</p>
+        <p class="stat-desc" style="color:#854F0B;">AI changed the economics — scaffolding and boilerplate in minutes, not days</p>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="panel-col">
+        <div class="panel-head" style="color:#085041;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="#5DCAA5" stroke-width="1.2"/><path d="M3 5L4.5 6.5L7.5 3.5" stroke="#5DCAA5" stroke-width="1.2" stroke-linecap="round"/></svg>
+            AI accelerated
+          </div>
+        </div>
+        <div class="panel-item"><div class="bullet" style="background:#5DCAA5;"></div>API scaffolding</div>
+        <div class="panel-item"><div class="bullet" style="background:#5DCAA5;"></div>Client libraries</div>
+        <div class="panel-item"><div class="bullet" style="background:#5DCAA5;"></div>Dashboard UI</div>
+        <div class="panel-item"><div class="bullet" style="background:#5DCAA5;"></div>Integration tests</div>
+        <div class="panel-item"><div class="bullet" style="background:#5DCAA5;"></div>Documentation</div>
+      </div>
+
+      <div style="display:flex;">
+        <div class="col-divider"></div>
+        <div class="panel-col" style="flex:1;">
+          <div class="panel-head" style="color:#712B13;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="#F0997B" stroke-width="1.2"/><line x1="5" y1="3" x2="5" y2="7" stroke="#F0997B" stroke-width="1.2" stroke-linecap="round"/><circle cx="5" cy="5" r="0.8" fill="#F0997B"/></svg>
+              Human decisions
+            </div>
+          </div>
+          <div class="panel-item"><div class="bullet" style="background:#F0997B;"></div>Architecture</div>
+          <div class="panel-item"><div class="bullet" style="background:#F0997B;"></div>Security model</div>
+          <div class="panel-item"><div class="bullet" style="background:#F0997B;"></div>Multi-tenancy design</div>
+          <div class="panel-item"><div class="bullet" style="background:#F0997B;"></div>Domain logic</div>
+          <div class="panel-item"><div class="bullet" style="background:#F0997B;"></div>Trade-off calls</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background:#FAECE7;border-radius:10px;padding:0.85rem 1.5rem;text-align:center;">
+    <p style="font-size:11px;color:#993C1D;margin:0;">The same model applies to AI Gateway, MartechSDK, and every shared component that follows</p>
+  </div>
+
+  <div style="border-top:0.5px solid var(--color-border-tertiary);padding-top:0.75rem;display:flex;justify-content:space-between;">
+    <p style="font-size:10px;color:var(--color-text-secondary);margin:0;">AI didn't write everything — it changed the economics of building it</p>
+    <p style="font-size:10px;font-weight:500;color:var(--color-text-secondary);margin:0;">Parapet</p>
+  </div>
+
+</div>

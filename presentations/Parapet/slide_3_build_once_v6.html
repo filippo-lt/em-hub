@@ -1,0 +1,172 @@
+
+<style>
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1.5rem;}
+.matrix{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden;}
+.matrix thead tr th{padding:10px 10px 12px;}
+.matrix tbody tr td{padding:9px 10px;border-top:0.5px solid rgba(0,0,0,0.06);}
+.matrix td.app-label{text-align:right;padding-right:12px;background:#F1EFE8;}
+.matrix th.app-label-head{background:#F1EFE8;}
+.app-cell{display:flex;align-items:center;justify-content:flex-end;gap:8px;}
+.app-icon{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.app-label-text{font-size:12px;font-weight:500;color:#444441;white-space:nowrap;}
+.col-head-inner{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.dot-fill{width:14px;height:14px;border-radius:50%;background:#5DCAA5;display:inline-block;}
+.dot-empty{width:14px;height:14px;border-radius:50%;border:1.5px dashed #B4B2A9;display:inline-block;opacity:0.25;}
+.dot-potential{width:14px;height:14px;border-radius:50%;border:2px dashed #B4B2A9;display:inline-block;opacity:0.5;background:rgba(180,178,169,0.1);}
+.dot-more{width:6px;height:6px;border-radius:50%;background:#B4B2A9;display:inline-block;opacity:0.5;}
+.c-teal{background:#E1F5EE;}
+.c-amber{background:#FAEEDA;}
+.c-purple{background:#EEEDFE;}
+.c-blue{background:#E6F1FB;}
+.c-future{background:#F1EFE8;opacity:0.6;}
+.c-more-label{background:#F1EFE8;opacity:0.5;}
+.border-teal{border-top:0.5px solid rgba(29,158,117,0.15) !important;}
+.border-amber{border-top:0.5px solid rgba(186,117,23,0.15) !important;}
+.border-purple{border-top:0.5px solid rgba(127,119,221,0.15) !important;}
+.border-blue{border-top:0.5px solid rgba(55,138,221,0.15) !important;}
+.border-future{border-top:0.5px solid rgba(180,178,169,0.15) !important;}
+.border-label{border-top:0.5px solid rgba(95,94,90,0.12) !important;}
+</style>
+
+<div class="sw">
+
+  <div style="text-align:center;">
+    <p style="font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.025em;margin:0 0 5px;">Build once, integrate everywhere</p>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin:0;">Shared components replace custom implementations — selectively, per app</p>
+  </div>
+
+  <div style="border-radius:12px;overflow:hidden;border:0.5px solid var(--color-border-tertiary);">
+  <table class="matrix" style="width:100%;border-collapse:collapse;">
+    <thead>
+      <tr>
+        <th class="app-label-head" style="width:20%;border-bottom:0.5px solid rgba(95,94,90,0.12);"></th>
+        <th class="c-teal" style="width:16%;text-align:center;border-bottom:0.5px solid rgba(29,158,117,0.2);">
+          <div class="col-head-inner"><div style="font-size:13px;font-weight:500;color:#085041;">Parapet</div></div>
+        </th>
+        <th class="c-amber" style="width:16%;text-align:center;border-bottom:0.5px solid rgba(186,117,23,0.2);">
+          <div class="col-head-inner"><div style="font-size:13px;font-weight:500;color:#633806;">Martech SDK</div></div>
+        </th>
+        <th class="c-purple" style="width:16%;text-align:center;border-bottom:0.5px solid rgba(127,119,221,0.2);">
+          <div class="col-head-inner"><div style="font-size:13px;font-weight:500;color:#3C3489;">AI Gateway</div></div>
+        </th>
+        <th class="c-blue" style="width:18%;text-align:center;border-bottom:0.5px solid rgba(55,138,221,0.2);">
+          <div class="col-head-inner"><div style="font-size:13px;font-weight:500;color:#185FA5;">TV Foundation Kit</div></div>
+        </th>
+        <th class="c-future" style="width:14%;text-align:center;border-bottom:0.5px solid rgba(180,178,169,0.2);">
+          <div class="col-head-inner"><div style="font-size:15px;color:#888780;">…</div></div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="app-label border-label">
+          <div class="app-cell">
+            <span class="app-label-text">PhotoUp</span>
+            <div class="app-icon" style="background:#E1F5EE;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="4" fill="#5DCAA5"/><circle cx="8" cy="8" r="2" fill="#E1F5EE"/></svg></div>
+          </div>
+        </td>
+        <td class="c-teal border-teal" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-amber border-amber" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-purple border-purple" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-blue border-blue" style="text-align:center;"><div class="dot-empty"></div></td>
+        <td class="c-future border-future" style="text-align:center;"><div class="dot-potential"></div></td>
+      </tr>
+      <tr>
+        <td class="app-label border-label">
+          <div class="app-cell">
+            <span class="app-label-text">VideoUp</span>
+            <div class="app-icon" style="background:#E1F5EE;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><polygon points="4,3 4,13 13,8" fill="#5DCAA5"/></svg></div>
+          </div>
+        </td>
+        <td class="c-teal border-teal" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-amber border-amber" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-purple border-purple" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-blue border-blue" style="text-align:center;"><div class="dot-empty"></div></td>
+        <td class="c-future border-future" style="text-align:center;"><div class="dot-potential"></div></td>
+      </tr>
+      <tr>
+        <td class="app-label border-label">
+          <div class="app-cell">
+            <span class="app-label-text">Tattooist</span>
+            <div class="app-icon" style="background:#EEEDFE;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 13 Q8 3 13 13" stroke="#7F77DD" stroke-width="1.8" fill="none"/></svg></div>
+          </div>
+        </td>
+        <td class="c-teal border-teal" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-amber border-amber" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-purple border-purple" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-blue border-blue" style="text-align:center;"><div class="dot-empty"></div></td>
+        <td class="c-future border-future" style="text-align:center;"><div class="dot-potential"></div></td>
+      </tr>
+      <tr>
+        <td class="app-label border-label">
+          <div class="app-cell">
+            <span class="app-label-text">AI Design</span>
+            <div class="app-icon" style="background:#FAEEDA;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="3" width="4" height="4" rx="1" fill="#EF9F27"/><rect x="9" y="9" width="4" height="4" rx="1" fill="#EF9F27"/><rect x="9" y="3" width="4" height="4" rx="1" fill="#FAC775"/></svg></div>
+          </div>
+        </td>
+        <td class="c-teal border-teal" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-amber border-amber" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-purple border-purple" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-blue border-blue" style="text-align:center;"><div class="dot-empty"></div></td>
+        <td class="c-future border-future" style="text-align:center;"><div class="dot-potential"></div></td>
+      </tr>
+      <tr>
+        <td class="app-label border-label">
+          <div class="app-cell">
+            <span class="app-label-text">iMote</span>
+            <div class="app-icon" style="background:#E6F1FB;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 10 Q8 5 12 10" stroke="#378ADD" stroke-width="1.8" fill="none"/><circle cx="8" cy="12" r="1.5" fill="#378ADD"/></svg></div>
+          </div>
+        </td>
+        <td class="c-teal border-teal" style="text-align:center;"><div class="dot-empty"></div></td>
+        <td class="c-amber border-amber" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-purple border-purple" style="text-align:center;"><div class="dot-empty"></div></td>
+        <td class="c-blue border-blue" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-future border-future" style="text-align:center;"><div class="dot-potential"></div></td>
+      </tr>
+      <tr>
+        <td class="app-label border-label">
+          <div class="app-cell">
+            <span class="app-label-text">Screen Mirror</span>
+            <div class="app-icon" style="background:#E6F1FB;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="7" rx="1.5" stroke="#378ADD" stroke-width="1.5" fill="none"/><rect x="6" y="12" width="4" height="1.5" rx="0.5" fill="#378ADD"/></svg></div>
+          </div>
+        </td>
+        <td class="c-teal border-teal" style="text-align:center;"><div class="dot-empty"></div></td>
+        <td class="c-amber border-amber" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-purple border-purple" style="text-align:center;"><div class="dot-empty"></div></td>
+        <td class="c-blue border-blue" style="text-align:center;"><div class="dot-fill"></div></td>
+        <td class="c-future border-future" style="text-align:center;"><div class="dot-potential"></div></td>
+      </tr>
+
+      <tr style="opacity:0.45;">
+        <td class="c-more-label border-label" style="text-align:right;padding-right:12px;">
+          <div class="app-cell">
+            <span style="font-size:11px;font-style:italic;color:#888780;">more apps…</span>
+            <div style="display:flex;gap:3px;align-items:center;">
+              <div class="dot-more"></div>
+              <div class="dot-more"></div>
+              <div class="dot-more"></div>
+            </div>
+          </div>
+        </td>
+        <td class="c-teal border-teal" style="text-align:center;"><div class="dot-more" style="margin:0 auto;"></div></td>
+        <td class="c-amber border-amber" style="text-align:center;"><div class="dot-more" style="margin:0 auto;"></div></td>
+        <td class="c-purple border-purple" style="text-align:center;"><div class="dot-more" style="margin:0 auto;"></div></td>
+        <td class="c-blue border-blue" style="text-align:center;"><div class="dot-more" style="margin:0 auto;"></div></td>
+        <td class="c-future border-future" style="text-align:center;"><div class="dot-more" style="margin:0 auto;"></div></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div style="display:flex;gap:16px;justify-content:center;align-items:center;">
+    <span style="font-size:10px;color:var(--color-text-secondary);display:flex;align-items:center;gap:5px;"><div class="dot-fill" style="width:10px;height:10px;"></div>Adopted</span>
+    <span style="font-size:10px;color:var(--color-text-secondary);display:flex;align-items:center;gap:5px;"><div class="dot-empty" style="width:10px;height:10px;opacity:1;border-color:#B4B2A9;"></div>Not applicable</span>
+    <span style="font-size:10px;color:var(--color-text-secondary);display:flex;align-items:center;gap:5px;"><div class="dot-potential" style="width:10px;height:10px;"></div>Potential</span>
+  </div>
+
+  <div style="border-top:0.5px solid var(--color-border-tertiary);padding-top:0.75rem;display:flex;justify-content:space-between;">
+    <p style="font-size:10px;color:var(--color-text-secondary);margin:0;">Partial analysis — more apps in portfolio</p>
+    <p style="font-size:10px;font-weight:500;color:var(--color-text-secondary);margin:0;">Parapet</p>
+  </div>
+
+</div>

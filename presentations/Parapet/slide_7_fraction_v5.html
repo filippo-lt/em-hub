@@ -1,0 +1,84 @@
+
+<style>
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:2.5rem 3rem;display:flex;flex-direction:column;gap:1.75rem;}
+.col-lbl{font-size:10px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.12em;text-transform:uppercase;margin:0 0 14px;}
+.tag-before{font-size:13px;font-weight:500;color:#712B13;display:block;margin-bottom:12px;}
+.tag-after{font-size:13px;font-weight:500;color:#085041;display:block;margin-bottom:12px;}
+.status-tag{font-size:11px;font-weight:500;padding:3px 11px;border-radius:100px;display:inline-block;}
+.t-before{background:#F5C4B3;color:#712B13;}
+.t-after{background:#9FE1CB;color:#085041;}
+.pill{font-size:11px;font-weight:500;padding:5px 13px;border-radius:100px;}
+.p-before{background:#FAECE7;color:#993C1D;border:0.5px solid #F5C4B3;}
+.p-after{background:#E1F5EE;color:#0F6E56;border:0.5px solid #9FE1CB;}
+.bar-track{height:6px;background:rgba(0,0,0,0.06);border-radius:100px;overflow:hidden;margin:12px 0 8px;}
+.bar-fill{height:100%;border-radius:100px;}
+</style>
+
+<div class="sw">
+
+  <div style="text-align:center;">
+    <p style="font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.025em;margin:0 0 6px;">Fraction of the time, fraction of the complexity</p>
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0;">What changes when every app plugs into Parapet</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+
+    <div>
+      <p class="col-lbl">The time</p>
+
+      <div style="background:#FAECE7;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span class="status-tag t-before">Before</span>
+          <span style="font-size:20px;font-weight:500;letter-spacing:-0.03em;color:#712B13;">2+ weeks</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:#F0997B;"></div></div>
+        <p style="font-size:11px;color:#993C1D;margin:0;">Built from scratch, per app</p>
+      </div>
+
+      <div style="background:#E1F5EE;border-radius:12px;padding:1.25rem 1.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+          <span class="status-tag t-after">With Parapet</span>
+          <span style="font-size:20px;font-weight:500;letter-spacing:-0.03em;color:#085041;">under a week</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:11%;background:#5DCAA5;"></div></div>
+        <p style="font-size:11px;color:#0F6E56;margin:0;">Configure · integrate · ship</p>
+      </div>
+
+      <div style="margin-top:12px;background:#EEEDFE;border-radius:10px;padding:0.75rem 1.25rem;text-align:center;">
+        <span style="font-size:20px;font-weight:500;color:#3C3489;letter-spacing:-0.03em;">80%+</span>
+        <span style="font-size:12px;color:#534AB7;margin-left:6px;">faster per integration</span>
+      </div>
+    </div>
+
+    <div>
+      <p class="col-lbl">The complexity</p>
+
+      <div style="background:#FAECE7;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:12px;">
+        <span class="tag-before">Before — your team owns:</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="pill p-before">RevenueCat webhooks</span>
+          <span class="pill p-before">Subscription state</span>
+          <span class="pill p-before">Quota resets</span>
+          <span class="pill p-before">Device attestation</span>
+          <span class="pill p-before">Token accounting</span>
+          <span class="pill p-before">Error recovery</span>
+        </div>
+      </div>
+
+      <div style="background:#E1F5EE;border-radius:12px;padding:1.25rem 1.5rem;">
+        <span class="tag-after">With Parapet — your team does:</span>
+        <div>
+          <span class="pill p-after" style="font-size:13px;padding:6px 16px;">Integrate API</span>
+        </div>
+        <p style="font-size:11px;color:#0F6E56;margin:12px 0 0;">Everything else is handled</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="border-top:0.5px solid var(--color-border-tertiary);padding-top:1rem;display:flex;justify-content:space-between;align-items:center;">
+    <p style="font-size:11px;color:var(--color-text-secondary);margin:0;">Client libraries for iOS, Android, Flutter — Web ready</p>
+    <p style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin:0;">Parapet</p>
+  </div>
+
+</div>
