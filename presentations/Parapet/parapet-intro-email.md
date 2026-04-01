@@ -33,6 +33,8 @@ You can explore the tool and documentation here: **https://parapet.mau.io/** (fe
 
 I'll be running a presentation on **Friday, April 10th** to walk through Parapet in more detail: what it does, how integration works, and how it fits into a broader shared components strategy.
 
+PM Leads and PO Leads — please forward this email to anyone in your area who may find it relevant, and feel free to invite them to the presentation on April 10th.
+
 Happy to answer any questions in the meantime.
 
 Best,
