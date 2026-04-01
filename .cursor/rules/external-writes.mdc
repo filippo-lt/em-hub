@@ -1,6 +1,6 @@
 ---
 description: Require explicit confirmation before any write operation to external systems
-alwaysApply: true
+alwaysApply: false
 ---
 
 # External System Write Safety

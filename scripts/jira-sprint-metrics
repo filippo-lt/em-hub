@@ -23,7 +23,7 @@ set -euo pipefail
 
 # ─── Defaults ───────────────────────────────────────────────────────────────
 
-DELIVERED_STATUS="PO REVIEW/APPROVAL"
+DELIVERED_STATUS="PO REVIEW"
 QA_FROM_STATUS="QA Review"
 QA_TO_STATUS="In Progress"
 SP_FIELD="customfield_10004"

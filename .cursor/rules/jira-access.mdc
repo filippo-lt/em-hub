@@ -1,6 +1,6 @@
 ---
 description: Jira API access is available in this workspace
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Jira API Access

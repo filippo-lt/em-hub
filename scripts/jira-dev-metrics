@@ -1,0 +1,395 @@
+#!/usr/bin/env python3
+"""
+jira-dev-metrics — Fetch story points and issue counts for a developer
+
+Usage:
+  # Single developer (direct mode)
+  ./jira-dev-metrics --project TTIOSMAU --user "Edward Liu"
+  ./jira-dev-metrics --project FAIOSMAU --user "Anton Shkuray" --month 2026-02
+
+  # Multiple developers from config file
+  ./jira-dev-metrics --config dev-metrics.conf
+  ./jira-dev-metrics --config dev-metrics.conf --month 2026-03
+
+Config file format (one entry per line):
+  # Comments start with #
+  PROJECT|USER|DISPLAY_NAME(optional)
+  TTIOSMAU|712020:2e8b582b-1447-4c1e-898b-7a1254ad817e|Edward Liu
+  FAIOSMAU|Anton Shkuray
+  FAIOSMAU|Andrew Laminski
+  SMIOSMAU|Serhii Kostrykin
+
+Options:
+  --project KEY             Jira project key (required in direct mode)
+  --user "Name"             Developer display name or account ID (required in direct mode)
+  --config FILE             Config file with project|user mappings
+  --month YYYY-MM           Month to report on (default: previous month)
+  --delivered-status NAME   Status that counts as delivered (default: "PO REVIEW")
+  --issue-types "T1,T2"     Issue types to include (default: "User Story,Bug")
+  --sp-field FIELD_ID       Custom field ID for story points (default: customfield_10004)
+  --json                    Output raw JSON only
+
+Credentials: JIRA_EMAIL, JIRA_API_TOKEN, JIRA_BASE_URL in ~/.config/jira/.env
+"""
+
+import argparse
+import csv
+import json
+import os
+import sys
+import urllib.request
+import base64
+from datetime import datetime, timedelta
+from pathlib import Path
+
+
+def load_credentials():
+    """Load Jira credentials from env file."""
+    env_file = os.environ.get("JIRA_ENV_FILE", os.path.expanduser("~/.config/jira/.env"))
+
+    if not Path(env_file).exists():
+        print(f"Error: Jira credentials file not found: {env_file}", file=sys.stderr)
+        sys.exit(1)
+
+    # Source the file and get vars
+    import subprocess
+    result = subprocess.run(
+        ["bash", "-c", f"source {env_file} && echo $JIRA_EMAIL && echo $JIRA_API_TOKEN && echo $JIRA_BASE_URL"],
+        capture_output=True,
+        text=True
+    )
+
+    lines = result.stdout.strip().split("\n")
+    if len(lines) < 3 or not all(lines[:3]):
+        print(f"Error: JIRA_EMAIL, JIRA_API_TOKEN, and JIRA_BASE_URL must be set in {env_file}", file=sys.stderr)
+        sys.exit(1)
+
+    return lines[0], lines[1], lines[2]
+
+
+def load_config_file(config_path):
+    """Load project|user mappings from config file."""
+    entries = []
+    path = Path(config_path)
+
+    if not path.exists():
+        # Try relative to script location
+        script_dir = Path(__file__).parent
+        path = script_dir / config_path
+
+    if not path.exists():
+        print(f"Error: Config file not found: {config_path}", file=sys.stderr)
+        sys.exit(1)
+
+    with open(path, 'r') as f:
+        for line_num, line in enumerate(f, 1):
+            line = line.strip()
+            if not line or line.startswith('#'):
+                continue
+
+            parts = [p.strip() for p in line.split('|')]
+            if len(parts) < 2:
+                print(f"Warning: Skipping invalid line {line_num}: {line}", file=sys.stderr)
+                continue
+
+            project = parts[0]
+            user = parts[1]
+            display_name = parts[2] if len(parts) > 2 else user
+
+            entries.append({
+                'project': project,
+                'user': user,
+                'display_name': display_name
+            })
+
+    if not entries:
+        print(f"Error: No valid entries found in config file: {config_path}", file=sys.stderr)
+        sys.exit(1)
+
+    return entries
+
+
+def get_month_range(month_str=None):
+    """Calculate start and end dates for a month."""
+    if month_str:
+        year, month = map(int, month_str.split("-"))
+        start = datetime(year, month, 1)
+    else:
+        # Default to previous month
+        today = datetime.today()
+        first_day = today.replace(day=1)
+        start = first_day - timedelta(days=1)
+        start = start.replace(day=1)
+
+    # End date is last day of month
+    if start.month == 12:
+        end = datetime(start.year + 1, 1, 1) - timedelta(days=1)
+    else:
+        end = datetime(start.year, start.month + 1, 1) - timedelta(days=1)
+
+    return start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d")
+
+
+def fetch_jira_data(project, user, start_date, end_date, delivered_status, issue_types, sp_field, email, token, base_url):
+    """Fetch data from Jira API."""
+
+    # Build JQL
+    issue_types_quoted = ", ".join([f'"{t.strip()}"' for t in issue_types.split(",")])
+
+    jql = (
+        f'project = {project} AND '
+        f'assignee = "{user}" AND '
+        f'status CHANGED TO "{delivered_status}" '
+        f'DURING ("{start_date}", "{end_date}") AND '
+        f'issuetype in ({issue_types_quoted})'
+    )
+
+    payload = json.dumps({
+        "jql": jql,
+        "fields": ["key", "issuetype", "summary", sp_field, "status"],
+        "maxResults": 100
+    }).encode("utf-8")
+
+    auth = base64.b64encode(f"{email}:{token}".encode()).decode()
+
+    req = urllib.request.Request(
+        f"{base_url}/rest/api/3/search/jql",
+        data=payload,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Basic {auth}"
+        },
+        method="POST"
+    )
+
+    try:
+        with urllib.request.urlopen(req) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode("utf-8")
+        print(f"Error: HTTP {e.code} - {error_body}", file=sys.stderr)
+        return None
+    except Exception as e:
+        print(f"Error fetching data: {e}", file=sys.stderr)
+        return None
+
+
+def analyze_data(data, sp_field):
+    """Analyze issue data and return summary stats."""
+    if data is None:
+        return None
+
+    issues = data.get("issues", [])
+    stories = []
+    bugs = []
+    total_sp = 0
+
+    for issue in issues:
+        fields = issue["fields"]
+        issuetype = fields["issuetype"]["name"]
+        summary = fields["summary"]
+        sp = fields.get(sp_field) or 0
+        status = fields["status"]["name"]
+        key = issue["key"]
+
+        item = {"key": key, "summary": summary, "sp": sp, "status": status}
+
+        if issuetype == "User Story":
+            stories.append(item)
+        else:
+            bugs.append(item)
+
+        total_sp += sp
+
+    return {
+        'stories': stories,
+        'bugs': bugs,
+        'story_count': len(stories),
+        'bug_count': len(bugs),
+        'total_issues': len(issues),
+        'total_sp': total_sp
+    }
+
+
+def display_single_result(data, stats, project, user, month, sp_field):
+    """Display formatted results for a single user."""
+    if stats is None:
+        print(f"\n⚠️  No data available for {user} in {project}")
+        return
+
+    stories = stats['stories']
+    bugs = stats['bugs']
+    total_issues = stats['total_issues']
+    total_sp = stats['total_sp']
+
+    print("=" * 80)
+    print(f"{user} - {project} - {month}")
+    print("=" * 80)
+    print(f"Results: {total_issues} issues | Story Points: {total_sp}")
+    print("=" * 80)
+
+    print(f"\n📝 User Stories ({len(stories)}):")
+    print("-" * 70)
+    for s in stories:
+        sp_display = f"{s['sp']} SP" if s["sp"] else "—"
+        display_summary = s["summary"][:50] + "..." if len(s["summary"]) > 50 else s["summary"]
+        print(f"  {s['key']:<18} {sp_display:<8} [{s['status']:<25}] {display_summary}")
+
+    print(f"\n🐛 Bugs ({len(bugs)}):")
+    print("-" * 70)
+    for b in bugs:
+        sp_display = f"{b['sp']} SP" if b["sp"] else "—"
+        display_summary = b["summary"][:50] + "..." if len(b["summary"]) > 50 else b["summary"]
+        print(f"  {b['key']:<18} {sp_display:<8} [{b['status']:<25}] {display_summary}")
+
+    print("\n" + "=" * 80)
+    print(f"Summary: {len(stories)} Stories, {len(bugs)} Bugs = {total_issues} Total Issues")
+    print(f"Total Story Points: {total_sp}")
+    print("=" * 80)
+
+
+def display_summary_table(results, month):
+    """Display a summary table for multiple users."""
+    print("\n" + "=" * 100)
+    print(f"DEVELOPER METRICS SUMMARY - {month}")
+    print("=" * 100)
+    print(f"{'Developer':<30} {'Project':<12} {'Stories':<10} {'Bugs':<8} {'Total':<8} {'Story Points':<12}")
+    print("-" * 100)
+
+    total_sp = 0
+    total_stories = 0
+    total_bugs = 0
+    total_issues = 0
+
+    for r in results:
+        if r['stats'] is None:
+            continue
+        stats = r['stats']
+        print(f"{r['display_name']:<30} {r['project']:<12} {stats['story_count']:<10} {stats['bug_count']:<8} {stats['total_issues']:<8} {stats['total_sp']:<12}")
+        total_stories += stats['story_count']
+        total_bugs += stats['bug_count']
+        total_issues += stats['total_issues']
+        total_sp += stats['total_sp']
+
+    print("-" * 100)
+    print(f"{'TOTAL':<30} {'':<12} {total_stories:<10} {total_bugs:<8} {total_issues:<8} {total_sp:<12}")
+    print("=" * 100)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Fetch Jira story points and issue counts for a developer",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Single developer
+  %(prog)s --project TTIOSMAU --user "Edward Liu"
+  %(prog)s --project FAIOSMAU --user "712020:abc123" --month 2026-03
+
+  # From config file
+  %(prog)s --config dev-metrics.conf
+  %(prog)s --config dev-metrics.conf --month 2026-03
+
+Config file format:
+  PROJECT|USER|DISPLAY_NAME(optional)
+  TTIOSMAU|712020:2e8b582b-1447-4c1e-898b-7a1254ad817e|Edward Liu
+  FAIOSMAU|Anton Shkuray
+        """
+    )
+
+    parser.add_argument("--project", help="Jira project key (e.g., TTIOSMAU)")
+    parser.add_argument("--user", help="Developer display name or account ID")
+    parser.add_argument("--config", help="Config file with project|user mappings")
+    parser.add_argument("--month", help="Month to report on (YYYY-MM, default: previous month)")
+    parser.add_argument("--delivered-status", default="PO REVIEW", help="Status that counts as delivered")
+    parser.add_argument("--issue-types", default="User Story,Bug", help="Issue types to include")
+    parser.add_argument("--sp-field", default="customfield_10004", help="Custom field ID for story points")
+    parser.add_argument("--json", action="store_true", help="Output raw JSON only")
+    parser.add_argument("--details", action="store_true", help="Show detailed issue lists when using --config")
+
+    args = parser.parse_args()
+
+    # Validate args
+    if args.config:
+        # Config mode
+        entries = load_config_file(args.config)
+    elif args.project and args.user:
+        # Direct mode
+        entries = [{
+            'project': args.project,
+            'user': args.user,
+            'display_name': args.user
+        }]
+    else:
+        # Try default config
+        default_configs = [
+            Path("dev-metrics.conf"),
+            Path(__file__).parent / "dev-metrics.conf",
+            Path(__file__).parent.parent / "config" / "dev-metrics.conf"
+        ]
+        found = False
+        for cfg in default_configs:
+            if cfg.exists():
+                entries = load_config_file(str(cfg))
+                found = True
+                break
+        if not found:
+            parser.error("Either --config, or both --project and --user are required")
+
+    # Load credentials
+    email, token, base_url = load_credentials()
+
+    # Calculate month range
+    start_date, end_date = get_month_range(args.month)
+    month_display = args.month or start_date[:7]
+
+    # Process all entries
+    results = []
+    all_data = {}
+
+    for entry in entries:
+        data = fetch_jira_data(
+            entry['project'],
+            entry['user'],
+            start_date,
+            end_date,
+            args.delivered_status,
+            args.issue_types,
+            args.sp_field,
+            email,
+            token,
+            base_url
+        )
+
+        stats = analyze_data(data, args.sp_field)
+
+        results.append({
+            'project': entry['project'],
+            'user': entry['user'],
+            'display_name': entry['display_name'],
+            'stats': stats
+        })
+
+        all_data[f"{entry['project']}|{entry['user']}"] = data
+
+    # Output
+    if args.json:
+        print(json.dumps(all_data, indent=2))
+    elif len(results) == 1:
+        # Single user - show detailed view
+        r = results[0]
+        display_single_result(all_data[f"{r['project']}|{r['user']}"], r['stats'], r['project'], r['display_name'], month_display, args.sp_field)
+    else:
+        # Multiple users - show summary table
+        display_summary_table(results, month_display)
+
+        # Optionally show details
+        if args.details:
+            for r in results:
+                key = f"{r['project']}|{r['user']}"
+                display_single_result(all_data[key], r['stats'], r['project'], r['display_name'], month_display, args.sp_field)
+                print("\n")
+
+
+if __name__ == "__main__":
+    main()

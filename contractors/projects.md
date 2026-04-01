@@ -14,7 +14,6 @@ Maps each project to its GitHub repos and Jira boards. Used by the contractor re
 | GitHub Repo | https://github.com/rosseca/tattoo-android |
 | GitHub Repo | https://github.com/leadtechcorp/tattoo_infra |
 | Jira Board(s) | TTIOSMAU |
-| Jira Board(s) | TATA |
 
 ### AI Design
 
