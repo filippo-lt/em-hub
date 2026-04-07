@@ -11,6 +11,10 @@ Usage:
   ./jira-dev-metrics --config dev-metrics.conf
   ./jira-dev-metrics --config dev-metrics.conf --month 2026-03
 
+  # With NO QA bounce tracking (counts transitions, not unique issues)
+  ./jira-dev-metrics --config dev-metrics.conf --noqa-status "No Pass"
+  ./jira-dev-metrics --project TTIOSMAU --user "Xiaochun Mou" --noqa-status "No Pass"
+
 Config file format (one entry per line):
   # Comments start with #
   PROJECT|USER|DISPLAY_NAME(optional)
@@ -25,15 +29,16 @@ Options:
   --config FILE             Config file with project|user mappings
   --month YYYY-MM           Month to report on (default: previous month)
   --delivered-status NAME   Status that counts as delivered (default: "PO REVIEW")
+  --noqa-status NAME        Status for NO QA/QA bouncebacks (e.g., "No Pass")
   --issue-types "T1,T2"     Issue types to include (default: "User Story,Bug")
   --sp-field FIELD_ID       Custom field ID for story points (default: customfield_10004)
   --json                    Output raw JSON only
+  --details                 Show detailed issue lists when using --config
 
 Credentials: JIRA_EMAIL, JIRA_API_TOKEN, JIRA_BASE_URL in ~/.config/jira/.env
 """
 
 import argparse
-import csv
 import json
 import os
 import sys
@@ -130,8 +135,32 @@ def get_month_range(month_str=None):
     return start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d")
 
 
-def fetch_jira_data(project, user, start_date, end_date, delivered_status, issue_types, sp_field, email, token, base_url):
-    """Fetch data from Jira API."""
+def make_jira_request(url, email, token, data=None, method="GET"):
+    """Make a Jira API request and return parsed JSON."""
+    auth = base64.b64encode(f"{email}:{token}".encode()).decode()
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Basic {auth}"
+    }
+
+    if data:
+        req = urllib.request.Request(url, data=data, headers=headers, method=method)
+    else:
+        req = urllib.request.Request(url, headers=headers, method=method)
+
+    try:
+        with urllib.request.urlopen(req) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode("utf-8")
+        raise Exception(f"HTTP {e.code}: {error_body}")
+    except Exception as e:
+        raise Exception(f"Request failed: {e}")
+
+
+def fetch_jira_data(project, user, start_date, end_date, target_status, issue_types, sp_field, email, token, base_url):
+    """Fetch data from Jira API for issues that transitioned to a specific status."""
 
     # Build JQL
     issue_types_quoted = ", ".join([f'"{t.strip()}"' for t in issue_types.split(",")])
@@ -139,7 +168,7 @@ def fetch_jira_data(project, user, start_date, end_date, delivered_status, issue
     jql = (
         f'project = {project} AND '
         f'assignee = "{user}" AND '
-        f'status CHANGED TO "{delivered_status}" '
+        f'status CHANGED TO "{target_status}" '
         f'DURING ("{start_date}", "{end_date}") AND '
         f'issuetype in ({issue_types_quoted})'
     )
@@ -150,28 +179,82 @@ def fetch_jira_data(project, user, start_date, end_date, delivered_status, issue
         "maxResults": 100
     }).encode("utf-8")
 
-    auth = base64.b64encode(f"{email}:{token}".encode()).decode()
+    try:
+        return make_jira_request(f"{base_url}/rest/api/3/search/jql", email, token, payload, "POST")
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return None
 
-    req = urllib.request.Request(
-        f"{base_url}/rest/api/3/search/jql",
-        data=payload,
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Basic {auth}"
-        },
-        method="POST"
+
+def fetch_noqa_issues(project, user, start_date, end_date, noqa_status, issue_types, sp_field, email, token, base_url):
+    """Fetch issues that transitioned to NO QA status."""
+
+    # Build JQL for issues that changed TO the NO QA status during the period
+    issue_types_quoted = ", ".join([f'"{t.strip()}"' for t in issue_types.split(",")])
+
+    jql = (
+        f'project = {project} AND '
+        f'assignee = "{user}" AND '
+        f'status CHANGED TO "{noqa_status}" '
+        f'DURING ("{start_date}", "{end_date}") AND '
+        f'issuetype in ({issue_types_quoted})'
     )
 
+    payload = json.dumps({
+        "jql": jql,
+        "fields": ["key", "issuetype", "summary", sp_field, "status"],
+        "maxResults": 100
+    }).encode("utf-8")
+
     try:
-        with urllib.request.urlopen(req) as response:
-            return json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as e:
-        error_body = e.read().decode("utf-8")
-        print(f"Error: HTTP {e.code} - {error_body}", file=sys.stderr)
-        return None
+        return make_jira_request(f"{base_url}/rest/api/3/search/jql", email, token, payload, "POST")
     except Exception as e:
-        print(f"Error fetching data: {e}", file=sys.stderr)
-        return None
+        # Don't fail on errors for NO QA - just return empty
+        return {"issues": []}
+
+
+def fetch_issue_changelog(issue_key, email, token, base_url):
+    """Fetch changelog for a specific issue."""
+    try:
+        return make_jira_request(f"{base_url}/rest/api/3/issue/{issue_key}/changelog", email, token)
+    except Exception as e:
+        return {"values": []}
+
+
+def count_status_transitions_in_changelog(changelog, target_status, start_date, end_date):
+    """Count how many times an issue transitioned TO the target status during the date range."""
+    count = 0
+    start_dt = datetime.strptime(start_date, "%Y-%m-%d")
+    end_dt = datetime.strptime(end_date, "%Y-%m-%d")
+    end_dt = end_dt.replace(hour=23, minute=59, second=59)
+
+    histories = changelog.get('values', [])
+
+    for entry in histories:
+        # Parse timestamp
+        created_str = entry.get('created', '')
+        if not created_str:
+            continue
+
+        try:
+            # Jira timestamps are ISO format: 2026-03-15T10:30:00.000+0000
+            entry_dt = datetime.fromisoformat(created_str.replace('Z', '+00:00').replace('.000+0000', '+00:00'))
+            entry_dt = entry_dt.replace(tzinfo=None)
+        except:
+            continue
+
+        # Check if within date range
+        if entry_dt < start_dt or entry_dt > end_dt:
+            continue
+
+        # Check items for status transitions
+        for item in entry.get('items', []):
+            if item.get('field') == 'status':
+                to_status = item.get('toString', '')
+                if to_status == target_status:
+                    count += 1
+
+    return count
 
 
 def analyze_data(data, sp_field):
@@ -192,7 +275,13 @@ def analyze_data(data, sp_field):
         status = fields["status"]["name"]
         key = issue["key"]
 
-        item = {"key": key, "summary": summary, "sp": sp, "status": status}
+        item = {
+            "key": key,
+            "summary": summary,
+            "sp": sp,
+            "status": status,
+            "bounce_count": 0
+        }
 
         if issuetype == "User Story":
             stories.append(item)
@@ -207,11 +296,62 @@ def analyze_data(data, sp_field):
         'story_count': len(stories),
         'bug_count': len(bugs),
         'total_issues': len(issues),
-        'total_sp': total_sp
+        'total_sp': total_sp,
+        'total_bounces': 0
     }
 
 
-def display_single_result(data, stats, project, user, month, sp_field):
+def analyze_data_with_changelog(data, sp_field, bounce_status, start_date, end_date, email, token, base_url):
+    """Analyze issue data and return summary stats with bounce counts from changelog."""
+    if data is None:
+        return None
+
+    issues = data.get("issues", [])
+    stories = []
+    bugs = []
+    total_sp = 0
+    total_bounces = 0
+
+    for issue in issues:
+        fields = issue["fields"]
+        issuetype = fields["issuetype"]["name"]
+        summary = fields["summary"]
+        sp = fields.get(sp_field) or 0
+        status = fields["status"]["name"]
+        key = issue["key"]
+
+        # Fetch changelog and count transitions
+        changelog = fetch_issue_changelog(key, email, token, base_url)
+        bounce_count = count_status_transitions_in_changelog(changelog, bounce_status, start_date, end_date)
+
+        item = {
+            "key": key,
+            "summary": summary,
+            "sp": sp,
+            "status": status,
+            "bounce_count": bounce_count
+        }
+
+        if issuetype == "User Story":
+            stories.append(item)
+        else:
+            bugs.append(item)
+
+        total_sp += sp
+        total_bounces += bounce_count
+
+    return {
+        'stories': stories,
+        'bugs': bugs,
+        'story_count': len(stories),
+        'bug_count': len(bugs),
+        'total_issues': len(issues),
+        'total_sp': total_sp,
+        'total_bounces': total_bounces
+    }
+
+
+def display_single_result(data, stats, noqa_stats, project, user, month, sp_field, show_noqa):
     """Display formatted results for a single user."""
     if stats is None:
         print(f"\n⚠️  No data available for {user} in {project}")
@@ -225,7 +365,11 @@ def display_single_result(data, stats, project, user, month, sp_field):
     print("=" * 80)
     print(f"{user} - {project} - {month}")
     print("=" * 80)
-    print(f"Results: {total_issues} issues | Story Points: {total_sp}")
+    print(f"Results: {total_issues} issues | Story Points: {total_sp}", end="")
+    if show_noqa and noqa_stats:
+        print(f" | NO QA: {noqa_stats['total_issues']} issues ({noqa_stats['total_bounces']} bounces)")
+    else:
+        print()
     print("=" * 80)
 
     print(f"\n📝 User Stories ({len(stories)}):")
@@ -242,38 +386,77 @@ def display_single_result(data, stats, project, user, month, sp_field):
         display_summary = b["summary"][:50] + "..." if len(b["summary"]) > 50 else b["summary"]
         print(f"  {b['key']:<18} {sp_display:<8} [{b['status']:<25}] {display_summary}")
 
+    # Show NO QA items if requested and present
+    if show_noqa and noqa_stats and noqa_stats['total_issues'] > 0:
+        print(f"\n🚫 NO QA Issues ({noqa_stats['total_issues']} issues, {noqa_stats['total_bounces']} total bounces):")
+        print("-" * 70)
+        noqa_items = noqa_stats['stories'] + noqa_stats['bugs']
+        for item in noqa_items:
+            sp_display = f"{item['sp']} SP" if item["sp"] else "—"
+            bounce_info = f"({item['bounce_count']}x)" if item['bounce_count'] > 1 else ""
+            display_summary = item["summary"][:45] + "..." if len(item["summary"]) > 45 else item["summary"]
+            print(f"  {item['key']:<18} {sp_display:<8} {bounce_info:<6} [{item['status']:<25}] {display_summary}")
+
     print("\n" + "=" * 80)
-    print(f"Summary: {len(stories)} Stories, {len(bugs)} Bugs = {total_issues} Total Issues")
-    print(f"Total Story Points: {total_sp}")
+    summary_line = f"Summary: {len(stories)} Stories, {len(bugs)} Bugs = {total_issues} Total Issues | {total_sp} SP"
+    if show_noqa and noqa_stats and noqa_stats['total_issues'] > 0:
+        summary_line += f" | NO QA: {noqa_stats['total_issues']} issues ({noqa_stats['total_bounces']} bounces)"
+    print(summary_line)
     print("=" * 80)
 
 
-def display_summary_table(results, month):
+def display_summary_table(results, month, show_noqa):
     """Display a summary table for multiple users."""
-    print("\n" + "=" * 100)
-    print(f"DEVELOPER METRICS SUMMARY - {month}")
-    print("=" * 100)
-    print(f"{'Developer':<30} {'Project':<12} {'Stories':<10} {'Bugs':<8} {'Total':<8} {'Story Points':<12}")
-    print("-" * 100)
+    # Adjust column widths based on whether NO QA is shown
+    if show_noqa:
+        print("\n" + "=" * 125)
+        print(f"DEVELOPER METRICS SUMMARY - {month}")
+        print("=" * 125)
+        print(f"{'Developer':<30} {'Project':<12} {'Stories':<10} {'Bugs':<8} {'Total':<8} {'SP':<8} {'NO QA (bounces)':<18}")
+        print("-" * 125)
+    else:
+        print("\n" + "=" * 100)
+        print(f"DEVELOPER METRICS SUMMARY - {month}")
+        print("=" * 100)
+        print(f"{'Developer':<30} {'Project':<12} {'Stories':<10} {'Bugs':<8} {'Total':<8} {'Story Points':<12}")
+        print("-" * 100)
 
     total_sp = 0
     total_stories = 0
     total_bugs = 0
     total_issues = 0
+    total_noqa_issues = 0
+    total_noqa_bounces = 0
 
     for r in results:
         if r['stats'] is None:
             continue
         stats = r['stats']
-        print(f"{r['display_name']:<30} {r['project']:<12} {stats['story_count']:<10} {stats['bug_count']:<8} {stats['total_issues']:<8} {stats['total_sp']:<12}")
+        noqa_issues = r.get('noqa_stats', {}).get('total_issues', 0) if r.get('noqa_stats') else 0
+        noqa_bounces = r.get('noqa_stats', {}).get('total_bounces', 0) if r.get('noqa_stats') else 0
+
+        if show_noqa:
+            noqa_display = f"{noqa_issues} ({noqa_bounces})"
+            print(f"{r['display_name']:<30} {r['project']:<12} {stats['story_count']:<10} {stats['bug_count']:<8} {stats['total_issues']:<8} {stats['total_sp']:<8} {noqa_display:<18}")
+        else:
+            print(f"{r['display_name']:<30} {r['project']:<12} {stats['story_count']:<10} {stats['bug_count']:<8} {stats['total_issues']:<8} {stats['total_sp']:<12}")
+
         total_stories += stats['story_count']
         total_bugs += stats['bug_count']
         total_issues += stats['total_issues']
         total_sp += stats['total_sp']
+        total_noqa_issues += noqa_issues
+        total_noqa_bounces += noqa_bounces
 
-    print("-" * 100)
-    print(f"{'TOTAL':<30} {'':<12} {total_stories:<10} {total_bugs:<8} {total_issues:<8} {total_sp:<12}")
-    print("=" * 100)
+    if show_noqa:
+        print("-" * 125)
+        total_noqa_display = f"{total_noqa_issues} ({total_noqa_bounces})"
+        print(f"{'TOTAL':<30} {'':<12} {total_stories:<10} {total_bugs:<8} {total_issues:<8} {total_sp:<8} {total_noqa_display:<18}")
+        print("=" * 125)
+    else:
+        print("-" * 100)
+        print(f"{'TOTAL':<30} {'':<12} {total_stories:<10} {total_bugs:<8} {total_issues:<8} {total_sp:<12}")
+        print("=" * 100)
 
 
 def main():
@@ -285,6 +468,10 @@ Examples:
   # Single developer
   %(prog)s --project TTIOSMAU --user "Edward Liu"
   %(prog)s --project FAIOSMAU --user "712020:abc123" --month 2026-03
+
+  # With NO QA bounce tracking (counts how many times issues went to NO QA)
+  %(prog)s --project TTIOSMAU --user "Xiaochun Mou" --noqa-status "No Pass"
+  %(prog)s --config dev-metrics.conf --noqa-status "No Pass"
 
   # From config file
   %(prog)s --config dev-metrics.conf
@@ -302,6 +489,7 @@ Config file format:
     parser.add_argument("--config", help="Config file with project|user mappings")
     parser.add_argument("--month", help="Month to report on (YYYY-MM, default: previous month)")
     parser.add_argument("--delivered-status", default="PO REVIEW", help="Status that counts as delivered")
+    parser.add_argument("--noqa-status", default=None, help="Status for NO QA/QA bouncebacks (e.g., 'No Pass')")
     parser.add_argument("--issue-types", default="User Story,Bug", help="Issue types to include")
     parser.add_argument("--sp-field", default="customfield_10004", help="Custom field ID for story points")
     parser.add_argument("--json", action="store_true", help="Output raw JSON only")
@@ -343,11 +531,16 @@ Config file format:
     start_date, end_date = get_month_range(args.month)
     month_display = args.month or start_date[:7]
 
+    # Determine if we're tracking NO QA
+    show_noqa = args.noqa_status is not None
+
     # Process all entries
     results = []
     all_data = {}
+    all_noqa_data = {}
 
     for entry in entries:
+        # Fetch delivered data
         data = fetch_jira_data(
             entry['project'],
             entry['user'],
@@ -363,31 +556,82 @@ Config file format:
 
         stats = analyze_data(data, args.sp_field)
 
+        # Fetch NO QA data if requested
+        noqa_stats = None
+        if show_noqa:
+            noqa_data = fetch_noqa_issues(
+                entry['project'],
+                entry['user'],
+                start_date,
+                end_date,
+                args.noqa_status,
+                args.issue_types,
+                args.sp_field,
+                email,
+                token,
+                base_url
+            )
+            # Analyze with bounce counts (fetches changelog for each issue)
+            noqa_stats = analyze_data_with_changelog(
+                noqa_data,
+                args.sp_field,
+                args.noqa_status,
+                start_date,
+                end_date,
+                email,
+                token,
+                base_url
+            )
+
         results.append({
             'project': entry['project'],
             'user': entry['user'],
             'display_name': entry['display_name'],
-            'stats': stats
+            'stats': stats,
+            'noqa_stats': noqa_stats
         })
 
         all_data[f"{entry['project']}|{entry['user']}"] = data
+        all_noqa_data[f"{entry['project']}|{entry['user']}"] = noqa_data if show_noqa else None
 
     # Output
     if args.json:
-        print(json.dumps(all_data, indent=2))
+        output = {
+            'delivered': all_data,
+            'noqa': all_noqa_data if show_noqa else {}
+        }
+        print(json.dumps(output, indent=2))
     elif len(results) == 1:
         # Single user - show detailed view
         r = results[0]
-        display_single_result(all_data[f"{r['project']}|{r['user']}"], r['stats'], r['project'], r['display_name'], month_display, args.sp_field)
+        display_single_result(
+            all_data[f"{r['project']}|{r['user']}"],
+            r['stats'],
+            r.get('noqa_stats'),
+            r['project'],
+            r['display_name'],
+            month_display,
+            args.sp_field,
+            show_noqa
+        )
     else:
         # Multiple users - show summary table
-        display_summary_table(results, month_display)
+        display_summary_table(results, month_display, show_noqa)
 
         # Optionally show details
         if args.details:
             for r in results:
                 key = f"{r['project']}|{r['user']}"
-                display_single_result(all_data[key], r['stats'], r['project'], r['display_name'], month_display, args.sp_field)
+                display_single_result(
+                    all_data[key],
+                    r['stats'],
+                    r.get('noqa_stats'),
+                    r['project'],
+                    r['display_name'],
+                    month_display,
+                    args.sp_field,
+                    show_noqa
+                )
                 print("\n")
 
 

@@ -1,1012 +1,1045 @@
+Resolving users...
+Querying Andrew Laminski (712020:58228aa6-602c-471e-9b3e-421a210c8506)...
+Querying Anton Shkuray (712020:70cd6932-bd36-40e6-8b78-b99289b73bca)...
+Querying Artem Shyianov (712020:b8b37a30-5a25-42e1-a53e-ff928454f07d)...
+Querying Dmytro Tkachenko (712020:d1000b71-8590-40c5-bb56-a981339fbeeb)...
+Querying Edward Liu (712020:5a367df8-7c79-4630-8dd0-34074cc02f84)...
+Querying Oleksii Lebediev (712020:26fda6f8-8866-404a-93a3-20156e62b24b)...
+Querying Serhii Kostrykin (712020:53625f52-e325-493c-8abd-cacc568a3592)...
+Querying Shu Zhang (712020:2e8b582b-1447-4c1e-898b-7a1254ad817e)...
+Querying Viacheslav Lypchenko (712020:60fdd21c-4b16-41f5-8e5c-df947b00ef5e)...
+Querying Volodymyr Marienkov (712020:f1fb3ca5-e956-4e45-9ad7-43998a4b47cb)...
+Querying Xiaochun Mou (712020:8041b3ce-8a24-4c4c-a940-caa7af9ece06)...
 {
-  "period": {
-    "start": "2026-03-01",
-    "end": "2026-03-31"
+  "Andrew Laminski": {
+    "user": "Andrew Laminski",
+    "account_id": "712020:58228aa6-602c-471e-9b3e-421a210c8506",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 0,
+      "bugs": 2,
+      "total_items": 2,
+      "total_sp": 4.0,
+      "stories_sp": 0,
+      "bugs_sp": 4.0,
+      "no_sp_count": 0,
+      "items": [
+        {
+          "key": "FAIOSMAU-435",
+          "type": "Bug",
+          "summary": "[Backend] Retouch Tool: Error message appears instead of quota message",
+          "status": "Waiting for Deployment",
+          "story_points": 1.0
+        },
+        {
+          "key": "FAIOSMAU-261",
+          "type": "Bug",
+          "summary": "YouCam Filters > Image Size Limits on Selfie Upload",
+          "status": "Closed",
+          "story_points": 3.0
+        }
+      ]
+    },
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
+    }
   },
-  "delivered_definition": "Jira issues resolved (resolution date) in period; types Story and Bug only.",
-  "config_status_note": "sprint-metrics.conf DELIVERED_STATUS (PO REVIEW/APPROVAL) returned 0 for March; report uses resolution date instead.",
-  "unresolved_jira_users": [],
-  "developers": {
-    "Andrew Laminski": {
-      "user": "Andrew Laminski",
-      "account_id": "712020:58228aa6-602c-471e-9b3e-421a210c8506",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 0,
-        "bugs": 2,
-        "total_items": 2,
-        "total_sp": 4.0,
-        "stories_sp": 0.0,
-        "bugs_sp": 4.0,
-        "no_sp_count": 0,
-        "items": [
-          {
-            "key": "FAIOSMAU-435",
-            "type": "Bug",
-            "summary": "[Backend] Retouch Tool: Error message appears instead of quota message",
-            "status": "Waiting for Deployment",
-            "story_points": 1.0
-          },
-          {
-            "key": "FAIOSMAU-261",
-            "type": "Bug",
-            "summary": "YouCam Filters > Image Size Limits on Selfie Upload",
-            "status": "Closed",
-            "story_points": 3.0
-          }
-        ]
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+  "Anton Shkuray": {
+    "user": "Anton Shkuray",
+    "account_id": "712020:70cd6932-bd36-40e6-8b78-b99289b73bca",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 0,
+      "bugs": 16,
+      "total_items": 16,
+      "total_sp": 21.0,
+      "stories_sp": 0,
+      "bugs_sp": 21.0,
+      "no_sp_count": 4,
+      "items": [
+        {
+          "key": "FAIOSMAU-432",
+          "type": "Bug",
+          "summary": "'Cancel' button not cancel action if some filter hasn't finished with applying ",
+          "status": "Waiting for Deployment",
+          "story_points": 2.0
+        },
+        {
+          "key": "FAIOSMAU-427",
+          "type": "Bug",
+          "summary": "[iOS] Retouch Tool: Error message appears instead of quota message",
+          "status": "Waiting for Deployment",
+          "story_points": 3.0
+        },
+        {
+          "key": "FAIOSMAU-426",
+          "type": "Bug",
+          "summary": "Splash+Onboarding texts not ok (Spanish)",
+          "status": "Waiting for Deployment",
+          "story_points": 1.0
+        },
+        {
+          "key": "FAIOSMAU-413",
+          "type": "Bug",
+          "summary": " Results when applying filter are rotated",
+          "status": "Waiting for Deployment",
+          "story_points": 2.0
+        },
+        {
+          "key": "FAIOSMAU-406",
+          "type": "Bug",
+          "summary": "NSFW -> Content Guidelines Hyperlink -> Not working with other languages",
+          "status": "Closed",
+          "story_points": 1.0
+        },
+        {
+          "key": "FAIOSMAU-401",
+          "type": "Bug",
+          "summary": "Paywall -> Native -> Localizely Offer Strings KO",
+          "status": "Closed",
+          "story_points": 1.0
+        },
+        {
+          "key": "FAIOSMAU-396",
+          "type": "Bug",
+          "summary": "Upload image/Library Screens: Incorrect behavior",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "FAIOSMAU-395",
+          "type": "Bug",
+          "summary": "Paywall -> Native -> Deformed Apple Icon at Bottom",
+          "status": "Closed",
+          "story_points": 1.0
+        },
+        {
+          "key": "FAIOSMAU-351",
+          "type": "Bug",
+          "summary": "'Reset purchase' button should display correct popup for expired users without any other actions",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "FAIOSMAU-306",
+          "type": "Bug",
+          "summary": "Library Screen > Empty & Fill States",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "FAIOSMAU-305",
+          "type": "Bug",
+          "summary": "Multi-Selection Component > Default state behavior if filter selected",
+          "status": "Closed",
+          "story_points": 3.0
+        },
+        {
+          "key": "FAIOSMAU-272",
+          "type": "Bug",
+          "summary": "Screen Content Protection for Subscribed Users",
+          "status": "Closed",
+          "story_points": null
+        },
+        {
+          "key": "FAIOSMAU-271",
+          "type": "Bug",
+          "summary": "Contact Us > Email > Subject Missing",
+          "status": "Closed",
+          "story_points": null
+        },
+        {
+          "key": "FAIOSMAU-270",
+          "type": "Bug",
+          "summary": "Enabled Landscape Mode > Device Auto-rotate",
+          "status": "Closed",
+          "story_points": null
+        },
+        {
+          "key": "FAIOSMAU-267",
+          "type": "Bug",
+          "summary": "Background > Empty default state canvas using the background filter catalog",
+          "status": "Closed",
+          "story_points": null
+        },
+        {
+          "key": "FAIOSMAU-223",
+          "type": "Bug",
+          "summary": "Face filters > Gender > Asset blinks",
+          "status": "Closed",
+          "story_points": 1.0
+        }
+      ]
     },
-    "Anton Shkuray": {
-      "user": "Anton Shkuray",
-      "account_id": "712020:70cd6932-bd36-40e6-8b78-b99289b73bca",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 0,
-        "bugs": 16,
-        "total_items": 16,
-        "total_sp": 21.0,
-        "stories_sp": 0.0,
-        "bugs_sp": 21.0,
-        "no_sp_count": 4,
-        "items": [
-          {
-            "key": "FAIOSMAU-432",
-            "type": "Bug",
-            "summary": "'Cancel' button not cancel action if some filter hasn't finished with applying ",
-            "status": "Waiting for Deployment",
-            "story_points": 2.0
-          },
-          {
-            "key": "FAIOSMAU-427",
-            "type": "Bug",
-            "summary": "[iOS] Retouch Tool: Error message appears instead of quota message",
-            "status": "Waiting for Deployment",
-            "story_points": 3.0
-          },
-          {
-            "key": "FAIOSMAU-426",
-            "type": "Bug",
-            "summary": "Splash+Onboarding texts not ok (Spanish)",
-            "status": "Waiting for Deployment",
-            "story_points": 1.0
-          },
-          {
-            "key": "FAIOSMAU-413",
-            "type": "Bug",
-            "summary": " Results when applying filter are rotated",
-            "status": "Waiting for Deployment",
-            "story_points": 2.0
-          },
-          {
-            "key": "FAIOSMAU-406",
-            "type": "Bug",
-            "summary": "NSFW -> Content Guidelines Hyperlink -> Not working with other languages",
-            "status": "Closed",
-            "story_points": 1.0
-          },
-          {
-            "key": "FAIOSMAU-401",
-            "type": "Bug",
-            "summary": "Paywall -> Native -> Localizely Offer Strings KO",
-            "status": "Closed",
-            "story_points": 1.0
-          },
-          {
-            "key": "FAIOSMAU-396",
-            "type": "Bug",
-            "summary": "Upload image/Library Screens: Incorrect behavior",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "FAIOSMAU-395",
-            "type": "Bug",
-            "summary": "Paywall -> Native -> Deformed Apple Icon at Bottom",
-            "status": "Closed",
-            "story_points": 1.0
-          },
-          {
-            "key": "FAIOSMAU-351",
-            "type": "Bug",
-            "summary": "'Reset purchase' button should display correct popup for expired users without any other actions",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "FAIOSMAU-306",
-            "type": "Bug",
-            "summary": "Library Screen > Empty & Fill States",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "FAIOSMAU-305",
-            "type": "Bug",
-            "summary": "Multi-Selection Component > Default state behavior if filter selected",
-            "status": "Closed",
-            "story_points": 3.0
-          },
-          {
-            "key": "FAIOSMAU-272",
-            "type": "Bug",
-            "summary": "Screen Content Protection for Subscribed Users",
-            "status": "Closed",
-            "story_points": null
-          },
-          {
-            "key": "FAIOSMAU-271",
-            "type": "Bug",
-            "summary": "Contact Us > Email > Subject Missing",
-            "status": "Closed",
-            "story_points": null
-          },
-          {
-            "key": "FAIOSMAU-270",
-            "type": "Bug",
-            "summary": "Enabled Landscape Mode > Device Auto-rotate",
-            "status": "Closed",
-            "story_points": null
-          },
-          {
-            "key": "FAIOSMAU-267",
-            "type": "Bug",
-            "summary": "Background > Empty default state canvas using the background filter catalog",
-            "status": "Closed",
-            "story_points": null
-          },
-          {
-            "key": "FAIOSMAU-223",
-            "type": "Bug",
-            "summary": "Face filters > Gender > Asset blinks",
-            "status": "Closed",
-            "story_points": 1.0
-          }
-        ]
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 1,
+      "total_bounces": 1,
+      "items": [
+        {
+          "key": "FAIOSMAU-401",
+          "type": "Bug",
+          "summary": "Paywall -> Native -> Localizely Offer Strings KO",
+          "bounce_count": 1,
+          "bounces": [
+            {
+              "date": "2026-03-14T11:45",
+              "by": "German Insua Perdomo"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Artem Shyianov": {
+    "user": "Artem Shyianov",
+    "account_id": "712020:b8b37a30-5a25-42e1-a53e-ff928454f07d",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 3,
+      "bugs": 0,
+      "total_items": 3,
+      "total_sp": 6.0,
+      "stories_sp": 6.0,
+      "bugs_sp": 0,
+      "no_sp_count": 0,
+      "items": [
+        {
+          "key": "IMOEXT-1953",
+          "type": "Story",
+          "summary": "Decouple UI from Loading/Toast/HUD Services",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "IMOEXT-1952",
+          "type": "Story",
+          "summary": "Decouple UI from Device/Connection Services",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "IMOEXT-1951",
+          "type": "Story",
+          "summary": "Decouple UI from Payment/Subscription Services",
+          "status": "Closed",
+          "story_points": 2.0
+        }
+      ]
     },
-    "Artem Shyianov": {
-      "user": "Artem Shyianov",
-      "account_id": "712020:b8b37a30-5a25-42e1-a53e-ff928454f07d",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 3,
-        "bugs": 0,
-        "total_items": 3,
-        "total_sp": 6.0,
-        "stories_sp": 6.0,
-        "bugs_sp": 0.0,
-        "no_sp_count": 0,
-        "items": [
-          {
-            "key": "IMOEXT-1953",
-            "type": "Story",
-            "summary": "Decouple UI from Loading/Toast/HUD Services",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "IMOEXT-1952",
-            "type": "Story",
-            "summary": "Decouple UI from Device/Connection Services",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "IMOEXT-1951",
-            "type": "Story",
-            "summary": "Decouple UI from Payment/Subscription Services",
-            "status": "Closed",
-            "story_points": 2.0
-          }
-        ]
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
+    }
+  },
+  "Dmytro Tkachenko": {
+    "user": "Dmytro Tkachenko",
+    "account_id": "712020:d1000b71-8590-40c5-bb56-a981339fbeeb",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 0,
+      "bugs": 0,
+      "total_items": 0,
+      "total_sp": 0,
+      "stories_sp": 0,
+      "bugs_sp": 0,
+      "no_sp_count": 0,
+      "items": []
     },
-    "Dmytro Tkachenko": {
-      "user": "Dmytro Tkachenko",
-      "account_id": "712020:d1000b71-8590-40c5-bb56-a981339fbeeb",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 0,
-        "bugs": 0,
-        "total_items": 0,
-        "total_sp": 0.0,
-        "stories_sp": 0.0,
-        "bugs_sp": 0.0,
-        "no_sp_count": 0,
-        "items": []
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
+    }
+  },
+  "Edward Liu": {
+    "user": "Edward Liu",
+    "account_id": "712020:5a367df8-7c79-4630-8dd0-34074cc02f84",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 0,
+      "bugs": 44,
+      "total_items": 44,
+      "total_sp": 92.0,
+      "stories_sp": 0,
+      "bugs_sp": 92.0,
+      "no_sp_count": 0,
+      "items": [
+        {
+          "key": "TTIOSMAU-1481",
+          "type": "Bug",
+          "summary": "[Android]Create> The label text in multiple images page are not localized. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1480",
+          "type": "Bug",
+          "summary": "[Android]Amplitude> Duplicated events \"start_restore_purchase\" when restore purchase. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1466",
+          "type": "Bug",
+          "summary": "[Android]Recreate > Calculation issue for the images number in Redo note.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1464",
+          "type": "Bug",
+          "summary": "[Android]Unlock > User should not be required to purchase if continue unlock slots while already with enough credits. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1458",
+          "type": "Bug",
+          "summary": "[Android]Redo > Different notes shown up when redo creations with not enough credits. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1455",
+          "type": "Bug",
+          "summary": "[Android]Credits > No Credits reduced after retry the failed slots.",
+          "status": "Closed",
+          "story_points": 3.0
+        },
+        {
+          "key": "TTIOSMAU-1454",
+          "type": "Bug",
+          "summary": "[Android]Unlock state > The other locked slot always in processing after unlock one",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1447",
+          "type": "Bug",
+          "summary": "[Android]Creation > Only 2 quotas cost when user generated with 3 creations. ",
+          "status": "Closed",
+          "story_points": 3.0
+        },
+        {
+          "key": "TTIOSMAU-1446",
+          "type": "Bug",
+          "summary": "[Android]Creation > User should be direct to payment process when try to unlock the limit Reached slots. ",
+          "status": "Closed",
+          "story_points": 3.0
+        },
+        {
+          "key": "TTIOSMAU-1428",
+          "type": "Bug",
+          "summary": "[Android]Premium Multi Screen > Only 1 quota reduced after premium user created 4 tattoos. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1399",
+          "type": "Bug",
+          "summary": "[Android]AI Tools > The items still shown in page even though they are set as \"isHidden\" = True in remote config.",
+          "status": "Waiting for Deployment",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1385",
+          "type": "Bug",
+          "summary": "[Android]AI Tools > Most of the images are loading failed in the 1st time open AI Tools page.",
+          "status": "Waiting for Deployment",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1384",
+          "type": "Bug",
+          "summary": "[Android]UI Improvements for the AI tools page.",
+          "status": "Waiting for Deployment",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1335",
+          "type": "Bug",
+          "summary": "[Android]Pinned > Unexpected exit confirmation note shown when exit the transformed creations from Pinned list.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1330",
+          "type": "Bug",
+          "summary": "[Android] Transform > Add rating options in transform result page.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1281",
+          "type": "Bug",
+          "summary": "[Android][Improvement]Creations - The page is flashed when exit the details page.",
+          "status": "Closed",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1278",
+          "type": "Bug",
+          "summary": "[Android][Improvement]Redo/Undo > Make the Redo/Undo button visible by default.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1275",
+          "type": "Bug",
+          "summary": "[Android]Transform> The transformed result page is incorrect after Redo (missed redo option).",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1274",
+          "type": "Bug",
+          "summary": "[Android only]Create > Make creation with bodyParts failed. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1253",
+          "type": "Bug",
+          "summary": "[Android]Amplitude > Duplicated event \"Complete_save\" after saving creation. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1237",
+          "type": "Bug",
+          "summary": "[Improvement][Android]Discover > The moving speed is too slowly when drag the zoomed image.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1236",
+          "type": "Bug",
+          "summary": "[Improvement][Android]Discover > Search and style filters should be mutually exclusive",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1199",
+          "type": "Bug",
+          "summary": "[Android]Zoom > Image result is not supporting zoom in by pinch. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1172",
+          "type": "Bug",
+          "summary": "[Android]Discover > Missed the text localizations",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1170",
+          "type": "Bug",
+          "summary": "[Android]Discover > Image is not supporting zoom in Discover detail page.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1167",
+          "type": "Bug",
+          "summary": " [Android]Transform > Incorrect UI for the transform Result.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1166",
+          "type": "Bug",
+          "summary": "[Improvement][Android]Discover > Add loading label when open the discover details page.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1164",
+          "type": "Bug",
+          "summary": "[Android]Discover > The Visual Rules text prompt shown for the transformed discover creations. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1163",
+          "type": "Bug",
+          "summary": "[Improvements][Android]Discover > Follow the design, move the \"No result\" error message down a little. ",
+          "status": "Closed",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1162",
+          "type": "Bug",
+          "summary": "[Improvements][Android]Discover > Add more properties about the discover image saved events in Amplitude. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1160",
+          "type": "Bug",
+          "summary": "[Android]Discover > UI Improvements (Compared with design)",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1159",
+          "type": "Bug",
+          "summary": "[Android]Discover > Add result info if filter by style without any result.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1158",
+          "type": "Bug",
+          "summary": "[Android]Discover > Filter by style doesn't work ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1157",
+          "type": "Bug",
+          "summary": "[Android]Discover > Missed the delete icon in the search field.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1156",
+          "type": "Bug",
+          "summary": "[Android]Discover > The style label images are not centered in the bubble.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1155",
+          "type": "Bug",
+          "summary": "[Android]Discover > The last line creations can't be viewed completely.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1149",
+          "type": "Bug",
+          "summary": "[Android]Discover > The cursor in search box should be in blue color.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1100",
+          "type": "Bug",
+          "summary": "[Android]Upgrade > The upgrade note should shown above other notes.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1098",
+          "type": "Bug",
+          "summary": "[Android]Result - Make the redo/undo icon gray out if there are no related version. ",
+          "status": "Closed",
+          "story_points": 5.0
+        },
+        {
+          "key": "TTIOSMAU-190",
+          "type": "Bug",
+          "summary": "[Android] Pin > Missing the No Internet error when try to Pin creation in offline mode.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-189",
+          "type": "Bug",
+          "summary": "[Android] Profile > Remember the list last position when back from Creations/Pinned details page.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-182",
+          "type": "Bug",
+          "summary": "[Android][Improvement] Profile >Make  the title \"Creations/Pinned\" in the center of header section. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-179",
+          "type": "Bug",
+          "summary": "[Android] Pinned > Sometimes the Loading text label can't be dismiss (Pinned data loaded)",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-175",
+          "type": "Bug",
+          "summary": " [Android] Try on > Add edit box when drag / move the tattoo in try on result page.",
+          "status": "Closed",
+          "story_points": 2.0
+        }
+      ]
     },
-    "Edward Liu": {
-      "user": "Edward Liu",
-      "account_id": "712020:5a367df8-7c79-4630-8dd0-34074cc02f84",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 0,
-        "bugs": 44,
-        "total_items": 44,
-        "total_sp": 92.0,
-        "stories_sp": 0.0,
-        "bugs_sp": 92.0,
-        "no_sp_count": 0,
-        "items": [
-          {
-            "key": "TTIOSMAU-1481",
-            "type": "Bug",
-            "summary": "[Android]Create> The label text in multiple images page are not localized. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1480",
-            "type": "Bug",
-            "summary": "[Android]Amplitude> Duplicated events \"start_restore_purchase\" when restore purchase. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1466",
-            "type": "Bug",
-            "summary": "[Android]Recreate > Calculation issue for the images number in Redo note.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1464",
-            "type": "Bug",
-            "summary": "[Android]Unlock > User should not be required to purchase if continue unlock slots while already with enough credits. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1458",
-            "type": "Bug",
-            "summary": "[Android]Redo > Different notes shown up when redo creations with not enough credits. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1455",
-            "type": "Bug",
-            "summary": "[Android]Credits > No Credits reduced after retry the failed slots.",
-            "status": "Closed",
-            "story_points": 3.0
-          },
-          {
-            "key": "TTIOSMAU-1454",
-            "type": "Bug",
-            "summary": "[Android]Unlock state > The other locked slot always in processing after unlock one",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1447",
-            "type": "Bug",
-            "summary": "[Android]Creation > Only 2 quotas cost when user generated with 3 creations. ",
-            "status": "Closed",
-            "story_points": 3.0
-          },
-          {
-            "key": "TTIOSMAU-1446",
-            "type": "Bug",
-            "summary": "[Android]Creation > User should be direct to payment process when try to unlock the limit Reached slots. ",
-            "status": "Closed",
-            "story_points": 3.0
-          },
-          {
-            "key": "TTIOSMAU-1428",
-            "type": "Bug",
-            "summary": "[Android]Premium Multi Screen > Only 1 quota reduced after premium user created 4 tattoos. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1399",
-            "type": "Bug",
-            "summary": "[Android]AI Tools > The items still shown in page even though they are set as \"isHidden\" = True in remote config.",
-            "status": "Waiting for Deployment",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1385",
-            "type": "Bug",
-            "summary": "[Android]AI Tools > Most of the images are loading failed in the 1st time open AI Tools page.",
-            "status": "Waiting for Deployment",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1384",
-            "type": "Bug",
-            "summary": "[Android]UI Improvements for the AI tools page.",
-            "status": "Waiting for Deployment",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1335",
-            "type": "Bug",
-            "summary": "[Android]Pinned > Unexpected exit confirmation note shown when exit the transformed creations from Pinned list.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1330",
-            "type": "Bug",
-            "summary": "[Android] Transform > Add rating options in transform result page.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1281",
-            "type": "Bug",
-            "summary": "[Android][Improvement]Creations - The page is flashed when exit the details page.",
-            "status": "Closed",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1278",
-            "type": "Bug",
-            "summary": "[Android][Improvement]Redo/Undo > Make the Redo/Undo button visible by default.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1275",
-            "type": "Bug",
-            "summary": "[Android]Transform> The transformed result page is incorrect after Redo (missed redo option).",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1274",
-            "type": "Bug",
-            "summary": "[Android only]Create > Make creation with bodyParts failed. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1253",
-            "type": "Bug",
-            "summary": "[Android]Amplitude > Duplicated event \"Complete_save\" after saving creation. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1237",
-            "type": "Bug",
-            "summary": "[Improvement][Android]Discover > The moving speed is too slowly when drag the zoomed image.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1236",
-            "type": "Bug",
-            "summary": "[Improvement][Android]Discover > Search and style filters should be mutually exclusive",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1199",
-            "type": "Bug",
-            "summary": "[Android]Zoom > Image result is not supporting zoom in by pinch. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1172",
-            "type": "Bug",
-            "summary": "[Android]Discover > Missed the text localizations",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1170",
-            "type": "Bug",
-            "summary": "[Android]Discover > Image is not supporting zoom in Discover detail page.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1167",
-            "type": "Bug",
-            "summary": " [Android]Transform > Incorrect UI for the transform Result.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1166",
-            "type": "Bug",
-            "summary": "[Improvement][Android]Discover > Add loading label when open the discover details page.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1164",
-            "type": "Bug",
-            "summary": "[Android]Discover > The Visual Rules text prompt shown for the transformed discover creations. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1163",
-            "type": "Bug",
-            "summary": "[Improvements][Android]Discover > Follow the design, move the \"No result\" error message down a little. ",
-            "status": "Closed",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1162",
-            "type": "Bug",
-            "summary": "[Improvements][Android]Discover > Add more properties about the discover image saved events in Amplitude. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1160",
-            "type": "Bug",
-            "summary": "[Android]Discover > UI Improvements (Compared with design)",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1159",
-            "type": "Bug",
-            "summary": "[Android]Discover > Add result info if filter by style without any result.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1158",
-            "type": "Bug",
-            "summary": "[Android]Discover > Filter by style doesn't work ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1157",
-            "type": "Bug",
-            "summary": "[Android]Discover > Missed the delete icon in the search field.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1156",
-            "type": "Bug",
-            "summary": "[Android]Discover > The style label images are not centered in the bubble.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1155",
-            "type": "Bug",
-            "summary": "[Android]Discover > The last line creations can't be viewed completely.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1149",
-            "type": "Bug",
-            "summary": "[Android]Discover > The cursor in search box should be in blue color.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1100",
-            "type": "Bug",
-            "summary": "[Android]Upgrade > The upgrade note should shown above other notes.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1098",
-            "type": "Bug",
-            "summary": "[Android]Result - Make the redo/undo icon gray out if there are no related version. ",
-            "status": "Closed",
-            "story_points": 5.0
-          },
-          {
-            "key": "TTIOSMAU-190",
-            "type": "Bug",
-            "summary": "[Android] Pin > Missing the No Internet error when try to Pin creation in offline mode.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-189",
-            "type": "Bug",
-            "summary": "[Android] Profile > Remember the list last position when back from Creations/Pinned details page.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-182",
-            "type": "Bug",
-            "summary": "[Android][Improvement] Profile >Make  the title \"Creations/Pinned\" in the center of header section. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-179",
-            "type": "Bug",
-            "summary": "[Android] Pinned > Sometimes the Loading text label can't be dismiss (Pinned data loaded)",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-175",
-            "type": "Bug",
-            "summary": " [Android] Try on > Add edit box when drag / move the tattoo in try on result page.",
-            "status": "Closed",
-            "story_points": 2.0
-          }
-        ]
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
+    }
+  },
+  "Oleksii Lebediev": {
+    "user": "Oleksii Lebediev",
+    "account_id": "712020:26fda6f8-8866-404a-93a3-20156e62b24b",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 0,
+      "bugs": 0,
+      "total_items": 0,
+      "total_sp": 0,
+      "stories_sp": 0,
+      "bugs_sp": 0,
+      "no_sp_count": 0,
+      "items": []
     },
-    "Oleksii Lebediev": {
-      "user": "Oleksii Lebediev",
-      "account_id": "712020:26fda6f8-8866-404a-93a3-20156e62b24b",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 0,
-        "bugs": 0,
-        "total_items": 0,
-        "total_sp": 0.0,
-        "stories_sp": 0.0,
-        "bugs_sp": 0.0,
-        "no_sp_count": 0,
-        "items": []
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
+    }
+  },
+  "Serhii Kostrykin": {
+    "user": "Serhii Kostrykin",
+    "account_id": "712020:53625f52-e325-493c-8abd-cacc568a3592",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 2,
+      "bugs": 0,
+      "total_items": 2,
+      "total_sp": 13.0,
+      "stories_sp": 13.0,
+      "bugs_sp": 0,
+      "no_sp_count": 0,
+      "items": [
+        {
+          "key": "IMOEXT-1962",
+          "type": "Story",
+          "summary": "[UI] Implementation of the consistency changes",
+          "status": "Closed",
+          "story_points": 11.0
+        },
+        {
+          "key": "IMOEXT-1954",
+          "type": "Story",
+          "summary": "Secrets Management",
+          "status": "Closed",
+          "story_points": 2.0
+        }
+      ]
     },
-    "Serhii Kostrykin": {
-      "user": "Serhii Kostrykin",
-      "account_id": "712020:53625f52-e325-493c-8abd-cacc568a3592",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 2,
-        "bugs": 0,
-        "total_items": 2,
-        "total_sp": 13.0,
-        "stories_sp": 13.0,
-        "bugs_sp": 0.0,
-        "no_sp_count": 0,
-        "items": [
-          {
-            "key": "IMOEXT-1962",
-            "type": "Story",
-            "summary": "[UI] Implementation of the consistency changes",
-            "status": "Closed",
-            "story_points": 11.0
-          },
-          {
-            "key": "IMOEXT-1954",
-            "type": "Story",
-            "summary": "Secrets Management",
-            "status": "Closed",
-            "story_points": 2.0
-          }
-        ]
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
+    }
+  },
+  "Shu Zhang": {
+    "user": "Shu Zhang",
+    "account_id": "712020:2e8b582b-1447-4c1e-898b-7a1254ad817e",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 0,
+      "bugs": 4,
+      "total_items": 4,
+      "total_sp": 8.0,
+      "stories_sp": 0,
+      "bugs_sp": 8.0,
+      "no_sp_count": 0,
+      "items": [
+        {
+          "key": "TTIOSMAU-1273",
+          "type": "Bug",
+          "summary": "[Backend]Pin> Pin creation got 500 error.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1169",
+          "type": "Bug",
+          "summary": "Discover > Some discover creation missed the prompt text.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1161",
+          "type": "Bug",
+          "summary": "Discover > Try on feature is not usable for some Discover creation(expired data).",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1154",
+          "type": "Bug",
+          "summary": "Discover > Search creation with multiple words does not work. ",
+          "status": "Closed",
+          "story_points": 2.0
+        }
+      ]
     },
-    "Shu Zhang": {
-      "user": "Shu Zhang",
-      "account_id": "712020:2e8b582b-1447-4c1e-898b-7a1254ad817e",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 0,
-        "bugs": 4,
-        "total_items": 4,
-        "total_sp": 8.0,
-        "stories_sp": 0.0,
-        "bugs_sp": 8.0,
-        "no_sp_count": 0,
-        "items": [
-          {
-            "key": "TTIOSMAU-1273",
-            "type": "Bug",
-            "summary": "[Backend]Pin> Pin creation got 500 error.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1169",
-            "type": "Bug",
-            "summary": "Discover > Some discover creation missed the prompt text.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1161",
-            "type": "Bug",
-            "summary": "Discover > Try on feature is not usable for some Discover creation(expired data).",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1154",
-            "type": "Bug",
-            "summary": "Discover > Search creation with multiple words does not work. ",
-            "status": "Closed",
-            "story_points": 2.0
-          }
-        ]
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
+    }
+  },
+  "Viacheslav Lypchenko": {
+    "user": "Viacheslav Lypchenko",
+    "account_id": "712020:60fdd21c-4b16-41f5-8e5c-df947b00ef5e",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 0,
+      "bugs": 0,
+      "total_items": 0,
+      "total_sp": 0,
+      "stories_sp": 0,
+      "bugs_sp": 0,
+      "no_sp_count": 0,
+      "items": []
     },
-    "Viacheslav Lypchenko": {
-      "user": "Viacheslav Lypchenko",
-      "account_id": "712020:60fdd21c-4b16-41f5-8e5c-df947b00ef5e",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 0,
-        "bugs": 0,
-        "total_items": 0,
-        "total_sp": 0.0,
-        "stories_sp": 0.0,
-        "bugs_sp": 0.0,
-        "no_sp_count": 0,
-        "items": []
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
+    }
+  },
+  "Volodymyr Marienkov": {
+    "user": "Volodymyr Marienkov",
+    "account_id": "712020:f1fb3ca5-e956-4e45-9ad7-43998a4b47cb",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 0,
+      "bugs": 0,
+      "total_items": 0,
+      "total_sp": 0,
+      "stories_sp": 0,
+      "bugs_sp": 0,
+      "no_sp_count": 0,
+      "items": []
     },
-    "Volodymyr Marienkov": {
-      "user": "Volodymyr Marienkov",
-      "account_id": "712020:f1fb3ca5-e956-4e45-9ad7-43998a4b47cb",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 0,
-        "bugs": 0,
-        "total_items": 0,
-        "total_sp": 0.0,
-        "stories_sp": 0.0,
-        "bugs_sp": 0.0,
-        "no_sp_count": 0,
-        "items": []
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
+    }
+  },
+  "Xiaochun Mou": {
+    "user": "Xiaochun Mou",
+    "account_id": "712020:8041b3ce-8a24-4c4c-a940-caa7af9ece06",
+    "month": "2026-03",
+    "delivered": {
+      "stories": 0,
+      "bugs": 42,
+      "total_items": 42,
+      "total_sp": 76.0,
+      "stories_sp": 0,
+      "bugs_sp": 76.0,
+      "no_sp_count": 0,
+      "items": [
+        {
+          "key": "TTIOSMAU-1566",
+          "type": "Bug",
+          "summary": "[IOS]Try on > The camera view is freeze after back from the try on result page.",
+          "status": "Waiting for Store",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1556",
+          "type": "Bug",
+          "summary": "[IOS]Transform > No response when click the premium style in Transform page.",
+          "status": "Waiting for Store",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1550",
+          "type": "Bug",
+          "summary": "[IOS]Ads > The image recreation can't be continued after recover the network connection (ads played completely)",
+          "status": "Waiting for Store",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1549",
+          "type": "Bug",
+          "summary": "[IOS]Ads > Missed the Monetization Modal after update prompt to generate images.",
+          "status": "Waiting for Store",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1545",
+          "type": "Bug",
+          "summary": "[IOS]Ads > Missed the \"view_limit_reached_ads\" Amplitude event when Daily quota reached",
+          "status": "Waiting for Store",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1544",
+          "type": "Bug",
+          "summary": "[IOS]Ads > Missed the \"view_screen_watch_ad\" Amplitude event when Monetization Modal  shown up",
+          "status": "Waiting for Store",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1541",
+          "type": "Bug",
+          "summary": "[IOS]Ads > The remaining ads count should be show in the Monetization Modal",
+          "status": "Waiting for Store",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1536",
+          "type": "Bug",
+          "summary": "[IOS]Ads > Missed the number of daily ads available in the Monetization Modal",
+          "status": "Waiting for Store",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1491",
+          "type": "Bug",
+          "summary": "[IOS]Grid list View > The grid result page layout is incorrect when user generate with Portrait / landscape size images.",
+          "status": "Closed",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1490",
+          "type": "Bug",
+          "summary": "[IOS]Premium Unlock> The slots shown with Limit reached label after user complete the premium unlock. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1486",
+          "type": "Bug",
+          "summary": "[IOS] Try on > Camera view is not actived when do try on feature. ( not always happen)",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1465",
+          "type": "Bug",
+          "summary": "[IOS]Unlock > User should not be required to purchase if continue unlock slots while already with enough credits.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1460",
+          "type": "Bug",
+          "summary": "[IOS]Recreate > Calculation issue for the images number in Redo note.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1459",
+          "type": "Bug",
+          "summary": "[IOS]Unlock > The slots still as Unlock after user purchased the credits. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1453",
+          "type": "Bug",
+          "summary": "[IOS]Create > The retry slot shown as Locked label even user with enough credits.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1451",
+          "type": "Bug",
+          "summary": "[IOS]Create > 4 quotas reduced when free user generated 1 creation by Redo method. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1450",
+          "type": "Bug",
+          "summary": "[IOS]Premium Slots > The limit reached labels flashed before creations processed successfully.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1449",
+          "type": "Bug",
+          "summary": "[IOS]Premium Multi Screen > After interrupt the premium purchase, the locked slot processing automatically.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1345",
+          "type": "Bug",
+          "summary": "[IOS] Payment - Unexpected payment page opened when click Get inspired icon and Choose your image icon.",
+          "status": "Closed",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1336",
+          "type": "Bug",
+          "summary": "[iOS] Crash in the creating screen of the transform",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1334",
+          "type": "Bug",
+          "summary": "[IOS] Discover > The Pin premium status is not controlled by the remote configuration",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1333",
+          "type": "Bug",
+          "summary": "[IOS] Transform > Wrong style image in the loading page when redo the transform result. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1284",
+          "type": "Bug",
+          "summary": " [IOS] Result > Pin option still require premium payment even configure as Free.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1276",
+          "type": "Bug",
+          "summary": "[IOS]Transform> Missed the Redo button in Transform result page.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1250",
+          "type": "Bug",
+          "summary": "[IOS26]Upgrade > The upgrade window dismissed automatically. (50% repeat rate)",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1235",
+          "type": "Bug",
+          "summary": "[Improvement][IOS]Discover > Search and style filters should be mutually exclusive ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1233",
+          "type": "Bug",
+          "summary": "[IOS]Discover > The camera viewer is stucking when user do try on feature for the discover creation.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1232",
+          "type": "Bug",
+          "summary": "[IOS]Discover > The style name is not localized. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1219",
+          "type": "Bug",
+          "summary": "[IOS]Discover > The long prompt viewing improvements",
+          "status": "Closed",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1198",
+          "type": "Bug",
+          "summary": "[IOS]Discover > The layout for last 2 creations is incorrect.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1197",
+          "type": "Bug",
+          "summary": "[IOS]Discover > Incorrect UI if filter by style without any result.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1196",
+          "type": "Bug",
+          "summary": "[IOS]Discover > The style label images are not centered in the bubble.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1195",
+          "type": "Bug",
+          "summary": "[IOS]Discover > UI improvements ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1101",
+          "type": "Bug",
+          "summary": "[IOS]Localization > The error content \"Something went wrong\" is not localized. ",
+          "status": "Closed",
+          "story_points": 1.0
+        },
+        {
+          "key": "TTIOSMAU-1058",
+          "type": "Bug",
+          "summary": "[IOS] Try on > The action box is not focus on the tattoo after do some moving. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-1056",
+          "type": "Bug",
+          "summary": "[IOS] Transform >Add Random style option shown in Transform page",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-188",
+          "type": "Bug",
+          "summary": "[IOS] Try on > Missing the gallery image in try on camera view. ",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-186",
+          "type": "Bug",
+          "summary": "[IOS26 only]Result > The move action on the zoomed image is not smoothly",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-185",
+          "type": "Bug",
+          "summary": "[IOS] Profile > Add error when user get the pinned creations list in offline mode.",
+          "status": "Closed",
+          "story_points": 3.0
+        },
+        {
+          "key": "TTIOSMAU-184",
+          "type": "Bug",
+          "summary": "[iOS] User reported not being able to create Tattoos",
+          "status": "Closed",
+          "story_points": 5.0
+        },
+        {
+          "key": "TTIOSMAU-183",
+          "type": "Bug",
+          "summary": "[IOS] Profile > Missing the rating feature in Creations details page.",
+          "status": "Closed",
+          "story_points": 2.0
+        },
+        {
+          "key": "TTIOSMAU-176",
+          "type": "Bug",
+          "summary": "[IOS] Try on > No response when click the Try on button in offline mode.",
+          "status": "Closed",
+          "story_points": 2.0
+        }
+      ]
     },
-    "Xiaochun Mou": {
-      "user": "Xiaochun Mou",
-      "account_id": "712020:8041b3ce-8a24-4c4c-a940-caa7af9ece06",
-      "month": "2026-03",
-      "delivered_definition": "resolution date in period (Story, Bug)",
-      "delivered": {
-        "stories": 0,
-        "bugs": 38,
-        "total_items": 38,
-        "total_sp": 72.0,
-        "stories_sp": 0.0,
-        "bugs_sp": 72.0,
-        "no_sp_count": 0,
-        "items": [
-          {
-            "key": "TTIOSMAU-1545",
-            "type": "Bug",
-            "summary": "[IOS]Ads > Missed the \"view_limit_reached_ads\" Amplitude event when Daily quota reached",
-            "status": "Waiting for Store",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1544",
-            "type": "Bug",
-            "summary": "[IOS]Ads > Missed the \"view_screen_watch_ad\" Amplitude event when Monetization Modal  shown up",
-            "status": "Waiting for Store",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1541",
-            "type": "Bug",
-            "summary": "[IOS]Ads > The remaining ads count should be show in the Monetization Modal",
-            "status": "Waiting for Store",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1536",
-            "type": "Bug",
-            "summary": "[IOS]Ads > Missed the number of daily ads available in the Monetization Modal",
-            "status": "Waiting for Store",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1491",
-            "type": "Bug",
-            "summary": "[IOS]Grid list View > The grid result page layout is incorrect when user generate with Portrait / landscape size images.",
-            "status": "Closed",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1490",
-            "type": "Bug",
-            "summary": "[IOS]Premium Unlock> The slots shown with Limit reached label after user complete the premium unlock. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1486",
-            "type": "Bug",
-            "summary": "[IOS] Try on > Camera view is not actived when do try on feature. ( not always happen)",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1465",
-            "type": "Bug",
-            "summary": "[IOS]Unlock > User should not be required to purchase if continue unlock slots while already with enough credits.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1460",
-            "type": "Bug",
-            "summary": "[IOS]Recreate > Calculation issue for the images number in Redo note.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1459",
-            "type": "Bug",
-            "summary": "[IOS]Unlock > The slots still as Unlock after user purchased the credits. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1453",
-            "type": "Bug",
-            "summary": "[IOS]Create > The retry slot shown as Locked label even user with enough credits.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1451",
-            "type": "Bug",
-            "summary": "[IOS]Create > 4 quotas reduced when free user generated 1 creation by Redo method. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1450",
-            "type": "Bug",
-            "summary": "[IOS]Premium Slots > The limit reached labels flashed before creations processed successfully.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1449",
-            "type": "Bug",
-            "summary": "[IOS]Premium Multi Screen > After interrupt the premium purchase, the locked slot processing automatically.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1345",
-            "type": "Bug",
-            "summary": "[IOS] Payment - Unexpected payment page opened when click Get inspired icon and Choose your image icon.",
-            "status": "Closed",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1336",
-            "type": "Bug",
-            "summary": "[iOS] Crash in the creating screen of the transform",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1334",
-            "type": "Bug",
-            "summary": "[IOS] Discover > The Pin premium status is not controlled by the remote configuration",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1333",
-            "type": "Bug",
-            "summary": "[IOS] Transform > Wrong style image in the loading page when redo the transform result. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1284",
-            "type": "Bug",
-            "summary": " [IOS] Result > Pin option still require premium payment even configure as Free.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1276",
-            "type": "Bug",
-            "summary": "[IOS]Transform> Missed the Redo button in Transform result page.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1250",
-            "type": "Bug",
-            "summary": "[IOS26]Upgrade > The upgrade window dismissed automatically. (50% repeat rate)",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1235",
-            "type": "Bug",
-            "summary": "[Improvement][IOS]Discover > Search and style filters should be mutually exclusive ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1233",
-            "type": "Bug",
-            "summary": "[IOS]Discover > The camera viewer is stucking when user do try on feature for the discover creation.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1232",
-            "type": "Bug",
-            "summary": "[IOS]Discover > The style name is not localized. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1219",
-            "type": "Bug",
-            "summary": "[IOS]Discover > The long prompt viewing improvements",
-            "status": "Closed",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1198",
-            "type": "Bug",
-            "summary": "[IOS]Discover > The layout for last 2 creations is incorrect.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1197",
-            "type": "Bug",
-            "summary": "[IOS]Discover > Incorrect UI if filter by style without any result.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1196",
-            "type": "Bug",
-            "summary": "[IOS]Discover > The style label images are not centered in the bubble.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1195",
-            "type": "Bug",
-            "summary": "[IOS]Discover > UI improvements ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1101",
-            "type": "Bug",
-            "summary": "[IOS]Localization > The error content \"Something went wrong\" is not localized. ",
-            "status": "Closed",
-            "story_points": 1.0
-          },
-          {
-            "key": "TTIOSMAU-1058",
-            "type": "Bug",
-            "summary": "[IOS] Try on > The action box is not focus on the tattoo after do some moving. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-1056",
-            "type": "Bug",
-            "summary": "[IOS] Transform >Add Random style option shown in Transform page",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-188",
-            "type": "Bug",
-            "summary": "[IOS] Try on > Missing the gallery image in try on camera view. ",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-186",
-            "type": "Bug",
-            "summary": "[IOS26 only]Result > The move action on the zoomed image is not smoothly",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-185",
-            "type": "Bug",
-            "summary": "[IOS] Profile > Add error when user get the pinned creations list in offline mode.",
-            "status": "Closed",
-            "story_points": 3.0
-          },
-          {
-            "key": "TTIOSMAU-184",
-            "type": "Bug",
-            "summary": "[iOS] User reported not being able to create Tattoos",
-            "status": "Closed",
-            "story_points": 5.0
-          },
-          {
-            "key": "TTIOSMAU-183",
-            "type": "Bug",
-            "summary": "[IOS] Profile > Missing the rating feature in Creations details page.",
-            "status": "Closed",
-            "story_points": 2.0
-          },
-          {
-            "key": "TTIOSMAU-176",
-            "type": "Bug",
-            "summary": "[IOS] Try on > No response when click the Try on button in offline mode.",
-            "status": "Closed",
-            "story_points": 2.0
-          }
-        ]
-      },
-      "qa_bounces": {
-        "total_tickets": 0,
-        "total_bounces": 0,
-        "items": []
-      }
+    "qa_bounces": {
+      "total_tickets": 0,
+      "total_bounces": 0,
+      "items": []
     }
   }
 }
