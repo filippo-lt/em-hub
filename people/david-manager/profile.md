@@ -63,13 +63,15 @@ He does not want long emotional context.
 He values leaders, not reporters.
 
 ## Current Priorities (theirs)
-Likely top focus areas:
-	•	Stabilising underperforming apps (iMote, vendor-heavy ones)
+Top focus areas as of April 2026:
+	•	M&A — evaluating studio acquisitions (whole studios vs. individual apps); Sergio West leading; David wants Filippo involved in Q2, full ownership in Q3
+	•	AI transformation — Phase 2 underway; Vlad as first "Software Engineer" pilot on Face AI; contractor exits Q2/Q3; Foreworth >80% for all managed team
+	•	H2 families structure — shifting to family model: Filippo → Launches + M&A; David Català + André Montenegro → Growth families
+	•	PO removal pilot — exploring direct advisor/engineer → PM line on specific apps (Screen Mirroring, Face AI Android as candidates); long-term direction, not Q2
+	•	App portfolio profitability — iMote is the only healthy Launches app (~€2M/month revenue); Tattooist and AI Design underperforming; Tattooist under Q2 strategic review
+	•	PM accountability — pushing Jorge to ensure PMs are driving product direction, not just delegating to POs
 	•	Engineering governance (process, QA accountability, vendor control)
-	•	AI transformation narrative (AI Agents coding acceleration)
-	•	Reducing risk before exec visibility moments
-	•	AI Strategy Phase 2 — unifying all roles into "software engineer" regardless of platform; advisors take 2 projects each and build without external teams; target is hyper-productivity (new apps in weeks, features in days, 80%+ AI-written code) by end of 2026
-	•	First pilot of Phase 2: Vlad Krudek as solo AI-powered engineer, decision made March 2026
+	•	Reducing risk before exec visibility moments (QBR, Christian/Emilio meetings)
 
 He is measured on:
 	•	Delivery velocity
@@ -90,18 +92,26 @@ Plus implicitly:
 	•	Advisor ownership model
 
 ## Relationship Dynamics
-Current state: Supportive but evaluative.
+Current state (April 2026): Collaborative and strengthening. Past the evaluative phase.
+
+Signs of trust:
+	•	Shares Tableau financial data live in 1:1s
+	•	Invited Filippo to shadow M&A code reviews
+	•	Moderates OKR targets to protect team ("I don't want to burn people")
+	•	Adopts Filippo's product analysis in executive forums (used iMode roadmap framing with Christian/Emilio)
+	•	Gives space on difficult topics (PO removal, AI transformation pace)
 
 Strengths:
-	•	You escalate when needed.
-	•	You bring data.
-	•	You think structurally.
-	•	He trusts you to handle political friction.
+	•	You bring data — consistently moves David to decisions
+	•	You think structurally and across domains (product + engineering)
+	•	You escalate calmly with ownership
+	•	You're ahead of problems, not just reporting them
 
-Tension points:
-	•	When Product underperforms and you push hard.
-	•	When delivery stalls and he senses lack of control.
-	•	When you absorb too much before escalating.
+Tension points / watch areas:
+	•	Julian email (Forward vendor) — 4 consecutive misses; quiet credibility cost
+	•	"Fine/good idea" pattern on scope/OKR changes — accept too easily without probing
+	•	PM engagement — not proactive enough; David notices and owns it himself
+	•	H2 role confirmation — still not explicitly asked after 5 meetings
 
 
 ## Sensitivities
@@ -123,4 +133,4 @@ He doesn’t like losing control optics.
 - Political air cover when needed
 ---
 
-*Last updated: [2026-03-05]*
+*Last updated: [2026-04-14]*

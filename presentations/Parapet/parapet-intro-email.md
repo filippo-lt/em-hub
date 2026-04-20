@@ -27,7 +27,7 @@ Parapet handles all the heavy lifting: RevenueCat webhooks, subscription state, 
 
 Parapet is live in **Photo Up** and **Face AI**, with more integrations planned. It is available for integration for iOS, Android, and Flutter. Web will follow shortly.
 
-You can explore the tool and documentation here: **https://parapet.mau.io/** (feel free to ping me or any EM to provide access).
+You can explore the tool and documentation here: **[https://parapet.mau.io/](https://parapet.mau.io/)** (feel free to ping me or any EM to provide access).
 
 **Presentation**
 

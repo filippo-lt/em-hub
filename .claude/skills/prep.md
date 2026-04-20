@@ -33,6 +33,11 @@ From loaded context and memory, build a mental model of:
 
 **For direct reports:** If a recent dev-progress-weekly-report exists in `scripts/delivery/reports/`, check it for this person's recent commits, PRs, and Jira tickets. This gives you concrete data on what they've been working on and can inform questions about progress, blockers, or priorities.
 
+**Staleness check:** Determine the date of the most recent transcript. If it is more than 14 days ago, flag this explicitly in the Opening Statement and adjust your framing:
+- Topics from the last meeting may have already resolved or escalated — ask about them with this in mind
+- The person may have had significant context shifts (new priorities, team changes, personal pressures) that aren't captured in history
+- Be more open-ended in Phase 3; don't assume continuity from the last transcript
+
 ---
 
 ### Phase 2 — Opening Statement
@@ -42,12 +47,13 @@ Start with a brief (3–5 bullet) summary of what you found from past context. F
 Example format:
 ```
 Looking at your recent history with [Name]:
+- [⚠️ Last meeting was X days ago — context may have shifted] (only if >14 days)
 - [Open action item or carry-over from last meeting]
 - [Recurring theme that hasn't been resolved]
 - [Something that went well / momentum to build on]
 - [A gap — something that hasn't come up in a while but probably should]
 - [From memory: a pattern, commitment, or dynamic worth keeping in mind]
-- [From self-memory: a tendency of yours to watch for in this meeting]
+- [Self-awareness: a tendency of yours to watch for — listed separately from operational items]
 ```
 
 If memory entries surface something the user may have forgotten (a commitment made 3 meetings ago, a self-awareness pattern), highlight it explicitly — this is where memory adds the most value.
@@ -112,7 +118,10 @@ Create a structured document using the template at `templates/talking-points.md`
 ## Carry-overs from Last Meeting
 - ...
 
-## Watch For
+## Watch For (Operational)
+- ...
+
+## Watch For (Self — How You Tend to Show Up)
 - ...
 
 ## Success Looks Like

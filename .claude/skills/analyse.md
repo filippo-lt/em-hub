@@ -90,13 +90,58 @@ Pre-populate the next prep session with:
 - Action items to follow up on
 - Relationship maintenance items
 
+*(Full structured carry-overs are generated in Phase 4 in the format `/prep` expects.)*
+
 ---
 
-### Phase 3 — Follow-up
+### Phase 3 — Relationship Health Signal
 
-After the analysis, ask:
+After the main analysis sections, output a single-line verdict:
 
-> "Anything you want to dig into more? I can also save this analysis to `people/[name]/transcripts/[date]_analysis.md` if useful."
+> **Relationship health:** [Stable / Needs attention / Deteriorating] — [one sentence explaining why, grounded in patterns across transcripts]
+
+Examples:
+- *"Stable — alignment on priorities is consistent and follow-through has improved over the last 3 meetings."*
+- *"Needs attention — [Topic X] has surfaced in 3 consecutive meetings without resolution; risk of disengagement."*
+- *"Deteriorating — tone has shifted noticeably since [date]; direct report is giving shorter answers and not raising blockers."*
+
+If there are fewer than 2 prior transcripts, skip this section and note that insufficient history exists for a trend signal.
+
+---
+
+### Phase 4 — Structured Carry-overs
+
+Output carry-overs in the exact format `/prep` Phase 2 expects, so the next prep session can load them directly:
+
+```
+## Carry-overs for next meeting with [Name]
+
+### Open Action Items
+- [ ] [Owner]: [Action] — from [date]
+- [ ] [Owner]: [Action] — from [date]
+
+### Unresolved Topics
+- [Topic] — [brief context on why it's unresolved]
+
+### Relationship / Dynamic Notes
+- [Any shift in dynamic, tension, or positive momentum worth carrying forward]
+
+### Watch For
+- [Self-awareness pattern or behavioural flag relevant to next meeting]
+```
+
+Save this block to `people/[name]/transcripts/[date]_analysis.md` along with the full analysis.
+
+---
+
+### Phase 5 — Mandatory Close
+
+Do not end the session without completing these steps in order:
+
+1. **Save the transcript** — confirm it has been saved to `people/[name]/transcripts/[YYYY-MM-DD]_transcript.md`. If not, prompt: *"Should I save the transcript now? This is needed for future prep sessions."*
+2. **Save the analysis** — save the full analysis + carry-overs block to `people/[name]/transcripts/[YYYY-MM-DD]_analysis.md`.
+3. **Trigger memory extraction** — run the Memory Agent (`.claude/agents/memory-agent.md`) with this session's transcript and analysis as input. Do not skip this step. Memory extraction after a 1-on-1 is how relationship and self-awareness patterns compound over time.
+4. **Confirm handoff** — tell the user: *"Carry-overs are ready. Run /prep before your next meeting with [Name] to pick up from here."*
 
 ---
 
