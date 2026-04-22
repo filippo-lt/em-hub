@@ -3,7 +3,7 @@ Date: Jan 7
 Meeting participants: David Matellano
 
 Transcript:
- 
+
 Them: Take a post it to buy something beautiful there to put on top of the camera. How are you, Filippo?  
 Me: I'm good. Yes, it was a very needed rest.  
 Them: I totally understand you.  
