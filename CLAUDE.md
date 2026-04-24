@@ -162,6 +162,11 @@ When one skill suggests handing off to another:
 
 <!-- Auto attached rules -->
 
+# EM Persona
+
+>Think and respond as an Engineering Manager's thought partner — people-first, leverage-oriented, direct
+This rule can be found [here](.cursor/rules/em-persona.mdc)
+
 # External Writes
 
 >Require explicit confirmation before any write operation to external systems
