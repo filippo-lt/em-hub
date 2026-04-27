@@ -21,8 +21,9 @@ em-hub/
 ├── people/          ← per-person context (profiles, transcripts, talking points)
 ├── teams/           ← team-level context (rosters, OKRs, context docs)
 ├── contractors/     ← external dev registry, project mappings, and performance reports
+├── metrics/         ← saved merged Jira+GitHub monthly reports (`/metrics` skill)
 ├── scripts/         ← automation scripts (gh-metrics, sprint metrics, delivery tools)
-│   └── delivery/    ← roadmap-status, roadmap-report, dev-progress-weekly-report
+│   └── delivery/    ← roadmap-status, roadmap-report, dev-progress-weekly-report; `reports/`
 ├── config/          ← shared config for delivery tools (projects, repos, aliases)
 └── context/         ← global context (org chart, company priorities, personal goals)
 ```
@@ -37,26 +38,31 @@ Match the user's request to the right **skill** (interactive) or **agent** (auto
 
 Skills are invoked with `/skill-name` and run in the main conversation. Use these for interactive, multi-turn work.
 
-| User says something like… | Skill | Command |
-|---------------------------|-------|---------|
-| "Prep me for my meeting with [name]" / "Help me prepare for [name]" | Prep | `/prep` |
-| "Analyse this transcript" / "How did my meeting go?" | Analyse | `/analyse` |
-| "Draft an email/message/doc about…" / "Help me write a status update" | Write | `/write` |
-| "Help me decide between…" / "Think through this decision" | Decide | `/decide` |
-| "Help me think through…" / "Brainstorm with me" / "What are the scenarios for…" | Brainstorm | `/brainstorm` |
-| "Write a review for [name]" / "Draft feedback for [name]" / "Prep calibration" | Review | `/review` |
-| "I need to hire for [role]" / "Interview scorecard" / "Debrief this interview" | Hiring | `/hiring` |
-| "We had an incident" / "Help me write a postmortem" / "Draft incident comms" | Incident | `/incident` |
-| "Help me plan the quarter" / "Roadmap review" / "Sprint planning prep" / "Set OKRs" | Planning | `/planning` |
+
+| User says something like…                                                            | Skill      | Command       |
+| ------------------------------------------------------------------------------------ | ---------- | ------------- |
+| "Prep me for my meeting with [name]" / "Help me prepare for [name]"                  | Prep       | `/prep`       |
+| "Analyse this transcript" / "How did my meeting go?"                                 | Analyse    | `/analyse`    |
+| "Draft an email/message/doc about…" / "Help me write a status update"                | Write      | `/write`      |
+| "Help me decide between…" / "Think through this decision"                            | Decide     | `/decide`     |
+| "Help me think through…" / "Brainstorm with me" / "What are the scenarios for…"      | Brainstorm | `/brainstorm` |
+| "Write a review for [name]" / "Draft feedback for [name]" / "Prep calibration"       | Review     | `/review`     |
+| "I need to hire for [role]" / "Interview scorecard" / "Debrief this interview"       | Hiring     | `/hiring`     |
+| "We had an incident" / "Help me write a postmortem" / "Draft incident comms"         | Incident   | `/incident`   |
+| "Help me plan the quarter" / "Roadmap review" / "Sprint planning prep" / "Set OKRs"  | Planning   | `/planning`   |
+| "Get developer metrics" / "Run dev metrics" / "Pull Jira/GitHub metrics for [month]" | Metrics    | `/metrics`    |
+
 
 ### Agent Routing (Autonomous — runs as subprocess)
 
 Agents run autonomously and return a result. Use these for non-interactive tasks.
 
-| User says something like… | Agent | File |
-|---------------------------|-------|------|
-| "Extract memory from this" / "Save to memory" / "What should I remember?" | Memory | `.claude/agents/memory-agent.md` |
+
+| User says something like…                                                                                | Agent           | File                                      |
+| -------------------------------------------------------------------------------------------------------- | --------------- | ----------------------------------------- |
+| "Extract memory from this" / "Save to memory" / "What should I remember?"                                | Memory          | `.claude/agents/memory-agent.md`          |
 | "Contractor metrics" / "How is [dev] performing?" / "Dev performance report" / "Run a contractor review" | Contractor Perf | `.claude/agents/contractor-perf-agent.md` |
+
 
 > **Note:** Memory can also be triggered as the final phase of any skill. If the user says "extract memory" during a hiring, planning, incident, or review session, run the Memory Agent with that session's context.
 
@@ -64,13 +70,15 @@ Agents run autonomously and return a result. Use these for non-interactive tasks
 
 These are CLI scripts that produce reports. Run them directly when the user asks for delivery data.
 
-| User says something like… | Tool | Command |
-|---------------------------|------|---------|
-| "Show me the roadmap" / "What epics are delayed?" / "Roadmap status" | Roadmap status | `scripts/delivery/roadmap-report` (auto-runs roadmap-status) |
-| "What did the team ship this week?" / "Developer progress" / "Weekly dev report" | Dev progress | `scripts/delivery/dev-progress-weekly-report` |
-| "Sprint metrics for [month]" / "How many story points?" / "QA bouncebacks" | Sprint metrics | `scripts/jira-sprint-metrics` |
 
-These tools read shared config from `config/` (projects, repos, aliases). Reports are saved to `scripts/delivery/reports/`.
+| User says something like…                                                        | Tool           | Command                                                      |
+| -------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------ |
+| "Show me the roadmap" / "What epics are delayed?" / "Roadmap status"             | Roadmap status | `scripts/delivery/roadmap-report` (auto-runs roadmap-status) |
+| "What did the team ship this week?" / "Developer progress" / "Weekly dev report" | Dev progress   | `scripts/delivery/dev-progress-weekly-report`                |
+| "Sprint metrics for [month]" / "How many story points?" / "QA bouncebacks"       | Sprint metrics | `scripts/jira-sprint-metrics`                                |
+
+
+These tools read shared config from `config/` (projects, repos, aliases). Script outputs go to `scripts/delivery/reports/`. Merged monthly Jira+GitHub metrics from `/metrics` go to `metrics/` at repo root.
 
 ### Ambiguous
 
@@ -157,20 +165,21 @@ When one skill suggests handing off to another:
 3. State the handoff explicitly — the user decides when to proceed
 4. The receiving skill should acknowledge what it received and confirm before starting its own process
 
-<!-- The following rules are extracted from user-supplied rules files -->
-<!-- Generated by cursor-rules-to-claude v1.0.0 -->
 
-<!-- Auto attached rules -->
+
+
+
+
 
 # EM Persona
 
->Think and respond as an Engineering Manager's thought partner — people-first, leverage-oriented, direct
-This rule can be found [here](.cursor/rules/em-persona.mdc)
+> Think and respond as an Engineering Manager's thought partner — people-first, leverage-oriented, direct
+> This rule can be found [here](.cursor/rules/em-persona.mdc)
 
 # External Writes
 
->Require explicit confirmation before any write operation to external systems
-This rule can be found [here](.cursor/rules/external-writes.md)
+> Require explicit confirmation before any write operation to external systems
+> This rule can be found [here](.cursor/rules/external-writes.md)
 
 # External System Write Safety
 
@@ -189,8 +198,8 @@ Before executing, always:
 
 # Jira Access
 
->Jira API access is available in this workspace
-This rule can be found [here](.cursor/rules/jira-access.md)
+> Jira API access is available in this workspace
+> This rule can be found [here](.cursor/rules/jira-access.md)
 
 # Jira API Access
 
@@ -212,4 +221,3 @@ For JQL searches, POST to /rest/api/3/search/jql with a JSON body containing "jq
 ## Project context
 
 The workspace tracks multiple Jira projects defined in config/projects.conf. Each project maps to one or more Jira board keys. When the user references an issue key, use the API to look it up directly.
-
