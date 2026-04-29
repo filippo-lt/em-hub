@@ -42,6 +42,7 @@ Open `agents/prep-agent.md` and find **Phase 3 — Question Loop**.
 Add, remove, or reorder questions under "For meetings with a MANAGER", "For meetings with a DIRECT REPORT", or "For meetings with a PEER / CROSS-FUNCTIONAL".
 
 Example: if you want the agent to always ask about your own energy/state before a meeting, add:
+
 ```
 - How are you going into this meeting? (Energy level, state of mind — it affects how you show up)
 ```
@@ -57,6 +58,7 @@ The template inside the code block is exactly what gets produced. Edit it to mat
 Open `agents/analysis-agent.md` and find **Phase 2 — Deliver Analysis**.
 
 Each `####` heading is a section. You can:
+
 - Remove sections you don't find useful (e.g., remove "Patterns vs. Previous Meetings" if you're just starting out)
 - Add new sections (e.g., "Energy & Engagement" to track tone over time)
 - Change the table format to prose or vice versa
@@ -80,6 +82,7 @@ Example: a "vendor review" workflow could chain `analysis-agent` (review the ven
 ## When to Update Profiles
 
 Update `people/[name]/profile.md` whenever:
+
 - Their priorities shift significantly
 - The relationship dynamic changes
 - You learn something important about their communication style
@@ -93,13 +96,15 @@ Keep it honest and current — stale profiles will mislead the agents.
 
 Add files to `people/[name]/context/` or `teams/[team]/context/` whenever you have a document that would help an advisor understand the situation:
 
-| Document | Why it helps |
-|----------|-------------|
-| Performance review | Agent knows the formal evaluation baseline |
-| Roadmap or OKRs | Agent understands strategic priorities |
-| Email thread export | Agent can reference specific decisions or tone |
-| Your own notes after an informal chat | Agent has off-the-record context |
-| Org chart or team roster | Agent understands the landscape |
+
+| Document                              | Why it helps                                   |
+| ------------------------------------- | ---------------------------------------------- |
+| Performance review                    | Agent knows the formal evaluation baseline     |
+| Roadmap or OKRs                       | Agent understands strategic priorities         |
+| Email thread export                   | Agent can reference specific decisions or tone |
+| Your own notes after an informal chat | Agent has off-the-record context               |
+| Org chart or team roster              | Agent understands the landscape                |
+
 
 ---
 
@@ -108,6 +113,7 @@ Add files to `people/[name]/context/` or `teams/[team]/context/` whenever you ha
 ### After 3–5 meetings
 
 Look at your saved prep docs and analysis files. Ask yourself:
+
 - Are the prep questions actually surfacing things I care about?
 - Is the analysis calling out the right patterns?
 - What's missing?
