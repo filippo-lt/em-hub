@@ -14,9 +14,12 @@ A personal operating system for an Engineering Manager. It contains reusable ski
 
 ```
 em-hub/
-├── .claude/
+├── .agents/         ← canonical store for skills, subagents, and rules (see .agents/README.md)
 │   ├── skills/      ← interactive skills invoked via /command (prep, analyse, write, etc.)
-│   └── agents/      ← autonomous agents that run as subprocesses (memory, contractor-perf)
+│   ├── agents/      ← autonomous agents that run as subprocesses (memory, contractor-perf)
+│   └── rules/       ← .mdc rules (em-persona, external-writes, jira-access)
+├── .claude/         ← Claude Code config; skills/agents are symlinks into .agents/
+├── .cursor/         ← Cursor config; skills/rules are symlinks into .agents/
 ├── templates/       ← document templates for common outputs
 ├── people/          ← per-person context (profiles, transcripts, talking points)
 ├── teams/           ← team-level context (rosters, OKRs, context docs)
@@ -171,53 +174,10 @@ When one skill suggests handing off to another:
 
 
 
-# EM Persona
+## Rules
 
-> Think and respond as an Engineering Manager's thought partner — people-first, leverage-oriented, direct
-> This rule can be found [here](.cursor/rules/em-persona.mdc)
+These rules are the canonical source — both Cursor (via `.cursor/rules/*.mdc` symlinks) and Claude Code (via the imports below) consume them. Edit the `.mdc` files in `.agents/rules/`, never copy content here.
 
-# External Writes
-
-> Require explicit confirmation before any write operation to external systems
-> This rule can be found [here](.cursor/rules/external-writes.md)
-
-# External System Write Safety
-
-Never execute write operations (PUT, POST, DELETE, PATCH) against external systems (Jira, GitHub, Slack, or any API) without explicit user confirmation.
-
-Before executing, always:
-
-1. Describe exactly what will change (field, value, issue key, endpoint).
-2. Show the before/after if applicable.
-3. Wait for the user to confirm.
-
-## Does NOT require confirmation
-
-- Read-only operations (GET, search queries, fetching data).
-- Local file edits (code, configs, reports in this repo).
-
-# Jira Access
-
-> Jira API access is available in this workspace
-> This rule can be found [here](.cursor/rules/jira-access.md)
-
-# Jira API Access
-
-This workspace has Jira REST API access. Credentials are stored in ~/.config/jira/.env (JIRA_EMAIL, JIRA_API_TOKEN, JIRA_BASE_URL).
-
-When the user asks about Jira issues, epics, boards, or sprints, query the API directly. Do not say you lack access.
-
-## How to call the API
-
-```bash
-source ~/.config/jira/.env
-curl -s -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  "$JIRA_BASE_URL/rest/api/3/..."
-```
-
-For JQL searches, POST to /rest/api/3/search/jql with a JSON body containing "jql", "fields", and "maxResults".
-
-## Project context
-
-The workspace tracks multiple Jira projects defined in config/projects.conf. Each project maps to one or more Jira board keys. When the user references an issue key, use the API to look it up directly.
+@.agents/rules/em-persona.mdc
+@.agents/rules/external-writes.mdc
+@.agents/rules/jira-access.mdc

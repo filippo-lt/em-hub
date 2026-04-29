@@ -1,6 +1,6 @@
 ---
 name: metrics
-description: "Run developer delivery metrics from Jira and/or GitHub for a given month. Use when the user says things like: 'get developer metrics', 'run dev metrics', 'pull metrics for [month]', 'jira/github metrics'."
+description: "Run developer delivery metrics from Jira and/or GitHub for a given month. Use when the user says things like: 'get developer metrics', 'run dev metrics', 'pull metrics for [month]', 'jira/github metrics', 'sprint metrics', 'delivery metrics', 'monthly metrics', 'story points delivered', 'QA bouncebacks', 'QA rejections', 'No QA pass', 'items delivered', 'tickets completed', or any question about a developer's delivery output over a time period."
 user_invocable: true
 ---
 
@@ -68,3 +68,30 @@ Offer (don't auto-run):
 - These scripts are **read-only** against Jira and GitHub APIs — no confirmation needed before running.
 - Config files live at `/Users/ftosetto/Projects/metrics/config/` (`dev-metrics.conf`, `github-dev-metrics.conf`). If the user asks to add/remove a developer, edit those configs directly and confirm before saving.
 - The Jira target uses `--delivered-status "PO REVIEW"` and `--noqa-status "No Pass, No QA Pass"`. Don't override unless the user asks.
+
+---
+
+## Alternative: in-repo Jira sprint script
+
+em-hub also ships a self-contained Jira sprint metrics script (independent of the `/Users/ftosetto/Projects/metrics` project). Use this only if the user explicitly asks for it or the main scripts above are unavailable.
+
+**Location:** `scripts/jira-sprint-metrics` (em-hub workspace)
+**Config:** `config/sprint-metrics.conf` — populates `MONTH`, `USERS`, status names, etc.
+**Debug helper:** `scripts/jira-sprint-metrics-debug` — lists Jira statuses and field IDs.
+
+Usage:
+
+```bash
+# From config (preferred)
+scripts/jira-sprint-metrics
+
+# With explicit flags
+scripts/jira-sprint-metrics --month YYYY-MM --users "Name1,Name2"
+scripts/jira-sprint-metrics --json    # raw JSON output
+```
+
+Optional flags: `--config FILE`, `--delivered-status NAME`, `--qa-from-status NAME`, `--qa-to-status NAMES`, `--sp-field FIELD_ID`, `--issue-types "T1,T2"`.
+
+Requires `~/.config/jira/.env` with `JIRA_BASE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`.
+
+What it measures: items delivered (status transitions to delivered status), story points delivered (sum of SP field), QA bouncebacks (transitions from QA review back to in-progress, counted via the changelog API).
