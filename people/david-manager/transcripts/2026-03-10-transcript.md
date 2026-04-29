@@ -3,7 +3,7 @@ Date: Mar 10
 Meeting participants: David Matellano
 
 Transcript:
- 
+
 Me: Hello.  
 Them: Hello. Just bring me one minute to check the agenda to jump in.  
 Me: Easy. Don't worry.  

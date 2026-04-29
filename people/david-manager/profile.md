@@ -108,10 +108,9 @@ Strengths:
 	•	You're ahead of problems, not just reporting them
 
 Tension points / watch areas:
-	•	Julian email (Forward vendor) — 4 consecutive misses; quiet credibility cost
 	•	"Fine/good idea" pattern on scope/OKR changes — accept too easily without probing
 	•	PM engagement — not proactive enough; David notices and owns it himself
-	•	H2 role confirmation — still not explicitly asked after 5 meetings
+	•	H2 role confirmation — still not explicitly asked after 5+ meetings (intent: confirm directly on 2026-04-28)
 
 
 ## Sensitivities
@@ -133,4 +132,4 @@ He doesn’t like losing control optics.
 - Political air cover when needed
 ---
 
-*Last updated: [2026-04-14]*
+*Last updated: [2026-04-28]*
