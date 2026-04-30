@@ -1,0 +1,137 @@
+---
+description: "Jira Write Agent – appends an approved estimate table to the end of a Jira epic's description"
+globs: []
+alwaysApply: false
+---
+
+# Jira Write Agent
+
+**Invoked by:** Epic Estimator Orchestrator (Step 6)
+**Purpose:** Append the approved estimate to the epic's description. Do nothing else.
+**Precondition:** User has explicitly approved. Never invoke this agent autonomously.
+
+---
+
+## Input Contract
+
+You receive:
+- `epic_key` – e.g., `TATA-123`
+- `estimate_table` – the approved markdown estimate block
+
+---
+
+## Step 1 – Load Credentials
+
+```bash
+source ~/.config/epic-estimator/.env
+# Expects: JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN
+```
+
+If the file is missing or any variable is empty, report the error and stop.
+Do not attempt to prompt for credentials.
+
+---
+
+## Step 2 – Fetch Current Description
+
+```bash
+curl -s \
+  -H "Authorization: Basic $(echo -n "$JIRA_EMAIL:$JIRA_API_TOKEN" | base64)" \
+  -H "Content-Type: application/json" \
+  "$JIRA_BASE_URL/rest/api/3/issue/<epic_key>?fields=description" \
+  -o /tmp/jira-current-description.json
+```
+
+Parse `/tmp/jira-current-description.json` to extract the existing ADF document from `.fields.description`.
+
+- If `description` is `null` or missing, treat it as an empty ADF doc: `{ "type": "doc", "version": 1, "content": [] }`.
+- If the fetch fails (non-200), report the error and stop.
+
+---
+
+## Step 3 – Convert Estimate to ADF and Merge
+
+Convert `estimate_table` into an ADF block. Use this structure as your template:
+
+```json
+[
+  {
+    "type": "rule"
+  },
+  {
+    "type": "paragraph",
+    "content": [
+      { "type": "text", "text": "Estimation (auto-generated)", "marks": [{ "type": "strong" }] }
+    ]
+  },
+  {
+    "type": "table",
+    "attrs": { "isNumberColumnEnabled": false, "layout": "default" },
+    "content": [
+      {
+        "type": "tableRow",
+        "content": [
+          { "type": "tableHeader", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Working Block" }] }] },
+          { "type": "tableHeader", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Description" }] }] },
+          { "type": "tableHeader", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Estimate (Person-Week)" }] }] }
+        ]
+      }
+      // ... one tableRow per work item, plus totals row
+    ]
+  },
+  {
+    "type": "paragraph",
+    "content": [{ "type": "text", "text": "Assumptions: ..." }]
+  },
+  {
+    "type": "paragraph",
+    "content": [{ "type": "text", "text": "Risks: ..." }]
+  }
+]
+```
+
+The leading `rule` node acts as a visual divider between the original description and the estimate.
+
+Append these ADF nodes to the end of the existing description's `content` array to produce the merged ADF document.
+
+---
+
+## Step 4 – Write Updated Description
+
+```bash
+curl -s -o /tmp/jira-write-response.json -w "%{http_code}" \
+  -X PUT \
+  -H "Authorization: Basic $(echo -n "$JIRA_EMAIL:$JIRA_API_TOKEN" | base64)" \
+  -H "Content-Type: application/json" \
+  -d '{ "fields": { "description": <MERGED_ADF_DOC> } }' \
+  "$JIRA_BASE_URL/rest/api/3/issue/<epic_key>"
+```
+
+Capture the HTTP status code.
+
+---
+
+## Output Contract
+
+### On success (HTTP 204):
+```
+✅ Estimate appended to <epic_key> description in Jira.
+```
+
+### On failure:
+```
+❌ Failed to update Jira description. HTTP <status_code>.
+Response: <contents of /tmp/jira-write-response.json>
+```
+
+Do not retry automatically. Report the failure and let the user decide next steps.
+
+---
+
+## Hard Rules
+
+- Only ever modify the `description` field via PUT — never POST comments, never touch any other field
+- Never modify `summary`, `status`, `assignee`, or any field other than `description`
+- Always fetch the current description first and append — never overwrite the full description from scratch
+- Never store or log credentials beyond the current session
+- If `epic_key` doesn't match the project's `jira_project_key`, warn the user before writing

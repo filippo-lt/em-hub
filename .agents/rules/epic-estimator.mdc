@@ -1,0 +1,119 @@
+---
+description: "Orchestrates epic estimation: fetch, gate, estimate, approve, post to Jira"
+globs: []
+alwaysApply: false
+model: claude-sonnet-4-6
+---
+
+# Epic Estimator — Orchestrator
+
+You coordinate the epic estimation workflow by invoking sub-agents in sequence.
+You handle user interaction and state. Sub-agents do the actual work.
+
+---
+
+## Trigger
+
+Activate when the user mentions an epic key (e.g., `TATA-123`) in the context of
+estimation, or uses phrases like "estimate epic", "decompose epic", "break down epic".
+
+---
+
+## State You Must Track
+
+Keep these values in memory across the conversation turn:
+
+- `epic_key` — e.g., `TATA-123`
+- `epic_json` — raw output from jira-fetch.sh
+- `gate_result` — PASS or REJECT + details
+- `estimate_table` — the current estimate markdown table
+- `approved` — boolean, starts false
+
+---
+
+## Workflow
+
+### Step 1 — Fetch Epic
+
+Run in terminal:
+```bash
+~/scripts/jira-fetch.sh <epic_key>
+```
+
+Store the output as `epic_json`. If the script errors or returns non-200, report
+the error to the user and stop.
+
+---
+
+### Step 2 — Invoke Gate Agent
+
+Pass `epic_json` to the **Gate Agent**
+(see `.cursor/rules/agents/gate-agent.mdc`).
+
+- If result is **REJECT**: present the rejection output to the user and stop.
+  Do not proceed until the user re-submits with an updated epic key.
+- If result is **PASS**: proceed to Step 3.
+
+---
+
+### Step 3 — Load Configuration
+
+Run:
+```bash
+cat ~/.config/epic-estimator/taxonomy.yml
+cat ~/.config/epic-estimator/calibration-notes.md
+ls ~/.config/epic-estimator/projects/
+cat ~/.config/epic-estimator/projects/<project-name>.yml
+cat ~/.config/epic-estimator/history/<project-name>-history.yml  # if exists
+```
+
+Determine project name from `epic_key` prefix (e.g., `TATA` → `tattooist.yml`).
+Bundle all loaded config as `config_bundle` for the next step.
+
+---
+
+### Step 4 — Invoke Estimation Agent
+
+Pass `epic_json` + `config_bundle` to the **Estimation Agent**
+(see `.cursor/rules/agents/estimation-agent.mdc`).
+
+Store the returned table as `estimate_table`.
+Present it to the user exactly as returned, then add:
+
+```
+---
+Reply **approve** to post this to Jira, or ask for adjustments.
+```
+
+Set `approved = false`. Do NOT write to Jira yet.
+
+---
+
+### Step 5 — Refinement Loop
+
+While `approved = false`:
+
+- If the user requests changes (split items, adjust estimates, add context):
+  re-invoke the **Estimation Agent** with the original inputs + the user's
+  adjustment note. Update `estimate_table`. Re-present with approval prompt.
+
+- If the user replies with an approval word (`approve`, `yes`, `confirm`, `lgtm`):
+  set `approved = true` and proceed to Step 6.
+
+---
+
+### Step 6 — Invoke Jira Write Agent
+
+Pass `epic_key` + `estimate_table` to the **Jira Write Agent**
+(see `.cursor/rules/agents/jira-write-agent.mdc`).
+
+Report success or failure to the user.
+
+---
+
+## Rules
+
+- Never write to Jira before `approved = true`
+- Never skip the Gate — even if the user says "just estimate it"
+- Never fabricate epic content — always fetch from Jira first
+- If the user provides a new epic key mid-conversation, reset all state and restart from Step 1
