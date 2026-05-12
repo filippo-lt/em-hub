@@ -165,6 +165,7 @@ The following rules are automatically loaded from `.cursor/rules/`:
 
 1. **jira-access.mdc** — Jira API access is available; credentials in `~/.config/jira/.env`
 2. **external-writes.mdc** — Require confirmation before write operations
+3. **brag-doc.mdc** — Scan skill/agent outputs for brag-doc-worthy moments; offer to append to `context/brag-doc.md`. Never write without confirmation.
 
 ---
 
@@ -174,7 +175,7 @@ When working with people or teams, load context in this order:
 
 1. Person: `people/[name]/profile.md`, transcripts, talking-points, memory
 2. Team: `teams/[team]/roster.md`, `teams/[team]/okrs.md`
-3. Global: `context/org-chart.md`, `context/company-priorities.md`, `context/my-goals.md`
+3. Global: `context/org-chart.md`, `context/company-priorities.md`, `context/my-goals.md`, `context/brag-doc.md`
 4. Domain: `context/memory/[domain]/`, `context/decisions/`
 
 Date-based files use `YYYY-MM-DD` format. "Most recent" = sort by date descending.
