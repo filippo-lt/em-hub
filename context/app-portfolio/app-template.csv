@@ -1,0 +1,32 @@
+Line,Owner / source,Jan-26,Feb-26,Mar-26,Apr-26,May-26,Jun-26,Jul-26,Aug-26,Sep-26,Oct-26,Nov-26,Dec-26,Notes
+App,,,,,,AI Design,,,,,,,,
+PM,,,,,,Sergio Wetzel,,,,,,,,
+Tier,,,,,,Wind-down,,,,,,,,
+Eng position,,,,,,MAINTAIN,,,,,,,,
+Mktg position,,,,,,MAINTAIN,,,,,,,,
+,,,,,,,,,,,,,,
+[INVESTMENT],,,,,,,,,,,,,,
+Internal eng FTE (€),Filippo,,,,,0,0,0,0,0,0,0,0,No internal SE
+External eng (€),Filippo,,,,,20000,20000,20000,20000,20000,0,0,0,Oleksi + Dmytro + 1; exit 30 Sept
+QA (€),Filippo,,,,,5000,5000,5000,5000,5000,0,0,0,Externalised QA; ties to externals exit
+Infra (€),Filippo,,,,,,,,,,,,,Need Foreworth data
+AI tooling (€),Filippo,,,,,,,,,,,,,Codex per-dev visibility WIP
+Advisor time (€),Filippo,,,,,4200,4200,4200,4200,4200,4200,4200,4200,Vlad 50% of 100k/yr
+Marketing spend (€),Sergio Wetzel,,,,,,,,,,,,,Need monthly from Sergio
+Total monthly burn (€),,,,,,=SUM(G9:G15),=SUM(H9:H15),=SUM(I9:I15),=SUM(J9:J15),=SUM(K9:K15),=SUM(L9:L15),=SUM(M9:M15),=SUM(N9:N15),Auto-sum of INVESTMENT block
+,,,,,,,,,,,,,,
+[RETURN],,,,,,,,,,,,,,
+MRR (€),Sergio Wetzel,,,,,,,,,,,,,Need from Sergio
+MAU (#),Sergio Wetzel,,,,,,,,,,,,,Need from Sergio
+New users (#),Sergio Wetzel,,,,,,,,,,,,,Need from Sergio
+CAC (€),Sergio Wetzel,,,,,,,,,,,,,"Sergio flagged ""too high"" 12 May; need baseline + target"
+LTV (€),Sergio Wetzel,,,,,,,,,,,,,Need from Sergio
+LTV/CAC,,,,,,=G21/G20,=H21/H20,=I21/I20,=J21/J20,=K21/K20,=L21/L20,=M21/M20,=N21/N20,Target >3
+,,,,,,,,,,,,,,
+[NET],,,,,,,,,,,,,,
+Net (revenue - burn) (€),,,,,,=G18-G16,=H18-H16,=I18-I16,=J18-J16,=K18-K16,=L18-L16,=M18-M16,=N18-N16,Monthly net position
+,,,,,,,,,,,,,,
+[STATUS],,,,,,,,,,,,,,
+Tier,,,,,,Wind-down,,,,,,,,
+Kill-trigger status,,,,,,Pending sign-off,,,,,,,,Red / Amber / Green
+Notes,,,,,,Externals exit 30 Sept; Vlad redirects if CAC trigger fires,,,,,,,,
