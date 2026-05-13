@@ -54,6 +54,7 @@ Skills are invoked with `/skill-name` and run in the main conversation. Use thes
 | "We had an incident" / "Help me write a postmortem" / "Draft incident comms"         | Incident   | `/incident`   |
 | "Help me plan the quarter" / "Roadmap review" / "Sprint planning prep" / "Set OKRs"  | Planning   | `/planning`   |
 | "Get developer metrics" / "Run dev metrics" / "Pull Jira/GitHub metrics for [month]" | Metrics    | `/metrics`    |
+| "Convert Xray tests to Gherkin" / "Turn Xray export into feature files" / "Xray to Gherkin" | Xray to Gherkin | `/xray-to-gherkin` |
 
 
 ### Agent Routing (Autonomous — runs as subprocess)
