@@ -1,0 +1,65 @@
+---
+description: Detect brag-doc-worthy moments during any skill or agent and offer to append them to context/brag-doc.md
+alwaysApply: true
+---
+
+# Brag Doc Routing
+
+The user maintains a brag doc at `context/brag-doc.md` — a living, outcome-framed record of their accomplishments as an EM, used for performance reviews, promo conversations, and career artifacts. Template at `templates/brag-doc.md`.
+
+This rule keeps the doc fresh by catching brag-doc-worthy material as it surfaces in normal work, rather than relying on the user to remember at review time.
+
+---
+
+## When to surface a suggestion
+
+At the end of any skill or agent that produces self-relevant content — especially `/analyse`, `/metrics`, `/review`, `/planning`, `/decide`, `/hiring`, and the Memory Agent — scan the output for moments matching the signals below. If you find at least one, surface a single short prompt:
+
+> *"Brag-doc-worthy moment noticed: [1-line summary]. Append to `context/brag-doc.md`?"*
+
+Then wait for the user. **Never write to the brag doc without explicit confirmation.**
+
+If multiple moments surfaced in the same session, propose them as a short numbered list and let the user pick which to append.
+
+---
+
+## Brag-doc-worthy signals
+
+Each signal maps to the section the entry would land in.
+
+- **Shipped** — a team-level outcome that happened because of the user (decided, unblocked, framed, built). Cues: KR moved, project delivered, deadline held, deal closed, customer outcome.
+- **People & leverage** — hires, perf calls, hard conversations held (or correctly *not* held), mentoring inflection points, near-misses on bad feedback. Cues: 1-on-1 turning points, feedback delivered, judgement calls about people.
+- **Process & systems** — a durable change to how the team works that keeps paying. Cues: new ritual, removed ritual, tooling adopted, decision rule introduced.
+- **Strategy & influence** — narrative reframed, decision shaped, cross-functional alignment, exec/board moment. Cues: changed someone else's read on a situation, surfaced an unspoken assumption, won an argument with evidence.
+- **Growth & learning** — a self-pattern named, feedback integrated, skill built. Strong source: `context/memory/self/` — most self-memory entries are brag-doc-worthy when reframed as outcomes.
+- **Recognition** — verbatim praise from a peer, report, manager, or stakeholder. Capture with attribution and date.
+- **Stretch / didn't land** — an attempt that failed but produced a lesson worth keeping.
+
+---
+
+## What is NOT brag-doc-worthy
+
+- Tasks completed without an outcome attached
+- Generic activity ("ran 1-on-1s this week")
+- Speculative future plans or intentions
+- Anything the user couldn't defend in a promo conversation
+
+---
+
+## Suggestion format
+
+When proposing an entry, draft it in the existing brag-doc structure so it's a one-click append:
+
+```
+- **YYYY-MM-DD — [Outcome]** — [Role/Context]. [What changed]. Evidence: [link or memory ref].
+```
+
+Use today's date. Reference source files (`context/memory/self/...`, transcript path, decision record, PR link) wherever they exist. Outcomes over tasks — if you can't say what changed, don't propose it.
+
+---
+
+## Cadence reminders
+
+- If it's Friday and no entry has been added this week, the Memory Agent's final step should also nudge: *"No brag-doc entry this week — anything worth capturing?"*
+- At month-end, offer to write the **Period highlights** roll-up from that month's entries.
+- At quarter-end, offer to assemble a self-review draft from the quarter's entries using `templates/perf-review.md`.

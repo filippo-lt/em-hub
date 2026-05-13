@@ -17,7 +17,7 @@ em-hub/
 ├── .agents/         ← canonical store for skills, subagents, and rules (see .agents/README.md)
 │   ├── skills/      ← interactive skills invoked via /command (prep, analyse, write, etc.)
 │   ├── agents/      ← autonomous agents that run as subprocesses (memory, contractor-perf)
-│   └── rules/       ← .mdc rules (em-persona, external-writes, jira-access)
+│   └── rules/       ← .mdc rules (em-persona, external-writes, jira-access, brag-doc)
 ├── .claude/         ← Claude Code config; skills/agents are symlinks into .agents/
 ├── .cursor/         ← Cursor config; skills/rules are symlinks into .agents/
 ├── templates/       ← document templates for common outputs
@@ -122,6 +122,7 @@ Always available, load when relevant:
 1. `context/org-chart.md`
 2. `context/company-priorities.md` (if populated)
 3. `context/my-goals.md` (if populated)
+4. `context/brag-doc.md` — accomplishments log; load when discussing performance, promo, self-review, or "what have I done lately". Updates governed by `.agents/rules/brag-doc.mdc` — at the end of any skill or agent, scan for brag-doc-worthy moments and offer to append.
 
 ### Domain Context
 
@@ -181,3 +182,4 @@ These rules are the canonical source — both Cursor (via `.cursor/rules/*.mdc` 
 @.agents/rules/em-persona.mdc
 @.agents/rules/external-writes.mdc
 @.agents/rules/jira-access.mdc
+@.agents/rules/brag-doc.mdc
