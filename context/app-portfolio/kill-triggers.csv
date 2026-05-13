@@ -1,0 +1,4 @@
+App,Trigger type,Condition,Deadline,Action if fired,Action owner,Status,David sign-off date,Notes
+AI Design,Down-tier,CAC has not improved materially (baseline + target TBD with Sergio),2026-09-30,Externals exit on schedule (already planned); Vlad redirects to next bet,Filippo,Pending sign-off,,Sergio to provide CAC baseline + improvement target
+AI Design,Up-tier,LTV/CAC reaches >3 sustained 3 months,2026-09-30,Reconsider full SE investment + lift to Scale tier,Filippo,Pending sign-off,,Long shot per current Sergio signal
+AI Design,Hard kill,Marketing spend stopped by product / Sail,Any time,Immediate externals exit + Vlad redirect; close app,Filippo,Pending sign-off,,Aligns with David's 0-0 quadrant (Eng STOP / Mktg STOP)
