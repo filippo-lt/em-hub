@@ -55,6 +55,7 @@ This framework converts every app into a numbered bet with a horizon, a trigger,
 - Roadmap clarity + product ownership
 - Vendor / contract risk
 - Security / compliance
+- **AI-SE viability indicators** — codebase quality + product context recoverability. Either must be recoverable to justify rewrite-tier investment. Measured per app at scorecard time. Reference data point: pair session 2026-05-14 (Vlad on Face AI) — 40% PO/QA info gathering, 40% bad-codebase friction, 20% feature production. "SE on app" is not rewrite; it's discovery + rewrite. Discovery is SE-driven (code + analytics + reviews + QA), not PM-driven, and gated on a 1-pager that defines what the app actually is and what's in/out of the rewrite scope.
 
 ---
 
