@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "skills": {
+    "1on1s": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/1on1s/SKILL.md",
+      "computedHash": "dcd21df8556bdd69bffe8b500275f19ccfa8f3d80952feb448c88903cbb21f65"
+    },
+    "business-literacy": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/business-literacy/SKILL.md",
+      "computedHash": "9c5610e3a38d77c214e2f992b92a2015b2fc61005a7c1bb0d23f5837c8a188b7"
+    },
+    "career-development": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/career-development/SKILL.md",
+      "computedHash": "8e4faa8478d9147f93e5743592c26d45fb7fab14a7451c44f0aefaa575ecb122"
+    },
+    "delegation": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/delegation/SKILL.md",
+      "computedHash": "f8e8b04317ebaac287460fe9fa33a8c07e552918e5436eeb04777c74d1547fd4"
+    },
+    "developer-productivity": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/developer-productivity/SKILL.md",
+      "computedHash": "633037ab996a605e9f9314677d58ee1e903b96625f002f7ad5b10ba9bb827cc1"
+    },
+    "difficult-situations": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/difficult-situations/SKILL.md",
+      "computedHash": "8fe78f80816ed48e3772885baa8d0d4f02e778700c06508cc9fef77fd3fdcd6c"
+    },
+    "em-grid-scorer": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/em-grid-scorer/SKILL.md",
+      "computedHash": "583d9ace4a06fdfa2c6999a2ddc74d019c2c274e15f6f087b4648d70ea662358"
+    },
+    "engineer-motivation": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineer-motivation/SKILL.md",
+      "computedHash": "5eefe847cfb5d80c4640bafcb51efb2e58989941e73e919ffdaeaa83a25592b4"
+    },
+    "feedback": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/feedback/SKILL.md",
+      "computedHash": "3fda5b715b8f5c3a63a93b4656ed320ee9c9f4f899216d32ae51ea56d09c2050"
+    },
+    "hiring": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/hiring/SKILL.md",
+      "computedHash": "cd1a3cf886232aa6d2fdec70dd1151f8ae6c4b8e7dfdc7a516eb90508cc31482"
+    },
+    "influence": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/influence/SKILL.md",
+      "computedHash": "9ea01ccb4aba233edd65e3d8297650484811ac3bf409f4ee06f02d979932e209"
+    },
+    "knowledge-sharing": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/knowledge-sharing/SKILL.md",
+      "computedHash": "fe64a1a8db10293bb44b45eae0139e39c392bbfc3c48113ed84627eb02c41ddc"
+    },
+    "management-transitions": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/management-transitions/SKILL.md",
+      "computedHash": "bdaa5b921062923c4fe4a498a900865a4ba30babd09ee0c7d7ef09b0b328e619"
+    },
+    "managing-high-performers": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/managing-high-performers/SKILL.md",
+      "computedHash": "d983757f58e10eee0d55b338242a3d538aed72ec861231734c7cba784ab85d37"
+    },
+    "managing-up": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/managing-up/SKILL.md",
+      "computedHash": "25a9544efe2b325718966bb8ea2f7fd2d91c5e9fbd1d6d3817464e6773ebc53d"
+    },
+    "managing-urgency": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/managing-urgency/SKILL.md",
+      "computedHash": "8c13c59387b1e4ae586cb57f218e923247cf119c330fb6859dcd3cdc618b2e82"
+    },
+    "managing-yourself": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/managing-yourself/SKILL.md",
+      "computedHash": "6fdda918f9bc6b71dc162307c9ad901b11bfbf174677e14b47c871f8e3b20734"
+    },
+    "meetings": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/meetings/SKILL.md",
+      "computedHash": "5c55f036efc7e8c59d77c5c7744c0610f27a397be7b3fffa13169d14cc11f524"
+    },
+    "performance-reviews": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/performance-reviews/SKILL.md",
+      "computedHash": "82437de360db64fecde9143899b2d19705dad3aa056a5fdd7fa73e25fc18016b"
+    },
+    "retaining-developers": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/retaining-developers/SKILL.md",
+      "computedHash": "46d73d11b31e8471f828e9583b392530c67dd2925fc7072a9df284f41f5232c9"
+    },
+    "roadmap-planning": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roadmap-planning/SKILL.md",
+      "computedHash": "2e48e7f6d1ca0eb2b73be1d32153f732a9e5ff1b61393f33c002a968e47f74f2"
+    },
+    "shadow-work": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/shadow-work/SKILL.md",
+      "computedHash": "2aad3df142e945a1a948d2be1aa8b5496901865253dc9357a98876bb00ad6b0f"
+    },
+    "team-composition": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/team-composition/SKILL.md",
+      "computedHash": "8fb1e96f110decee6f4a7ff8b05ea7509ed51ae2ff04941a45b2f5dc4a666cd4"
+    },
+    "team-health": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/team-health/SKILL.md",
+      "computedHash": "d60210ea04719295736edd44e73768d53b67c29d78487ba6f819f1522752a885"
+    },
+    "working-with-pm": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/working-with-pm/SKILL.md",
+      "computedHash": "6ab8269f75b7171130102caf34c9ea7bc71f4b154a53bf22efe12c9119cb3390"
+    },
+    "written-communication": {
+      "source": "manager-dot-dev/manager-skills",
+      "sourceType": "github",
+      "skillPath": "skills/written-communication/SKILL.md",
+      "computedHash": "7241bd331dc9dbc1fd302ed9fcfd401ee6cc8d364a2914c7ebe5d75cede2a938"
+    }
+  }
+}
