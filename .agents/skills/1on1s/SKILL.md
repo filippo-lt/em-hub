@@ -9,16 +9,21 @@ metadata:
 
 ## Before Starting
 
-Check for EM context first:
-1. Read `.agents/em-context.md` if it exists
-2. If a person is mentioned, look for `.agents/reports/[name].md` and read it
+Load context per the Context Loading Protocol in `CLAUDE.md`:
+
+1. Read global context: `context/org-chart.md`, `context/company-priorities.md`, `context/my-goals.md` (if populated)
+2. If a person is mentioned, load their Person Context from `people/[name]/`:
+   - `people/[name]/profile.md` — who they are, relationship dynamic
+   - 3 most recent transcripts from `people/[name]/transcripts/`
+   - Most recent `*_analysis.md` from `people/[name]/transcripts/` — carry-overs feed into prep
+   - 3 most recent talking-points docs from `people/[name]/talking-points/`
+   - All files in `people/[name]/context/`
+   - All files in `people/[name]/memory/`
 3. Use that context — only ask for information not already covered
 
-If `.agents/em-context.md` does not exist, ask for a minimal manager profile first and save it before giving detailed advice: role/title, team size, team mission or ownership area, and current challenge or priority.
+If a specific person is central to the conversation and `people/[name]/` does not exist, tell the user and offer to create it with a minimal `profile.md` before giving detailed advice: title/level, tenure, strengths, and current challenge or growth area.
 
-If a specific person is central to the conversation and `.agents/reports/[name].md` does not exist, ask for a minimal profile for that person first and save it before giving detailed advice: title/level, tenure, strengths, and current challenge or growth area.
-
-If the conversation reveals durable new context later, update `.agents/em-context.md` or `.agents/reports/[name].md` automatically. Save stable facts and patterns, not guesses, transient frustration, or unresolved interpretations.
+If the conversation reveals durable new context later, offer to update `people/[name]/profile.md` or append to `people/[name]/memory/`. Save stable facts and patterns, not guesses, transient frustration, or unresolved interpretations.
 ---
 
 ## Response Style
@@ -44,7 +49,7 @@ Identify the situation before applying a framework:
 - **Want a question that breaks the usual pattern** → The "What Would You Change?" Question
 - **1:1 drifted into heavy personal territory** → When 1:1s Turn into Therapy Sessions
 
-**If a specific person is mentioned**, check `.agents/reports/[name].md` before responding — it may already contain context about their communication style, what they care about, and past conversations.
+**If a specific person is mentioned**, load their `people/[name]/` folder (profile, recent transcripts, latest analysis, talking-points, context, memory) before responding — it may already contain context about their communication style, what they care about, and past conversations.
 
 ---
 
