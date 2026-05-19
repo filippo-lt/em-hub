@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI-SE Capacity Validation — Phase A → D</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --surface: #1a2029;
+    --surface-2: #232b36;
+    --border: #2d3742;
+    --text: #e6ebf2;
+    --text-dim: #9aa6b5;
+    --text-faint: #6b7785;
+    --accent: #5b9dff;
+    --accent-soft: rgba(91, 157, 255, 0.12);
+    --green: #4ade80;
+    --green-soft: rgba(74, 222, 128, 0.12);
+    --amber: #fbbf24;
+    --amber-soft: rgba(251, 191, 36, 0.12);
+    --red: #f87171;
+    --red-soft: rgba(248, 113, 113, 0.12);
+    --gray: #6b7785;
+    --gray-soft: rgba(107, 119, 133, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 32px 80px;
+  }
+
+  /* Header */
+  .header { margin-bottom: 48px; }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-size: 34px;
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 0 0 14px;
+    letter-spacing: -0.02em;
+  }
+  .lede {
+    color: var(--text-dim);
+    max-width: 760px;
+    margin: 0;
+    font-size: 16px;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-faint);
+    margin: 56px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Phase ladder */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .phase {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 22px 26px;
+    overflow: hidden;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .phase::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--phase-color, var(--accent));
+    opacity: 0.7;
+  }
+
+  .phase-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .phase-letter {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--phase-color, var(--accent));
+    letter-spacing: -0.04em;
+  }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+  .status-not-cleared { background: var(--red-soft); color: var(--red); }
+  .status-not-cleared .status-dot { background: var(--red); }
+  .status-untried { background: var(--gray-soft); color: var(--text-dim); }
+  .status-untried .status-dot { background: var(--gray); }
+  .status-gated { background: var(--amber-soft); color: var(--amber); }
+  .status-gated .status-dot { background: var(--amber); }
+  .status-target { background: var(--accent-soft); color: var(--accent); }
+  .status-target .status-dot { background: var(--accent); }
+
+  .phase-def {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 10px;
+    line-height: 1.35;
+  }
+  .phase-sub {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin: 0 0 18px;
+    line-height: 1.5;
+  }
+
+  .evidence {
+    background: var(--surface-2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .evidence-label {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+  }
+
+  .ratio-bar {
+    display: flex;
+    height: 22px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 8px;
+    background: var(--surface);
+  }
+  .ratio-bar > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #0f1419;
+  }
+  .ratio-po { background: #f87171; flex: 40; }
+  .ratio-cb { background: #fbbf24; flex: 40; }
+  .ratio-ft { background: #4ade80; flex: 20; }
+  .ratio-key {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    font-size: 10.5px;
+    color: var(--text-faint);
+    flex-wrap: wrap;
+  }
+  .ratio-key span::before {
+    content: "";
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    margin-right: 5px;
+    vertical-align: -1px;
+  }
+  .k-po::before { background: #f87171; }
+  .k-cb::before { background: #fbbf24; }
+  .k-ft::before { background: #4ade80; }
+
+  /* Timeline */
+  .timeline-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 28px 32px;
+  }
+  .timeline-grid {
+    position: relative;
+    margin-top: 8px;
+  }
+  .month-axis {
+    display: grid;
+    grid-template-columns: 110px repeat(10, 1fr);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+    font-size: 11px;
+    color: var(--text-faint);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .month-axis div { text-align: center; }
+  .month-axis .axis-spacer { text-align: left; }
+  .month-year-2026 { color: var(--text-dim); }
+  .month-year-2027 { color: var(--accent); }
+
+  .row {
+    display: grid;
+    grid-template-columns: 110px repeat(10, 1fr);
+    align-items: center;
+    height: 44px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .row:last-child { border-bottom: none; }
+  .row-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+    padding-right: 12px;
+  }
+  .row-label .sub {
+    display: block;
+    font-size: 11px;
+    color: var(--text-faint);
+    font-weight: 500;
+    margin-top: 1px;
+  }
+
+  .track {
+    position: relative;
+    grid-column: 2 / -1;
+    height: 100%;
+  }
+  .bar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 22px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #0f1419;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bar-a { background: #f87171; }
+  .bar-b { background: #fbbf24; }
+  .bar-c { background: #a78bfa; }
+  .bar-d { background: #5b9dff; }
+  .bar-discovery { background: rgba(251, 191, 36, 0.3); color: var(--amber); border: 1px dashed var(--amber); }
+
+  /* Anchors row */
+  .anchors {
+    display: grid;
+    grid-template-columns: 110px repeat(10, 1fr);
+    height: 56px;
+    margin-top: 4px;
+  }
+  .anchor-track { position: relative; grid-column: 2 / -1; height: 100%; }
+  .anchor {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 100px;
+  }
+  .anchor::before {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 14px;
+    background: var(--text-faint);
+    margin: 0 auto 4px;
+  }
+  .anchor-label {
+    font-size: 10.5px;
+    color: var(--text-dim);
+    line-height: 1.3;
+  }
+  .anchor-label strong {
+    display: block;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 11px;
+  }
+  .anchor.critical .anchor-label strong { color: var(--amber); }
+  .anchor.critical::before { background: var(--amber); }
+
+  /* Insight callouts */
+  .insights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .insight {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+  }
+  .insight-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+  .insight.danger .insight-label { color: var(--red); }
+  .insight.info .insight-label { color: var(--accent); }
+  .insight h3 {
+    font-size: 16px;
+    margin: 0 0 8px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .insight p {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* Gate */
+  .gate {
+    margin-top: 12px;
+    background: linear-gradient(135deg, rgba(251,191,36,0.08), rgba(248,113,113,0.06));
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .gate-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  .gate-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .gate-date {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+    font-weight: 700;
+    background: rgba(251, 191, 36, 0.12);
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+  .gate-sub {
+    color: var(--text-dim);
+    margin: 0 0 22px;
+    max-width: 720px;
+  }
+  .gates {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .gate-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .gate-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  .gate-card h4 {
+    font-size: 14px;
+    margin: 0 0 8px;
+    font-weight: 600;
+  }
+  .gate-card p {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+
+  /* Failure paths */
+  .failures {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .failure {
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 16px;
+    border-left: 3px solid var(--red);
+  }
+  .failure-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .failure p {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Footer */
+  .meta {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-faint);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .phases, .insights, .gates, .failures { grid-template-columns: 1fr 1fr; }
+    .month-axis, .row, .anchors { grid-template-columns: 90px repeat(10, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .page { padding: 32px 18px 56px; }
+    h1 { font-size: 26px; }
+    .phases, .insights, .gates, .failures { grid-template-columns: 1fr; }
+    .month-axis, .row, .anchors { grid-template-columns: 70px repeat(10, 1fr); font-size: 10px; }
+    .row-label { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <header class="header">
+      <div class="eyebrow">Engineering · Capacity Validation Sequence</div>
+      <h1>AI-SE Phase A → D</h1>
+      <p class="lede">
+        The unstated math behind "externals out by year-end." Each phase is a leap
+        we haven't proven. KR1 commits to Phase D being validated by Dec 31, 2026 —
+        a phase that realistically can't clear until Q1–Q2 2027.
+      </p>
+    </header>
+
+    <!-- Phase cards -->
+    <div class="section-title">The four phases</div>
+    <div class="phases">
+      <div class="phase" style="--phase-color:#f87171">
+        <div class="phase-head">
+          <div class="phase-letter">A</div>
+          <span class="status-pill status-not-cleared"><span class="status-dot"></span>Not cleared</span>
+        </div>
+        <p class="phase-def">1 SE on 1 iOS app</p>
+        <p class="phase-sub">Healthy ratio: ≥30% feature production, sustained 4 weeks.</p>
+        <div class="evidence">
+          <span class="evidence-label">Evidence — Vlad on Face AI (May 14 pair)</span>
+          40 / 40 / 20
+          <div class="ratio-bar">
+            <div class="ratio-po">40%</div>
+            <div class="ratio-cb">40%</div>
+            <div class="ratio-ft">20%</div>
+          </div>
+          <div class="ratio-key">
+            <span class="k-po">PO/QA info</span>
+            <span class="k-cb">Codebase friction</span>
+            <span class="k-ft">Features</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase" style="--phase-color:#fbbf24">
+        <div class="phase-head">
+          <div class="phase-letter">B</div>
+          <span class="status-pill status-untried"><span class="status-dot"></span>Untried</span>
+        </div>
+        <p class="phase-def">Same SE picks up a 2nd iOS app</p>
+        <p class="phase-sub">Sustains healthy ratio on both apps in parallel.</p>
+        <div class="evidence">
+          <span class="evidence-label">Forcing function</span>
+          For Vlad to own AI Design by Sep 30, rewrite must complete by then →
+          start ~Jul 1 → Phase B begins before Phase A is validated.
+        </div>
+      </div>
+
+      <div class="phase" style="--phase-color:#a78bfa">
+        <div class="phase-head">
+          <div class="phase-letter">C</div>
+          <span class="status-pill status-gated"><span class="status-dot"></span>Gated on hire</span>
+        </div>
+        <p class="phase-def">1 SE on 1 cross-platform app</p>
+        <p class="phase-sub">iOS + Android together — adds the platform multiplier.</p>
+        <div class="evidence">
+          <span class="evidence-label">Dependency</span>
+          New hire lands mid-June → PDF Editor discovery (2 wks) → rewrite (~3 mo).
+          First clean read no earlier than Nov/Dec.
+        </div>
+      </div>
+
+      <div class="phase" style="--phase-color:#5b9dff">
+        <div class="phase-head">
+          <div class="phase-letter">D</div>
+          <span class="status-pill status-target"><span class="status-dot"></span>KR1 target</span>
+        </div>
+        <p class="phase-def">1 SE on 2 cross-platform apps</p>
+        <p class="phase-sub">David's portfolio math. 3 SEs × 2 slots = 6 apps.</p>
+        <div class="evidence">
+          <span class="evidence-label">Reality vs commitment</span>
+          KR1 (Dec 31, 2026) requires Phase D validated. Realistic clearance: Q1–Q2 2027.
+          <strong style="color:var(--text);display:block;margin-top:6px">~2 quarters of structural slip baked in.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="section-title">The compressed timeline (backward from Sep 30 externals exit)</div>
+    <div class="timeline-wrap">
+      <div class="month-axis">
+        <div class="axis-spacer"></div>
+        <div class="month-year-2026">May</div>
+        <div class="month-year-2026">Jun</div>
+        <div class="month-year-2026">Jul</div>
+        <div class="month-year-2026">Aug</div>
+        <div class="month-year-2026">Sep</div>
+        <div class="month-year-2026">Oct</div>
+        <div class="month-year-2026">Nov</div>
+        <div class="month-year-2026">Dec</div>
+        <div class="month-year-2027">Jan ’27</div>
+        <div class="month-year-2027">Feb ’27</div>
+      </div>
+
+      <div class="timeline-grid">
+        <div class="row">
+          <div class="row-label">Phase A<span class="sub">Vlad · Face AI</span></div>
+          <div class="track">
+            <div class="bar bar-a" style="left:0%; width:20%">measured 40/40/20</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Phase B<span class="sub">Vlad · +AI Design</span></div>
+          <div class="track">
+            <div class="bar bar-discovery" style="left:21%; width:5%">disc</div>
+            <div class="bar bar-b" style="left:26%; width:24%">rewrite → Sep 30 exit</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Phase C<span class="sub">new hire · PDF Editor</span></div>
+          <div class="track">
+            <div class="bar bar-discovery" style="left:25%; width:5%">disc</div>
+            <div class="bar bar-c" style="left:30%; width:35%">rewrite (cross-platform)</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Phase D<span class="sub">1 SE / 2 cross-platform</span></div>
+          <div class="track">
+            <div class="bar bar-d" style="left:75%; width:25%">earliest clearance window</div>
+          </div>
+        </div>
+
+        <!-- Anchors -->
+        <div class="anchors">
+          <div></div>
+          <div class="anchor-track">
+            <div class="anchor" style="left:5%">
+              <div class="anchor-label"><strong>May 19</strong>Framework presented</div>
+            </div>
+            <div class="anchor critical" style="left:20%">
+              <div class="anchor-label"><strong>Jun 9</strong>3-way GO/NO-GO</div>
+            </div>
+            <div class="anchor" style="left:50%">
+              <div class="anchor-label"><strong>Sep 30</strong>Externals exit</div>
+            </div>
+            <div class="anchor" style="left:80%">
+              <div class="anchor-label"><strong>Dec 31</strong>KR1 deadline</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insights -->
+    <div class="section-title">What the timeline tells us</div>
+    <div class="insights">
+      <div class="insight danger">
+        <div class="insight-label">Structural risk</div>
+        <h3>Phase A and B overlap</h3>
+        <p>Vlad has ~4 weeks of clean Phase A data before Phase B must begin. We're betting on B before A is proven.</p>
+      </div>
+      <div class="insight">
+        <div class="insight-label">Hidden cost</div>
+        <h3>Discovery is part of "SE on app"</h3>
+        <p>SE = discovery (~2 weeks) + rewrite (2–3 months). Product context can't be trusted to arrive from PMs — it must be re-derived.</p>
+      </div>
+      <div class="insight info">
+        <div class="insight-label">KR1 vs reality</div>
+        <h3>Commitment is downstream of math</h3>
+        <p>"Externals out by Dec 31" depends on Phase D clearing — a phase that won't realistically clear until Q1–Q2 2027.</p>
+      </div>
+    </div>
+
+    <!-- Jun 9 Gate -->
+    <div class="section-title">The decision moment</div>
+    <div class="gate">
+      <div class="gate-head">
+        <h2 class="gate-title">June 9 — 3-way GO/NO-GO</h2>
+        <div class="gate-date">21 days out</div>
+      </div>
+      <p class="gate-sub">
+        All three gates must be true for Vlad to start AI Design rewrite on Jul 1.
+        If any one fails, David picks which leg to sacrifice — before the data forces it.
+      </p>
+      <div class="gates">
+        <div class="gate-card">
+          <div class="gate-num">Gate 1 · Data</div>
+          <h4>Marketing spend arrives</h4>
+          <p>Sergio Wetzel ships marketing-spend numbers. CAC trajectory is product-driven, not spend-bought.</p>
+        </div>
+        <div class="gate-card">
+          <div class="gate-num">Gate 2 · Capacity</div>
+          <h4>Feature ratio ≥ 30%, 4 wks</h4>
+          <p>Vlad's feature-production share on Face AI sustains. Face AI 4-week roadmap (May 29 delivery) is on track.</p>
+        </div>
+        <div class="gate-card">
+          <div class="gate-num">Gate 3 · Sign-off</div>
+          <h4>Vlad signs in</h4>
+          <p>Vlad explicitly accepts running AI Design discovery + rewrite in parallel with Face AI maintenance.</p>
+        </div>
+      </div>
+
+      <div class="failures">
+        <div class="failure">
+          <div class="failure-label">If Gate 1 fails</div>
+          <p>Tier stays Wind-down. Sep 30 trigger fires kill. Externals exit, app sunsets, Vlad stays on Face AI.</p>
+        </div>
+        <div class="failure">
+          <div class="failure-label">If Gate 2 fails</div>
+          <p>Vlad not transferable. AI Design either dies Sep 30 regardless of PMF — or externals extend past Sep 30 (breaks first committed deadline).</p>
+        </div>
+        <div class="failure">
+          <div class="failure-label">If Gate 3 fails</div>
+          <p>Vlad refuses → fall back to Gate 2 paths. Or takes it anyway → Face AI collapses → Phase 2 AI-SE evidence dies.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="meta">
+      <span>Source · context/decisions/2026-05-17_ai-design-phase-validation.md</span>
+      <span>Engineering · Mobile App Unit</span>
+    </div>
+
+  </div>
+</body>
+</html>
