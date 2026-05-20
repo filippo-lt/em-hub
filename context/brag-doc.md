@@ -1,6 +1,6 @@
 # Brag Doc — Filippo
 
-**Last updated:** 2026-05-12
+**Last updated:** 2026-05-20
 **Current period:** 2026 H1
 
 > Cadence: 5–10 min every Friday. Monthly roll-up on the last Friday. Quarterly close = pre-built self-review input.
@@ -16,6 +16,8 @@
 ---
 
 ## Shipped — team outcomes I drove
+
+- **2026-05-20 — MartechKit v1.0 (iOS) shipped — portfolio-wide martech unification** — Role: framed, sponsored, and announced to product + engineering + C-levels. What shipped: single iOS library unifying Amplitude, RevenueCat, AppsFlyer and other martech vendors; validated in 3 pilot apps; built end-to-end by Victor Yalenkas. Why it matters: historically our slowest portfolio-wide workflow (per-app tickets for every martech change) collapses to a version bump — directly hits the Q2 OKR deliverable for MartechKit and unlocks parallel Android/Flutter tracks. Evidence: `context/communications/2026-05-20-martechkit-v1-announcement.md`.
 
 - **2026-04-09 — Q2 2026 OKRs locked across the org** — Role: framed and decided. 3 objectives (EBITDA via efficiency, Launches predictability, AI transformation), 11 KRs, each tied to a measurable cut-line (20% external HC reduction, 6→4d cycle time, ≥75% on-time delivery, Parapet/AI Observability/TVFoundationKit/MartechKit shipped). Evidence: `context/okrs-q2-2026.md`.
 
