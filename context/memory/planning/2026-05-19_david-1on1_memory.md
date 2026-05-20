@@ -1,0 +1,12 @@
+[2026-05-19] [planning] - Year-end externals-out commitment is now softer at the David level ("I never asked all of you to say must go") — Q2 KR1 check-in on Jun 23 needs to reflect reduced political pressure but also reduced framework enforcement teeth
+[2026-05-19] [planning] - iMote → Català end-Q3 dependency is destabilised: David floated removing Stenology from Sat AI instead. If iMote stays, SE-slot math (3 SEs × 2 apps = 6) breaks and the year-end externals-out commitment cannot be made on those grounds — redraw the math or confirm Català
+[2026-05-19] [planning] - App Portfolio Framework concept endorsed by David but the AI Design Sep 30 kill trigger was NOT pinned in writing — must be co-signed at the next 1:1 or framework is officially decorative; this is now the highest-priority carry-over
+[2026-05-19] [planning] - €75k AI Design externals extension still un-named after 2 weeks — third attempt owed; carry-forward priority
+[2026-05-19] [planning] - New top-down project: spy-app/Chatbot website (Herman+Diego driven, competitor pressure). Filippo blocked it pending business case from Sergio Hueso; David endorsed defensive framework use — follow-through required so the win doesn't soften
+[2026-05-19] [planning] - Carve-out list expanded by David: add Type B + Chat AI + kid in apps, end of July deadline
+[2026-05-19] [planning] - Hire scope direction: hybrid — Vlad keeps dev focus, new hire takes advisor-leaning role, possible "catch one up" in the middle. Verbally accepted, undocumented — concretise next 1:1
+[2026-05-19] [planning] - Martech V1 timeline relaxed: end Q2 / start Q3 acceptable; align with Mateo + Cristian + Davidson; 6-7 apps integrated before board presentation; email + product-colleague presentation first
+[2026-05-19] [planning] - Foreworth data warehouse broken during the meeting derailed the framework demo — data-tool brokenness is now a structural blocker for the gate; alternative data source required for AI Design Sep 30 read
+[2026-05-19] [planning] - Sergio Hueso conversation operationalised: Tattooist data alignment + close all accounts for Type B and Sat AI — this week
+[2026-05-19] [planning] - AI/GCP exponential cost-growth correlation check (users vs cost) — new David ask; David committed to per-resource monthly cost share-back going forward
+[2026-05-19] [planning] - PM-as-far-away-PO model now a shared concept with David; Q3 PM pressure offered by David — operationalise concretely, don't let it stay abstract

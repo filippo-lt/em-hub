@@ -1,0 +1,12 @@
+[2026-05-19] [people] - David softened the year-end externals-out narrative meaningfully: "I never asked all of you to say must go... we need to control the build" — major shift from prior framing that reduces political pressure but also weakens framework enforcement teeth
+[2026-05-19] [people] - David validated Filippo's first defensive frame deployment in 5+ weeks: when pushed back on spy-app/Chatbot website with business-case requirement, David said "I like your approach... I will delegate this decision to product. So you need to force them"
+[2026-05-19] [people] - David genuinely surprised by PO/PM dysfunction disclosure: "I didn't know this. If I knew, I wouldn't... in Q3 I'm going to do more pressure on this" — air-cover offered, PM-as-far-away-PO model now directionally shared
+[2026-05-19] [people] - David floated removing Stenology from Sat AI instead of iMote, destabilising the iMote → Català end-Q3 dependency that underpins the SE-slot math (3×2=6)
+[2026-05-19] [people] - David endorsed framework concept ("at least we are talking about businesses... we will have richer decisions") but did NOT co-sign the AI Design Sep 30 kill trigger in writing — enforcement remains decorative
+[2026-05-19] [people] - David expanded the carve-out list himself (Type B + Chat AI + kid in apps, end of July) — pattern of David driving lists Filippo hasn't scoped continuing
+[2026-05-19] [people] - David accepted hire-scope advisor-layer organically in a tangent: "let's put on Vlad everything regarding development, the rest of the people maybe more advisor for him. And in the middle, if you can catch one up" — verbal only, undocumented
+[2026-05-19] [people] - David operationalised Sergio Hueso conversation: explicitly asked Filippo to contact him re: Tattooist data + closing Type B/Sat AI accounts (no longer just delegated)
+[2026-05-19] [people] - David afraid of exponential AI cost growth — asked Filippo to check correlation between users and AI/GCP cost increases; committed to per-resource monthly cost share-back ("I'm going to ask you every month about the money")
+[2026-05-19] [people] - David relaxed Martech V1 timeline — explicitly said not to rush end of May; end Q2 / start Q3 acceptable; wants 6-7 apps integrated before board presentation
+[2026-05-19] [people] - Andrey SE email now 3 weeks blocked on David's side — not raised this meeting
+[2026-05-19] [people] - Talk ratio ~30/70 again — David set the agenda (metrics → portfolio → spy app → carve-out → Martech → AI cost); Filippo inserted FaceAI PO/PM at the end
