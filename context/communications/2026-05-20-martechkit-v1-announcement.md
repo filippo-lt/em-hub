@@ -20,13 +20,14 @@ MartechKit changes that in a few concrete ways:
 
 - **Single point of implementation.** When a change in one of the third party libraries is needed, developers bump the library version and get the change for free, no per-app re-implementation.
 - **Standardisation across the portfolio.** All apps consume third party libraries the same way, removing drift and inconsistencies.
+- **Shared event dictionary.** Every app tracks the same events with the same schema. This sharply reduces mistracked events and, for the first time, makes cross-app product analysis possible.
 - **Lower cognitive load for engineers.** Developers no longer need to understand the specifics of each third party service, those concerns live inside the SDK.
 - **Faster experimentation for Marketing/Martech.** The Martech team can iterate without being bottlenecked on per-app engineering work.
 - **Development cost savings.** What used to be portfolio-wide tickets becomes a version bump.
 
 **Credit where it's due**
 
-This work was designed and built by **Victor Jalencas**, one of our Staff Engineers, over the last few weeks. Victor built the library end-to-end and drove the integration in three pilot apps to validate the approach. The fact that we have a working v1.0 and proof-of-concept integrations in this timeframe is entirely down to him — thank you, Victor, this is a significant piece of work.
+This work was designed and built end-to-end by **Victor Jalencas**, one of our Staff Engineers, over the last few weeks, including the integration in the three pilot apps. Thank you, Victor.
 
 A big thank-you also goes to David Sanchez and his team, who helped shape the initiative and shared the context and nuance of the broader Martech landscape that made this possible.
 
