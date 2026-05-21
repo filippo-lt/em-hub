@@ -1,10 +1,10 @@
-App,PM,Tier,Eng position,Mktg position,Monthly burn (€),Monthly revenue (€),Net (€),CAC (€),LTV (€),LTV/CAC,Trigger status,Next review,Notes
-AI Design,Sergio Wetzel,Wind-down,MAINTAIN,MAINTAIN,29200,,,,,,Pending sign-off,2026-09-30,Externals exit end-Q3; Vlad as advisor; CAC kill trigger pending
-Face AI,Sergio Wetzel,Maintain,MAINTAIN,MAINTAIN,,,,,,,TBD,,Vlad as SE; doing well per 12 May
-Tattooist,TBD,Maintain,MAINTAIN,MAINTAIN,,,,,,,TBD,,Potential graduation to Growth pending Jorge confirmation
-Truth Seeker,TBD,Maintain,MAINTAIN,MAINTAIN,,,,,,,TBD,,Web + Android scope decision pending
-iMode,TBD,Maintain,MAINTAIN,MAINTAIN,,,,,,,TBD,,Andre as SE
-Screen Mirroring,TBD,Wind-down,STOP,MAINTAIN,,,,,,,TBD,2026-06-30,Sergey out end-May; Cyclone QA out end-June; Andre as SE
-Chatbot (M&A),Christian,TBD,TBD,TBD,,,,,,,TBD,,Investigation pending: Listen + Sergio Wetzel
-Sat AI (M&A),Christian,TBD,TBD,TBD,,,,,,,TBD,,Part of Chatbot/Sat AI/Lorca duplication mess
-Lorca (M&A),Emilio,TBD,TBD,TBD,,,,,,,TBD,,Yellow + Jose dev under Emilio
+App,PM,Tier,Ad spend (€/mo),CPA subscriber,pLTV / CPA subscriber,Verdict,Notes
+AI Design,Sergio Hueso,Wind-down,,,,,Externals exit end-Q3; Vlad as advisor; CAC kill trigger pending
+Face AI,Sergio Hueso,Maintain,,,,,Vlad as SE; doing well per 12 May
+Tattooist,TBD,Maintain,,,,,Potential graduation to Growth pending Jorge confirmation
+Truth Seeker,TBD,Maintain,,,,,Web + Android scope decision pending
+iMode,TBD,Maintain,,,,,Andre as SE
+Screen Mirroring,TBD,Wind-down,,,,,Sergey out end-May; Cyclone QA out end-June; Andre as SE
+Chatbot (M&A),Christian,TBD,,,,,Investigation pending: Listen + Sergio Hueso
+Sat AI (M&A),Christian,TBD,,,,,Part of Chatbot/Sat AI/Lorca duplication mess
+Lorca (M&A),Emilio,TBD,,,,,Yellow + Jose dev under Emilio
