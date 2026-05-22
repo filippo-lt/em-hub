@@ -1,2 +1,3 @@
 app,date,build_BE,build_AND,build_iOS,build_Web,ci_state,sec_blockers,top_red_flag,recommendation,est_person_weeks,confidence
 chat-ultra,2026-05-20,NA,fail-missing-secret,fail-missing-secret,NA,active-green,3,3 Firebase service-account private keys committed in git across BE repos,C3,5,medium
+pdf-editor,2026-05-21,NA,fail-missing-secret,pass,NA,active-likely-green,3,Office preview uploads user files to public hosts + 2 hardcoded prod API keys,C3,10,medium
