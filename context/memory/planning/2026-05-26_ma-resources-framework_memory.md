@@ -1,0 +1,17 @@
+[2026-05-26] [planning] - M&A Resources Framework (in development, NOT yet presented to David): operating model = new apps → SE-led; existing apps → externals + advisor. Tattooist is the working proof point.
+
+[2026-05-26] [planning] - Capacity under the model: Vlad = FaceAI now → solo advisor on AI Design from next week (advisor, not solo SE; externals continue dev until €75k extension expires end-Q3). New hire = greenfield SE primary; fallback modes (serial, not parallel): advisor on 1 existing app, M&A tooling build (raises floor for externals on existing M&A apps), or 8–12 week SE remediation campaign. Filippo = M&A scorecard owner.
+
+[2026-05-26] [planning] - M&A scorecard: 2/5 complete (Chat Ultra acceptable, PDF very bad); TruthSeeker, Step Counter, Music Player pending. Must be decisive not descriptive — score → action: acceptable+value → externals+advisor; bad+savable → time-boxed SE remediation; bad+not-savable → sunset; greenfield idea → new-app track. Layered with David's monthly cost data = the M&A decision rhythm. First concrete artifact for owned M&A-capability-as-discipline goal.
+
+[2026-05-26] [planning] - PDF = framework's first concrete test case. Forces Product engagement: business-case-by-hard-date, sunset if not delivered, externals on minimal-feature maintenance until then. Hard date + PM owner still TBD. Politically cleaner than AI Design Sep 30 — fresh, small, no commitments to walk back.
+
+[2026-05-26] [planning] - Gravity vehicle: lead with empirical PDF scorecard data; security framing in reserve as upper-bound stakes (Vlad found prod API keys in AI Design in hours — surface on 5 unaudited M&A apps unknown). Manage risk: don't re-trigger David's externals-out reflex (just retreated May 19); position security as why the pool model matters, not separate emergency.
+
+[2026-05-26] [planning] - Ask shape: brainstorm-then-co-design with David, then he educates C-level (Christian/Emilio on new-vs-existing split; Herman/Diego on business-case-before-SE-allocation). Activates David's May 19 Q3 PM-pressure offer concretely. Filippo educates from the bottom, David from the top.
+
+[2026-05-26] [planning] - Framework dissolves multiple stuck May 19 items: AI Design Sep 30 → track migration end-Q3 (signable); iMote/Català math irrelevant (no app-locked SE); €75k retroactively justified as pre-model cost (retrospective, not forward); hire-scope advisor-layer concretised; Andrey SE email unblocks (scope-defined under model); Tattooist becomes proof point not exception; spy-app pushback reinforced (business case → SE allocation rule).
+
+[2026-05-26] [planning] - Gaps before presentable to David: all 5 apps scored; PDF hard date + PM owner; new-hire mode sequencing; sunset-vs-remediate criteria per scorecard level. ETA 2–3 weeks. Today's 1:1: signal scorecard in motion, full proposal coming — do NOT pitch prematurely.
+
+[2026-05-26] [self] - Mid-brainstorm self-catch: the "bring solutions not problems" instinct (correct per David's profile) almost pulled toward presenting a half-built framework. Half-built presentation triggers David's retreat instinct (picks the weakest joint, unravels) — a different failure mode than "built but not presented." Correct mode: build → ready → present. Deferring the framework today is the right discipline.
