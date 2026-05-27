@@ -1,18 +1,22 @@
--- GCP monthly spend by app + service.
--- Rendered from config/gcp-spend.conf by run.py.
+-- GCP monthly spend by app, month, and service.
+-- Rendered from config.conf by run.py.
 --
--- Net cost = cost + SUM(credits.amount).  Credits are stored as negative
--- numbers in the billing export, so adding them subtracts discounts /
--- promotional / sustained-use credits from the gross cost — this is the
--- number that actually hits the invoice.
+-- Returns one row per (app, invoice_month, service). The same query result
+-- drives both the per-month detail report and the multi-month dashboard;
+-- run.py slices the rows accordingly. This avoids issuing two BigQuery
+-- jobs for the same data.
 --
--- Filter is on invoice.month (YYYYMM string), which is the canonical
--- "what was billed in this month" partition for the billing export.
+-- Net cost = cost + SUM(credits.amount). Credits are stored as negative
+-- numbers, so adding them subtracts discounts/promotional/sustained-use
+-- credits — this is the number that actually hits the invoice.
+--
+-- @invoice_months is an array of YYYYMM strings (e.g. ["202504","202505"]).
 
 WITH all_costs AS (
 {% for app in apps %}
   SELECT
     '{{ app.friendly_name }}' AS app,
+    invoice.month             AS invoice_month,
     service.description       AS service,
     cost + IFNULL(
       (SELECT SUM(c.amount) FROM UNNEST(credits) c),
@@ -20,16 +24,17 @@ WITH all_costs AS (
     ) AS net_cost,
     currency
   FROM `{{ app.project_id }}.{{ app.dataset }}.gcp_billing_export_resource_v1_{{ app.billing_account_id | replace('-', '_') }}`
-  WHERE invoice.month = @invoice_month
+  WHERE invoice.month IN UNNEST(@invoice_months)
 {% if not loop.last %}  UNION ALL
 {% endif %}{% endfor %}
 )
 SELECT
   app,
+  invoice_month,
   service,
   ROUND(SUM(net_cost), 2) AS net_cost,
   ANY_VALUE(currency)     AS currency
 FROM all_costs
-GROUP BY app, service
-HAVING net_cost <> 0          -- drop $0.00 services (rounding artefacts)
-ORDER BY app, net_cost DESC
+GROUP BY app, invoice_month, service
+HAVING net_cost <> 0
+ORDER BY invoice_month, app, net_cost DESC

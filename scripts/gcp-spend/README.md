@@ -1,8 +1,17 @@
 # GCP Spend Report
 
-Generates a self-contained HTML report of monthly GCP spend across all your
-apps, broken down by service. Everything for this tool — code, config, and
-generated reports — lives under `scripts/gcp-spend/`.
+Generates self-contained HTML reports of monthly GCP spend across all your
+apps. Two artefacts per run:
+
+1. **`reports/YYYY-MM.html`** — Focused detail of the requested month, with one
+   tab per app and a per-service breakdown.
+2. **`reports/index.html`** — Multi-month dashboard with:
+   - Stacked-bar hero showing the last N months of total spend, coloured by app
+     (clickable: each bar links to that month's detail report)
+   - Per-app cards with 12-month sparkline, current total, and MoM %
+   - Wide table of the last 6 months with column totals + per-row average + Δ
+
+Everything lives under `scripts/gcp-spend/`.
 
 ## Folder layout
 
@@ -11,27 +20,30 @@ scripts/gcp-spend/
 ├── run.py              ← entrypoint
 ├── config.conf         ← app → BigQuery dataset mapping
 ├── query.sql.j2        ← BigQuery query (Jinja2 template)
-├── template.html.j2    ← report HTML (Jinja2 template)
+├── template.html.j2    ← monthly detail HTML
+├── dashboard.html.j2   ← multi-month dashboard HTML
 ├── requirements.txt
 ├── README.md           ← this file
 └── reports/            ← generated output
     ├── 2026-04.html
     ├── 2026-05.html
-    └── index.html
+    └── index.html      ← the dashboard
 ```
 
 ## How it works
 
 ```
-config.conf  ──┐
-               ├──►  run.py  ──►  BigQuery  ──►  reports/YYYY-MM.html
-template.html.j2 ──┘                              reports/index.html
-query.sql.j2 ──────┘
+config.conf       ──┐
+                    ├──►  run.py  ──►  BigQuery  ─┬─►  reports/YYYY-MM.html   (focused)
+template.html.j2  ──┤    (one job,                │
+dashboard.html.j2 ──┤     N months)               └─►  reports/index.html     (dashboard)
+query.sql.j2      ──┘
 ```
 
 - One row per app in `config.conf` (pipe-delimited).
-- `run.py` unions the per-app `billing_export_data.gcp_billing_export_resource_v1_*`
-  tables, groups by app + service, and renders a static HTML page.
+- A single BigQuery job fetches N months of history (default 12); the same rows
+  feed both the monthly report and the dashboard.
+- All charts are server-side inline SVG — no JavaScript anywhere.
 - "Net cost" = `cost + SUM(credits)`. Credits are stored as negative values, so this
   matches what hits the invoice.
 - Filter is on `invoice.month` (YYYYMM), the canonical "billed this month" partition.
@@ -52,14 +64,18 @@ each project's `billing_export_data` dataset, you already have what's needed.
 
 ```bash
 make gcp-spend                    # last completed calendar month
-make gcp-spend MONTH=2026-04      # specific month
-make gcp-spend-open               # open the most recent report
+make gcp-spend MONTH=2026-04      # specific focal month
+make gcp-spend-open               # open the dashboard (reports/index.html)
 ```
 
-Or call the script directly (e.g. to override the BigQuery billing project):
+Each run regenerates both the focal month's detail report and the dashboard.
+The dashboard always shows N months of history ending at `MONTH`.
+
+Direct CLI for the extra flags:
 
 ```bash
 python scripts/gcp-spend/run.py --month 2026-04
+python scripts/gcp-spend/run.py --month 2026-04 --history-months 6
 python scripts/gcp-spend/run.py --month 2026-04 --billing-project imote-prod
 ```
 

@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GCP Spend Dashboard — {{ target_month_label }}</title>
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --bg: #ffffff;
+    --card: #fafafa;
+    --border: #e6e6e6;
+    --soft-border: #f0f0f0;
+    --bar-bg: #eef2f7;
+    --accent: #2563eb;
+    --up:   #c0392b;   /* spend went up = warning */
+    --down: #1e8449;   /* spend went down = good */
+    --warn-bg: #fff8e6;
+    --warn-border: #f0d68b;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.45;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Header ───────────────────────────────────────────────────── */
+  .report-header {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: 12px;
+    border-bottom: 2px solid var(--fg);
+    padding-bottom: 16px; margin-bottom: 28px;
+  }
+  .report-header h1 { font-size: 22px; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+  .report-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .target-month {
+    font-size: 32px; font-weight: 600; font-variant-numeric: tabular-nums;
+  }
+  .target-month .currency { color: var(--muted); font-size: 16px; margin-left: 4px; }
+  .mom { font-size: 14px; margin-left: 8px; font-weight: 500; }
+  .mom.up   { color: var(--up); }
+  .mom.down { color: var(--down); }
+  .mom.flat { color: var(--muted); }
+
+  /* ── Section title ─────────────────────────────────────────────── */
+  h2.section { font-size: 13px; font-weight: 600; text-transform: uppercase;
+               letter-spacing: 0.06em; color: var(--muted);
+               margin: 30px 0 12px; }
+
+  /* ── Hero: stacked bars ─────────────────────────────────────────── */
+  .hero {
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 18px 14px 10px;
+    border-radius: 6px;
+  }
+  .hero svg { display: block; width: 100%; height: auto; }
+  .hero .gridline { stroke: var(--soft-border); stroke-width: 1; }
+  .hero .axis-text { fill: var(--muted); font-size: 10px; }
+  .hero .month-label { fill: var(--muted); font-size: 11px; }
+  .hero .month-label.target { fill: var(--fg); font-weight: 600; }
+  .hero .bar { transition: opacity 0.15s; }
+  .hero .bar-link:hover .bar { opacity: 0.78; }
+  .hero .target-marker {
+    fill: none; stroke: var(--accent); stroke-width: 2;
+  }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 10px 14px;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; color: var(--fg); }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  /* ── Sparklines grid ────────────────────────────────────────────── */
+  .spark-grid {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  .spark-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .spark-card .row1 { display: flex; justify-content: space-between; align-items: baseline; }
+  .spark-card .app-name { font-size: 14px; font-weight: 600; }
+  .spark-card .app-name .swatch { margin-right: 6px; vertical-align: middle; }
+  .spark-card .cur { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .spark-card .row2 { display: flex; justify-content: space-between; align-items: center;
+                      font-size: 11px; color: var(--muted); }
+  .spark-card svg { display: block; width: 100%; height: 32px; }
+  .spark-card .spark-line { fill: none; stroke-width: 1.6; }
+  .spark-card .spark-area { opacity: 0.18; stroke: none; }
+  .spark-card .spark-dot  { stroke: white; stroke-width: 1.5; }
+
+  /* ── Table ─────────────────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 6px; }
+  table.history {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.history th, table.history td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--soft-border);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  table.history th { color: var(--muted); font-weight: 500; background: var(--card); }
+  table.history th.app, table.history td.app { text-align: left; }
+  table.history th.target, table.history td.target {
+    background: rgba(37, 99, 235, 0.06);
+    font-weight: 600;
+  }
+  table.history th.partial { font-style: italic; }
+  table.history tr:last-child td { border-bottom: none; }
+  table.history td.delta.up   { color: var(--up); }
+  table.history td.delta.down { color: var(--down); }
+  table.history td.delta.flat { color: var(--muted); }
+  table.history .swatch { vertical-align: middle; margin-right: 6px; }
+  table.history tfoot td { font-weight: 600; background: var(--card); }
+
+  /* ── Pending footer ────────────────────────────────────────────── */
+  .pending {
+    margin-top: 28px;
+    padding: 14px 18px;
+    border: 1px solid var(--warn-border);
+    background: var(--warn-bg);
+    border-radius: 6px;
+  }
+  .pending h2 { margin: 0 0 6px; font-size: 14px; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--fg); }
+  .pending p  { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+  .pending ul { margin: 0; padding-left: 18px; font-size: 13px; }
+  .pending code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); }
+
+  .gen-info { margin-top: 20px; color: var(--muted); font-size: 12px; text-align: right; }
+</style>
+</head>
+<body>
+<main>
+
+  {# ── Header ─────────────────────────────────────────────────────── #}
+  <header class="report-header">
+    <div>
+      <h1>GCP Spend Dashboard</h1>
+      <div class="subtitle">
+        {{ target_month_label }} ·
+        {{ window_count }}-month window ·
+        <a href="./{{ target_month_iso }}.html">detail report ↗</a>
+      </div>
+    </div>
+    <div class="target-month">
+      ${{ "{:,.2f}".format(target_total) }}<span class="currency">{{ currency }}</span>
+      {% if overall_mom_pct is not none %}
+        {% if overall_mom_pct > 0.5 %}
+          <span class="mom up">▲ {{ "{:,.1f}".format(overall_mom_pct) }}%</span>
+        {% elif overall_mom_pct < -0.5 %}
+          <span class="mom down">▼ {{ "{:,.1f}".format(-overall_mom_pct) }}%</span>
+        {% else %}
+          <span class="mom flat">— flat</span>
+        {% endif %}
+      {% endif %}
+    </div>
+  </header>
+
+  {# ── Hero: stacked monthly bars ─────────────────────────────────── #}
+  <h2 class="section">Spend over time</h2>
+  <div class="hero">
+    <svg viewBox="0 0 {{ hero.width }} {{ hero.height }}" preserveAspectRatio="xMidYMid meet"
+         role="img" aria-label="Stacked monthly spend over the last {{ window_count }} months">
+      {# Gridlines + y-axis labels #}
+      {% for g in hero.gridlines %}
+        <line class="gridline" x1="{{ g.x_line_start }}" x2="{{ g.x_line_end }}"
+              y1="{{ g.y }}" y2="{{ g.y }}" />
+        <text class="axis-text" x="{{ g.x_label }}" y="{{ g.y + 3 }}" text-anchor="end">{{ g.label }}</text>
+      {% endfor %}
+
+      {# Stacked bars #}
+      {% for b in hero.bars %}
+        <a class="bar-link" href="./{{ '%s-%s' | format(b.month[:4], b.month[4:]) }}.html">
+          <rect class="bar"
+                x="{{ b.x }}" y="{{ b.y }}" width="{{ b.w }}" height="{{ b.h }}"
+                fill="{{ b.color }}">
+            <title>{{ b.app }} · {{ b.month[:4] }}-{{ b.month[4:] }} · ${{ "{:,.2f}".format(b.value) }}</title>
+          </rect>
+        </a>
+      {% endfor %}
+
+      {# Month labels along x-axis #}
+      {% for l in hero.labels %}
+        <text class="month-label{% if l.is_current %} target{% endif %}"
+              x="{{ l.x }}" y="{{ l.y }}" text-anchor="middle">{{ l.text }}</text>
+      {% endfor %}
+    </svg>
+
+    <div class="legend">
+      {% for app in apps %}
+      <span class="legend-item">
+        <span class="swatch" style="background: {{ app.color }}"></span>{{ app.name }}
+      </span>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# ── Per-app sparkline grid ──────────────────────────────────────── #}
+  <h2 class="section">By app · 12-month trend</h2>
+  <div class="spark-grid">
+    {% for app in apps %}
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name"><span class="swatch" style="background: {{ app.color }}"></span>{{ app.name }}</span>
+        <span class="cur">${{ "{:,.0f}".format(app.current) }}</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="{{ app.name }} sparkline">
+        <polyline class="spark-area" points="3,32 {{ app.sparkline }} 157,32" fill="{{ app.color }}"/>
+        <polyline class="spark-line" points="{{ app.sparkline }}" stroke="{{ app.color }}"/>
+        {# Highlight the last point #}
+        {% set parts = app.sparkline.split(' ') %}
+        {% if parts %}
+        {% set last = parts[-1].split(',') %}
+        <circle class="spark-dot" cx="{{ last[0] }}" cy="{{ last[1] }}" r="2.5" fill="{{ app.color }}"/>
+        {% endif %}
+      </svg>
+      <div class="row2">
+        <span>avg ${{ "{:,.0f}".format(app.average) }}</span>
+        <span>
+          {% if app.mom_pct is none %}
+            <span class="mom flat">—</span>
+          {% elif app.mom_pct > 0.5 %}
+            <span class="mom up">▲ {{ "{:,.1f}".format(app.mom_pct) }}%</span>
+          {% elif app.mom_pct < -0.5 %}
+            <span class="mom down">▼ {{ "{:,.1f}".format(-app.mom_pct) }}%</span>
+          {% else %}
+            <span class="mom flat">— flat</span>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {# ── Last-6-months table ─────────────────────────────────────────── #}
+  <h2 class="section">Last 6 months · exact figures</h2>
+  <div class="table-wrap">
+    <table class="history">
+      <thead>
+        <tr>
+          <th class="app">App</th>
+          {% for m in table_months %}
+          <th class="{% if m.is_target %}target{% endif %}{% if m.is_current_calendar %} partial{% endif %}">
+            {{ m.label }}{% if m.is_current_calendar %}*{% endif %}
+          </th>
+          {% endfor %}
+          <th>Avg ({{ window_count }}m)</th>
+          <th>Δ MoM</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+        <tr>
+          <td class="app"><span class="swatch" style="background: {{ row.color }}"></span>{{ row.name }}</td>
+          {% for v in row.monthly_amounts %}
+          <td class="{% if table_months[loop.index0].is_target %}target{% endif %}">${{ "{:,.0f}".format(v) }}</td>
+          {% endfor %}
+          <td>${{ "{:,.0f}".format(row.avg) }}</td>
+          {% if row.delta is none %}
+            <td class="delta flat">—</td>
+          {% elif row.delta > 0.5 %}
+            <td class="delta up">▲ {{ "{:,.1f}".format(row.delta) }}%</td>
+          {% elif row.delta < -0.5 %}
+            <td class="delta down">▼ {{ "{:,.1f}".format(-row.delta) }}%</td>
+          {% else %}
+            <td class="delta flat">— flat</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="app">Total</td>
+          {% for m in table_months %}
+            {% set col_idx = loop.index0 %}
+            {% set col_total = namespace(v=0) %}
+            {% for row in table_rows %}{% set col_total.v = col_total.v + row.monthly_amounts[col_idx] %}{% endfor %}
+            <td class="{% if m.is_target %}target{% endif %}">${{ "{:,.0f}".format(col_total.v) }}</td>
+          {% endfor %}
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  {% if pending %}
+  <section class="pending">
+    <h2>Not yet reporting</h2>
+    <p>Billing export not yet enabled. These apps will appear in the dashboard once their export tables come online.</p>
+    <ul>
+      {% for app in pending %}
+      <li>{{ app.friendly_name }} <code>({{ app.project_id }})</code></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <div class="gen-info">
+    Generated {{ generated_at }} · * = partial (current calendar month, not yet closed)
+  </div>
+
+</main>
+</body>
+</html>

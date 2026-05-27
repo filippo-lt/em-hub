@@ -15,9 +15,9 @@ MONTH ?= $(LAST_MONTH)
 help:
 	@echo "em-hub — make targets"
 	@echo ""
-	@echo "  GCP spend report"
-	@echo "    make gcp-spend [MONTH=YYYY-MM]   Run the report (default: $(LAST_MONTH))"
-	@echo "    make gcp-spend-open              Open the most recently generated report"
+	@echo "  GCP spend reports"
+	@echo "    make gcp-spend [MONTH=YYYY-MM]   Generate dashboard + focal month (default: $(LAST_MONTH))"
+	@echo "    make gcp-spend-open              Open the dashboard"
 	@echo "    make gcp-spend-setup             One-time: install deps + ADC login"
 	@echo ""
 
@@ -32,12 +32,12 @@ gcp-spend-setup:
 	@gcloud auth application-default login
 
 gcp-spend-open:
-	@latest=$$(ls -1 scripts/gcp-spend/reports/[0-9]*.html 2>/dev/null | sort | tail -1); \
-	if [ -z "$$latest" ]; then \
-	  echo "No reports found. Run: make gcp-spend"; exit 1; \
+	@dash=scripts/gcp-spend/reports/index.html; \
+	if [ ! -f "$$dash" ]; then \
+	  echo "Dashboard not found. Run: make gcp-spend"; exit 1; \
 	fi; \
-	echo "Opening $$latest"; \
-	if command -v open >/dev/null 2>&1; then open "$$latest"; \
-	elif command -v xdg-open >/dev/null 2>&1; then xdg-open "$$latest"; \
-	else echo "Neither 'open' nor 'xdg-open' found. Path: $$latest"; \
+	echo "Opening $$dash"; \
+	if command -v open >/dev/null 2>&1; then open "$$dash"; \
+	elif command -v xdg-open >/dev/null 2>&1; then xdg-open "$$dash"; \
+	else echo "Neither 'open' nor 'xdg-open' found. Path: $$dash"; \
 	fi
