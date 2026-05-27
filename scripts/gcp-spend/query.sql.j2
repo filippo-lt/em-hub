@@ -1,0 +1,35 @@
+-- GCP monthly spend by app + service.
+-- Rendered from config/gcp-spend.conf by run.py.
+--
+-- Net cost = cost + SUM(credits.amount).  Credits are stored as negative
+-- numbers in the billing export, so adding them subtracts discounts /
+-- promotional / sustained-use credits from the gross cost — this is the
+-- number that actually hits the invoice.
+--
+-- Filter is on invoice.month (YYYYMM string), which is the canonical
+-- "what was billed in this month" partition for the billing export.
+
+WITH all_costs AS (
+{% for app in apps %}
+  SELECT
+    '{{ app.friendly_name }}' AS app,
+    service.description       AS service,
+    cost + IFNULL(
+      (SELECT SUM(c.amount) FROM UNNEST(credits) c),
+      0
+    ) AS net_cost,
+    currency
+  FROM `{{ app.project_id }}.{{ app.dataset }}.gcp_billing_export_resource_v1_{{ app.billing_account_id | replace('-', '_') }}`
+  WHERE invoice.month = @invoice_month
+{% if not loop.last %}  UNION ALL
+{% endif %}{% endfor %}
+)
+SELECT
+  app,
+  service,
+  ROUND(SUM(net_cost), 2) AS net_cost,
+  ANY_VALUE(currency)     AS currency
+FROM all_costs
+GROUP BY app, service
+HAVING net_cost <> 0          -- drop $0.00 services (rounding artefacts)
+ORDER BY app, net_cost DESC

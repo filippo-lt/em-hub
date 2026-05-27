@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GCP Spend — {{ month_label }}</title>
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --bg: #ffffff;
+    --card: #fafafa;
+    --card-2: #f0f0f0;
+    --border: #e6e6e6;
+    --bar: #4a7fb0;
+    --bar-bg: #eef2f7;
+    --accent: #2563eb;
+    --warn-bg: #fff8e6;
+    --warn-border: #f0d68b;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.45;
+  }
+  main { max-width: 920px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  /* ── Report header ─────────────────────────────────────────────── */
+  .report-header {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: 12px;
+    border-bottom: 2px solid var(--fg);
+    padding-bottom: 16px; margin-bottom: 24px;
+  }
+  .report-header h1 { font-size: 24px; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+  .report-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .grand-total { font-size: 32px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .grand-total .currency { color: var(--muted); font-size: 18px; margin-left: 4px; }
+
+  /* ── Tabs (CSS-only, radio-button trick) ───────────────────────── */
+  .tabs { position: relative; }
+  .tabs > input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px; height: 1px;
+  }
+  .tab-bar {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 0;
+  }
+  .tab-label {
+    display: inline-flex; flex-direction: column; align-items: flex-start;
+    padding: 8px 14px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    background: var(--card-2);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: -2px;        /* overlap the bottom border */
+    transition: background 0.12s, color 0.12s;
+    user-select: none;
+  }
+  .tab-label .tab-amt {
+    font-size: 11px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
+  }
+  .tab-label:hover { background: #e8e8e8; }
+
+  .tab-panel {
+    display: none;
+    border: 1px solid var(--border);
+    border-top: none;
+    background: var(--card);
+    padding: 18px 20px;
+    border-radius: 0 0 6px 6px;
+  }
+
+  /* Selected-tab styling: bind each radio to its label + panel. */
+  {% for app in apps %}
+  #tab-{{ loop.index }}:checked ~ .tab-bar label[for="tab-{{ loop.index }}"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-{{ loop.index }}:checked ~ .tab-bar label[for="tab-{{ loop.index }}"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-{{ loop.index }}:checked ~ [data-panel="tab-{{ loop.index }}"] { display: block; }
+  {% endfor %}
+
+  /* Keyboard focus visible on the hidden radio's label */
+  .tabs > input[type="radio"]:focus-visible + .tab-label {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ── Panel content (per-app) ───────────────────────────────────── */
+  .panel-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .panel-header h2 { margin: 0; font-size: 18px; font-weight: 600; }
+  .panel-header .project-id {
+    color: var(--muted); font-size: 12px; margin-left: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: normal;
+  }
+  .panel-total { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .services { width: 100%; border-collapse: collapse; }
+  .services td { padding: 5px 0; font-size: 14px; }
+  .services td.svc { width: 30%; }
+  .services td.amt {
+    width: 110px; text-align: right;
+    font-variant-numeric: tabular-nums;
+    padding-right: 12px;
+  }
+  .services td.bar-cell { width: auto; padding-left: 4px; }
+  .bar-bg { background: var(--bar-bg); border-radius: 2px; height: 10px; }
+  .bar    { background: var(--bar);    border-radius: 2px; height: 10px; min-width: 2px; }
+
+  /* ── Pending footer ────────────────────────────────────────────── */
+  .pending {
+    margin-top: 28px;
+    padding: 14px 18px;
+    border: 1px solid var(--warn-border);
+    background: var(--warn-bg);
+    border-radius: 6px;
+  }
+  .pending h2 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+  .pending p  { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+  .pending ul { margin: 0; padding-left: 18px; font-size: 13px; }
+  .pending code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); }
+
+  .gen-info { margin-top: 20px; color: var(--muted); font-size: 12px; text-align: right; }
+
+  /* ── Print ─────────────────────────────────────────────────────── */
+  @media print {
+    .tab-bar { display: none; }
+    .tab-panel { display: block !important; page-break-inside: avoid; margin-bottom: 16px; border-radius: 6px; border-top: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <header class="report-header">
+    <div>
+      <h1>GCP Spend — {{ month_label }}</h1>
+      <div class="subtitle">{{ active_count }} apps reporting · net cost (credits applied)</div>
+    </div>
+    <div class="grand-total">
+      ${{ "{:,.2f}".format(grand_total) }}<span class="currency">{{ currency }}</span>
+    </div>
+  </header>
+
+  <div class="tabs">
+
+    {# All radio inputs first — order matters for the `~` sibling selector. #}
+    {% for app in apps %}
+    <input type="radio" name="tabs" id="tab-{{ loop.index }}"{% if loop.first %} checked{% endif %}>
+    {% endfor %}
+
+    {# Tab bar (labels). #}
+    <div class="tab-bar">
+      {% for app in apps %}
+      <label class="tab-label" for="tab-{{ loop.index }}">
+        <span class="tab-name">{{ app.name }}</span>
+        <span class="tab-amt">${{ "{:,.2f}".format(app.total) }}</span>
+      </label>
+      {% endfor %}
+    </div>
+
+    {# Panels. #}
+    {% for app in apps %}
+    <section class="tab-panel" data-panel="tab-{{ loop.index }}">
+      <div class="panel-header">
+        <h2>{{ app.name }}<span class="project-id">{{ app.project_id }}</span></h2>
+        <span class="panel-total">${{ "{:,.2f}".format(app.total) }}</span>
+      </div>
+      <table class="services">
+        {% for svc in app.services %}
+        <tr>
+          <td class="svc">{{ svc.name }}</td>
+          <td class="amt">${{ "{:,.2f}".format(svc.amount) }}</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: {{ svc.pct }}%"></div></div>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </section>
+    {% endfor %}
+
+  </div>
+
+  {% if pending %}
+  <section class="pending">
+    <h2>Not yet reporting</h2>
+    <p>Billing export not yet enabled. These apps will appear automatically once their export tables come online.</p>
+    <ul>
+      {% for app in pending %}
+      <li>{{ app.friendly_name }} <code>({{ app.project_id }})</code></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <div class="gen-info">Generated {{ generated_at }}</div>
+
+</main>
+</body>
+</html>
