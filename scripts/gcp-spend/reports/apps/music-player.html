@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Music Player — May 2026</title>
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --bg: #ffffff;
+    --card: #fafafa;
+    --border: #e6e6e6;
+    --soft-border: #f0f0f0;
+    --accent: #2563eb;
+    --up:   #c0392b;
+    --down: #1e8449;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.45;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .report-header {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--fg);
+    padding-bottom: 16px; margin-bottom: 28px;
+  }
+  .report-header h1 {
+    font-size: 24px; margin: 0; font-weight: 600; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .report-header h1 .swatch {
+    width: 12px; height: 12px; border-radius: 2px; display: inline-block;
+  }
+  .report-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+  .kpis { display: flex; flex-wrap: wrap; gap: 24px; align-items: baseline; }
+  .kpi { display: flex; flex-direction: column; gap: 2px; min-width: 110px; }
+  .kpi .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .kpi .val   { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .kpi .val.small { font-size: 16px; }
+  .kpi .mom { font-size: 12px; }
+  .mom.up   { color: var(--up); }
+  .mom.down { color: var(--down); }
+  .mom.flat { color: var(--muted); }
+
+  h2.section {
+    font-size: 13px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--muted);
+    margin: 30px 0 12px;
+  }
+
+  .chart {
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 14px;
+    border-radius: 6px;
+  }
+  .chart svg { display: block; width: 100%; height: auto; }
+  .chart .gridline { stroke: var(--soft-border); stroke-width: 1; }
+  .chart .axis-text { fill: var(--muted); font-size: 10px; }
+  .chart .x-label   { fill: var(--muted); font-size: 11px; }
+  .chart .x-label.target { fill: var(--fg); font-weight: 600; }
+  .chart .line { fill: none; stroke-width: 2; }
+  .chart .dot  { stroke: white; stroke-width: 1.5; }
+  .chart .dot.target { stroke-width: 2; }
+  .chart .empty { fill: var(--muted); font-size: 12px; }
+  .chart .bar { transition: opacity 0.15s; }
+  .chart .bar:hover { opacity: 0.78; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 8px 14px;
+    margin-top: 10px; font-size: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; color: var(--fg); }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  .grid-2 {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 6px; }
+  table.history {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  table.history th, table.history td {
+    padding: 6px 10px; border-bottom: 1px solid var(--soft-border);
+    text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  table.history th { color: var(--muted); font-weight: 500; background: var(--card); }
+  table.history th.app, table.history td.app { text-align: left; }
+  table.history tr.target td { background: rgba(37, 99, 235, 0.06); font-weight: 600; }
+  table.history tr:last-child td { border-bottom: none; }
+  table.history td.empty { color: var(--muted); font-style: italic; }
+
+  .gen-info { margin-top: 20px; color: var(--muted); font-size: 12px; text-align: right; }
+
+  .no-data {
+    border: 1px dashed var(--border);
+    background: var(--card);
+    padding: 14px; border-radius: 6px;
+    color: var(--muted); font-size: 13px;
+  }
+
+  .chart .baseline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3,3; opacity: 0.6; }
+  .chart .baseline-label { fill: var(--muted); font-size: 10px; }
+  .overlay-hint {
+    margin-top: 8px; font-size: 11px; color: var(--muted);
+    border-top: 1px dashed var(--soft-border); padding-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+<main>
+
+  <div class="crumbs">
+    <a href="../index.html">← Dashboard</a>
+    · <a href="../2026-05.html">May 2026 detail</a>
+  </div>
+
+  <header class="report-header">
+    <div>
+      <h1><span class="swatch" style="background: #FF9DA7"></span>Music Player</h1>
+      <div class="subtitle">
+        <code>mesut-music-player</code> ·
+        May 2026 ·
+        12-month window
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi">
+        <span class="label">Spend</span>
+        <span class="val">$0</span>
+        
+      </div>
+      
+      <div class="kpi">
+        <span class="label">Avg (12m)</span>
+        <span class="val small">$0</span>
+      </div>
+    </div>
+  </header>
+
+  
+  <h2 class="section">Spend over time</h2>
+  <div class="chart">
+  <svg viewBox="0 0 820 220" preserveAspectRatio="xMidYMid meet">
+    
+      <line class="gridline" x1="64" x2="808" y1="190.0" y2="190.0"/>
+      <text class="axis-text" x="58" y="193.0" text-anchor="end">$0</text>
+    
+      <line class="gridline" x1="64" x2="808" y1="147.0" y2="147.0"/>
+      <text class="axis-text" x="58" y="150.0" text-anchor="end">$0</text>
+    
+      <line class="gridline" x1="64" x2="808" y1="104.0" y2="104.0"/>
+      <text class="axis-text" x="58" y="107.0" text-anchor="end">$0</text>
+    
+      <line class="gridline" x1="64" x2="808" y1="61.0" y2="61.0"/>
+      <text class="axis-text" x="58" y="64.0" text-anchor="end">$0</text>
+    
+      <line class="gridline" x1="64" x2="808" y1="18.0" y2="18.0"/>
+      <text class="axis-text" x="58" y="21.0" text-anchor="end">$1</text>
+    
+    
+      
+        <polyline class="line" points="64.0,190.0 131.6,190.0 199.3,190.0 266.9,190.0 334.5,190.0 402.2,190.0 469.8,190.0 537.5,18.0 605.1,165.4 672.7,190.0 740.4,190.0 808.0,190.0" stroke="#FF9DA7"/>
+      
+      
+        <circle class="dot"
+                cx="64.0" cy="190.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2025-06 · $0</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="131.6" cy="190.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2025-07 · $0</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="199.3" cy="190.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2025-08 · $0</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="266.9" cy="190.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2025-09 · $0</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="334.5" cy="190.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2025-10 · $0</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="402.2" cy="190.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2025-11 · $0</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="469.8" cy="190.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2025-12 · $0</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="537.5" cy="18.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2026-01 · $1</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="605.1" cy="165.4"
+                r="3"
+                fill="#FF9DA7">
+          <title>2026-02 · $0</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="672.7" cy="190.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2026-03 · $0</title>
+        </circle>
+      
+        <circle class="dot"
+                cx="740.4" cy="190.0"
+                r="3"
+                fill="#FF9DA7">
+          <title>2026-04 · $0</title>
+        </circle>
+      
+        <circle class="dot target"
+                cx="808.0" cy="190.0"
+                r="4"
+                fill="#FF9DA7">
+          <title>2026-05 · $0</title>
+        </circle>
+      
+    
+    
+      <text class="x-label" x="64.0" y="210" text-anchor="middle">Jun</text>
+    
+      <text class="x-label" x="131.6" y="210" text-anchor="middle">Jul</text>
+    
+      <text class="x-label" x="199.3" y="210" text-anchor="middle">Aug</text>
+    
+      <text class="x-label" x="266.9" y="210" text-anchor="middle">Sep</text>
+    
+      <text class="x-label" x="334.5" y="210" text-anchor="middle">Oct</text>
+    
+      <text class="x-label" x="402.2" y="210" text-anchor="middle">Nov</text>
+    
+      <text class="x-label" x="469.8" y="210" text-anchor="middle">Dec</text>
+    
+      <text class="x-label" x="537.5" y="210" text-anchor="middle">Jan</text>
+    
+      <text class="x-label" x="605.1" y="210" text-anchor="middle">Feb</text>
+    
+      <text class="x-label" x="672.7" y="210" text-anchor="middle">Mar</text>
+    
+      <text class="x-label" x="740.4" y="210" text-anchor="middle">Apr</text>
+    
+      <text class="x-label target" x="808.0" y="210" text-anchor="middle">May</text>
+    
+  </svg>
+</div>
+
+  
+  
+  <h2 class="section">Users</h2>
+  <div class="no-data">No Amplitude data configured for this app. Add a row to <code>amplitude.conf</code> + env vars to enable MAU and $/MAU charts.</div>
+  
+
+  
+  <h2 class="section">Services breakdown · stacked monthly cost</h2>
+  <div class="chart">
+    <svg viewBox="0 0 820 240" preserveAspectRatio="xMidYMid meet">
+      
+        <line class="gridline" x1="64" x2="808" y1="210.0" y2="210.0"/>
+        <text class="axis-text" x="58" y="213.0" text-anchor="end">$0</text>
+      
+        <line class="gridline" x1="64" x2="808" y1="161.5" y2="161.5"/>
+        <text class="axis-text" x="58" y="164.5" text-anchor="end">$0</text>
+      
+        <line class="gridline" x1="64" x2="808" y1="113.0" y2="113.0"/>
+        <text class="axis-text" x="58" y="116.0" text-anchor="end">$0</text>
+      
+        <line class="gridline" x1="64" x2="808" y1="64.5" y2="64.5"/>
+        <text class="axis-text" x="58" y="67.5" text-anchor="end">$0</text>
+      
+        <line class="gridline" x1="64" x2="808" y1="16.0" y2="16.0"/>
+        <text class="axis-text" x="58" y="19.0" text-anchor="end">$1</text>
+      
+      
+        <rect class="bar" x="506.7" y="16.0" width="44.6" height="194.0" fill="#4E79A7">
+          <title>BigQuery · 2026-01 · $0.56</title>
+        </rect>
+      
+        <rect class="bar" x="568.7" y="182.3" width="44.6" height="27.7" fill="#4E79A7">
+          <title>BigQuery · 2026-02 · $0.08</title>
+        </rect>
+      
+      
+        <text class="x-label" x="95.0" y="230" text-anchor="middle">Jun</text>
+      
+        <text class="x-label" x="157.0" y="230" text-anchor="middle">Jul</text>
+      
+        <text class="x-label" x="219.0" y="230" text-anchor="middle">Aug</text>
+      
+        <text class="x-label" x="281.0" y="230" text-anchor="middle">Sep</text>
+      
+        <text class="x-label" x="343.0" y="230" text-anchor="middle">Oct</text>
+      
+        <text class="x-label" x="405.0" y="230" text-anchor="middle">Nov</text>
+      
+        <text class="x-label" x="467.0" y="230" text-anchor="middle">Dec</text>
+      
+        <text class="x-label" x="529.0" y="230" text-anchor="middle">Jan</text>
+      
+        <text class="x-label" x="591.0" y="230" text-anchor="middle">Feb</text>
+      
+        <text class="x-label" x="653.0" y="230" text-anchor="middle">Mar</text>
+      
+        <text class="x-label" x="715.0" y="230" text-anchor="middle">Apr</text>
+      
+        <text class="x-label target" x="777.0" y="230" text-anchor="middle">May</text>
+      
+    </svg>
+    <div class="legend">
+      
+      <span class="legend-item"><span class="swatch" style="background: #4E79A7"></span>BigQuery</span>
+      
+    </div>
+  </div>
+
+  
+  <h2 class="section">Monthly figures</h2>
+  <div class="table-wrap">
+    <table class="history">
+      <thead>
+        <tr>
+          <th class="app">Month</th>
+          <th>Spend</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr class="">
+          <td class="app">June 2025</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">July 2025</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">August 2025</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">September 2025</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">October 2025</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">November 2025</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">December 2025</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">January 2026</td>
+          <td>$1</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">February 2026</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">March 2026</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="">
+          <td class="app">April 2026</td>
+          <td>$0</td>
+          
+        </tr>
+        
+        <tr class="target">
+          <td class="app">May 2026</td>
+          <td>$0</td>
+          
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <div class="gen-info">Generated 2026-06-01 14:30 UTC</div>
+
+</main>
+</body>
+</html>

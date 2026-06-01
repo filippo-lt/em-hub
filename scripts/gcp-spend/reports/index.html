@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GCP Spend Dashboard — April 2026</title>
+<title>GCP Spend Dashboard — May 2026</title>
 <style>
   :root {
     --fg: #1a1a1a;
@@ -98,6 +98,16 @@
   .spark-card .cur { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .spark-card .row2 { display: flex; justify-content: space-between; align-items: center;
                       font-size: 11px; color: var(--muted); }
+  .spark-card .row-mau {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 12px; color: var(--fg);
+    border-top: 1px dashed var(--soft-border);
+    margin-top: 4px; padding-top: 6px;
+  }
+  .spark-card .row-mau .label { color: var(--muted); font-size: 11px; }
+  .spark-card .row-mau .val   { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .spark-card .row-mau .cpm   { color: var(--accent); font-weight: 600; }
+  .spark-card .row-mau.empty .val { color: var(--muted); font-weight: 400; }
   .spark-card svg { display: block; width: 100%; height: 32px; }
   .spark-card .spark-line { fill: none; stroke-width: 1.6; }
   .spark-card .spark-area { opacity: 0.18; stroke: none; }
@@ -155,16 +165,16 @@
     <div>
       <h1>GCP Spend Dashboard</h1>
       <div class="subtitle">
-        April 2026 ·
-        6-month window ·
-        <a href="./2026-04.html">detail report ↗</a>
+        May 2026 ·
+        12-month window ·
+        <a href="./2026-05.html">detail report ↗</a>
       </div>
     </div>
     <div class="target-month">
-      $15,555.67<span class="currency">EUR</span>
+      $26,236.97<span class="currency">EUR</span>
       
         
-          <span class="mom up">▲ 38.8%</span>
+          <span class="mom up">▲ 68.7%</span>
         
       
     </div>
@@ -174,7 +184,7 @@
   <h2 class="section">Spend over time</h2>
   <div class="hero">
     <svg viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"
-         role="img" aria-label="Stacked monthly spend over the last 6 months">
+         role="img" aria-label="Stacked monthly spend over the last 12 months">
       
       
         <line class="gridline" x1="56" x2="820"
@@ -183,26 +193,114 @@
       
         <line class="gridline" x1="56" x2="820"
               y1="178.0" y2="178.0" />
-        <text class="axis-text" x="50" y="181.0" text-anchor="end">$3.9K</text>
+        <text class="axis-text" x="50" y="181.0" text-anchor="end">$6.6K</text>
       
         <line class="gridline" x1="56" x2="820"
               y1="124.0" y2="124.0" />
-        <text class="axis-text" x="50" y="127.0" text-anchor="end">$7.8K</text>
+        <text class="axis-text" x="50" y="127.0" text-anchor="end">$13.1K</text>
       
         <line class="gridline" x1="56" x2="820"
               y1="70.0" y2="70.0" />
-        <text class="axis-text" x="50" y="73.0" text-anchor="end">$11.7K</text>
+        <text class="axis-text" x="50" y="73.0" text-anchor="end">$19.7K</text>
       
         <line class="gridline" x1="56" x2="820"
               y1="16.0" y2="16.0" />
-        <text class="axis-text" x="50" y="19.0" text-anchor="end">$15.6K</text>
+        <text class="axis-text" x="50" y="19.0" text-anchor="end">$26.2K</text>
       
 
       
       
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="255.9" y="231.9" width="45.8" height="0.1"
+                fill="#4E79A7">
+            <title>Tattooist · 2025-09 · $6.63</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="255.9" y="231.9" width="45.8" height="0.1"
+                fill="#F28E2B">
+            <title>AI Home Design · 2025-09 · $7.51</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="255.9" y="231.8" width="45.8" height="0.0"
+                fill="#76B7B2">
+            <title>Goya · 2025-09 · $5.55</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="255.9" y="231.8" width="45.8" height="0.0"
+                fill="#EDC948">
+            <title>iMote · 2025-09 · $0.13</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="255.9" y="231.8" width="45.8" height="0.0"
+                fill="#B07AA1">
+            <title>Mirage · 2025-09 · $1.13</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="319.6" y="229.6" width="45.8" height="2.4"
+                fill="#4E79A7">
+            <title>Tattooist · 2025-10 · $286.00</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="319.6" y="226.1" width="45.8" height="3.5"
+                fill="#F28E2B">
+            <title>AI Home Design · 2025-10 · $430.99</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="319.6" y="226.1" width="45.8" height="0.0"
+                fill="#E15759">
+            <title>FaceAI · 2025-10 · $2.56</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="319.6" y="224.7" width="45.8" height="1.3"
+                fill="#76B7B2">
+            <title>Goya · 2025-10 · $162.55</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="319.6" y="224.7" width="45.8" height="0.1"
+                fill="#EDC948">
+            <title>iMote · 2025-10 · $8.85</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="319.6" y="224.3" width="45.8" height="0.4"
+                fill="#B07AA1">
+            <title>Mirage · 2025-10 · $42.98</title>
+          </rect>
+        </a>
+      
         <a class="bar-link" href="./2025-11.html">
           <rect class="bar"
-                x="73.8" y="230.9" width="91.7" height="1.1"
+                x="383.2" y="231.3" width="45.8" height="0.7"
                 fill="#4E79A7">
             <title>Tattooist · 2025-11 · $81.69</title>
           </rect>
@@ -210,7 +308,7 @@
       
         <a class="bar-link" href="./2025-11.html">
           <rect class="bar"
-                x="73.8" y="225.5" width="91.7" height="5.3"
+                x="383.2" y="228.2" width="45.8" height="3.2"
                 fill="#F28E2B">
             <title>AI Home Design · 2025-11 · $383.50</title>
           </rect>
@@ -218,7 +316,7 @@
       
         <a class="bar-link" href="./2025-11.html">
           <rect class="bar"
-                x="73.8" y="224.8" width="91.7" height="0.8"
+                x="383.2" y="227.7" width="45.8" height="0.5"
                 fill="#E15759">
             <title>FaceAI · 2025-11 · $56.60</title>
           </rect>
@@ -226,7 +324,7 @@
       
         <a class="bar-link" href="./2025-11.html">
           <rect class="bar"
-                x="73.8" y="223.8" width="91.7" height="0.9"
+                x="383.2" y="227.2" width="45.8" height="0.5"
                 fill="#76B7B2">
             <title>Goya · 2025-11 · $66.69</title>
           </rect>
@@ -234,7 +332,7 @@
       
         <a class="bar-link" href="./2025-11.html">
           <rect class="bar"
-                x="73.8" y="223.7" width="91.7" height="0.1"
+                x="383.2" y="227.1" width="45.8" height="0.1"
                 fill="#EDC948">
             <title>iMote · 2025-11 · $8.11</title>
           </rect>
@@ -242,7 +340,7 @@
       
         <a class="bar-link" href="./2025-11.html">
           <rect class="bar"
-                x="73.8" y="223.5" width="91.7" height="0.2"
+                x="383.2" y="227.0" width="45.8" height="0.1"
                 fill="#B07AA1">
             <title>Mirage · 2025-11 · $12.15</title>
           </rect>
@@ -250,7 +348,7 @@
       
         <a class="bar-link" href="./2025-12.html">
           <rect class="bar"
-                x="201.2" y="219.2" width="91.7" height="12.8"
+                x="446.9" y="224.4" width="45.8" height="7.6"
                 fill="#4E79A7">
             <title>Tattooist · 2025-12 · $925.25</title>
           </rect>
@@ -258,7 +356,7 @@
       
         <a class="bar-link" href="./2025-12.html">
           <rect class="bar"
-                x="201.2" y="212.7" width="91.7" height="6.4"
+                x="446.9" y="220.6" width="45.8" height="3.8"
                 fill="#F28E2B">
             <title>AI Home Design · 2025-12 · $461.77</title>
           </rect>
@@ -266,7 +364,7 @@
       
         <a class="bar-link" href="./2025-12.html">
           <rect class="bar"
-                x="201.2" y="212.1" width="91.7" height="0.6"
+                x="446.9" y="220.2" width="45.8" height="0.4"
                 fill="#E15759">
             <title>FaceAI · 2025-12 · $44.15</title>
           </rect>
@@ -274,7 +372,7 @@
       
         <a class="bar-link" href="./2025-12.html">
           <rect class="bar"
-                x="201.2" y="211.5" width="91.7" height="0.6"
+                x="446.9" y="219.8" width="45.8" height="0.4"
                 fill="#76B7B2">
             <title>Goya · 2025-12 · $46.36</title>
           </rect>
@@ -282,7 +380,7 @@
       
         <a class="bar-link" href="./2025-12.html">
           <rect class="bar"
-                x="201.2" y="211.1" width="91.7" height="0.4"
+                x="446.9" y="219.6" width="45.8" height="0.3"
                 fill="#59A14F">
             <title>ScreenMirroring · 2025-12 · $30.78</title>
           </rect>
@@ -290,7 +388,7 @@
       
         <a class="bar-link" href="./2025-12.html">
           <rect class="bar"
-                x="201.2" y="210.9" width="91.7" height="0.1"
+                x="446.9" y="219.5" width="45.8" height="0.1"
                 fill="#EDC948">
             <title>iMote · 2025-12 · $9.53</title>
           </rect>
@@ -298,7 +396,7 @@
       
         <a class="bar-link" href="./2025-12.html">
           <rect class="bar"
-                x="201.2" y="210.7" width="91.7" height="0.2"
+                x="446.9" y="219.4" width="45.8" height="0.1"
                 fill="#B07AA1">
             <title>Mirage · 2025-12 · $13.56</title>
           </rect>
@@ -306,7 +404,7 @@
       
         <a class="bar-link" href="./2026-01.html">
           <rect class="bar"
-                x="328.5" y="213.1" width="91.7" height="18.9"
+                x="510.6" y="220.8" width="45.8" height="11.2"
                 fill="#4E79A7">
             <title>Tattooist · 2026-01 · $1,361.38</title>
           </rect>
@@ -314,7 +412,7 @@
       
         <a class="bar-link" href="./2026-01.html">
           <rect class="bar"
-                x="328.5" y="205.9" width="91.7" height="7.1"
+                x="510.6" y="216.6" width="45.8" height="4.2"
                 fill="#F28E2B">
             <title>AI Home Design · 2026-01 · $514.76</title>
           </rect>
@@ -322,7 +420,7 @@
       
         <a class="bar-link" href="./2026-01.html">
           <rect class="bar"
-                x="328.5" y="205.4" width="91.7" height="0.5"
+                x="510.6" y="216.2" width="45.8" height="0.3"
                 fill="#E15759">
             <title>FaceAI · 2026-01 · $39.39</title>
           </rect>
@@ -330,7 +428,7 @@
       
         <a class="bar-link" href="./2026-01.html">
           <rect class="bar"
-                x="328.5" y="204.8" width="91.7" height="0.6"
+                x="510.6" y="215.9" width="45.8" height="0.3"
                 fill="#76B7B2">
             <title>Goya · 2026-01 · $41.85</title>
           </rect>
@@ -338,7 +436,7 @@
       
         <a class="bar-link" href="./2026-01.html">
           <rect class="bar"
-                x="328.5" y="204.4" width="91.7" height="0.4"
+                x="510.6" y="215.6" width="45.8" height="0.3"
                 fill="#59A14F">
             <title>ScreenMirroring · 2026-01 · $31.78</title>
           </rect>
@@ -346,7 +444,7 @@
       
         <a class="bar-link" href="./2026-01.html">
           <rect class="bar"
-                x="328.5" y="204.2" width="91.7" height="0.2"
+                x="510.6" y="215.5" width="45.8" height="0.1"
                 fill="#EDC948">
             <title>iMote · 2026-01 · $11.49</title>
           </rect>
@@ -354,7 +452,7 @@
       
         <a class="bar-link" href="./2026-01.html">
           <rect class="bar"
-                x="328.5" y="204.0" width="91.7" height="0.2"
+                x="510.6" y="215.4" width="45.8" height="0.1"
                 fill="#B07AA1">
             <title>Mirage · 2026-01 · $12.99</title>
           </rect>
@@ -362,7 +460,7 @@
       
         <a class="bar-link" href="./2026-01.html">
           <rect class="bar"
-                x="328.5" y="204.0" width="91.7" height="0.0"
+                x="510.6" y="215.4" width="45.8" height="0.0"
                 fill="#FF9DA7">
             <title>Music Player · 2026-01 · $0.56</title>
           </rect>
@@ -370,7 +468,7 @@
       
         <a class="bar-link" href="./2026-02.html">
           <rect class="bar"
-                x="455.8" y="172.6" width="91.7" height="59.4"
+                x="574.2" y="196.8" width="45.8" height="35.2"
                 fill="#4E79A7">
             <title>Tattooist · 2026-02 · $4,280.79</title>
           </rect>
@@ -378,7 +476,7 @@
       
         <a class="bar-link" href="./2026-02.html">
           <rect class="bar"
-                x="455.8" y="162.1" width="91.7" height="10.4"
+                x="574.2" y="190.6" width="45.8" height="6.2"
                 fill="#F28E2B">
             <title>AI Home Design · 2026-02 · $750.32</title>
           </rect>
@@ -386,7 +484,7 @@
       
         <a class="bar-link" href="./2026-02.html">
           <rect class="bar"
-                x="455.8" y="161.5" width="91.7" height="0.6"
+                x="574.2" y="190.2" width="45.8" height="0.4"
                 fill="#E15759">
             <title>FaceAI · 2026-02 · $45.53</title>
           </rect>
@@ -394,7 +492,7 @@
       
         <a class="bar-link" href="./2026-02.html">
           <rect class="bar"
-                x="455.8" y="161.1" width="91.7" height="0.4"
+                x="574.2" y="190.0" width="45.8" height="0.2"
                 fill="#76B7B2">
             <title>Goya · 2026-02 · $27.25</title>
           </rect>
@@ -402,7 +500,7 @@
       
         <a class="bar-link" href="./2026-02.html">
           <rect class="bar"
-                x="455.8" y="160.7" width="91.7" height="0.4"
+                x="574.2" y="189.7" width="45.8" height="0.2"
                 fill="#59A14F">
             <title>ScreenMirroring · 2026-02 · $28.52</title>
           </rect>
@@ -410,7 +508,7 @@
       
         <a class="bar-link" href="./2026-02.html">
           <rect class="bar"
-                x="455.8" y="160.6" width="91.7" height="0.2"
+                x="574.2" y="189.6" width="45.8" height="0.1"
                 fill="#EDC948">
             <title>iMote · 2026-02 · $12.25</title>
           </rect>
@@ -418,7 +516,7 @@
       
         <a class="bar-link" href="./2026-02.html">
           <rect class="bar"
-                x="455.8" y="160.4" width="91.7" height="0.1"
+                x="574.2" y="189.6" width="45.8" height="0.1"
                 fill="#B07AA1">
             <title>Mirage · 2026-02 · $9.24</title>
           </rect>
@@ -426,7 +524,7 @@
       
         <a class="bar-link" href="./2026-02.html">
           <rect class="bar"
-                x="455.8" y="160.4" width="91.7" height="0.0"
+                x="574.2" y="189.6" width="45.8" height="0.0"
                 fill="#FF9DA7">
             <title>Music Player · 2026-02 · $0.08</title>
           </rect>
@@ -434,7 +532,7 @@
       
         <a class="bar-link" href="./2026-03.html">
           <rect class="bar"
-                x="583.2" y="95.6" width="91.7" height="136.4"
+                x="637.9" y="151.1" width="45.8" height="80.9"
                 fill="#4E79A7">
             <title>Tattooist · 2026-03 · $9,825.98</title>
           </rect>
@@ -442,7 +540,7 @@
       
         <a class="bar-link" href="./2026-03.html">
           <rect class="bar"
-                x="583.2" y="79.9" width="91.7" height="15.7"
+                x="637.9" y="141.8" width="45.8" height="9.3"
                 fill="#F28E2B">
             <title>AI Home Design · 2026-03 · $1,128.56</title>
           </rect>
@@ -450,7 +548,7 @@
       
         <a class="bar-link" href="./2026-03.html">
           <rect class="bar"
-                x="583.2" y="77.5" width="91.7" height="2.4"
+                x="637.9" y="140.4" width="45.8" height="1.4"
                 fill="#E15759">
             <title>FaceAI · 2026-03 · $169.63</title>
           </rect>
@@ -458,7 +556,7 @@
       
         <a class="bar-link" href="./2026-03.html">
           <rect class="bar"
-                x="583.2" y="77.2" width="91.7" height="0.4"
+                x="637.9" y="140.2" width="45.8" height="0.2"
                 fill="#76B7B2">
             <title>Goya · 2026-03 · $25.45</title>
           </rect>
@@ -466,7 +564,7 @@
       
         <a class="bar-link" href="./2026-03.html">
           <rect class="bar"
-                x="583.2" y="76.7" width="91.7" height="0.4"
+                x="637.9" y="139.9" width="45.8" height="0.3"
                 fill="#59A14F">
             <title>ScreenMirroring · 2026-03 · $31.98</title>
           </rect>
@@ -474,7 +572,7 @@
       
         <a class="bar-link" href="./2026-03.html">
           <rect class="bar"
-                x="583.2" y="76.5" width="91.7" height="0.2"
+                x="637.9" y="139.8" width="45.8" height="0.1"
                 fill="#EDC948">
             <title>iMote · 2026-03 · $13.61</title>
           </rect>
@@ -482,7 +580,7 @@
       
         <a class="bar-link" href="./2026-03.html">
           <rect class="bar"
-                x="583.2" y="76.4" width="91.7" height="0.1"
+                x="637.9" y="139.8" width="45.8" height="0.1"
                 fill="#B07AA1">
             <title>Mirage · 2026-03 · $9.04</title>
           </rect>
@@ -490,7 +588,7 @@
       
         <a class="bar-link" href="./2026-04.html">
           <rect class="bar"
-                x="710.5" y="32.9" width="91.7" height="199.1"
+                x="701.6" y="114.0" width="45.8" height="118.0"
                 fill="#4E79A7">
             <title>Tattooist · 2026-04 · $14,335.97</title>
           </rect>
@@ -498,7 +596,7 @@
       
         <a class="bar-link" href="./2026-04.html">
           <rect class="bar"
-                x="710.5" y="18.9" width="91.7" height="14.0"
+                x="701.6" y="105.7" width="45.8" height="8.3"
                 fill="#F28E2B">
             <title>AI Home Design · 2026-04 · $1,008.11</title>
           </rect>
@@ -506,7 +604,7 @@
       
         <a class="bar-link" href="./2026-04.html">
           <rect class="bar"
-                x="710.5" y="17.3" width="91.7" height="1.7"
+                x="701.6" y="104.7" width="45.8" height="1.0"
                 fill="#E15759">
             <title>FaceAI · 2026-04 · $121.54</title>
           </rect>
@@ -514,7 +612,7 @@
       
         <a class="bar-link" href="./2026-04.html">
           <rect class="bar"
-                x="710.5" y="17.1" width="91.7" height="0.1"
+                x="701.6" y="104.6" width="45.8" height="0.1"
                 fill="#76B7B2">
             <title>Goya · 2026-04 · $8.82</title>
           </rect>
@@ -522,7 +620,7 @@
       
         <a class="bar-link" href="./2026-04.html">
           <rect class="bar"
-                x="710.5" y="16.7" width="91.7" height="0.4"
+                x="701.6" y="104.3" width="45.8" height="0.3"
                 fill="#59A14F">
             <title>ScreenMirroring · 2026-04 · $31.71</title>
           </rect>
@@ -530,7 +628,7 @@
       
         <a class="bar-link" href="./2026-04.html">
           <rect class="bar"
-                x="710.5" y="16.1" width="91.7" height="0.6"
+                x="701.6" y="104.0" width="45.8" height="0.3"
                 fill="#EDC948">
             <title>iMote · 2026-04 · $41.82</title>
           </rect>
@@ -538,9 +636,65 @@
       
         <a class="bar-link" href="./2026-04.html">
           <rect class="bar"
-                x="710.5" y="16.0" width="91.7" height="0.1"
+                x="701.6" y="103.9" width="45.8" height="0.1"
                 fill="#B07AA1">
             <title>Mirage · 2026-04 · $7.70</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-05.html">
+          <rect class="bar"
+                x="765.2" y="24.9" width="45.8" height="207.1"
+                fill="#4E79A7">
+            <title>Tattooist · 2026-05 · $25,150.18</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-05.html">
+          <rect class="bar"
+                x="765.2" y="18.2" width="45.8" height="6.8"
+                fill="#F28E2B">
+            <title>AI Home Design · 2026-05 · $822.32</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-05.html">
+          <rect class="bar"
+                x="765.2" y="16.9" width="45.8" height="1.2"
+                fill="#E15759">
+            <title>FaceAI · 2026-05 · $149.23</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-05.html">
+          <rect class="bar"
+                x="765.2" y="16.9" width="45.8" height="0.0"
+                fill="#76B7B2">
+            <title>Goya · 2026-05 · $5.34</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-05.html">
+          <rect class="bar"
+                x="765.2" y="16.6" width="45.8" height="0.3"
+                fill="#59A14F">
+            <title>ScreenMirroring · 2026-05 · $32.16</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-05.html">
+          <rect class="bar"
+                x="765.2" y="16.1" width="45.8" height="0.6"
+                fill="#EDC948">
+            <title>iMote · 2026-05 · $70.39</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-05.html">
+          <rect class="bar"
+                x="765.2" y="16.0" width="45.8" height="0.1"
+                fill="#B07AA1">
+            <title>Mirage · 2026-05 · $7.35</title>
           </rect>
         </a>
       
@@ -548,22 +702,40 @@
       
       
         <text class="month-label"
-              x="119.7" y="252" text-anchor="middle">Nov</text>
+              x="87.8" y="252" text-anchor="middle">Jun</text>
       
         <text class="month-label"
-              x="247.0" y="252" text-anchor="middle">Dec</text>
+              x="151.5" y="252" text-anchor="middle">Jul</text>
       
         <text class="month-label"
-              x="374.3" y="252" text-anchor="middle">Jan</text>
+              x="215.2" y="252" text-anchor="middle">Aug</text>
       
         <text class="month-label"
-              x="501.7" y="252" text-anchor="middle">Feb</text>
+              x="278.8" y="252" text-anchor="middle">Sep</text>
       
         <text class="month-label"
-              x="629.0" y="252" text-anchor="middle">Mar</text>
+              x="342.5" y="252" text-anchor="middle">Oct</text>
+      
+        <text class="month-label"
+              x="406.2" y="252" text-anchor="middle">Nov</text>
+      
+        <text class="month-label"
+              x="469.8" y="252" text-anchor="middle">Dec</text>
+      
+        <text class="month-label"
+              x="533.5" y="252" text-anchor="middle">Jan</text>
+      
+        <text class="month-label"
+              x="597.2" y="252" text-anchor="middle">Feb</text>
+      
+        <text class="month-label"
+              x="660.8" y="252" text-anchor="middle">Mar</text>
+      
+        <text class="month-label"
+              x="724.5" y="252" text-anchor="middle">Apr</text>
       
         <text class="month-label target"
-              x="756.3" y="252" text-anchor="middle">Apr</text>
+              x="788.2" y="252" text-anchor="middle">May</text>
       
     </svg>
 
@@ -610,12 +782,15 @@
     
     <div class="spark-card">
       <div class="row1">
-        <span class="app-name"><span class="swatch" style="background: #4E79A7"></span>Tattooist</span>
-        <span class="cur">$14,336</span>
+        <span class="app-name">
+          <span class="swatch" style="background: #4E79A7"></span>
+          <a href="./apps/tattooist.html">Tattooist</a>
+        </span>
+        <span class="cur">$25,150</span>
       </div>
       <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="Tattooist sparkline">
-        <polyline class="spark-area" points="3,32 3.0,28.9 33.8,27.3 64.6,26.5 95.4,21.2 126.2,11.2 157.0,3.0 157,32" fill="#4E79A7"/>
-        <polyline class="spark-line" points="3.0,28.9 33.8,27.3 64.6,26.5 95.4,21.2 126.2,11.2 157.0,3.0" stroke="#4E79A7"/>
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.7 73.0,28.9 87.0,28.0 101.0,27.6 115.0,24.6 129.0,18.8 143.0,14.2 157.0,3.0 157,32" fill="#4E79A7"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.7 73.0,28.9 87.0,28.0 101.0,27.6 115.0,24.6 129.0,18.8 143.0,14.2 157.0,3.0" stroke="#4E79A7"/>
         
         
         
@@ -624,123 +799,171 @@
         
       </svg>
       <div class="row2">
-        <span>avg $5,135</span>
+        <span>avg $4,688</span>
         <span>
           
-            <span class="mom up">▲ 45.9%</span>
+            <span class="mom up">▲ 75.4%</span>
           
         </span>
       </div>
+      
+      <div class="row-mau">
+        <span><span class="label">MAU</span> <span class="val">194,938</span></span>
+        <span><span class="label">new</span> <span class="val">181,891</span></span>
+        
+        <span class="cpm">$0.129/MAU</span>
+        
+      </div>
+      
     </div>
     
     <div class="spark-card">
       <div class="row1">
-        <span class="app-name"><span class="swatch" style="background: #F28E2B"></span>AI Home Design</span>
-        <span class="cur">$1,008</span>
+        <span class="app-name">
+          <span class="swatch" style="background: #F28E2B"></span>
+          <a href="./apps/ai-home-design.html">AI Home Design</a>
+        </span>
+        <span class="cur">$822</span>
       </div>
       <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="AI Home Design sparkline">
-        <polyline class="spark-area" points="3,32 3.0,20.2 33.8,18.4 64.6,17.1 95.4,11.7 126.2,3.0 157.0,5.8 157,32" fill="#F28E2B"/>
-        <polyline class="spark-line" points="3.0,20.2 33.8,18.4 64.6,17.1 95.4,11.7 126.2,3.0 157.0,5.8" stroke="#F28E2B"/>
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,28.8 59.0,19.1 73.0,20.2 87.0,18.4 101.0,17.1 115.0,11.7 129.0,3.0 143.0,5.8 157.0,10.1 157,32" fill="#F28E2B"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,28.8 59.0,19.1 73.0,20.2 87.0,18.4 101.0,17.1 115.0,11.7 129.0,3.0 143.0,5.8 157.0,10.1" stroke="#F28E2B"/>
         
         
         
         
-        <circle class="spark-dot" cx="157.0" cy="5.8" r="2.5" fill="#F28E2B"/>
+        <circle class="spark-dot" cx="157.0" cy="10.1" r="2.5" fill="#F28E2B"/>
         
       </svg>
       <div class="row2">
-        <span>avg $708</span>
+        <span>avg $459</span>
         <span>
           
-            <span class="mom down">▼ 10.7%</span>
+            <span class="mom down">▼ 18.4%</span>
           
         </span>
       </div>
+      
+      <div class="row-mau">
+        <span><span class="label">MAU</span> <span class="val">47,169</span></span>
+        <span><span class="label">new</span> <span class="val">42,251</span></span>
+        
+        <span class="cpm">$0.017/MAU</span>
+        
+      </div>
+      
     </div>
     
     <div class="spark-card">
       <div class="row1">
-        <span class="app-name"><span class="swatch" style="background: #E15759"></span>FaceAI</span>
-        <span class="cur">$122</span>
+        <span class="app-name">
+          <span class="swatch" style="background: #E15759"></span>
+          <a href="./apps/faceai.html">FaceAI</a>
+        </span>
+        <span class="cur">$149</span>
       </div>
       <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="FaceAI sparkline">
-        <polyline class="spark-area" points="3,32 3.0,20.3 33.8,22.2 64.6,23.0 95.4,22.0 126.2,3.0 157.0,10.4 157,32" fill="#E15759"/>
-        <polyline class="spark-line" points="3.0,20.3 33.8,22.2 64.6,23.0 95.4,22.0 126.2,3.0 157.0,10.4" stroke="#E15759"/>
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.6 73.0,20.3 87.0,22.2 101.0,23.0 115.0,22.0 129.0,3.0 143.0,10.4 157.0,6.1 157,32" fill="#E15759"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.6 73.0,20.3 87.0,22.2 101.0,23.0 115.0,22.0 129.0,3.0 143.0,10.4 157.0,6.1" stroke="#E15759"/>
         
         
         
         
-        <circle class="spark-dot" cx="157.0" cy="10.4" r="2.5" fill="#E15759"/>
+        <circle class="spark-dot" cx="157.0" cy="6.1" r="2.5" fill="#E15759"/>
         
       </svg>
       <div class="row2">
-        <span>avg $79</span>
+        <span>avg $52</span>
         <span>
           
-            <span class="mom down">▼ 28.3%</span>
+            <span class="mom up">▲ 22.8%</span>
           
         </span>
       </div>
+      
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      
     </div>
     
     <div class="spark-card">
       <div class="row1">
-        <span class="app-name"><span class="swatch" style="background: #76B7B2"></span>Goya</span>
-        <span class="cur">$9</span>
+        <span class="app-name">
+          <span class="swatch" style="background: #76B7B2"></span>
+          <a href="./apps/goya.html">Goya</a>
+        </span>
+        <span class="cur">$5</span>
       </div>
       <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="Goya sparkline">
-        <polyline class="spark-area" points="3,32 3.0,3.0 33.8,10.9 64.6,12.7 95.4,18.4 126.2,19.1 157.0,25.6 157,32" fill="#76B7B2"/>
-        <polyline class="spark-line" points="3.0,3.0 33.8,10.9 64.6,12.7 95.4,18.4 126.2,19.1 157.0,25.6" stroke="#76B7B2"/>
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,28.1 59.0,3.0 73.0,18.3 87.0,21.6 101.0,22.3 115.0,24.6 129.0,24.9 143.0,27.6 157.0,28.1 157,32" fill="#76B7B2"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,28.1 59.0,3.0 73.0,18.3 87.0,21.6 101.0,22.3 115.0,24.6 129.0,24.9 143.0,27.6 157.0,28.1" stroke="#76B7B2"/>
         
         
         
         
-        <circle class="spark-dot" cx="157.0" cy="25.6" r="2.5" fill="#76B7B2"/>
+        <circle class="spark-dot" cx="157.0" cy="28.1" r="2.5" fill="#76B7B2"/>
         
       </svg>
       <div class="row2">
-        <span>avg $36</span>
+        <span>avg $32</span>
         <span>
           
-            <span class="mom down">▼ 65.3%</span>
+            <span class="mom down">▼ 39.5%</span>
           
         </span>
       </div>
+      
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      
     </div>
     
     <div class="spark-card">
       <div class="row1">
-        <span class="app-name"><span class="swatch" style="background: #59A14F"></span>ScreenMirroring</span>
+        <span class="app-name">
+          <span class="swatch" style="background: #59A14F"></span>
+          <a href="./apps/screenmirroring.html">ScreenMirroring</a>
+        </span>
         <span class="cur">$32</span>
       </div>
       <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="ScreenMirroring sparkline">
-        <polyline class="spark-area" points="3,32 3.0,29.0 33.8,4.0 64.6,3.2 95.4,5.8 126.2,3.0 157.0,3.2 157,32" fill="#59A14F"/>
-        <polyline class="spark-line" points="3.0,29.0 33.8,4.0 64.6,3.2 95.4,5.8 126.2,3.0 157.0,3.2" stroke="#59A14F"/>
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,29.0 87.0,4.1 101.0,3.3 115.0,5.9 129.0,3.1 143.0,3.4 157.0,3.0 157,32" fill="#59A14F"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,29.0 87.0,4.1 101.0,3.3 115.0,5.9 129.0,3.1 143.0,3.4 157.0,3.0" stroke="#59A14F"/>
         
         
         
         
-        <circle class="spark-dot" cx="157.0" cy="3.2" r="2.5" fill="#59A14F"/>
+        <circle class="spark-dot" cx="157.0" cy="3.0" r="2.5" fill="#59A14F"/>
         
       </svg>
       <div class="row2">
-        <span>avg $26</span>
+        <span>avg $16</span>
         <span>
           
-            <span class="mom down">▼ 0.8%</span>
+            <span class="mom up">▲ 1.4%</span>
           
         </span>
       </div>
+      
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      
     </div>
     
     <div class="spark-card">
       <div class="row1">
-        <span class="app-name"><span class="swatch" style="background: #EDC948"></span>iMote</span>
-        <span class="cur">$42</span>
+        <span class="app-name">
+          <span class="swatch" style="background: #EDC948"></span>
+          <a href="./apps/imote.html">iMote</a>
+        </span>
+        <span class="cur">$70</span>
       </div>
       <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="iMote sparkline">
-        <polyline class="spark-area" points="3,32 3.0,24.0 33.8,23.1 64.6,21.9 95.4,21.4 126.2,20.5 157.0,3.0 157,32" fill="#EDC948"/>
-        <polyline class="spark-line" points="3.0,24.0 33.8,23.1 64.6,21.9 95.4,21.4 126.2,20.5 157.0,3.0" stroke="#EDC948"/>
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,25.7 73.0,26.0 87.0,25.5 101.0,24.8 115.0,24.5 129.0,24.0 143.0,13.6 157.0,3.0 157,32" fill="#EDC948"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,25.7 73.0,26.0 87.0,25.5 101.0,24.8 115.0,24.5 129.0,24.0 143.0,13.6 157.0,3.0" stroke="#EDC948"/>
         
         
         
@@ -749,48 +972,68 @@
         
       </svg>
       <div class="row2">
-        <span>avg $16</span>
+        <span>avg $15</span>
         <span>
           
-            <span class="mom up">▲ 207.3%</span>
+            <span class="mom up">▲ 68.3%</span>
           
         </span>
       </div>
+      
+      <div class="row-mau">
+        <span><span class="label">MAU</span> <span class="val">1,227,477</span></span>
+        <span><span class="label">new</span> <span class="val">1,042,250</span></span>
+        
+        <span class="cpm">$0.000/MAU</span>
+        
+      </div>
+      
     </div>
     
     <div class="spark-card">
       <div class="row1">
-        <span class="app-name"><span class="swatch" style="background: #B07AA1"></span>Mirage</span>
-        <span class="cur">$8</span>
+        <span class="app-name">
+          <span class="swatch" style="background: #B07AA1"></span>
+          <a href="./apps/mirage.html">Mirage</a>
+        </span>
+        <span class="cur">$7</span>
       </div>
       <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="Mirage sparkline">
-        <polyline class="spark-area" points="3,32 3.0,5.7 33.8,3.0 64.6,4.1 95.4,11.3 126.2,11.7 157.0,14.2 157,32" fill="#B07AA1"/>
-        <polyline class="spark-line" points="3.0,5.7 33.8,3.0 64.6,4.1 95.4,11.3 126.2,11.7 157.0,14.2" stroke="#B07AA1"/>
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,28.3 59.0,3.0 73.0,21.7 87.0,20.8 101.0,21.1 115.0,23.4 129.0,23.5 143.0,24.3 157.0,24.6 157,32" fill="#B07AA1"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,28.3 59.0,3.0 73.0,21.7 87.0,20.8 101.0,21.1 115.0,23.4 129.0,23.5 143.0,24.3 157.0,24.6" stroke="#B07AA1"/>
         
         
         
         
-        <circle class="spark-dot" cx="157.0" cy="14.2" r="2.5" fill="#B07AA1"/>
+        <circle class="spark-dot" cx="157.0" cy="24.6" r="2.5" fill="#B07AA1"/>
         
       </svg>
       <div class="row2">
-        <span>avg $11</span>
+        <span>avg $10</span>
         <span>
           
-            <span class="mom down">▼ 14.8%</span>
+            <span class="mom down">▼ 4.5%</span>
           
         </span>
       </div>
+      
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      
     </div>
     
     <div class="spark-card">
       <div class="row1">
-        <span class="app-name"><span class="swatch" style="background: #FF9DA7"></span>Music Player</span>
+        <span class="app-name">
+          <span class="swatch" style="background: #FF9DA7"></span>
+          <a href="./apps/music-player.html">Music Player</a>
+        </span>
         <span class="cur">$0</span>
       </div>
       <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="Music Player sparkline">
-        <polyline class="spark-area" points="3,32 3.0,29.0 33.8,29.0 64.6,3.0 95.4,25.3 126.2,29.0 157.0,29.0 157,32" fill="#FF9DA7"/>
-        <polyline class="spark-line" points="3.0,29.0 33.8,29.0 64.6,3.0 95.4,25.3 126.2,29.0 157.0,29.0" stroke="#FF9DA7"/>
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,29.0 87.0,29.0 101.0,3.0 115.0,25.3 129.0,29.0 143.0,29.0 157.0,29.0 157,32" fill="#FF9DA7"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,29.0 87.0,29.0 101.0,3.0 115.0,25.3 129.0,29.0 143.0,29.0 157.0,29.0" stroke="#FF9DA7"/>
         
         
         
@@ -806,6 +1049,11 @@
           
         </span>
       </div>
+      
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      
     </div>
     
   </div>
@@ -817,10 +1065,6 @@
       <thead>
         <tr>
           <th class="app">App</th>
-          
-          <th class="">
-            Nov
-          </th>
           
           <th class="">
             Dec
@@ -838,11 +1082,15 @@
             Mar
           </th>
           
-          <th class="target">
+          <th class="">
             Apr
           </th>
           
-          <th>Avg (6m)</th>
+          <th class="target">
+            May
+          </th>
+          
+          <th>Avg (12m)</th>
           <th>Δ MoM</th>
         </tr>
       </thead>
@@ -850,8 +1098,6 @@
         
         <tr>
           <td class="app"><span class="swatch" style="background: #4E79A7"></span>Tattooist</td>
-          
-          <td class="">$82</td>
           
           <td class="">$925</td>
           
@@ -861,18 +1107,18 @@
           
           <td class="">$9,826</td>
           
-          <td class="target">$14,336</td>
+          <td class="">$14,336</td>
           
-          <td>$5,135</td>
+          <td class="target">$25,150</td>
           
-            <td class="delta up">▲ 45.9%</td>
+          <td>$4,688</td>
+          
+            <td class="delta up">▲ 75.4%</td>
           
         </tr>
         
         <tr>
           <td class="app"><span class="swatch" style="background: #F28E2B"></span>AI Home Design</td>
-          
-          <td class="">$384</td>
           
           <td class="">$462</td>
           
@@ -882,18 +1128,18 @@
           
           <td class="">$1,129</td>
           
-          <td class="target">$1,008</td>
+          <td class="">$1,008</td>
           
-          <td>$708</td>
+          <td class="target">$822</td>
           
-            <td class="delta down">▼ 10.7%</td>
+          <td>$459</td>
+          
+            <td class="delta down">▼ 18.4%</td>
           
         </tr>
         
         <tr>
           <td class="app"><span class="swatch" style="background: #E15759"></span>FaceAI</td>
-          
-          <td class="">$57</td>
           
           <td class="">$44</td>
           
@@ -903,18 +1149,18 @@
           
           <td class="">$170</td>
           
-          <td class="target">$122</td>
+          <td class="">$122</td>
           
-          <td>$79</td>
+          <td class="target">$149</td>
           
-            <td class="delta down">▼ 28.3%</td>
+          <td>$52</td>
+          
+            <td class="delta up">▲ 22.8%</td>
           
         </tr>
         
         <tr>
           <td class="app"><span class="swatch" style="background: #76B7B2"></span>Goya</td>
-          
-          <td class="">$67</td>
           
           <td class="">$46</td>
           
@@ -924,18 +1170,18 @@
           
           <td class="">$25</td>
           
-          <td class="target">$9</td>
+          <td class="">$9</td>
           
-          <td>$36</td>
+          <td class="target">$5</td>
           
-            <td class="delta down">▼ 65.3%</td>
+          <td>$32</td>
+          
+            <td class="delta down">▼ 39.5%</td>
           
         </tr>
         
         <tr>
           <td class="app"><span class="swatch" style="background: #59A14F"></span>ScreenMirroring</td>
-          
-          <td class="">$0</td>
           
           <td class="">$31</td>
           
@@ -945,18 +1191,18 @@
           
           <td class="">$32</td>
           
+          <td class="">$32</td>
+          
           <td class="target">$32</td>
           
-          <td>$26</td>
+          <td>$16</td>
           
-            <td class="delta down">▼ 0.8%</td>
+            <td class="delta up">▲ 1.4%</td>
           
         </tr>
         
         <tr>
           <td class="app"><span class="swatch" style="background: #EDC948"></span>iMote</td>
-          
-          <td class="">$8</td>
           
           <td class="">$10</td>
           
@@ -966,18 +1212,18 @@
           
           <td class="">$14</td>
           
-          <td class="target">$42</td>
+          <td class="">$42</td>
           
-          <td>$16</td>
+          <td class="target">$70</td>
           
-            <td class="delta up">▲ 207.3%</td>
+          <td>$15</td>
+          
+            <td class="delta up">▲ 68.3%</td>
           
         </tr>
         
         <tr>
           <td class="app"><span class="swatch" style="background: #B07AA1"></span>Mirage</td>
-          
-          <td class="">$12</td>
           
           <td class="">$14</td>
           
@@ -987,11 +1233,13 @@
           
           <td class="">$9</td>
           
-          <td class="target">$8</td>
+          <td class="">$8</td>
           
-          <td>$11</td>
+          <td class="target">$7</td>
           
-            <td class="delta down">▼ 14.8%</td>
+          <td>$10</td>
+          
+            <td class="delta down">▼ 4.5%</td>
           
         </tr>
         
@@ -1000,9 +1248,9 @@
           
           <td class="">$0</td>
           
-          <td class="">$0</td>
-          
           <td class="">$1</td>
+          
+          <td class="">$0</td>
           
           <td class="">$0</td>
           
@@ -1020,11 +1268,6 @@
       <tfoot>
         <tr>
           <td class="app">Total</td>
-          
-            
-            
-            
-            <td class="">$609</td>
           
             
             
@@ -1049,7 +1292,12 @@
             
             
             
-            <td class="target">$15,556</td>
+            <td class="">$15,556</td>
+          
+            
+            
+            
+            <td class="target">$26,237</td>
           
           <td colspan="2"></td>
         </tr>
@@ -1074,7 +1322,7 @@
   
 
   <div class="gen-info">
-    Generated 2026-05-27 14:35 UTC · * = partial (current calendar month, not yet closed)
+    Generated 2026-06-01 14:30 UTC · * = partial (current calendar month, not yet closed)
   </div>
 
 </main>

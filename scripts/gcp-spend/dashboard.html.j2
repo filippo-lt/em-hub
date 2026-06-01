@@ -98,6 +98,16 @@
   .spark-card .cur { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .spark-card .row2 { display: flex; justify-content: space-between; align-items: center;
                       font-size: 11px; color: var(--muted); }
+  .spark-card .row-mau {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 12px; color: var(--fg);
+    border-top: 1px dashed var(--soft-border);
+    margin-top: 4px; padding-top: 6px;
+  }
+  .spark-card .row-mau .label { color: var(--muted); font-size: 11px; }
+  .spark-card .row-mau .val   { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .spark-card .row-mau .cpm   { color: var(--accent); font-weight: 600; }
+  .spark-card .row-mau.empty .val { color: var(--muted); font-weight: 400; }
   .spark-card svg { display: block; width: 100%; height: 32px; }
   .spark-card .spark-line { fill: none; stroke-width: 1.6; }
   .spark-card .spark-area { opacity: 0.18; stroke: none; }
@@ -219,7 +229,10 @@
     {% for app in apps %}
     <div class="spark-card">
       <div class="row1">
-        <span class="app-name"><span class="swatch" style="background: {{ app.color }}"></span>{{ app.name }}</span>
+        <span class="app-name">
+          <span class="swatch" style="background: {{ app.color }}"></span>
+          <a href="./apps/{{ app.slug }}.html">{{ app.name }}</a>
+        </span>
         <span class="cur">${{ "{:,.0f}".format(app.current) }}</span>
       </div>
       <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="{{ app.name }} sparkline">
@@ -246,6 +259,19 @@
           {% endif %}
         </span>
       </div>
+      {% if app.mau is not none %}
+      <div class="row-mau">
+        <span><span class="label">MAU</span> <span class="val">{{ "{:,}".format(app.mau) }}</span></span>
+        <span><span class="label">new</span> <span class="val">{{ "{:,}".format(app.new_users or 0) }}</span></span>
+        {% if app.cost_per_mau is not none %}
+        <span class="cpm">${{ "%.3f"|format(app.cost_per_mau) }}/MAU</span>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
