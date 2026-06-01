@@ -55,3 +55,39 @@ Things to listen for:
 - **Do they pass the activity context correctly** from a Composable? (Common AI mistake: using `LocalContext.current` without checking it's an Activity context for the chooser.)
 
 ---
+
+## Feature 3 — Group the For You feed by date
+
+> **As a user**, I want the For You feed grouped into "Today", "This Week" and "Earlier" sections, so I can quickly see what's new without scrolling past old items.
+
+**Framing for the interviewer:** Introduce this after Features 1 & 2 — it is deliberately heavier and designed to test refactoring under time pressure. Many candidates will not finish. That's expected. Score the process, not the deliverable.
+
+### What "good" looks like (interviewer notes — not shared with the candidate)
+
+The feed currently renders as a flat `LazyColumn` of `userNewsResource` items, fed by a `StateFlow` in `ForYouViewModel`. A reasonable refactor:
+
+- Introduce a **UI-model sealed type** (e.g., `ForYouFeedItem.Header` / `ForYouFeedItem.Article`) so the `LazyColumn` can render a single mixed list.
+- Move the grouping logic into the **ViewModel or a use case in `:core:domain`** (not inline in the Composable).
+- Group by `NewsResource.publishDate` against `Clock.System.now()` with explicit timezone handling.
+- Section headers either inline as list items, or `stickyHeader` — both are defensible.
+
+### Things to listen for
+
+- **Do they ask what "Today" / "This Week" mean?**
+  - Publish date vs. relative to when the user opened the app?
+  - Local timezone vs. UTC?
+  - Week boundary on Monday or rolling 7-day?
+- **Do they ask about empty sections?** ("If no articles today, should the header still show?")
+- **Where does the grouping logic live?** A senior puts it in `:core:domain` or the ViewModel. A weaker candidate stuffs it into the Composable as a `remember { … }` block.
+- **Do they invent a UI-model layer** (sealed type) or hack it with multiple `items()` blocks?
+- **Do they handle the existing `onScroll`, loading, and bookmark state** when refactoring the list, or does the refactor silently break them?
+- **Do they consider testing** the grouping logic in isolation (pure function on a list of news resources)?
+
+### Common AI traps
+
+- Hallucinating `LazyColumn.stickyHeader` import path or behaviour.
+- Suggesting `groupBy { it.publishDate.toLocalDate() }` without timezone — produces flaky results.
+- Stuffing grouping into the Composable, causing recomposition every frame.
+- Breaking the existing `onTopicClick`, `onNewsResourceViewed`, `onToggleBookmark` callbacks during the refactor.
+
+---

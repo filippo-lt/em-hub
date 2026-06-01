@@ -1,7 +1,7 @@
 # Technical Interview Rubric — AI-Assisted Implementation (Android)
 
 **Format:** 40-minute live coding session, screenshare + think-aloud.
-**Exercise:** Implement two features in the [Now in Android](https://github.com/android/nowinandroid) sample repo using the AI tool of the candidate's choice.
+**Exercise:** Implement up to three features in the [Now in Android](https://github.com/android/nowinandroid) sample repo using the AI tool of the candidate's choice. Features 1 and 2 are the baseline; Feature 3 is a stretch refactor that most candidates will not finish.
 **Completion is not required.** We are scoring *process*, not output.
 
 ---
@@ -152,6 +152,7 @@ Beyond the five dimensions, capture qualitative impressions:
 - **Seniority adjusts the bar, not the rubric.** A senior should drive the AI. A junior may be more driven by it; that's acceptable if the other dimensions are strong.
 - **Multi-module penalty.** Now in Android's module structure is heavier than a typical sample app. For candidates with less Compose-multi-module experience, give some grace on D1 — they may need extra time to orient. If concerned, use JetSnack instead.
 - **Watch for pre-baked solutions.** Now in Android is public and widely studied. If the candidate moves suspiciously fast or skips exploration, ask them to extend the feature in a small unexpected way (e.g., "now make the Snackbar Undo actually undo") and see what happens.
+- **Feature 3 is the differentiator.** Features 1 & 2 are increasingly easy to vibe-code with modern AI tools — strong tools will get a non-Android developer to a working result in ~20 minutes. Feature 3 (the date-grouping refactor) is where seniority shows: planning a refactor, picking where logic lives, not breaking existing callbacks, and knowing when to stop and re-plan. If a candidate finishes Features 1 & 2 in under 25 minutes, push them onto Feature 3 immediately. **Do not weight Feature 3 completion** — weight the planning and refactoring approach.
 - **Interviewers should calibrate before running candidates.** Two interviewers do the exercise themselves, watch each other's recordings, and reconcile scores. Without this, scoring drifts.
 
 ---
