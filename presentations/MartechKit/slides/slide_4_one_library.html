@@ -1,0 +1,89 @@
+<meta charset="utf-8">
+<style>
+:root{--font-sans:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,sans-serif;--color-text-primary:#2D2D2D;--color-text-secondary:#888780;--color-border-tertiary:#E5E3DC;}
+body{margin:0;padding:28px;background:#F4F2EC;}
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1.5rem;max-width:860px;margin:0 auto;}
+.title{font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.025em;margin:0 0 5px;}
+.subtitle{font-size:12px;color:var(--color-text-secondary);margin:0;}
+.split{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;}
+.panel-label{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;margin:0 0 10px;text-align:center;}
+.foot{border-top:0.5px solid var(--color-border-tertiary);padding-top:0.75rem;display:flex;justify-content:space-between;}
+.foot p{font-size:10px;color:var(--color-text-secondary);margin:0;}
+</style>
+
+<div class="sw">
+
+  <div style="text-align:center;">
+    <p class="title">One library, single point of implementation</p>
+    <p class="subtitle">Vendors live behind MartechKit — changes ship as a version bump, not a portfolio-wide re-implementation</p>
+  </div>
+
+  <div class="split">
+
+    <div>
+      <p class="panel-label" style="color:#8A3D22;">Before — every app wires every vendor</p>
+      <svg width="100%" viewBox="0 0 300 180" fill="none">
+        <!-- tangle lines -->
+        <g stroke="#B4B2A9" stroke-width="1" opacity="0.55">
+          <line x1="43" y1="40" x2="196" y2="40"/><line x1="43" y1="40" x2="196" y2="90"/><line x1="43" y1="40" x2="196" y2="140"/>
+          <line x1="43" y1="90" x2="196" y2="40"/><line x1="43" y1="90" x2="196" y2="90"/><line x1="43" y1="90" x2="196" y2="140"/>
+          <line x1="43" y1="140" x2="196" y2="40"/><line x1="43" y1="140" x2="196" y2="90"/><line x1="43" y1="140" x2="196" y2="140"/>
+        </g>
+        <!-- apps -->
+        <g>
+          <circle cx="30" cy="40" r="13" fill="#F0997B"/><circle cx="30" cy="40" r="5" fill="#fff"/>
+          <circle cx="30" cy="90" r="13" fill="#F0997B"/><circle cx="30" cy="90" r="5" fill="#fff"/>
+          <circle cx="30" cy="140" r="13" fill="#F0997B"/><circle cx="30" cy="140" r="5" fill="#fff"/>
+        </g>
+        <!-- vendors -->
+        <g font-family="var(--font-sans)" font-size="9" font-weight="500">
+          <rect x="196" y="28" width="92" height="24" rx="6" fill="#E6F1FB"/><text x="242" y="43" fill="#185FA5" text-anchor="middle">Amplitude</text>
+          <rect x="196" y="78" width="92" height="24" rx="6" fill="#EEEDFE"/><text x="242" y="93" fill="#3C3489" text-anchor="middle">RevenueCat</text>
+          <rect x="196" y="128" width="92" height="24" rx="6" fill="#FAEEDA"/><text x="242" y="143" fill="#633806" text-anchor="middle">AppsFlyer</text>
+        </g>
+      </svg>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center;padding:0 18px;">
+      <div style="width:1px;height:140px;background:repeating-linear-gradient(to bottom,#B4B2A9 0px,#B4B2A9 4px,transparent 4px,transparent 8px);opacity:0.4;"></div>
+    </div>
+
+    <div>
+      <p class="panel-label" style="color:#085041;">With MartechKit — one integration point</p>
+      <svg width="100%" viewBox="0 0 320 180" fill="none">
+        <!-- clean lines -->
+        <g stroke="#1D9E75" stroke-width="1.5" opacity="0.8">
+          <line x1="43" y1="40" x2="120" y2="90"/><line x1="43" y1="90" x2="120" y2="90"/><line x1="43" y1="140" x2="120" y2="90"/>
+          <line x1="192" y1="90" x2="232" y2="40"/><line x1="192" y1="90" x2="232" y2="90"/><line x1="192" y1="90" x2="232" y2="140"/>
+        </g>
+        <!-- apps -->
+        <g>
+          <circle cx="30" cy="40" r="13" fill="#F0997B"/><circle cx="30" cy="40" r="5" fill="#fff"/>
+          <circle cx="30" cy="90" r="13" fill="#F0997B"/><circle cx="30" cy="90" r="5" fill="#fff"/>
+          <circle cx="30" cy="140" r="13" fill="#F0997B"/><circle cx="30" cy="140" r="5" fill="#fff"/>
+        </g>
+        <!-- MartechKit -->
+        <rect x="120" y="64" width="72" height="52" rx="11" fill="#5DCAA5"/>
+        <text x="156" y="86" fill="#fff" font-family="var(--font-sans)" font-size="9.5" font-weight="600" text-anchor="middle">Martech</text>
+        <text x="156" y="98" fill="#fff" font-family="var(--font-sans)" font-size="9.5" font-weight="600" text-anchor="middle">Kit</text>
+        <!-- vendors -->
+        <g font-family="var(--font-sans)" font-size="8.5" font-weight="500">
+          <rect x="232" y="29" width="84" height="22" rx="6" fill="#E6F1FB"/><text x="274" y="43" fill="#185FA5" text-anchor="middle">Amplitude</text>
+          <rect x="232" y="79" width="84" height="22" rx="6" fill="#EEEDFE"/><text x="274" y="93" fill="#3C3489" text-anchor="middle">RevenueCat</text>
+          <rect x="232" y="129" width="84" height="22" rx="6" fill="#FAEEDA"/><text x="274" y="143" fill="#633806" text-anchor="middle">AppsFlyer</text>
+        </g>
+      </svg>
+    </div>
+
+  </div>
+
+  <div style="background:#E1F5EE;border-radius:10px;padding:0.7rem 1.5rem;text-align:center;">
+    <p style="font-size:11px;color:#085041;margin:0;">Same pattern as Parapet — build once, integrate everywhere. MartechKit is the Martech piece of a shared-components platform.</p>
+  </div>
+
+  <div class="foot">
+    <p>Handoff → Victor: how it actually works</p>
+    <p style="font-weight:500;">MartechKit</p>
+  </div>
+
+</div>

@@ -1,0 +1,72 @@
+<meta charset="utf-8">
+<style>
+:root{--font-sans:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,sans-serif;--color-text-primary:#2D2D2D;--color-text-secondary:#888780;--color-border-tertiary:#E5E3DC;}
+body{margin:0;padding:28px;background:#F4F2EC;}
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1.5rem;max-width:860px;margin:0 auto;}
+.title{font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.025em;margin:0 0 5px;}
+.subtitle{font-size:12px;color:var(--color-text-secondary);margin:0;}
+.coverage{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;}
+.tracks{display:flex;flex-direction:column;gap:10px;}
+.track{border-radius:9px;padding:0.7rem 1rem;display:flex;align-items:center;gap:10px;}
+.track-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+.track-name{font-size:12px;font-weight:500;}
+.track-state{font-size:8.5px;font-weight:500;padding:2px 8px;border-radius:100px;margin-left:auto;white-space:nowrap;}
+.milestone{background:#085041;border-radius:12px;padding:1.1rem 1rem;text-align:center;width:120px;}
+.platform-strip{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;}
+.comp{font-size:10px;font-weight:500;padding:6px 14px;border-radius:9px;}
+.foot{border-top:0.5px solid var(--color-border-tertiary);padding-top:0.75rem;display:flex;justify-content:space-between;}
+.foot p{font-size:10px;color:var(--color-text-secondary);margin:0;}
+</style>
+
+<div class="sw">
+
+  <div style="text-align:center;">
+    <p class="title">The road to full coverage</p>
+    <p class="subtitle">iOS rollout now; Android &amp; Flutter in parallel — then the whole portfolio is covered</p>
+  </div>
+
+  <div class="coverage">
+
+    <div class="tracks">
+      <div class="track" style="background:#E1F5EE;">
+        <div class="track-num" style="background:#5DCAA5;color:#fff;">1</div>
+        <span class="track-name" style="color:#085041;">Roll out across iOS portfolio</span>
+        <span class="track-state" style="background:#9FE1CB;color:#085041;">In progress</span>
+      </div>
+      <div class="track" style="background:#FAEEDA;">
+        <div class="track-num" style="background:#EF9F27;color:#fff;">2</div>
+        <span class="track-name" style="color:#633806;">Android library</span>
+        <span class="track-state" style="background:#FAC775;color:#633806;">In parallel</span>
+      </div>
+      <div class="track" style="background:#FAEEDA;">
+        <div class="track-num" style="background:#EF9F27;color:#fff;">3</div>
+        <span class="track-name" style="color:#633806;">Flutter library</span>
+        <span class="track-state" style="background:#FAC775;color:#633806;">In parallel</span>
+      </div>
+    </div>
+
+    <svg width="30" height="40" viewBox="0 0 30 40" fill="none"><path d="M2 20 H24 M18 13 L25 20 L18 27" stroke="#B4B2A9" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+    <div class="milestone">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="margin-bottom:4px;"><circle cx="12" cy="12" r="9" stroke="#9FE1CB" stroke-width="1.6"/><path d="M8 12 L11 15 L16 9" stroke="#9FE1CB" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <p style="font-size:11px;font-weight:600;color:#fff;margin:0;line-height:1.3;">Full portfolio coverage</p>
+    </div>
+
+  </div>
+
+  <div style="background:#F1EFE8;border-radius:12px;padding:1rem 1.25rem;">
+    <p style="font-size:9px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#888780;margin:0 0 10px;text-align:center;">One shared-components platform</p>
+    <div class="platform-strip">
+      <span class="comp" style="background:#fff;color:#888780;">Parapet</span>
+      <span class="comp" style="background:#fff;color:#888780;">AI Gateway</span>
+      <span class="comp" style="background:#fff;color:#888780;">TVFoundationSDK</span>
+      <span class="comp" style="background:#5DCAA5;color:#fff;">MartechKit</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>A repeatable platform pattern — not a one-off</p>
+    <p style="font-weight:500;">MartechKit</p>
+  </div>
+
+</div>

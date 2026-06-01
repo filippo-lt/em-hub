@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MartechKit — Presentation</title>
+<style>
+  :root{
+    --font-sans:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,sans-serif;
+    --color-text-primary:#2D2D2D;--color-text-secondary:#888780;--color-border-tertiary:#E5E3DC;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-sans);background:#ECEAE3;color:#2D2D2D;}
+  header{text-align:center;padding:2.5rem 1rem 1rem;}
+  header h1{font-size:26px;font-weight:600;letter-spacing:-0.03em;margin:0 0 6px;}
+  header p{font-size:13px;color:#888780;margin:0;}
+  .deck{max-width:960px;margin:0 auto;padding:1rem 1rem 4rem;}
+  .slide{margin-bottom:2.5rem;}
+  .slide-head{display:flex;align-items:baseline;gap:10px;margin:0 0 8px;padding-left:4px;}
+  .slide-num{font-size:11px;font-weight:600;color:#5DCAA5;}
+  .slide-title{font-size:12px;font-weight:500;color:#5F5E5A;}
+  .slide-presenter{font-size:10px;font-weight:500;margin-left:auto;padding:2px 10px;border-radius:100px;}
+  .p-filippo{background:#E1F5EE;color:#085041;}
+  .p-victor{background:#EEEDFE;color:#3C3489;}
+  iframe{width:100%;height:560px;border:0.5px solid var(--color-border-tertiary);border-radius:14px;background:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MartechKit</h1>
+  <p>One SDK for all our Martech · Filippo Tosetto (EM) &amp; Victor Jalencas (Staff Engineer) · ~15–20 min</p>
+</header>
+
+<div class="deck">
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">01</span><span class="slide-title">Cover</span><span class="slide-presenter p-filippo">Filippo</span></div>
+    <iframe src="slide_1_cover.html" title="Slide 1"></iframe>
+  </div>
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">02</span><span class="slide-title">Same integration, wired 10 times</span><span class="slide-presenter p-filippo">Filippo</span></div>
+    <iframe src="slide_2_wired_10_times.html" title="Slide 2"></iframe>
+  </div>
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">03</span><span class="slide-title">What that costs us</span><span class="slide-presenter p-filippo">Filippo</span></div>
+    <iframe src="slide_3_what_it_costs.html" title="Slide 3"></iframe>
+  </div>
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">04</span><span class="slide-title">One library, single point of implementation</span><span class="slide-presenter p-filippo">Filippo → Victor</span></div>
+    <iframe src="slide_4_one_library.html" title="Slide 4"></iframe>
+  </div>
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">05</span><span class="slide-title">One clean API, vendors hidden inside</span><span class="slide-presenter p-victor">Victor</span></div>
+    <iframe src="slide_5_facade.html" title="Slide 5"></iframe>
+  </div>
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">06</span><span class="slide-title">The shared event dictionary</span><span class="slide-presenter p-victor">Victor</span></div>
+    <iframe src="slide_6_event_dictionary.html" title="Slide 6"></iframe>
+  </div>
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">07</span><span class="slide-title">From portfolio-wide tickets to a version bump</span><span class="slide-presenter p-victor">Victor</span></div>
+    <iframe src="slide_7_integration.html" title="Slide 7"></iframe>
+  </div>
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">08</span><span class="slide-title">Live on iOS, validated in 3 pilots</span><span class="slide-presenter p-victor">Victor → Filippo</span></div>
+    <iframe src="slide_8_where_we_are.html" title="Slide 8"></iframe>
+  </div>
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">09</span><span class="slide-title">The road to full coverage</span><span class="slide-presenter p-filippo">Filippo</span></div>
+    <iframe src="slide_9_road_to_coverage.html" title="Slide 9"></iframe>
+  </div>
+
+  <div class="slide">
+    <div class="slide-head"><span class="slide-num">10</span><span class="slide-title">Thank you / Q&amp;A</span><span class="slide-presenter p-filippo">Filippo</span></div>
+    <iframe src="slide_10_close.html" title="Slide 10"></iframe>
+  </div>
+
+</div>
+
+</body>
+</html>

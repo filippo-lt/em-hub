@@ -1,0 +1,56 @@
+<meta charset="utf-8">
+<style>
+:root{--font-sans:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,sans-serif;--color-text-primary:#2D2D2D;--color-text-secondary:#888780;--color-border-tertiary:#E5E3DC;}
+body{margin:0;padding:28px;background:#F4F2EC;}
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:3.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;text-align:center;max-width:860px;margin:0 auto;min-height:300px;}
+.logo{width:54px;height:54px;border-radius:14px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;}
+.vendor-chip{font-size:10px;font-weight:500;padding:4px 11px;border-radius:100px;}
+.presenters{display:flex;gap:18px;align-items:center;margin-top:0.5rem;}
+.pres{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.pres-name{font-size:11px;font-weight:500;color:var(--color-text-primary);}
+.pres-role{font-size:9px;color:var(--color-text-secondary);}
+.foot{border-top:0.5px solid var(--color-border-tertiary);padding-top:0.75rem;display:flex;justify-content:space-between;width:100%;}
+.foot p{font-size:10px;color:var(--color-text-secondary);margin:0;}
+</style>
+
+<div class="sw">
+
+  <div class="logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect x="3" y="3" width="22" height="22" rx="6" fill="#5DCAA5"/>
+      <circle cx="10" cy="14" r="2.4" fill="#fff"/>
+      <circle cx="18" cy="14" r="2.4" fill="#fff"/>
+      <path d="M7 19 Q14 23 21 19" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div>
+    <p style="font-size:32px;font-weight:600;color:var(--color-text-primary);letter-spacing:-0.03em;margin:0 0 8px;">MartechKit</p>
+    <p style="font-size:14px;color:var(--color-text-secondary);margin:0;">One SDK for all our Martech — unified across the portfolio</p>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+    <span class="vendor-chip" style="background:#E6F1FB;color:#185FA5;">Amplitude</span>
+    <span class="vendor-chip" style="background:#EEEDFE;color:#3C3489;">RevenueCat</span>
+    <span class="vendor-chip" style="background:#FAEEDA;color:#633806;">AppsFlyer</span>
+    <span class="vendor-chip" style="background:#F1EFE8;color:#888780;">+ more</span>
+  </div>
+
+  <div class="presenters">
+    <div class="pres">
+      <span class="pres-name">Filippo Tosetto</span>
+      <span class="pres-role">Engineering Manager</span>
+    </div>
+    <div style="width:1px;height:24px;background:var(--color-border-tertiary);"></div>
+    <div class="pres">
+      <span class="pres-name">Victor Jalencas</span>
+      <span class="pres-role">Staff Engineer</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>Shared-components strategy · iOS v1.0 live</p>
+    <p style="font-weight:500;">MartechKit</p>
+  </div>
+
+</div>

@@ -1,0 +1,62 @@
+<meta charset="utf-8">
+<style>
+:root{--font-sans:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,sans-serif;--color-text-primary:#2D2D2D;--color-text-secondary:#888780;--color-border-tertiary:#E5E3DC;}
+body{margin:0;padding:28px;background:#F4F2EC;}
+.sw{font-family:var(--font-sans);background:#FFFFFF;border-radius:14px;border:0.5px solid var(--color-border-tertiary);padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1.4rem;max-width:860px;margin:0 auto;}
+.title{font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.025em;margin:0 0 5px;}
+.subtitle{font-size:12px;color:var(--color-text-secondary);margin:0;}
+.layer{border-radius:12px;padding:0.9rem 1.25rem;text-align:center;}
+.layer-tag{font-size:9px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 6px;opacity:0.7;}
+.api-pill{display:inline-block;font-size:10px;font-weight:500;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;padding:4px 10px;border-radius:7px;margin:3px;}
+.vline{width:1.5px;height:14px;background:#C9D6CF;margin:0 auto;}
+.vendors{display:flex;gap:10px;justify-content:center;}
+.vendor{flex:1;border-radius:10px;padding:0.7rem;text-align:center;font-size:10.5px;font-weight:500;}
+.foot{border-top:0.5px solid var(--color-border-tertiary);padding-top:0.75rem;display:flex;justify-content:space-between;}
+.foot p{font-size:10px;color:var(--color-text-secondary);margin:0;}
+</style>
+
+<div class="sw">
+
+  <div style="text-align:center;">
+    <p class="title">One clean API, vendors hidden inside</p>
+    <p class="subtitle">MartechKit is a facade — the app calls one stable API; vendor specifics stay inside the library</p>
+  </div>
+
+  <div class="layer" style="background:#FAE3DA;">
+    <p class="layer-tag" style="color:#8A3D22;">App code</p>
+    <span class="api-pill" style="background:#fff;color:#8A3D22;">track(event)</span>
+    <span class="api-pill" style="background:#fff;color:#8A3D22;">identify(user)</span>
+    <span class="api-pill" style="background:#fff;color:#8A3D22;">entitlement()</span>
+  </div>
+
+  <div class="vline"></div>
+
+  <div class="layer" style="background:#5DCAA5;">
+    <p class="layer-tag" style="color:#073f33;">MartechKit · the facade</p>
+    <p style="font-size:14px;font-weight:600;color:#fff;margin:0 0 8px;">One API in → fans out to every vendor</p>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <span style="font-size:9.5px;font-weight:500;background:rgba(255,255,255,0.85);color:#085041;padding:4px 10px;border-radius:100px;">Vendor adapters</span>
+      <span style="font-size:9.5px;font-weight:500;background:rgba(255,255,255,0.85);color:#085041;padding:4px 10px;border-radius:100px;">Init &amp; config</span>
+      <span style="font-size:9.5px;font-weight:500;background:rgba(255,255,255,0.85);color:#085041;padding:4px 10px;border-radius:100px;">Event plumbing</span>
+    </div>
+  </div>
+
+  <div class="vline"></div>
+
+  <div class="vendors">
+    <div class="vendor" style="background:#E6F1FB;color:#185FA5;">Amplitude</div>
+    <div class="vendor" style="background:#EEEDFE;color:#3C3489;">RevenueCat</div>
+    <div class="vendor" style="background:#FAEEDA;color:#633806;">AppsFlyer</div>
+    <div class="vendor" style="background:#F1EFE8;color:#888780;font-style:italic;">+ more</div>
+  </div>
+
+  <div style="background:#F1EFE8;border-radius:10px;padding:0.75rem 1.5rem;text-align:center;">
+    <p style="font-size:11px;color:#5F5E5A;margin:0;">Add or swap a vendor inside MartechKit — the app-facing API never moves</p>
+  </div>
+
+  <div class="foot">
+    <p>Technical overview · Victor</p>
+    <p style="font-weight:500;">MartechKit</p>
+  </div>
+
+</div>
