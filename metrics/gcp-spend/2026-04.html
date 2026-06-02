@@ -165,6 +165,17 @@
   }
   #tab-7:checked ~ [data-panel="tab-7"] { display: block; }
   
+  #tab-8:checked ~ .tab-bar label[for="tab-8"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-8:checked ~ .tab-bar label[for="tab-8"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-8:checked ~ [data-panel="tab-8"] { display: block; }
+  
 
   /* Keyboard focus visible on the hidden radio's label */
   .tabs > input[type="radio"]:focus-visible + .tab-label {
@@ -227,10 +238,10 @@
   <header class="report-header">
     <div>
       <h1>GCP Spend — April 2026</h1>
-      <div class="subtitle">9 apps reporting · net cost (credits applied)</div>
+      <div class="subtitle">10 apps reporting · net cost (credits applied)</div>
     </div>
     <div class="grand-total">
-      $15,555.67<span class="currency">EUR</span>
+      $15,896.08<span class="currency">EUR</span>
     </div>
   </header>
 
@@ -252,6 +263,8 @@
     
     <input type="radio" name="tabs" id="tab-7">
     
+    <input type="radio" name="tabs" id="tab-8">
+    
 
     
     <div class="tab-bar">
@@ -267,26 +280,31 @@
       </label>
       
       <label class="tab-label" for="tab-3">
+        <span class="tab-name">Chat Ultra</span>
+        <span class="tab-amt">$340.41</span>
+      </label>
+      
+      <label class="tab-label" for="tab-4">
         <span class="tab-name">FaceAI</span>
         <span class="tab-amt">$121.54</span>
       </label>
       
-      <label class="tab-label" for="tab-4">
+      <label class="tab-label" for="tab-5">
         <span class="tab-name">iMote</span>
         <span class="tab-amt">$41.82</span>
       </label>
       
-      <label class="tab-label" for="tab-5">
+      <label class="tab-label" for="tab-6">
         <span class="tab-name">ScreenMirroring</span>
         <span class="tab-amt">$31.71</span>
       </label>
       
-      <label class="tab-label" for="tab-6">
+      <label class="tab-label" for="tab-7">
         <span class="tab-name">Goya</span>
         <span class="tab-amt">$8.82</span>
       </label>
       
-      <label class="tab-label" for="tab-7">
+      <label class="tab-label" for="tab-8">
         <span class="tab-name">Mirage</span>
         <span class="tab-amt">$7.70</span>
       </label>
@@ -501,6 +519,104 @@
     
     <section class="tab-panel" data-panel="tab-3">
       <div class="panel-header">
+        <h2>Chat Ultra<span class="project-id">chatai2-32311</span></h2>
+        <span class="panel-total">$340.41</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Vertex AI</td>
+          <td class="amt">$105.90</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Speech API</td>
+          <td class="amt">$83.65</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 79.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Run</td>
+          <td class="amt">$76.31</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 72.1%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">App Engine</td>
+          <td class="amt">$59.20</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 55.9%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Networking</td>
+          <td class="amt">$11.02</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 10.4%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">BigQuery</td>
+          <td class="amt">$1.87</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 1.8%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Firebase Hosting</td>
+          <td class="amt">$0.97</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.9%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Artifact Registry</td>
+          <td class="amt">$0.96</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.9%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Container Registry Vulnerability Scanning</td>
+          <td class="amt">$0.45</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.4%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Storage</td>
+          <td class="amt">$0.07</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.1%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Secret Manager</td>
+          <td class="amt">$0.01</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.0%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-4">
+      <div class="panel-header">
         <h2>FaceAI<span class="project-id">faceai-prod</span></h2>
         <span class="panel-total">$121.54</span>
       </div>
@@ -573,7 +689,7 @@
       </table>
     </section>
     
-    <section class="tab-panel" data-panel="tab-4">
+    <section class="tab-panel" data-panel="tab-5">
       <div class="panel-header">
         <h2>iMote<span class="project-id">imote-prod</span></h2>
         <span class="panel-total">$41.82</span>
@@ -615,7 +731,7 @@
       </table>
     </section>
     
-    <section class="tab-panel" data-panel="tab-5">
+    <section class="tab-panel" data-panel="tab-6">
       <div class="panel-header">
         <h2>ScreenMirroring<span class="project-id">screenmirroring-prod</span></h2>
         <span class="panel-total">$31.71</span>
@@ -649,7 +765,7 @@
       </table>
     </section>
     
-    <section class="tab-panel" data-panel="tab-6">
+    <section class="tab-panel" data-panel="tab-7">
       <div class="panel-header">
         <h2>Goya<span class="project-id">goyaai-prod</span></h2>
         <span class="panel-total">$8.82</span>
@@ -697,7 +813,7 @@
         </tr>
         
         <tr>
-          <td class="svc">BigQuery</td>
+          <td class="svc">Secret Manager</td>
           <td class="amt">$0.01</td>
           <td class="bar-cell">
             <div class="bar-bg"><div class="bar" style="width: 0.2%"></div></div>
@@ -705,7 +821,7 @@
         </tr>
         
         <tr>
-          <td class="svc">Secret Manager</td>
+          <td class="svc">BigQuery</td>
           <td class="amt">$0.01</td>
           <td class="bar-cell">
             <div class="bar-bg"><div class="bar" style="width: 0.2%"></div></div>
@@ -715,7 +831,7 @@
       </table>
     </section>
     
-    <section class="tab-panel" data-panel="tab-7">
+    <section class="tab-panel" data-panel="tab-8">
       <div class="panel-header">
         <h2>Mirage<span class="project-id">mirageai-prod</span></h2>
         <span class="panel-total">$7.70</span>
@@ -774,8 +890,6 @@
     <p>Billing export not yet enabled. These apps will appear automatically once their export tables come online.</p>
     <ul>
       
-      <li>Chat Ultra <code>(chat-ultra-appbot)</code></li>
-      
       <li>TruthSeeker <code>(ai-truthseeker-prod)</code></li>
       
       <li>StepCounter <code>(stepcounter-mau-prod)</code></li>
@@ -784,7 +898,7 @@
   </section>
   
 
-  <div class="gen-info">Generated 2026-05-27 12:50 UTC</div>
+  <div class="gen-info">Generated 2026-06-02 09:36 UTC</div>
 
 </main>
 </body>

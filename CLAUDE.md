@@ -55,6 +55,7 @@ Skills are invoked with `/skill-name` and run in the main conversation. Use thes
 | "Help me plan the quarter" / "Roadmap review" / "Sprint planning prep" / "Set OKRs"  | Planning   | `/planning`   |
 | "Get developer metrics" / "Run dev metrics" / "Pull Jira/GitHub metrics for [month]" | Metrics    | `/metrics`    |
 | "Convert Xray tests to Gherkin" / "Turn Xray export into feature files" / "Xray to Gherkin" | Xray to Gherkin | `/xray-to-gherkin` |
+| "GCP spend" / "Show the GCP report" / "Cloud cost per app" / "Refresh the GCP report"        | GCP Spend  | `/gcp-spend`  |
 
 
 ### Agent Routing (Autonomous — runs as subprocess)

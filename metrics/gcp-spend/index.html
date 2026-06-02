@@ -1,16 +1,1402 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>GCP Spend Reports</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GCP Spend Dashboard — April 2026</title>
 <style>
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-       max-width:640px;margin:40px auto;padding:0 24px;color:#1a1a1a;}
-  h1{font-size:22px;margin-bottom:24px;}
-  ul{list-style:none;padding:0;}
-  li{padding:8px 0;border-bottom:1px solid #e6e6e6;font-size:15px;}
-  a{color:#2563eb;text-decoration:none;}
-  a:hover{text-decoration:underline;}
-</style></head><body>
-<h1>GCP Spend Reports</h1>
-<ul>
-  <li><a href="2026-04.html">2026-04</a></li>
-</ul>
-</body></html>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --bg: #ffffff;
+    --card: #fafafa;
+    --border: #e6e6e6;
+    --soft-border: #f0f0f0;
+    --bar-bg: #eef2f7;
+    --accent: #2563eb;
+    --up:   #c0392b;   /* spend went up = warning */
+    --down: #1e8449;   /* spend went down = good */
+    --warn-bg: #fff8e6;
+    --warn-border: #f0d68b;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.45;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Header ───────────────────────────────────────────────────── */
+  .report-header {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: 12px;
+    border-bottom: 2px solid var(--fg);
+    padding-bottom: 16px; margin-bottom: 28px;
+  }
+  .report-header h1 { font-size: 22px; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+  .report-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .target-month {
+    font-size: 32px; font-weight: 600; font-variant-numeric: tabular-nums;
+  }
+  .target-month .currency { color: var(--muted); font-size: 16px; margin-left: 4px; }
+  .mom { font-size: 14px; margin-left: 8px; font-weight: 500; }
+  .mom.up   { color: var(--up); }
+  .mom.down { color: var(--down); }
+  .mom.flat { color: var(--muted); }
+
+  /* ── Section title ─────────────────────────────────────────────── */
+  h2.section { font-size: 13px; font-weight: 600; text-transform: uppercase;
+               letter-spacing: 0.06em; color: var(--muted);
+               margin: 30px 0 12px; }
+
+  /* ── Hero: stacked bars ─────────────────────────────────────────── */
+  .hero {
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 18px 14px 10px;
+    border-radius: 6px;
+  }
+  .hero svg { display: block; width: 100%; height: auto; }
+  .hero .gridline { stroke: var(--soft-border); stroke-width: 1; }
+  .hero .axis-text { fill: var(--muted); font-size: 10px; }
+  .hero .month-label { fill: var(--muted); font-size: 11px; }
+  .hero .month-label.target { fill: var(--fg); font-weight: 600; }
+  .hero .bar { transition: opacity 0.15s; }
+  .hero .bar-link:hover .bar { opacity: 0.78; }
+  .hero .target-marker {
+    fill: none; stroke: var(--accent); stroke-width: 2;
+  }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 10px 14px;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; color: var(--fg); }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  /* ── Sparklines grid ────────────────────────────────────────────── */
+  .spark-grid {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  .spark-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .spark-card .row1 { display: flex; justify-content: space-between; align-items: baseline; }
+  .spark-card .app-name { font-size: 14px; font-weight: 600; }
+  .spark-card .app-name .swatch { margin-right: 6px; vertical-align: middle; }
+  .spark-card .cur { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .spark-card .row2 { display: flex; justify-content: space-between; align-items: center;
+                      font-size: 11px; color: var(--muted); }
+  .spark-card .row-mau {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 12px; color: var(--fg);
+    border-top: 1px dashed var(--soft-border);
+    margin-top: 4px; padding-top: 6px;
+  }
+  .spark-card .row-mau .label { color: var(--muted); font-size: 11px; }
+  .spark-card .row-mau .val   { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .spark-card .row-mau .cpm   { color: var(--accent); font-weight: 600; }
+  .spark-card .row-mau.empty .val { color: var(--muted); font-weight: 400; }
+  .spark-card svg { display: block; width: 100%; height: 32px; }
+  .spark-card .spark-line { fill: none; stroke-width: 1.6; }
+  .spark-card .spark-area { opacity: 0.18; stroke: none; }
+  .spark-card .spark-dot  { stroke: white; stroke-width: 1.5; }
+
+  /* ── Table ─────────────────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 6px; }
+  table.history {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.history th, table.history td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--soft-border);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  table.history th { color: var(--muted); font-weight: 500; background: var(--card); }
+  table.history th.app, table.history td.app { text-align: left; }
+  table.history th.target, table.history td.target {
+    background: rgba(37, 99, 235, 0.06);
+    font-weight: 600;
+  }
+  table.history th.partial { font-style: italic; }
+  table.history tr:last-child td { border-bottom: none; }
+  table.history td.delta.up   { color: var(--up); }
+  table.history td.delta.down { color: var(--down); }
+  table.history td.delta.flat { color: var(--muted); }
+  table.history .swatch { vertical-align: middle; margin-right: 6px; }
+  table.history tfoot td { font-weight: 600; background: var(--card); }
+
+  /* ── Pending footer ────────────────────────────────────────────── */
+  .pending {
+    margin-top: 28px;
+    padding: 14px 18px;
+    border: 1px solid var(--warn-border);
+    background: var(--warn-bg);
+    border-radius: 6px;
+  }
+  .pending h2 { margin: 0 0 6px; font-size: 14px; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--fg); }
+  .pending p  { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+  .pending ul { margin: 0; padding-left: 18px; font-size: 13px; }
+  .pending code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); }
+
+  .gen-info { margin-top: 20px; color: var(--muted); font-size: 12px; text-align: right; }
+</style>
+</head>
+<body>
+<main>
+
+  
+  <header class="report-header">
+    <div>
+      <h1>GCP Spend Dashboard</h1>
+      <div class="subtitle">
+        April 2026 ·
+        12-month window ·
+        <a href="./2026-04.html">detail report ↗</a>
+      </div>
+    </div>
+    <div class="target-month">
+      $15,896.08<span class="currency">EUR</span>
+      
+        
+          <span class="mom up">▲ 37.4%</span>
+        
+      
+    </div>
+  </header>
+
+  
+  <h2 class="section">Spend over time</h2>
+  <div class="hero">
+    <svg viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"
+         role="img" aria-label="Stacked monthly spend over the last 12 months">
+      
+      
+        <line class="gridline" x1="56" x2="820"
+              y1="232.0" y2="232.0" />
+        <text class="axis-text" x="50" y="235.0" text-anchor="end">$0</text>
+      
+        <line class="gridline" x1="56" x2="820"
+              y1="178.0" y2="178.0" />
+        <text class="axis-text" x="50" y="181.0" text-anchor="end">$4.0K</text>
+      
+        <line class="gridline" x1="56" x2="820"
+              y1="124.0" y2="124.0" />
+        <text class="axis-text" x="50" y="127.0" text-anchor="end">$7.9K</text>
+      
+        <line class="gridline" x1="56" x2="820"
+              y1="70.0" y2="70.0" />
+        <text class="axis-text" x="50" y="73.0" text-anchor="end">$11.9K</text>
+      
+        <line class="gridline" x1="56" x2="820"
+              y1="16.0" y2="16.0" />
+        <text class="axis-text" x="50" y="19.0" text-anchor="end">$15.9K</text>
+      
+
+      
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="319.6" y="231.9" width="45.8" height="0.1"
+                fill="#4E79A7">
+            <title>Tattooist · 2025-09 · $6.63</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="319.6" y="231.8" width="45.8" height="0.1"
+                fill="#F28E2B">
+            <title>AI Home Design · 2025-09 · $7.51</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="319.6" y="231.8" width="45.8" height="0.0"
+                fill="#E15759">
+            <title>Chat Ultra · 2025-09 · $1.42</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="319.6" y="231.7" width="45.8" height="0.1"
+                fill="#59A14F">
+            <title>Goya · 2025-09 · $5.55</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="319.6" y="231.7" width="45.8" height="0.0"
+                fill="#B07AA1">
+            <title>Mirage · 2025-09 · $1.13</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-09.html">
+          <rect class="bar"
+                x="319.6" y="231.7" width="45.8" height="0.0"
+                fill="#FF9DA7">
+            <title>iMote · 2025-09 · $0.13</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="383.2" y="228.1" width="45.8" height="3.9"
+                fill="#4E79A7">
+            <title>Tattooist · 2025-10 · $286.00</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="383.2" y="222.3" width="45.8" height="5.9"
+                fill="#F28E2B">
+            <title>AI Home Design · 2025-10 · $430.99</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="383.2" y="221.3" width="45.8" height="1.0"
+                fill="#E15759">
+            <title>Chat Ultra · 2025-10 · $71.87</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="383.2" y="221.2" width="45.8" height="0.0"
+                fill="#76B7B2">
+            <title>FaceAI · 2025-10 · $2.56</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="383.2" y="219.0" width="45.8" height="2.2"
+                fill="#59A14F">
+            <title>Goya · 2025-10 · $162.55</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="383.2" y="218.5" width="45.8" height="0.6"
+                fill="#B07AA1">
+            <title>Mirage · 2025-10 · $42.98</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-10.html">
+          <rect class="bar"
+                x="383.2" y="218.3" width="45.8" height="0.1"
+                fill="#FF9DA7">
+            <title>iMote · 2025-10 · $8.85</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-11.html">
+          <rect class="bar"
+                x="446.9" y="230.9" width="45.8" height="1.1"
+                fill="#4E79A7">
+            <title>Tattooist · 2025-11 · $81.69</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-11.html">
+          <rect class="bar"
+                x="446.9" y="225.7" width="45.8" height="5.2"
+                fill="#F28E2B">
+            <title>AI Home Design · 2025-11 · $383.50</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-11.html">
+          <rect class="bar"
+                x="446.9" y="224.0" width="45.8" height="1.7"
+                fill="#E15759">
+            <title>Chat Ultra · 2025-11 · $123.77</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-11.html">
+          <rect class="bar"
+                x="446.9" y="223.2" width="45.8" height="0.8"
+                fill="#76B7B2">
+            <title>FaceAI · 2025-11 · $56.60</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-11.html">
+          <rect class="bar"
+                x="446.9" y="222.3" width="45.8" height="0.9"
+                fill="#59A14F">
+            <title>Goya · 2025-11 · $66.69</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-11.html">
+          <rect class="bar"
+                x="446.9" y="222.2" width="45.8" height="0.2"
+                fill="#B07AA1">
+            <title>Mirage · 2025-11 · $12.15</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-11.html">
+          <rect class="bar"
+                x="446.9" y="222.0" width="45.8" height="0.1"
+                fill="#FF9DA7">
+            <title>iMote · 2025-11 · $8.11</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-12.html">
+          <rect class="bar"
+                x="510.6" y="219.4" width="45.8" height="12.6"
+                fill="#4E79A7">
+            <title>Tattooist · 2025-12 · $925.25</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-12.html">
+          <rect class="bar"
+                x="510.6" y="213.2" width="45.8" height="6.3"
+                fill="#F28E2B">
+            <title>AI Home Design · 2025-12 · $461.77</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-12.html">
+          <rect class="bar"
+                x="510.6" y="211.3" width="45.8" height="1.8"
+                fill="#E15759">
+            <title>Chat Ultra · 2025-12 · $134.62</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-12.html">
+          <rect class="bar"
+                x="510.6" y="210.7" width="45.8" height="0.6"
+                fill="#76B7B2">
+            <title>FaceAI · 2025-12 · $44.15</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-12.html">
+          <rect class="bar"
+                x="510.6" y="210.1" width="45.8" height="0.6"
+                fill="#59A14F">
+            <title>Goya · 2025-12 · $46.36</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-12.html">
+          <rect class="bar"
+                x="510.6" y="209.7" width="45.8" height="0.4"
+                fill="#EDC948">
+            <title>ScreenMirroring · 2025-12 · $30.78</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-12.html">
+          <rect class="bar"
+                x="510.6" y="209.5" width="45.8" height="0.2"
+                fill="#B07AA1">
+            <title>Mirage · 2025-12 · $13.56</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2025-12.html">
+          <rect class="bar"
+                x="510.6" y="209.4" width="45.8" height="0.1"
+                fill="#FF9DA7">
+            <title>iMote · 2025-12 · $9.53</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-01.html">
+          <rect class="bar"
+                x="574.2" y="213.5" width="45.8" height="18.5"
+                fill="#4E79A7">
+            <title>Tattooist · 2026-01 · $1,361.38</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-01.html">
+          <rect class="bar"
+                x="574.2" y="206.5" width="45.8" height="7.0"
+                fill="#F28E2B">
+            <title>AI Home Design · 2026-01 · $514.76</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-01.html">
+          <rect class="bar"
+                x="574.2" y="204.3" width="45.8" height="2.2"
+                fill="#E15759">
+            <title>Chat Ultra · 2026-01 · $161.21</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-01.html">
+          <rect class="bar"
+                x="574.2" y="203.8" width="45.8" height="0.5"
+                fill="#76B7B2">
+            <title>FaceAI · 2026-01 · $39.39</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-01.html">
+          <rect class="bar"
+                x="574.2" y="203.2" width="45.8" height="0.6"
+                fill="#59A14F">
+            <title>Goya · 2026-01 · $41.85</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-01.html">
+          <rect class="bar"
+                x="574.2" y="202.8" width="45.8" height="0.4"
+                fill="#EDC948">
+            <title>ScreenMirroring · 2026-01 · $31.78</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-01.html">
+          <rect class="bar"
+                x="574.2" y="202.6" width="45.8" height="0.2"
+                fill="#B07AA1">
+            <title>Mirage · 2026-01 · $12.99</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-01.html">
+          <rect class="bar"
+                x="574.2" y="202.4" width="45.8" height="0.2"
+                fill="#FF9DA7">
+            <title>iMote · 2026-01 · $11.49</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-01.html">
+          <rect class="bar"
+                x="574.2" y="202.4" width="45.8" height="0.0"
+                fill="#9C755F">
+            <title>Music Player · 2026-01 · $0.56</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-02.html">
+          <rect class="bar"
+                x="637.9" y="173.8" width="45.8" height="58.2"
+                fill="#4E79A7">
+            <title>Tattooist · 2026-02 · $4,280.79</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-02.html">
+          <rect class="bar"
+                x="637.9" y="163.6" width="45.8" height="10.2"
+                fill="#F28E2B">
+            <title>AI Home Design · 2026-02 · $750.32</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-02.html">
+          <rect class="bar"
+                x="637.9" y="160.5" width="45.8" height="3.1"
+                fill="#E15759">
+            <title>Chat Ultra · 2026-02 · $230.65</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-02.html">
+          <rect class="bar"
+                x="637.9" y="159.9" width="45.8" height="0.6"
+                fill="#76B7B2">
+            <title>FaceAI · 2026-02 · $45.53</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-02.html">
+          <rect class="bar"
+                x="637.9" y="159.5" width="45.8" height="0.4"
+                fill="#59A14F">
+            <title>Goya · 2026-02 · $27.25</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-02.html">
+          <rect class="bar"
+                x="637.9" y="159.1" width="45.8" height="0.4"
+                fill="#EDC948">
+            <title>ScreenMirroring · 2026-02 · $28.52</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-02.html">
+          <rect class="bar"
+                x="637.9" y="159.0" width="45.8" height="0.1"
+                fill="#B07AA1">
+            <title>Mirage · 2026-02 · $9.24</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-02.html">
+          <rect class="bar"
+                x="637.9" y="158.8" width="45.8" height="0.2"
+                fill="#FF9DA7">
+            <title>iMote · 2026-02 · $12.25</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-02.html">
+          <rect class="bar"
+                x="637.9" y="158.8" width="45.8" height="0.0"
+                fill="#9C755F">
+            <title>Music Player · 2026-02 · $0.08</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-03.html">
+          <rect class="bar"
+                x="701.6" y="98.5" width="45.8" height="133.5"
+                fill="#4E79A7">
+            <title>Tattooist · 2026-03 · $9,825.98</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-03.html">
+          <rect class="bar"
+                x="701.6" y="83.1" width="45.8" height="15.3"
+                fill="#F28E2B">
+            <title>AI Home Design · 2026-03 · $1,128.56</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-03.html">
+          <rect class="bar"
+                x="701.6" y="78.2" width="45.8" height="5.0"
+                fill="#E15759">
+            <title>Chat Ultra · 2026-03 · $367.38</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-03.html">
+          <rect class="bar"
+                x="701.6" y="75.8" width="45.8" height="2.3"
+                fill="#76B7B2">
+            <title>FaceAI · 2026-03 · $169.63</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-03.html">
+          <rect class="bar"
+                x="701.6" y="75.5" width="45.8" height="0.3"
+                fill="#59A14F">
+            <title>Goya · 2026-03 · $25.45</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-03.html">
+          <rect class="bar"
+                x="701.6" y="75.1" width="45.8" height="0.4"
+                fill="#EDC948">
+            <title>ScreenMirroring · 2026-03 · $31.98</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-03.html">
+          <rect class="bar"
+                x="701.6" y="74.9" width="45.8" height="0.1"
+                fill="#B07AA1">
+            <title>Mirage · 2026-03 · $9.04</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-03.html">
+          <rect class="bar"
+                x="701.6" y="74.8" width="45.8" height="0.2"
+                fill="#FF9DA7">
+            <title>iMote · 2026-03 · $13.61</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-04.html">
+          <rect class="bar"
+                x="765.2" y="37.2" width="45.8" height="194.8"
+                fill="#4E79A7">
+            <title>Tattooist · 2026-04 · $14,335.97</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-04.html">
+          <rect class="bar"
+                x="765.2" y="23.5" width="45.8" height="13.7"
+                fill="#F28E2B">
+            <title>AI Home Design · 2026-04 · $1,008.11</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-04.html">
+          <rect class="bar"
+                x="765.2" y="18.9" width="45.8" height="4.6"
+                fill="#E15759">
+            <title>Chat Ultra · 2026-04 · $340.41</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-04.html">
+          <rect class="bar"
+                x="765.2" y="17.2" width="45.8" height="1.7"
+                fill="#76B7B2">
+            <title>FaceAI · 2026-04 · $121.54</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-04.html">
+          <rect class="bar"
+                x="765.2" y="17.1" width="45.8" height="0.1"
+                fill="#59A14F">
+            <title>Goya · 2026-04 · $8.82</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-04.html">
+          <rect class="bar"
+                x="765.2" y="16.7" width="45.8" height="0.4"
+                fill="#EDC948">
+            <title>ScreenMirroring · 2026-04 · $31.71</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-04.html">
+          <rect class="bar"
+                x="765.2" y="16.6" width="45.8" height="0.1"
+                fill="#B07AA1">
+            <title>Mirage · 2026-04 · $7.70</title>
+          </rect>
+        </a>
+      
+        <a class="bar-link" href="./2026-04.html">
+          <rect class="bar"
+                x="765.2" y="16.0" width="45.8" height="0.6"
+                fill="#FF9DA7">
+            <title>iMote · 2026-04 · $41.82</title>
+          </rect>
+        </a>
+      
+
+      
+      
+        <text class="month-label"
+              x="87.8" y="252" text-anchor="middle">May</text>
+      
+        <text class="month-label"
+              x="151.5" y="252" text-anchor="middle">Jun</text>
+      
+        <text class="month-label"
+              x="215.2" y="252" text-anchor="middle">Jul</text>
+      
+        <text class="month-label"
+              x="278.8" y="252" text-anchor="middle">Aug</text>
+      
+        <text class="month-label"
+              x="342.5" y="252" text-anchor="middle">Sep</text>
+      
+        <text class="month-label"
+              x="406.2" y="252" text-anchor="middle">Oct</text>
+      
+        <text class="month-label"
+              x="469.8" y="252" text-anchor="middle">Nov</text>
+      
+        <text class="month-label"
+              x="533.5" y="252" text-anchor="middle">Dec</text>
+      
+        <text class="month-label"
+              x="597.2" y="252" text-anchor="middle">Jan</text>
+      
+        <text class="month-label"
+              x="660.8" y="252" text-anchor="middle">Feb</text>
+      
+        <text class="month-label"
+              x="724.5" y="252" text-anchor="middle">Mar</text>
+      
+        <text class="month-label target"
+              x="788.2" y="252" text-anchor="middle">Apr</text>
+      
+    </svg>
+
+    <div class="legend">
+      
+      <span class="legend-item">
+        <span class="swatch" style="background: #4E79A7"></span>Tattooist
+      </span>
+      
+      <span class="legend-item">
+        <span class="swatch" style="background: #F28E2B"></span>AI Home Design
+      </span>
+      
+      <span class="legend-item">
+        <span class="swatch" style="background: #E15759"></span>Chat Ultra
+      </span>
+      
+      <span class="legend-item">
+        <span class="swatch" style="background: #76B7B2"></span>FaceAI
+      </span>
+      
+      <span class="legend-item">
+        <span class="swatch" style="background: #59A14F"></span>Goya
+      </span>
+      
+      <span class="legend-item">
+        <span class="swatch" style="background: #EDC948"></span>ScreenMirroring
+      </span>
+      
+      <span class="legend-item">
+        <span class="swatch" style="background: #B07AA1"></span>Mirage
+      </span>
+      
+      <span class="legend-item">
+        <span class="swatch" style="background: #FF9DA7"></span>iMote
+      </span>
+      
+      <span class="legend-item">
+        <span class="swatch" style="background: #9C755F"></span>Music Player
+      </span>
+      
+    </div>
+  </div>
+
+  
+  <h2 class="section">By app · 12-month trend</h2>
+  <div class="spark-grid">
+    
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name">
+          <span class="swatch" style="background: #4E79A7"></span>
+          <a href="./apps/tattooist.html">Tattooist</a>
+        </span>
+        <span class="cur">$14,336</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="Tattooist sparkline">
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,28.5 87.0,28.9 101.0,27.3 115.0,26.5 129.0,21.2 143.0,11.2 157.0,3.0 157,32" fill="#4E79A7"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,28.5 87.0,28.9 101.0,27.3 115.0,26.5 129.0,21.2 143.0,11.2 157.0,3.0" stroke="#4E79A7"/>
+        
+        
+        
+        
+        <circle class="spark-dot" cx="157.0" cy="3.0" r="2.5" fill="#4E79A7"/>
+        
+      </svg>
+      <div class="row2">
+        <span>avg $2,592</span>
+        <span>
+          
+            <span class="mom up">▲ 45.9%</span>
+          
+        </span>
+      </div>
+      
+      <div class="row-mau">
+        <span><span class="label">MAU</span> <span class="val">88,027</span></span>
+        <span><span class="label">new</span> <span class="val">80,172</span></span>
+        
+        <span class="cpm">$0.163/MAU</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name">
+          <span class="swatch" style="background: #F28E2B"></span>
+          <a href="./apps/ai-home-design.html">AI Home Design</a>
+        </span>
+        <span class="cur">$1,008</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="AI Home Design sparkline">
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.8 73.0,19.1 87.0,20.2 101.0,18.4 115.0,17.1 129.0,11.7 143.0,3.0 157.0,5.8 157,32" fill="#F28E2B"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.8 73.0,19.1 87.0,20.2 101.0,18.4 115.0,17.1 129.0,11.7 143.0,3.0 157.0,5.8" stroke="#F28E2B"/>
+        
+        
+        
+        
+        <circle class="spark-dot" cx="157.0" cy="5.8" r="2.5" fill="#F28E2B"/>
+        
+      </svg>
+      <div class="row2">
+        <span>avg $390</span>
+        <span>
+          
+            <span class="mom down">▼ 10.7%</span>
+          
+        </span>
+      </div>
+      
+      <div class="row-mau">
+        <span><span class="label">MAU</span> <span class="val">35,310</span></span>
+        <span><span class="label">new</span> <span class="val">32,837</span></span>
+        
+        <span class="cpm">$0.029/MAU</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name">
+          <span class="swatch" style="background: #E15759"></span>
+          <a href="./apps/chat-ultra.html">Chat Ultra</a>
+        </span>
+        <span class="cur">$340</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="Chat Ultra sparkline">
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.9 73.0,23.9 87.0,20.2 101.0,19.5 115.0,17.6 129.0,12.7 143.0,3.0 157.0,4.9 157,32" fill="#E15759"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.9 73.0,23.9 87.0,20.2 101.0,19.5 115.0,17.6 129.0,12.7 143.0,3.0 157.0,4.9" stroke="#E15759"/>
+        
+        
+        
+        
+        <circle class="spark-dot" cx="157.0" cy="4.9" r="2.5" fill="#E15759"/>
+        
+      </svg>
+      <div class="row2">
+        <span>avg $119</span>
+        <span>
+          
+            <span class="mom down">▼ 7.3%</span>
+          
+        </span>
+      </div>
+      
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      
+    </div>
+    
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name">
+          <span class="swatch" style="background: #76B7B2"></span>
+          <a href="./apps/faceai.html">FaceAI</a>
+        </span>
+        <span class="cur">$122</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="FaceAI sparkline">
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,28.6 87.0,20.3 101.0,22.2 115.0,23.0 129.0,22.0 143.0,3.0 157.0,10.4 157,32" fill="#76B7B2"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,28.6 87.0,20.3 101.0,22.2 115.0,23.0 129.0,22.0 143.0,3.0 157.0,10.4" stroke="#76B7B2"/>
+        
+        
+        
+        
+        <circle class="spark-dot" cx="157.0" cy="10.4" r="2.5" fill="#76B7B2"/>
+        
+      </svg>
+      <div class="row2">
+        <span>avg $40</span>
+        <span>
+          
+            <span class="mom down">▼ 28.3%</span>
+          
+        </span>
+      </div>
+      
+      <div class="row-mau">
+        <span><span class="label">MAU</span> <span class="val">566</span></span>
+        <span><span class="label">new</span> <span class="val">461</span></span>
+        
+        <span class="cpm">$0.215/MAU</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name">
+          <span class="swatch" style="background: #59A14F"></span>
+          <a href="./apps/goya.html">Goya</a>
+        </span>
+        <span class="cur">$9</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="Goya sparkline">
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.1 73.0,3.0 87.0,18.3 101.0,21.6 115.0,22.3 129.0,24.6 143.0,24.9 157.0,27.6 157,32" fill="#59A14F"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.1 73.0,3.0 87.0,18.3 101.0,21.6 115.0,22.3 129.0,24.6 143.0,24.9 157.0,27.6" stroke="#59A14F"/>
+        
+        
+        
+        
+        <circle class="spark-dot" cx="157.0" cy="27.6" r="2.5" fill="#59A14F"/>
+        
+      </svg>
+      <div class="row2">
+        <span>avg $32</span>
+        <span>
+          
+            <span class="mom down">▼ 65.3%</span>
+          
+        </span>
+      </div>
+      
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      
+    </div>
+    
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name">
+          <span class="swatch" style="background: #EDC948"></span>
+          <a href="./apps/screenmirroring.html">ScreenMirroring</a>
+        </span>
+        <span class="cur">$32</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="ScreenMirroring sparkline">
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,29.0 87.0,29.0 101.0,4.0 115.0,3.2 129.0,5.8 143.0,3.0 157.0,3.2 157,32" fill="#EDC948"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,29.0 87.0,29.0 101.0,4.0 115.0,3.2 129.0,5.8 143.0,3.0 157.0,3.2" stroke="#EDC948"/>
+        
+        
+        
+        
+        <circle class="spark-dot" cx="157.0" cy="3.2" r="2.5" fill="#EDC948"/>
+        
+      </svg>
+      <div class="row2">
+        <span>avg $13</span>
+        <span>
+          
+            <span class="mom down">▼ 0.8%</span>
+          
+        </span>
+      </div>
+      
+      <div class="row-mau">
+        <span><span class="label">MAU</span> <span class="val">2,848</span></span>
+        <span><span class="label">new</span> <span class="val">2,797</span></span>
+        
+        <span class="cpm">$0.011/MAU</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name">
+          <span class="swatch" style="background: #B07AA1"></span>
+          <a href="./apps/mirage.html">Mirage</a>
+        </span>
+        <span class="cur">$8</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="Mirage sparkline">
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.3 73.0,3.0 87.0,21.7 101.0,20.8 115.0,21.1 129.0,23.4 143.0,23.5 157.0,24.3 157,32" fill="#B07AA1"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.3 73.0,3.0 87.0,21.7 101.0,20.8 115.0,21.1 129.0,23.4 143.0,23.5 157.0,24.3" stroke="#B07AA1"/>
+        
+        
+        
+        
+        <circle class="spark-dot" cx="157.0" cy="24.3" r="2.5" fill="#B07AA1"/>
+        
+      </svg>
+      <div class="row2">
+        <span>avg $9</span>
+        <span>
+          
+            <span class="mom down">▼ 14.8%</span>
+          
+        </span>
+      </div>
+      
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      
+    </div>
+    
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name">
+          <span class="swatch" style="background: #FF9DA7"></span>
+          <a href="./apps/imote.html">iMote</a>
+        </span>
+        <span class="cur">$42</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="iMote sparkline">
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.9 73.0,23.5 87.0,24.0 101.0,23.1 115.0,21.9 129.0,21.4 143.0,20.5 157.0,3.0 157,32" fill="#FF9DA7"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,28.9 73.0,23.5 87.0,24.0 101.0,23.1 115.0,21.9 129.0,21.4 143.0,20.5 157.0,3.0" stroke="#FF9DA7"/>
+        
+        
+        
+        
+        <circle class="spark-dot" cx="157.0" cy="3.0" r="2.5" fill="#FF9DA7"/>
+        
+      </svg>
+      <div class="row2">
+        <span>avg $9</span>
+        <span>
+          
+            <span class="mom up">▲ 207.3%</span>
+          
+        </span>
+      </div>
+      
+      <div class="row-mau">
+        <span><span class="label">MAU</span> <span class="val">850,851</span></span>
+        <span><span class="label">new</span> <span class="val">688,961</span></span>
+        
+        <span class="cpm">$0.000/MAU</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="spark-card">
+      <div class="row1">
+        <span class="app-name">
+          <span class="swatch" style="background: #9C755F"></span>
+          <a href="./apps/music-player.html">Music Player</a>
+        </span>
+        <span class="cur">$0</span>
+      </div>
+      <svg viewBox="0 0 160 32" preserveAspectRatio="none" aria-label="Music Player sparkline">
+        <polyline class="spark-area" points="3,32 3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,29.0 87.0,29.0 101.0,29.0 115.0,3.0 129.0,25.3 143.0,29.0 157.0,29.0 157,32" fill="#9C755F"/>
+        <polyline class="spark-line" points="3.0,29.0 17.0,29.0 31.0,29.0 45.0,29.0 59.0,29.0 73.0,29.0 87.0,29.0 101.0,29.0 115.0,3.0 129.0,25.3 143.0,29.0 157.0,29.0" stroke="#9C755F"/>
+        
+        
+        
+        
+        <circle class="spark-dot" cx="157.0" cy="29.0" r="2.5" fill="#9C755F"/>
+        
+      </svg>
+      <div class="row2">
+        <span>avg $0</span>
+        <span>
+          
+            <span class="mom flat">—</span>
+          
+        </span>
+      </div>
+      
+      <div class="row-mau empty">
+        <span class="label">MAU</span><span class="val">— no Amplitude data</span>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <h2 class="section">Last 6 months · exact figures</h2>
+  <div class="table-wrap">
+    <table class="history">
+      <thead>
+        <tr>
+          <th class="app">App</th>
+          
+          <th class="">
+            Nov
+          </th>
+          
+          <th class="">
+            Dec
+          </th>
+          
+          <th class="">
+            Jan
+          </th>
+          
+          <th class="">
+            Feb
+          </th>
+          
+          <th class="">
+            Mar
+          </th>
+          
+          <th class="target">
+            Apr
+          </th>
+          
+          <th>Avg (12m)</th>
+          <th>Δ MoM</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td class="app"><span class="swatch" style="background: #4E79A7"></span>Tattooist</td>
+          
+          <td class="">$82</td>
+          
+          <td class="">$925</td>
+          
+          <td class="">$1,361</td>
+          
+          <td class="">$4,281</td>
+          
+          <td class="">$9,826</td>
+          
+          <td class="target">$14,336</td>
+          
+          <td>$2,592</td>
+          
+            <td class="delta up">▲ 45.9%</td>
+          
+        </tr>
+        
+        <tr>
+          <td class="app"><span class="swatch" style="background: #F28E2B"></span>AI Home Design</td>
+          
+          <td class="">$384</td>
+          
+          <td class="">$462</td>
+          
+          <td class="">$515</td>
+          
+          <td class="">$750</td>
+          
+          <td class="">$1,129</td>
+          
+          <td class="target">$1,008</td>
+          
+          <td>$390</td>
+          
+            <td class="delta down">▼ 10.7%</td>
+          
+        </tr>
+        
+        <tr>
+          <td class="app"><span class="swatch" style="background: #E15759"></span>Chat Ultra</td>
+          
+          <td class="">$124</td>
+          
+          <td class="">$135</td>
+          
+          <td class="">$161</td>
+          
+          <td class="">$231</td>
+          
+          <td class="">$367</td>
+          
+          <td class="target">$340</td>
+          
+          <td>$119</td>
+          
+            <td class="delta down">▼ 7.3%</td>
+          
+        </tr>
+        
+        <tr>
+          <td class="app"><span class="swatch" style="background: #76B7B2"></span>FaceAI</td>
+          
+          <td class="">$57</td>
+          
+          <td class="">$44</td>
+          
+          <td class="">$39</td>
+          
+          <td class="">$46</td>
+          
+          <td class="">$170</td>
+          
+          <td class="target">$122</td>
+          
+          <td>$40</td>
+          
+            <td class="delta down">▼ 28.3%</td>
+          
+        </tr>
+        
+        <tr>
+          <td class="app"><span class="swatch" style="background: #59A14F"></span>Goya</td>
+          
+          <td class="">$67</td>
+          
+          <td class="">$46</td>
+          
+          <td class="">$42</td>
+          
+          <td class="">$27</td>
+          
+          <td class="">$25</td>
+          
+          <td class="target">$9</td>
+          
+          <td>$32</td>
+          
+            <td class="delta down">▼ 65.3%</td>
+          
+        </tr>
+        
+        <tr>
+          <td class="app"><span class="swatch" style="background: #EDC948"></span>ScreenMirroring</td>
+          
+          <td class="">$0</td>
+          
+          <td class="">$31</td>
+          
+          <td class="">$32</td>
+          
+          <td class="">$29</td>
+          
+          <td class="">$32</td>
+          
+          <td class="target">$32</td>
+          
+          <td>$13</td>
+          
+            <td class="delta down">▼ 0.8%</td>
+          
+        </tr>
+        
+        <tr>
+          <td class="app"><span class="swatch" style="background: #B07AA1"></span>Mirage</td>
+          
+          <td class="">$12</td>
+          
+          <td class="">$14</td>
+          
+          <td class="">$13</td>
+          
+          <td class="">$9</td>
+          
+          <td class="">$9</td>
+          
+          <td class="target">$8</td>
+          
+          <td>$9</td>
+          
+            <td class="delta down">▼ 14.8%</td>
+          
+        </tr>
+        
+        <tr>
+          <td class="app"><span class="swatch" style="background: #FF9DA7"></span>iMote</td>
+          
+          <td class="">$8</td>
+          
+          <td class="">$10</td>
+          
+          <td class="">$11</td>
+          
+          <td class="">$12</td>
+          
+          <td class="">$14</td>
+          
+          <td class="target">$42</td>
+          
+          <td>$9</td>
+          
+            <td class="delta up">▲ 207.3%</td>
+          
+        </tr>
+        
+        <tr>
+          <td class="app"><span class="swatch" style="background: #9C755F"></span>Music Player</td>
+          
+          <td class="">$0</td>
+          
+          <td class="">$0</td>
+          
+          <td class="">$1</td>
+          
+          <td class="">$0</td>
+          
+          <td class="">$0</td>
+          
+          <td class="target">$0</td>
+          
+          <td>$0</td>
+          
+            <td class="delta flat">—</td>
+          
+        </tr>
+        
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="app">Total</td>
+          
+            
+            
+            
+            <td class="">$733</td>
+          
+            
+            
+            
+            <td class="">$1,666</td>
+          
+            
+            
+            
+            <td class="">$2,175</td>
+          
+            
+            
+            
+            <td class="">$5,385</td>
+          
+            
+            
+            
+            <td class="">$11,572</td>
+          
+            
+            
+            
+            <td class="target">$15,896</td>
+          
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  
+  <section class="pending">
+    <h2>Not yet reporting</h2>
+    <p>Billing export not yet enabled. These apps will appear in the dashboard once their export tables come online.</p>
+    <ul>
+      
+      <li>TruthSeeker <code>(ai-truthseeker-prod)</code></li>
+      
+      <li>StepCounter <code>(stepcounter-mau-prod)</code></li>
+      
+    </ul>
+  </section>
+  
+
+  <div class="gen-info">
+    Generated 2026-06-02 09:36 UTC · * = partial (current calendar month, not yet closed)
+  </div>
+
+</main>
+</body>
+</html>
