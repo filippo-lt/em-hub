@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q3 Reuse Platform — Build Once, Ship Faster</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel-2:#1d212b; --card:#1c2029;
+    --text:#eef1f6; --muted:#9aa3b2; --faint:#6b7280;
+    --border:#2a2f3a; --border-soft:#232732;
+    --accent:#6ea8fe; --accent-soft:rgba(110,168,254,.14);
+    --good:#5fd0a0; --warn:#f2c879; --hot:#f08a8a;
+    --radius:14px; --shadow:0 1px 0 rgba(255,255,255,.03), 0 12px 30px rgba(0,0,0,.35);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#f6f7f9; --panel:#ffffff; --panel-2:#f1f3f7; --card:#ffffff;
+      --text:#13161c; --muted:#5b6472; --faint:#8a94a3;
+      --border:#e3e7ee; --border-soft:#eceff4;
+      --accent:#2563eb; --accent-soft:rgba(37,99,235,.08);
+      --good:#1f9d6b; --warn:#b7791f; --hot:#c0392b;
+      --shadow:0 1px 0 rgba(0,0,0,.02), 0 10px 26px rgba(20,30,60,.08);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:40px 28px 72px}
+  .eyebrow{font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 10px}
+  h1{font-size:38px; line-height:1.1; margin:0 0 12px; letter-spacing:-.02em}
+  .lede{font-size:18px; color:var(--muted); max-width:760px; margin:0}
+  .section-title{font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); font-weight:700; margin:48px 0 16px}
+
+  /* flow */
+  .flow{display:flex; align-items:stretch; gap:14px; flex-wrap:wrap}
+  .node{
+    background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px 18px; flex:1; min-width:150px; box-shadow:var(--shadow);
+  }
+  .node .k{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); font-weight:700}
+  .node .t{font-size:16px; font-weight:650; margin-top:4px}
+  .node .s{font-size:13px; color:var(--muted); margin-top:4px}
+  .node.source{background:var(--panel-2)}
+  .node.out{border-color:var(--accent); background:var(--accent-soft)}
+  .arrow{display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--faint); min-width:52px}
+  .arrow .lbl{font-size:11px; font-style:italic; margin-bottom:2px; white-space:nowrap}
+  .arrow .gly{font-size:22px; line-height:1}
+  @media (max-width:760px){
+    .flow{flex-direction:column}
+    .arrow{flex-direction:row; gap:8px; min-height:30px}
+    .arrow .gly{transform:rotate(90deg)}
+  }
+
+  /* catalog */
+  .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+  @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid{grid-template-columns:1fr}}
+  .card{
+    text-align:left; cursor:pointer; background:var(--card); color:inherit;
+    border:1px solid var(--border); border-radius:var(--radius); padding:18px 16px;
+    box-shadow:var(--shadow); transition:transform .12s ease, border-color .12s ease;
+    font-family:inherit;
+  }
+  .card:hover{transform:translateY(-3px); border-color:var(--accent)}
+  .card.active{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft), var(--shadow)}
+  .card .ico{font-size:22px}
+  .card .name{font-size:16px; font-weight:680; margin-top:10px}
+  .card .ex{font-size:12.5px; color:var(--muted); margin-top:3px}
+  .badge{display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; margin-top:12px}
+  .b-low{background:rgba(95,208,160,.15); color:var(--good)}
+  .b-med{background:rgba(242,200,121,.18); color:var(--warn)}
+  .b-high{background:rgba(240,138,138,.18); color:var(--hot)}
+
+  /* detail drawer */
+  .drawer{
+    margin-top:14px; background:var(--panel); border:1px solid var(--border);
+    border-left:3px solid var(--accent); border-radius:var(--radius);
+    padding:20px 22px; box-shadow:var(--shadow);
+  }
+  .drawer h3{margin:0 0 4px; font-size:18px}
+  .drawer .sub{color:var(--muted); font-size:13.5px; margin:0 0 14px}
+  .dl{display:grid; grid-template-columns:repeat(2,1fr); gap:14px 28px}
+  @media (max-width:620px){.dl{grid-template-columns:1fr}}
+  .dl .lab{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); font-weight:700; margin-bottom:2px}
+  .dl .val{font-size:14px}
+  .hint{font-size:12.5px; color:var(--faint); margin-top:14px}
+
+  /* rules */
+  .rules{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  @media (max-width:820px){.rules{grid-template-columns:1fr}}
+  .rule{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:18px 18px; box-shadow:var(--shadow)}
+  .rule .num{font-size:13px; font-weight:800; color:var(--accent)}
+  .rule .h{font-size:16px; font-weight:680; margin:6px 0 6px}
+  .rule p{margin:0; font-size:13.5px; color:var(--muted)}
+
+  /* ask */
+  .ask{margin-top:18px; background:var(--accent-soft); border:1px solid var(--accent); border-radius:var(--radius); padding:22px 24px}
+  .ask h3{margin:0 0 10px; font-size:18px}
+  .ask ul{margin:0; padding-left:18px}
+  .ask li{margin:6px 0; font-size:14.5px}
+  .foot{margin-top:40px; color:var(--faint); font-size:12.5px; text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Q3 · Engineering</p>
+  <h1>Build once, ship faster.</h1>
+  <p class="lede">A shared catalog of reusable building blocks — harvested from the apps we already ship — so the next app is mostly assembly, and devs spend their time on what's actually new.</p>
+
+  <p class="section-title">The idea in one picture</p>
+  <div class="flow">
+    <div class="node source">
+      <div class="k">Start here</div>
+      <div class="t">Today's apps</div>
+      <div class="s">where the patterns already live</div>
+    </div>
+    <div class="arrow"><span class="lbl">extract · rule of 3</span><span class="gly">→</span></div>
+    <div class="node">
+      <div class="k">Build</div>
+      <div class="t">The catalog</div>
+      <div class="s">4 kinds of reusable asset (below)</div>
+    </div>
+    <div class="arrow"><span class="lbl">compose</span><span class="gly">→</span></div>
+    <div class="node out">
+      <div class="k">Result</div>
+      <div class="t">New app in days</div>
+      <div class="s">write only what's unique</div>
+    </div>
+  </div>
+
+  <p class="section-title">The catalog — 4 different kinds of asset <span style="color:var(--accent);text-transform:none;letter-spacing:0;font-weight:600">· click any card</span></p>
+  <div class="grid" id="cards"></div>
+  <div id="drawer"></div>
+
+  <p class="section-title">How we'll work — 3 rules that keep this alive</p>
+  <div class="rules">
+    <div class="rule">
+      <div class="num">01</div>
+      <div class="h">Extract on the rule of three</div>
+      <p>Don't promote something to the catalog until we've genuinely needed it in 3 apps. Two is a coincidence; three is a pattern. We harvest proven code — never abstract ahead of need.</p>
+    </div>
+    <div class="rule">
+      <div class="num">02</div>
+      <div class="h">The golden path is the easy path</div>
+      <p>If using a kit is more annoying than rolling your own, people will roll their own — and reuse dies. Every block must be the fastest way to do the thing, or it doesn't ship.</p>
+    </div>
+    <div class="rule">
+      <div class="num">03</div>
+      <div class="h">Everything has an owner</div>
+      <p>Each block is a maintenance commitment, not a one-off. If nobody owns it, it rots in a quarter. Ownership and a changelog are part of "done", not optional.</p>
+    </div>
+  </div>
+
+  <p class="section-title">What this means for you</p>
+  <div class="ask">
+    <h3>The ask for the team</h3>
+    <ul>
+      <li><b>Use them first.</b> Reach for the catalog before writing from scratch — and tell us loudly when something's missing or painful.</li>
+      <li><b>Spot the patterns.</b> When you copy-paste from another app for the 3rd time, that's a candidate. Flag it.</li>
+      <li><b>Own what you extract.</b> If you pull a block out, you own its first version and its docs. Small surface, clear contract.</li>
+      <li><b>Start low-risk.</b> We begin with scaffolding and AI skills (cheap, throwaway-friendly) before the harder versioned kits.</li>
+    </ul>
+  </div>
+
+  <p class="foot">Q3 Reuse Platform · mobile now, backend next · the same playbook, a second surface</p>
+</div>
+
+<script>
+const ASSETS = [
+  {
+    id:"scaffold", ico:"🏗️", name:"Scaffolding", ex:"e.g. AppsSkeleton",
+    risk:"low", riskLabel:"Low risk",
+    what:"A generator that births a brand-new app — folder structure, config, CI, the wiring nobody enjoys redoing.",
+    consume:"Run once at app birth. The output is yours to evolve.",
+    coupling:"No version coupling — it can drift freely from the apps it spawned.",
+    owns:"Platform-minded dev; light touch.",
+    note:"Great first target: high value, low blast radius. AppsSkeleton is already here."
+  },
+  {
+    id:"kits", ico:"🧩", name:"Feature kits", ex:"e.g. MartechKit, Auth, Paywall",
+    risk:"high", riskLabel:"Highest care",
+    what:"Drop-in vertical slices — a whole capability (analytics, auth, paywall) wired up so a dev just integrates it.",
+    consume:"A versioned dependency the app keeps pulling updates from.",
+    coupling:"This is where versioning pain lives — a breaking change ripples across every app on it.",
+    owns:"Needs a clear owner + semver discipline + changelog.",
+    note:"Most powerful but hardest layer. MartechKit proves the model; grow this one deliberately, not first."
+  },
+  {
+    id:"libs", ico:"🧱", name:"Shared libraries", ex:"e.g. design system, networking",
+    risk:"high", riskLabel:"High blast radius",
+    what:"Foundational primitives everything leans on — UI components, networking, formatting, the low-level glue.",
+    consume:"A versioned dependency, used almost everywhere.",
+    coupling:"Highest reuse and highest blast radius — a change touches every app at once.",
+    owns:"Strong ownership; changes reviewed carefully.",
+    note:"Stable, slow-moving, boring on purpose. The bedrock under the kits."
+  },
+  {
+    id:"skills", ico:"🤖", name:"AI skills", ex:"e.g. codegen accelerators",
+    risk:"low", riskLabel:"Low commitment",
+    what:"Authoring-time accelerators that generate or adapt boilerplate — they don't ship in the binary.",
+    consume:"Invoked while coding; output is plain code in your repo.",
+    coupling:"No runtime coupling. Cheapest to create, easiest to throw away.",
+    owns:"Anyone can author; low ceremony.",
+    note:"The low-commitment alternative when you're unsure something deserves to be a real dependency."
+  }
+];
+
+const cards = document.getElementById("cards");
+const drawer = document.getElementById("drawer");
+const badgeClass = {low:"b-low", med:"b-med", high:"b-high"};
+let active = null;
+
+ASSETS.forEach(a=>{
+  const b = document.createElement("button");
+  b.className = "card"; b.dataset.id = a.id;
+  b.innerHTML = `<div class="ico">${a.ico}</div>
+    <div class="name">${a.name}</div>
+    <div class="ex">${a.ex}</div>
+    <span class="badge ${badgeClass[a.risk]}">${a.riskLabel}</span>`;
+  b.addEventListener("click", ()=>select(a.id));
+  cards.appendChild(b);
+});
+
+function select(id){
+  const a = ASSETS.find(x=>x.id===id);
+  document.querySelectorAll(".card").forEach(c=>c.classList.toggle("active", c.dataset.id===id));
+  if(active===id){ active=null; drawer.innerHTML=""; document.querySelectorAll(".card").forEach(c=>c.classList.remove("active")); return; }
+  active = id;
+  drawer.innerHTML = `<div class="drawer">
+    <h3>${a.ico} ${a.name} <span style="font-weight:500;color:var(--muted);font-size:14px">— ${a.ex}</span></h3>
+    <p class="sub">${a.what}</p>
+    <div class="dl">
+      <div><div class="lab">How it's consumed</div><div class="val">${a.consume}</div></div>
+      <div><div class="lab">Coupling / risk</div><div class="val">${a.coupling}</div></div>
+      <div><div class="lab">Who owns it</div><div class="val">${a.owns}</div></div>
+      <div><div class="lab">Why it matters</div><div class="val">${a.note}</div></div>
+    </div>
+    <div class="hint">Click the card again to close.</div>
+  </div>`;
+  drawer.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+// open the first card by default so the page never looks empty
+select("scaffold");
+</script>
+</body>
+</html>
