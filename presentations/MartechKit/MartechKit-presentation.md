@@ -31,17 +31,17 @@ All generated images should follow this consistent style:
 
 **Presenter:** Filippo
 
-**Title:** Same Integration, Wired 10 Times
+**Title:** Same Integration, Wired N Times
 
-**Message:** Every app integrates the same third-party Martech tools — Amplitude, RevenueCat, AppsFlyer — from scratch. Different implementations, different versions, different event names. The result is drift: no two apps wire these the same way, and every Martech change becomes a portfolio-wide ticket.
+**Message:** Every app integrates the same third-party Martech tools — Amplitude, RevenueCat, AppsFlyer, Firebase, Superwall and a few more — from scratch. Different implementations, different versions, different event names. The result is drift: no two apps wire these the same way, and every Martech change require a new Jira ticket for every app in the portfolio, with consequent planning. 
 
 Don't dwell — everyone in the room has felt this.
 
-**Format:** Schematic showing N apps each with their own duplicated vendor stack. The point is the redundancy, not the architecture.
+**Format:** Schematic showing N apps each with their own duplicated vendor stack. The stacks should visibly extend beyond the three named vendors — a "+ more" chip or a fade-out — so it's clear the dependency list keeps growing. The point is the redundancy and the sprawl, not the architecture.
 
 **🖼 Image prompt:**
 
-> [Style prefix] + "Six app icons arranged in a row, each sitting on top of its own identical vertical stack of three rounded rectangles labelled 'Amplitude', 'RevenueCat', 'AppsFlyer'. Each stack is isolated — no connections between them. Use coral for the app icons and teal for the stacked boxes. Below the row, a subtle label: '6 apps × 3 vendor integrations = 18 implementations to maintain'. The visual should emphasise wasteful duplication and drift."
+> [Style prefix] + "Six app icons arranged in a row, each sitting on top of its own identical vertical stack of rounded rectangles labelled (top to bottom): 'Amplitude', 'RevenueCat', 'AppsFlyer', 'Firebase', 'Superwall', and a final chip labelled '+ more' rendered in a lighter teal with a subtle fade to suggest the list keeps growing. Each stack is isolated — no connections between them. Use coral for the app icons and teal for the stacked boxes. Below the row, a subtle label: 'Every app in the portfolio × N vendor integrations = a maintenance surface that grows with every new app and every new vendor'. The visual should emphasise wasteful duplication, drift, and an ever-expanding dependency list — both more apps and more vendors."
 
 ---
 
@@ -55,7 +55,7 @@ Don't dwell — everyone in the room has felt this.
 
 - **Mis-tracked events.** Each app names and structures events differently, so cross-app product analysis is unreliable or impossible.
 - **Martech bottlenecked on engineering.** Every experiment or vendor change waits on per-app dev work.
-- **Cognitive load on engineers.** Every developer has to learn the quirks of each vendor SDK.
+- **Cognitive load on engineers.** Every developer has to learn the details of each vendor SDK.
 
 This is the slide for the product half of the room — the cost is in the data and the speed, not just the code.
 
@@ -170,8 +170,8 @@ Victor speaks to what validation actually looked like: how the pilot integration
 **Message:** Three steps to portfolio-wide coverage:
 
 1. **Roll out across the rest of the native iOS portfolio.**
-2. **Android version of the library — in parallel.**
-3. **Flutter version of the library — in parallel.**
+2. **Android version of the library — in the works - should have a first version and integration by the end of the month.**
+3. **Flutter version of the library — will follow swiftly after.**
 
 Once Android and Flutter land, we have full portfolio coverage. And MartechKit sits alongside the other shared components — Parapet, AI Gateway, TVFoundationSDK — as part of one repeatable platform pattern, not a one-off.
 
