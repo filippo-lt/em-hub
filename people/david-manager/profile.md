@@ -64,10 +64,10 @@ He values leaders, not reporters.
 
 ## Current Priorities (theirs)
 Top focus areas as of May 2026:
-	•	**Financial accountability of app investments** — pushing EMs to be "goalkeepers" of the human-resources investment per app; expects Filippo to own cost/value decisions on Tattooist, AI Design, Chatbot, not route through Product
+	•	**Financial accountability of app investments** — pushing EMs to be "goalkeepers" of the human-resources investment per app; expects Filippo to own cost/value decisions on Tattooist, AI Design, ChatUltra, not route through Product
 	•	**App closure pressure** — David is the one calling closure shots company-wide ("this company is very bad killing projects"); his lever is the cost narrative (M&A million)
 	•	**Carve-out readiness** — preparing service migration list for potential Q4/Q1 carve-out scenario; wants scope + estimations from each team
-	•	M&A — Filippo investigating Chatbot/Sat AI/Lorca C-level duplication mess (Christian/Emilio/Sergio Wetzel split); full M&A ownership Q3
+	•	M&A — Filippo investigating ChatUltra/Sat AI/Lorca C-level duplication mess (Christian/Emilio/Sergio Wetzel split); full M&A ownership Q3
 	•	AI transformation — Phase 2 underway; AI Design externals slipped end-July → end-September (~€75k extension to keep Vlad as advisor not SE); "no externals by June 30" commitment now contradicted and unrenegotiated
 	•	**Codex / AI tooling cost control** — pushing for per-developer visibility on spend; Andrey heavy user; "be conscious" framing
 	•	H2 families structure — Launches + M&A merge confirmed as Filippo's scope; conditions (Flutter, Mobile SE backfill, Victor cadence) unsettled
@@ -93,7 +93,7 @@ Topics that regularly come up with David:
 
 Channels David explicitly delegates to Filippo:
 	•	Sergio Wetzel (AI Design product roadmap / 6-month threshold conversation)
-	•	Antonio/Christian's team via Listen (Chatbot context)
+	•	Antonio/Christian's team via Listen (ChatUltra context)
 	•	Andrey (Codex spending conversation)
 
 Plus implicitly:
