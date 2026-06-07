@@ -27,7 +27,7 @@ This framework converts every app into a numbered bet with a horizon, a trigger,
 
 ## Scope
 
-**In:** All apps where the Mobile App Unit owns engineering capacity — currently AI Design, Face AI, Tattooist, Truth Seeker, iMode, Screen Mirroring, plus M&A apps (Chatbot, Sat AI, Lorca) as ownership lands.
+**In:** All apps where the Mobile App Unit owns engineering capacity — currently AI Design, Face AI, Tattooist, Truth Seeker, iMode, Screen Mirroring, plus M&A apps (ChatUltra, Sat AI, Lorca) as ownership lands.
 
 **Out (v1):** Internal tooling, infra-only components, shared services (Langfuse, AI Gateway). These need a different lens.
 
@@ -101,7 +101,7 @@ Each app sits in exactly one cell. Quarterly review = does this app still belong
 | AI Design scorecard — fully populated | Next 1:1 (first concrete bet on the table) |
 | Face AI + Tattooist scorecards | +1 week |
 | Truth Seeker + iMode + Screen Mirroring | +2 weeks |
-| M&A app scorecards (Chatbot, Sat AI, Lorca) | After Sergio Wetzel + Listen + Christian conversations land |
+| M&A app scorecards (ChatUltra, Sat AI, Lorca) | After Sergio Wetzel + Listen + Christian conversations land |
 | First quarterly portfolio review | End Q2 (target: last week of June) |
 
 ---

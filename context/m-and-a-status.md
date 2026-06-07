@@ -8,7 +8,7 @@ The M&A unit owns 5 acquired apps, distinct from the existing mobile app unit (T
 
 | App | Priority | Platforms | Tech | Studio | State |
 | --- | --- | --- | --- | --- | --- |
-| Chatbot | P1 | iOS / Android | Flutter | Helikanon | Live, revenue-generating |
+| ChatUltra | P1 | iOS / Android | Flutter | Helikanon | Live, revenue-generating |
 | PDF Editor | P2 | iOS / Android | Flutter | TurboCat | Live |
 | Step Counter | P2 | Android | Android Native | Helikanon | Live |
 | Truth Seeker | P3 | iOS / Android | Flutter | Helikanon | Pre-launch — blocked on Apple review (rejected x1) |

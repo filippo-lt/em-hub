@@ -1,7 +1,7 @@
 # M&A App — Technical Scorecard
 
-> **Purpose.** Give Filippo enough technical signal on an acquired app to make a confident 3-way call in front of the PM:
-> **(1)** hand to an external team · **(2)** keep with current team (broken or not) · **(3)** move to an internal developer (then choose: full rewrite · partial rewrite · fix-and-stabilise · keep).
+> **Purpose.** Give Filippo enough technical signal on an acquired app to make a confident call in front of the PM, in the shared four-verb vocabulary:
+> **Govern-in-place** (studio keeps delivery, we govern) · **Remediate** (time-boxed internal SE fix) · **Rebuild** (greenfield/new-app track, internal SE) · **Sunset** (wind down). The intervention options in §5 map onto these verbs; §6 lands on exactly one.
 >
 > **Filler.** A Claude Code session, working against the repo(s). Every claim must cite evidence (file paths, command output, version strings, commit SHAs). When something can't be determined, write `unknown — <reason>`. Never fabricate.
 >
@@ -53,6 +53,9 @@ Claude: fill every cell. Use `unknown — <reason>` when not measurable. Cite ev
 | ARCHITECTURE.md or equiv                       | yes / no                           |                                                                 |
 | Infra-as-code present?                         |                                    | [terraform / pulumi / none]                                     |
 | Observability (logs, metrics, alerts)          |                                    |                                                                 |
+| Crash-free % (last 30d)                        |                                    | [Crashlytics / store; ★ load-bearing metric]                    |
+| Crashes on open?                               | yes / no / unknown                 | [smoke test or store reviews]                                   |
+| Store reviews citing crashes / instability     |                                    | [recent review evidence]                                        |
 
 ---
 
@@ -112,7 +115,8 @@ Separate section because these may force action regardless of the strategic deci
 
 ## 5. Intervention options
 
-Evaluate each path. Be concrete on scope and effort.
+Evaluate the paths realistically on the table. Be concrete on scope and effort. Map to the four verbs:
+**A → Govern-in-place · B → Govern-in-place (status quo) · C → Remediate (C2/C3) or Rebuild (C1) · D → Sunset.**
 
 ### A. Hand to external team as-is
 - **Feasibility:** high / medium / low
@@ -125,10 +129,14 @@ Evaluate each path. Be concrete on scope and effort.
 - **Cost trajectory:**
 - **Failure modes within 6 months:**
 
-### C. Move to an internal developer
+### C. Move to an internal developer (Remediate / Rebuild)
 Pick the most likely sub-path(s) and size them. Don't fill all four unless several are plausible.
 
-- **C1 — Full rewrite**
+**Discovery cost first — SE-on-app = discovery + execution, not execution alone.**
+- **Product-context recoverability:** high / medium / low — can what the app *is* (scope, rules, edge cases) be reconstructed from code + analytics + reviews + QA, or is it locked in the studio's heads? [evidence]
+- **Estimated discovery effort:** [person-weeks] (reference: Face AI pair 2026-05-14 — discovery/PO/QA info-gathering was ~40% of SE time). Discovery gates the rewrite; if a discovery 1-pager can't be produced, the app is not rewrite-viable → reconsider Sunset.
+
+- **C1 — Full rewrite (→ Rebuild)**
   - Scope: [platforms / scope cut]
   - Effort: [person-weeks]
   - Risk:
@@ -145,11 +153,18 @@ Pick the most likely sub-path(s) and size them. Don't fill all four unless sever
   - What this internal dev would actually do day-to-day:
   - Effort to ramp:
 
+### D. Sunset (wind down)
+- **Case for sunset:** [low/no value + not savable, or savable but not worth the discovery+rebuild cost]
+- **What's lost:** [revenue, users, IP — be concrete]
+- **Wind-down steps:** [pull from store / notify or migrate users / end studio contract / archive repo]
+- **Capacity reclaimed:** [who/what frees up]
+
 ---
 
 ## 6. Recommendation
 
-**Picked path:** [A / B / C1 / C2 / C3 / C4]
+**Picked verb:** [ Govern-in-place · Remediate · Rebuild · Sunset ]
+**Picked path:** [A / B / C1 / C2 / C3 / C4 / D]
 **Confidence:** low / medium / high
 
 **Why (2–3 reasons):**
@@ -175,7 +190,7 @@ Pick the most likely sub-path(s) and size them. Don't fill all four unless sever
 Claude: append/update this row in `m-and-a/portfolio-technical.csv`. Reproduce it here so the per-app file is self-contained.
 
 ```
-[app],[YYYY-MM-DD],[build_BE pass/fail/NA],[build_AND],[build_iOS],[build_Web],[ci_state green/red/none],[sec_blockers count],[top_red_flag short],[recommendation A/B/C1/C2/C3/C4],[est_person_weeks],[confidence low/med/high]
+[app],[YYYY-MM-DD],[build_BE pass/fail/NA],[build_AND],[build_iOS],[build_Web],[ci_state green/red/none],[crash_free %],[sec_blockers count],[top_red_flag short],[verb govern/remediate/rebuild/sunset],[path A/B/C1/C2/C3/C4/D],[est_person_weeks],[confidence low/med/high]
 ```
 
 ---

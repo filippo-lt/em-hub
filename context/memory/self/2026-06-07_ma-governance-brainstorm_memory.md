@@ -1,0 +1,17 @@
+```
+[2026-06-07] [self] - Applied the "build to completion, then present" discipline *proactively* this time — explicit decision to NOT report the M&A governance model to David until it's set up and running. This is the May 26 lesson ("coming soon, fully built" beats "let me show you what I have so far"; half-built triggers David's retreat-and-unravel reflex) being used as a forward rule, not recognised in hindsight. Keep doing this: framework first, presentation second.
+
+[2026-06-07] [self] - The control-vs-takeover reframe broke a month-long stuck loop. Had been *asking* David for ChatUltra externals and *absorbing* each delay ("check the roadmap / product needs to know / after holidays / how do we handle the studios") — the exact load-without-the-deal / fold-on-resource-asks pattern from May 8. The fix wasn't a better ask; it was separating what David wants (control — deliverable free) from what he won't fund (takeover — gated). Lesson: when stuck repeatedly asking for the same resource and getting moving goalposts, check whether I've conflated two different things and whether the answer is "deliver the cheap half now."
+
+[2026-06-07] [self] - Resource-ask reframe as a repeatable move: stop asking for the expensive thing that keeps getting denied (externals); ask for the cheap thing that can't reasonably be refused (logins/access). Pattern to reuse — when an ask keeps getting "no," find the minimum-viable version that delivers most of the value and is hard to refuse.
+
+[2026-06-07] [self] - A month of shifting reasons (rather than a yes or a no) usually means the real answer is "not now, and I don't want to say it." Don't keep chasing a green light that isn't coming — force the explicit decision OR deliver the version that doesn't need the green light. Reaffirms the "name the trade-off in the moment, don't absorb silently" discipline.
+
+[2026-06-07] [self] - Caught myself that "I don't like them / I don't like the product people" was leaking into M&A strategy. Flagged it as an emotional contaminant — the scorecard is dispassionate (takeover-viability + value decide, not whether I like the people). Keep the case clean of it or David discounts the whole thing. Watch for like/dislike sneaking into portfolio judgment.
+
+[2026-06-07] [self] - Build-to-completion discipline held across the *whole* session, not just a moment — built the full M&A model + artifacts and chose to keep them off David's desk until set up and running. Sustained application of the May 26 lesson over hours of work.
+
+[2026-06-07] [self] - Pushed twice for simplicity against my own build instinct ("keep it essential," "<1hr/week to manage," "remove redundant info") and actively pruned — two overlapping classifiers down to one, vocabulary defined once, duplicate fields removed. This is the deliberate counterweight to my documented "build elaborate things / built-but-not-maintained" failure mode. Standing design question for any system I build (em-hub itself, metrics, delivery tools): "what's the <1hr/week version?" The simplicity constraint is what makes a system survive contact with my own follow-through.
+
+[2026-06-07] [self] - On the "fix the name everywhere" instruction, stopped before bulk-rewriting 26 files and separated living docs (fix) from point-in-time records (preserve) — didn't alter historical transcripts/memory/decisions. Good judgment pattern to keep: a "fix everything" instruction is not licence to rewrite the historical record; surface the distinction and let the user choose scope.
+```

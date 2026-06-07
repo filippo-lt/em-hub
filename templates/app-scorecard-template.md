@@ -1,105 +1,75 @@
 # App Scorecard — [App Name]
 
-**As of:** [YYYY-MM-DD]
-**EM:** Filippo
-**PM / Product owner:** [name]
-**Studio / vertical:** [name]
-**Advisor:** [name or —]
-**Last review:** [date] · **Next review:** [date]
+**As of:** [YYYY-MM-DD] · **Next review:** [date]
+**Governance owner:** Filippo · **Delivery owner (studio/team):** [name]
+**PM / Product owner:** [name] · **Advisor:** [name or —]
+
+> A *decision* document, not a data dump. The live numbers live in the Portfolio Tracker (`templates/ma-portfolio-tracker.md`); this is pulled out only when an app needs a tier or takeover call. For repo-level evidence behind a Remediate/Rebuild call, see `templates/ma-app-technical-scorecard.md`.
 
 ---
 
-## Tier & Position
+## 1. Position
 
-**Current tier:** [ Build · Scale · Maintain · Wind-down · Sunset ]
-**Proposed tier:** [ if change ]
-**Reason for any change:** [one line]
-
-**2×2 position:**
-- Engineering investment: [ INVEST · MAINTAIN · STOP ]
-- Marketing investment: [ INVEST · MAINTAIN · STOP ]
+**Posture:** [ Govern-in-place · Remediate · Rebuild · Sunset ]
+**Tier:** [ Build · Scale · Maintain · Wind-down · Sunset ] → [proposed, if changing]
+*(Tier maps to the Eng×Mktg 2×2 in `context/app-portfolio-framework.md` — no need to re-fill it here.)*
 
 ---
 
-## Investment (€ / month)
+## 2. Snapshot (from the tracker)
 
-| Line | Cost | Notes |
-|---|---|---|
-| Internal eng FTE | €X | [names · %FTE] |
-| External eng | €X | [names · contract end] |
-| QA | €X | [internal / external · %] |
-| Infra | €X | [cloud + key 3rd-party] |
-| AI tooling | €X | [Codex + APIs, if material] |
-| Marketing spend | €X | [source: name] |
-| Advisor time | €X | [name · %FTE] |
-| **Total monthly burn** | **€X** | |
+| | Value | 3-mo trend | Source |
+|---|---|---|---|
+| Monthly cost | €X | ↑→↓ | GCP + contract |
+| MRR | €X | ↑→↓ | RevenueCat |
+| MAU | X | ↑→↓ | Amplitude |
 
-**Quarterly burn (3 mo):** €X
-**Annualised:** €X
+**Unit-economics read (1 line):** [are we making money per user? — pull full CAC/LTV/payback only if the decision turns on it]
+
+*(Stability lives in §5; business numbers here.)*
 
 ---
 
-## Return
+## 3. Score → Action
 
-| Metric | Current | 3-mo trend | Target | Source |
-|---|---|---|---|---|
-| MRR / monthly revenue | €X | ↑ → ↓ | €X | [owner] |
-| Active users (MAU) | X | ↑ → ↓ | X | [owner] |
-| New users / month | X | ↑ → ↓ | X | [owner] |
-| CAC | €X | ↑ → ↓ | €X | [owner] |
-| LTV | €X | ↑ → ↓ | €X | [owner] |
-| LTV / CAC | X | ↑ → ↓ | >3 | [owner] |
-| Payback period | X mo | ↑ → ↓ | <12 mo | [owner] |
+**Recommendation:** [ one of the four verbs ]
 
-**Unit economics summary:** [1 sentence — are we making money on each user?]
+**Why (2–3 lines, evidence-based):**
+- [value signal — MRR/MAU/trend]
+- [health/savability signal — crash-free %, codebase, AI-SE viability: codebase quality + product-context recoverability]
+- [cost / opportunity signal]
+
+**If Remediate or Rebuild:** discovery + execution cost = [person-weeks] (remember: SE-on-app = discovery + rewrite; discovery is ~half).
 
 ---
 
-## Bet size & horizon
+## 4. Triggers (pre-agreed, dated, named action)
 
-- **Quarterly bet (eng + marketing combined):** €X
-- **Horizon to next decision:** [N months]
-- **Cost-if-wrong (sunk if we close at horizon):** €X
-
----
-
-## Kill triggers (pre-agreed)
-
-Triggers must be specific, dated, and have a named action.
-
-- [ ] **Down-tier trigger:** If [metric] is not [value] by [date] → move to [tier] · action: [eng exit / marketing stop / both]
-- [ ] **Up-tier trigger:** If [metric] reaches [value] by [date] → move to [tier] · action: [add resource / increase spend]
-- [ ] **Hard kill:** If [metric] falls below [floor] at any time → sunset
+- [ ] **Down-tier / kill:** if [metric] is not [value] by [date] → [verb] · action: [eng exit / mktg stop / sunset]
+- [ ] **Up-tier:** if [metric] reaches [value] by [date] → [verb] · action: [add resource / increase spend]
+- [ ] **Hard floor:** if [metric] falls below [floor] at any time → [action]
 
 ---
 
-## Health
+## 5. Quality & release
 
-| Dimension | State | Notes |
-|---|---|---|
-| Codebase | Good / Acceptable / Poor | [note] |
-| Team sustainability | Good / Acceptable / Poor | [key-person risk, morale, burnout] |
-| Roadmap clarity | Clear / Partial / Unclear | [who owns the roadmap] |
-| Vendor / external risk | Low / Medium / High | [single-vendor, contract end dates] |
-| Security / compliance | OK / Watch / Action | [open items] |
-
----
-
-## Open questions / blockers
-
-- [bullet]
-- [bullet]
+| | State |
+|---|---|
+| Crash-free % vs threshold | X% / [threshold] |
+| Last release-floor result | ✅ / ❌ [date] — crash-free + smoke + secret scan + consent |
+| QA stage | [ floor only · + exploratory · + sign-off mandate ] |
+| Open security items | [count + pointer; see technical scorecard §4] |
 
 ---
 
-## Decision log (most recent first)
+## 6. The ask + decision log
+
+**The ask:**
+- From David: [access / sign-off / air cover] — by [date]
+- From Product: [the kill/continue call] — by [date]. **Default if no decision by then:** [wind-down to maintenance-only / proceed as recommended].
+
+**Decision log (most recent first):**
 
 | Date | Decision | Owner |
 |---|---|---|
 | [YYYY-MM-DD] | [what was decided] | [name] |
-
----
-
-## Notes for next 1:1
-
-[3 bullets max — what you want David to know or decide]
