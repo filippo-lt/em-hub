@@ -1,6 +1,6 @@
 # Brag Doc — Filippo
 
-**Last updated:** 2026-05-20
+**Last updated:** 2026-06-07
 **Current period:** 2026 H1
 
 > Cadence: 5–10 min every Friday. Monthly roll-up on the last Friday. Quarterly close = pre-built self-review input.
@@ -40,6 +40,8 @@
 - **2026-05-08 — Reframed Tattooist graduation as success, not loss** — Stakes: app likely moving from my org to Growth; my reflex read it as "I'm gonna lose it" (Narrative A — empire). Position I took: "advisorship worked, app graduated — that's the job" (Narrative B — AI-native delivery). Where it landed: pre-frame the exit before someone else describes it first; treat graduation as a portfolio proof point for the H2 scope conversation with David.
 
 - **2026-05-08 — Inverted my approach to the H2 narrative** — Stakes: I'd deferred the H2 scope conversation with David 8 times because I didn't believe Narrative B (AI-native delivery pipeline). Position I took: belief in a strategic narrative is *downstream* of delivery, not upstream — stop trying to write the story, engineer the evidence points that make it true. Where it landed: decoupled "surface H2 scope as a partnership question" from "pitch Narrative B" — the former doesn't require the latter to be true yet. Removes the deferral block.
+
+- **2026-06-07 — Reframed an unfunded M&A mandate into a zero-resource governance model** — Stakes: David asked me to "establish control" over the 5 M&A apps but wouldn't fund the takeover (≈1 month of delayed ChatUltra externals) — a textbook responsibility-without-authority trap. Position I took: separated *control* (visibility, gates, decision rhythm — deliverable now, zero new resources) from *takeover* (funded execution, gated on business case + resourcing). Where it landed: a full operating model where governance alone shrinks the portfolio 5→3 (two sunsets, one business-case gate), the resource ask flips from expensive-and-denied (externals) to cheap-and-unrefusable (logins/data), and a 3-tier QA strategy mandates quality without fighting the "studios are independent" politics. Designed and saved; deliberately holding presentation to David until it's set up and running (build-to-completion discipline). Evidence: `context/ma-governance-operating-model.md`.
 
 ---
 
