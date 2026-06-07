@@ -6,8 +6,14 @@
 **Relation to other docs:**
 - Parent framework: `context/app-portfolio-framework.md` (the 2×2, tiers, cadence)
 - Portfolio state: `context/m-and-a-status.md` (the 5 apps, studios, tech profile)
-- Per-app business scorecard: `templates/app-scorecard-template.md`
-- Per-app technical scorecard: `templates/ma-app-technical-scorecard.md`
+- Live heartbeat: `templates/ma-portfolio-tracker.md` (one row per app — the monthly review)
+- Per-app decision doc: `templates/app-scorecard-template.md`
+- Per-app technical evidence: `templates/ma-app-technical-scorecard.md`
+
+**Shared decision vocabulary (all artifacts speak these four verbs):**
+**Govern-in-place** (studio delivers, we govern) · **Remediate** (time-boxed internal SE fix) · **Rebuild** (greenfield/new-app track, internal SE) · **Sunset** (wind down). Posture = where an app sits now; a scorecard recommends a move between them.
+
+**Artifact flow:** Tracker (always) → app flags 🔴 or hits a trigger date → refresh its Scorecard to make the call → if Remediate/Rebuild/takeover is on the table, run the Technical Audit for evidence → decision logged → tracker row updates. Govern-in-place apps mostly just live in the tracker.
 
 ---
 
