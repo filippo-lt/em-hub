@@ -59,25 +59,11 @@ Cannot govern what I can't see. Per app, get **read** access to: repo (`github.c
 
 **Action:** in the `M&A Apps Tech Overview` sheet, add a "Access? Y/N" column. The N's are the **week-one ask to David — logins, not headcount.**
 
-### Phase 1 — Scorecard (essential + automated)
+### Phase 1 — Tracker (the heartbeat)
 
-Keep to ~7 load-bearing fields. More than that and it won't get maintained. (Full per-app detail lives in `templates/app-scorecard-template.md`; this is the at-a-glance row.)
+One row per app in the **Portfolio Tracker** (`templates/ma-portfolio-tracker.md`) — the column spec and automation notes live there, not duplicated here. 7 of its 10 columns auto-fill from a weekly script; I touch only Posture, Studio, and Next decision, which rarely change. v1 manual to validate the columns → v2 automate.
 
-| Field | Source | Automatable? |
-|---|---|---|
-| Studio/eng cost (monthly) | contract + GCP | Partly (`/gcp-spend`) |
-| Infra + AI cost | GCP billing | **Yes** — report exists |
-| MRR | RevenueCat REST API | **Yes** |
-| MAU | Amplitude export API | **Yes** |
-| **Crash-free %** | Crashlytics → BigQuery export | **Yes** |
-| Latest release / cadence | App Store Connect / Play API (or GitHub tags) | **Yes** |
-| Tier + current action | me (judgment) | No |
-
-5 of 7 are API-pullable. A scheduled script (fits the existing `scripts/` + gh-metrics pattern) writes them to the sheet weekly; I hand-enter only tier/action + any PM-sourced marketing spend.
-
-**Sequence:** v1 manual to prove the field set is right → v2 automated. Don't build the pipeline before the 7 fields are validated.
-
-**Star metric: crash-free %.** Objective, automatable, and the exact thing the studios fail at. It does triple duty — health (Phase 1), release gate (Phase 2), QA evidence (QA Tier 3).
+**Star metric: crash-free %.** Objective, automatable, the exact thing the studios fail at. Triple duty — health (tracker), release gate (Phase 2), QA evidence (QA Tier 3).
 
 ### Phase 2 — Release control (automated, exception-based)
 

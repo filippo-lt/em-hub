@@ -12,7 +12,7 @@
 
 **Posture:** [ Govern-in-place · Remediate · Rebuild · Sunset ]
 **Tier:** [ Build · Scale · Maintain · Wind-down · Sunset ] → [proposed, if changing]
-**2×2:** Eng [ INVEST · MAINTAIN · STOP ] × Mktg [ INVEST · MAINTAIN · STOP ]
+*(Tier maps to the Eng×Mktg 2×2 in `context/app-portfolio-framework.md` — no need to re-fill it here.)*
 
 ---
 
@@ -23,9 +23,10 @@
 | Monthly cost | €X | ↑→↓ | GCP + contract |
 | MRR | €X | ↑→↓ | RevenueCat |
 | MAU | X | ↑→↓ | Amplitude |
-| **Crash-free %** | X% | ↑→↓ | Crashlytics |
 
 **Unit-economics read (1 line):** [are we making money per user? — pull full CAC/LTV/payback only if the decision turns on it]
+
+*(Stability lives in §5; business numbers here.)*
 
 ---
 
@@ -56,7 +57,7 @@
 |---|---|
 | Crash-free % vs threshold | X% / [threshold] |
 | Last release-floor result | ✅ / ❌ [date] — crash-free + smoke + secret scan + consent |
-| QA in place | Tier 1 automated floor · Tier 2 exploratory signal · Tier 3 sign-off mandate |
+| QA stage | [ floor only · + exploratory · + sign-off mandate ] |
 | Open security items | [count + pointer; see technical scorecard §4] |
 
 ---
