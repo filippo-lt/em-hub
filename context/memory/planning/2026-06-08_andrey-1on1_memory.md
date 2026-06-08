@@ -1,0 +1,8 @@
+# Memory (planning) — Andrey 1-on-1, 8 June 2026
+
+```
+[2026-06-08] [planning] - The company is opening up to web + subscription products because they discovered websites make money (Sergio Durban, Friday all-hands). Vik Catala's team already built ~1.5 websites with a mobile developer using AI. Strategic thesis: AI + e2e tests make web buildable by mobile devs without deep web expertise. The people-search web project is Filippo's first delivery under this thesis.
+[2026-06-08] [planning] - Web project v1 scope is blocked on a product decision: search-by-name vs. search-by-phone-number. Competitors get more traction/revenue from phone-number search. Filippo is forcing product to pick ONE use case for v1 and supply the API. This gates the search-engine deliverable (week 2). Filippo will verify the market research himself before passing it to Andrey.
+[2026-06-08] [planning] - Tokens-as-capacity framing now has a third instrument: kilo-code gives per-person consumption data, which lets Filippo justify differential allocation (Andrey agentic + 2 projects = high need; Vlad on Cursor, lower-priority project = lower need). Pairs with $3K/dev/month (May 26) and cost-per-feature (June 1). This is the package to bring to David May.
+[2026-06-08] [planning] - Android (Arman) has no clear long-term roadmap — performance work now, then TikTok events/admob, then "skins" copied from iOS. Filippo is skeptical skins = real user value vs. keeping a developer busy out of fear of losing them, and plans to press PM David Moss for the long-term plan with intent to redeploy the developer (even 50/50 would be a win).
+```
