@@ -61,7 +61,9 @@ Cannot govern what I can't see. Per app, get **read** access to: repo (`github.c
 
 ### Phase 1 — Tracker (the heartbeat)
 
-One row per app in the **Portfolio Tracker** (`templates/ma-portfolio-tracker.md`) — the column spec and automation notes live there, not duplicated here. 7 of its 10 columns auto-fill from a weekly script; I touch only Posture, Studio, and Next decision, which rarely change. v1 manual to validate the columns → v2 automate.
+One row per app in the **Portfolio Tracker** (`templates/ma-portfolio-tracker.md`; live [Google Sheet](https://docs.google.com/spreadsheets/d/1edO2XOHpxBTTqRDk9tfjegO0sZ485O4q0XORSbg4prE/edit), build source `context/app-portfolio/ma-portfolio-tracker.xlsx`) — the column spec and automation notes live there, not duplicated here. I touch only the judgment fields (Posture, Studio, Release health, Next decision, Flag), which rarely change.
+
+**Single source of truth = History.** The Tracker is a live snapshot; behind it sits an append-only **History** sheet — one row per app per weekly run. The numeric columns (Cost, MRR, MAU, crash-free %) *derive* their latest value from History, so I only ever append; the snapshot updates itself. Cadence: **capture weekly, review monthly.** Evolution surfaces three ways — Δ arrows on the snapshot, a Trends chart sheet, and threshold evidence ("3 of last 5 failed") for the QA wedge and the Phase-5 memo. Build sequence: v1 validate columns → v1.5 History + derived snapshot + deltas + charts (current, on sample data) → v2 automate the weekly append.
 
 **Star metric: crash-free %.** Objective, automatable, the exact thing the studios fail at. Triple duty — health (tracker), release gate (Phase 2), QA evidence (QA Tier 3).
 
@@ -79,6 +81,8 @@ One row per app in the **Portfolio Tracker** (`templates/ma-portfolio-tracker.md
    Green posts ✅ automatically. **I only look when it's red.** That's the answer to "I don't have time" — exception-based, not review-based.
 
 The automated floor *is* the gate, and (see QA) it's also the politically bulletproof thin end of the quality mandate.
+
+**The floor is infrastructure, not a tracker column.** A blocking gate is always green by definition — anything that fails never ships — so mirroring it in the tracker carries zero information. The tracker's **Release health** column instead measures what the gate is blind to: **delivery autonomy** — how cleanly the studio got live. 🟢 shipped clean & alone · 🟡 friction / multiple attempts · 🔴 needed heavy help. Fed by CI gate-bounce count (objective, keeps the political shield) + the studio-call help read (subjective). This is the leading indicator of studio health and the Helikanon concentration risk — a studio that needs heavy help on every release is a hidden takeover cost made visible.
 
 ### Phase 3 — Studio calls (relationship + intel)
 
