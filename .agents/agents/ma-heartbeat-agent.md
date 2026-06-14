@@ -52,11 +52,23 @@ The 5 M&A apps (current inventory — read the live list from `m-and-a-status.md
 
 ---
 
+## Execution — the script does Phases 1–3 mechanically
+
+Phases 1–3 (capture → append → flag) are run by the fetch script, exactly as the Contractor Performance Agent leans on `scripts/gh-metrics.sh`:
+
+```bash
+python3 scripts/ma-heartbeat/fetch_heartbeat.py            # all apps
+python3 scripts/ma-heartbeat/fetch_heartbeat.py --app ChatUltra
+python3 scripts/ma-heartbeat/fetch_heartbeat.py --dry-run  # fetch, don't append
+```
+
+It reads `config/ma-apps.conf`, pulls each source (secrets from env; `gh`/`bq` auth reused), appends one row per app to `m-and-a/heartbeat/history.csv`, writes per-run detail to `m-and-a/heartbeat/<date>.json`, and prints the 🟡/🔴 summary. Setup, env vars, and the validation caveats live in `scripts/ma-heartbeat/README.md`. **Your** job is the judgment layer on top: read the flags, write the studio pre-brief, decide what to escalate. The phases below document what the script implements.
+
 ## Process
 
 ### Phase 1 — Capture (per app)
 
-Pull the latest value for each field from its source. Sources (from the Tracker column spec):
+Pull the latest value for each field from its source (`scripts/ma-heartbeat/sources.py`; one fetcher per source, each returns the value or `n/a (no access)`). Sources (from the Tracker column spec):
 
 | Field | Source | How |
 |---|---|---|

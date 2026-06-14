@@ -1,0 +1,72 @@
+# M&A apps — heartbeat source config (EXAMPLE)
+#
+# Copy this to `config/ma-apps.conf` (gitignored) and fill in the per-app
+# identifiers. SECRETS DO NOT GO HERE — they come from environment variables
+# (see scripts/ma-heartbeat/README.md). This file holds only non-secret ids.
+#
+# One [app:<name>] section per M&A app. Omit an id you don't have access to
+# yet — the fetcher will report that field as `n/a (no access)` and keep going.
+
+[thresholds]
+# crash-free % below this fires a red flag (the release floor)
+crash_free_floor = 99.0
+# crash-free % dropping this many points week-on-week fires a red flag
+crash_free_drop_points = 1.0
+# MRR down this many consecutive captures fires a red flag
+mrr_decline_periods = 3
+# a "Next decision" date within this many days fires a yellow flag
+decision_horizon_days = 14
+
+[app:ChatUltra]
+posture          = Govern-in-place
+studio           = Helikanon
+github_repo      = rosseca/chat-ultra
+revenuecat_project = REPLACE_rc_project_id
+amplitude_app_id   = REPLACE_amplitude_app_id
+# BigQuery table holding the Crashlytics export for this app (see README)
+crashlytics_bq_table = project.firebase_crashlytics.chatultra_ANDROID
+# GCP billing label/project to sum cloud cost against
+gcp_billing_filter   = labels.app = "chatultra"
+# fixed monthly studio retainer for this app, in EUR (0 if none)
+studio_cost_eur      = 0
+
+[app:PDF Editor]
+posture          = Govern-in-place
+studio           = TurboCat
+github_repo      = rosseca/pdf-editor
+revenuecat_project = REPLACE_rc_project_id
+amplitude_app_id   = REPLACE_amplitude_app_id
+crashlytics_bq_table = project.firebase_crashlytics.pdfeditor_ANDROID
+gcp_billing_filter   = labels.app = "pdfeditor"
+studio_cost_eur      = 0
+
+[app:Step Counter]
+posture          = Govern-in-place
+studio           = Helikanon
+github_repo      = rosseca/step-counter
+revenuecat_project = REPLACE_rc_project_id
+amplitude_app_id   = REPLACE_amplitude_app_id
+crashlytics_bq_table = project.firebase_crashlytics.stepcounter_ANDROID
+gcp_billing_filter   = labels.app = "stepcounter"
+studio_cost_eur      = 0
+
+[app:Truth Seeker]
+# pre-launch (Apple-blocked) — most live metrics will be n/a until it ships
+posture          = Sunset
+studio           = Helikanon
+github_repo      = rosseca/truth-seeker
+revenuecat_project =
+amplitude_app_id   =
+crashlytics_bq_table =
+gcp_billing_filter   = labels.app = "truthseeker"
+studio_cost_eur      = 0
+
+[app:Music Player]
+posture          = Sunset
+studio           = Helikanon
+github_repo      = rosseca/music-player
+revenuecat_project = REPLACE_rc_project_id
+amplitude_app_id   = REPLACE_amplitude_app_id
+crashlytics_bq_table = project.firebase_crashlytics.musicplayer_ANDROID
+gcp_billing_filter   = labels.app = "musicplayer"
+studio_cost_eur      = 0
