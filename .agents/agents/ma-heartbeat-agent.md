@@ -68,7 +68,7 @@ It reads `config/ma-apps.conf`, pulls each source (secrets from env; `gh`/`bq` a
 
 ### Phase 1 — Capture (per app)
 
-Pull the latest value for each field from its source (`scripts/ma-heartbeat/sources.py`; one fetcher per source, each returns the value or `n/a (no access)`). Sources (from the Tracker column spec):
+Pull the latest value for each field from its source (`scripts/ma-heartbeat/sources/` — one module per source, each returns the value or `n/a (no access)`). Sources (from the Tracker column spec):
 
 | Field | Source | How |
 |---|---|---|

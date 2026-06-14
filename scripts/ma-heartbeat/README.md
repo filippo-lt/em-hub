@@ -8,8 +8,13 @@ Performance Agent leans on `scripts/gh-metrics.sh`.
 ```
 scripts/ma-heartbeat/
   fetch_heartbeat.py   # orchestrator: config → sources → History rows + flags
-  sources.py           # one fetcher per data source (RevenueCat, Amplitude,
-                       #   Crashlytics/BQ, GCP cost, GitHub)
+  sources/             # one module per data source, owned independently:
+    common.py          #   shared HTTP/CLI helpers
+    revenuecat.py      #   MRR
+    amplitude.py       #   MAU
+    crashlytics.py     #   crash-free % (via BigQuery export)
+    gcp.py             #   cloud + studio cost
+    github.py          #   release tag, secret scan, gate bounces
   README.md            # this file
 ```
 
@@ -66,7 +71,7 @@ gate-bounce + help inputs), and `Posture` is echoed from config, never changed.
 Per the agent's validation protocol: run manually for **2 weeks** and
 reconcile every number against its source UI (RevenueCat dashboard, Crashlytics
 console, GCP billing) before putting this on a weekly schedule. The endpoints
-in `sources.py` are the documented ones, but the exact RevenueCat/Amplitude
+in `sources/` are the documented ones, but the exact RevenueCat/Amplitude
 response shapes and the Crashlytics BigQuery export schema depend on your
 account — the `# VERIFY` notes mark what to confirm during that window.
 Especially **crash-free %**: there is no public Crashlytics API, so it is
