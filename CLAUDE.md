@@ -67,6 +67,7 @@ Agents run autonomously and return a result. Use these for non-interactive tasks
 | -------------------------------------------------------------------------------------------------------- | --------------- | ----------------------------------------- |
 | "Extract memory from this" / "Save to memory" / "What should I remember?"                                | Memory          | `.claude/agents/memory-agent.md`          |
 | "Contractor metrics" / "How is [dev] performing?" / "Dev performance report" / "Run a contractor review" | Contractor Perf | `.claude/agents/contractor-perf-agent.md` |
+| "Run the M&A heartbeat" / "Capture the M&A weekly numbers" / "Refresh the portfolio tracker"             | M&A Heartbeat   | `.claude/agents/ma-heartbeat-agent.md`    |
 
 
 > **Note:** Memory can also be triggered as the final phase of any skill. If the user says "extract memory" during a hiring, planning, incident, or review session, run the Memory Agent with that session's context.
