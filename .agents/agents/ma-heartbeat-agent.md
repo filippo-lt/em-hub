@@ -72,9 +72,9 @@ Pull the latest value for each field from its source (`scripts/ma-heartbeat/sour
 
 | Field | Source | How |
 |---|---|---|
-| **Cost/mo** | GCP + studio contract | `/gcp-spend` report (cloud) + the fixed studio line |
-| **MRR** | RevenueCat | RevenueCat API |
-| **MAU** | Amplitude | Amplitude API |
+| **Cost/mo** | **gcp-spend report** | read from the gcp-spend export (`metrics/gcp-spend/*.json`) — single source of truth, keeps the per-app attribution + $/MAU caveat. Not re-queried here. |
+| **MAU** | **gcp-spend report** | same export — the gcp-spend tool already pulls Amplitude MAU per app. Not re-queried here. |
+| **MRR** | RevenueCat | RevenueCat API (`revenuecat.py`) |
 | **Crash-free %** ★ | Crashlytics → BigQuery | the load-bearing metric — also feeds the release gate + QA evidence |
 | **Release health input** | CI | gate-bounce count since last run (objective half of the judgment column — you supply the count, Filippo sets the 🟢🟡🔴) |
 | **Last release** | GitHub `rosseca/<repo>` | latest release tag / build-to-store event since last run |

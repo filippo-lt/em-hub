@@ -6,6 +6,9 @@
 #
 # One [app:<name>] section per M&A app. Omit an id you don't have access to
 # yet — the fetcher will report that field as `n/a (no access)` and keep going.
+#
+# Cost + MAU are NOT configured here: they come from the gcp-spend report's
+# structured export, keyed by `gcp_spend_key` (the app's key in that report).
 
 [thresholds]
 # crash-free % below this fires a red flag (the release floor)
@@ -22,33 +25,26 @@ posture          = Govern-in-place
 studio           = Helikanon
 github_repo      = rosseca/chat-ultra
 revenuecat_project = REPLACE_rc_project_id
-amplitude_app_id   = REPLACE_amplitude_app_id
 # BigQuery table holding the Crashlytics export for this app (see README)
 crashlytics_bq_table = project.firebase_crashlytics.chatultra_ANDROID
-# GCP billing label/project to sum cloud cost against
-gcp_billing_filter   = labels.app = "chatultra"
-# fixed monthly studio retainer for this app, in EUR (0 if none)
-studio_cost_eur      = 0
+# this app's key in the gcp-spend report export (cost + MAU come from there)
+gcp_spend_key    = chatultra
 
 [app:PDF Editor]
 posture          = Govern-in-place
 studio           = TurboCat
 github_repo      = rosseca/pdf-editor
 revenuecat_project = REPLACE_rc_project_id
-amplitude_app_id   = REPLACE_amplitude_app_id
 crashlytics_bq_table = project.firebase_crashlytics.pdfeditor_ANDROID
-gcp_billing_filter   = labels.app = "pdfeditor"
-studio_cost_eur      = 0
+gcp_spend_key    = pdfeditor
 
 [app:Step Counter]
 posture          = Govern-in-place
 studio           = Helikanon
 github_repo      = rosseca/step-counter
 revenuecat_project = REPLACE_rc_project_id
-amplitude_app_id   = REPLACE_amplitude_app_id
 crashlytics_bq_table = project.firebase_crashlytics.stepcounter_ANDROID
-gcp_billing_filter   = labels.app = "stepcounter"
-studio_cost_eur      = 0
+gcp_spend_key    = stepcounter
 
 [app:Truth Seeker]
 # pre-launch (Apple-blocked) — most live metrics will be n/a until it ships
@@ -56,17 +52,13 @@ posture          = Sunset
 studio           = Helikanon
 github_repo      = rosseca/truth-seeker
 revenuecat_project =
-amplitude_app_id   =
 crashlytics_bq_table =
-gcp_billing_filter   = labels.app = "truthseeker"
-studio_cost_eur      = 0
+gcp_spend_key    = truthseeker
 
 [app:Music Player]
 posture          = Sunset
 studio           = Helikanon
 github_repo      = rosseca/music-player
 revenuecat_project = REPLACE_rc_project_id
-amplitude_app_id   = REPLACE_amplitude_app_id
 crashlytics_bq_table = project.firebase_crashlytics.musicplayer_ANDROID
-gcp_billing_filter   = labels.app = "musicplayer"
-studio_cost_eur      = 0
+gcp_spend_key    = musicplayer
