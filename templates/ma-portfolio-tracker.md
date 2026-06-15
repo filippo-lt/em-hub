@@ -57,4 +57,4 @@ The Tracker is a live snapshot; **History** is the append-only memory behind it 
 2. **Trends sheet** — line charts per metric per app (MRR, Crash-free %), to catch the multi-month slide a single delta hides.
 3. **Threshold evidence** — "3 of last 5 releases failed", "MRR down 3 months" — the rule-based read that powers the QA wedge and the Phase-5 forcing memo.
 
-**Build sequence:** v1 validate the columns → **v1.5 (current)** History store + derived snapshot + deltas + trend charts, on sample data → v2 automate: the weekly script appends a real row to History (and extends the Trends date axis). Don't build the pipeline before the columns are proven.
+**Build sequence:** v1 validate the columns → **v1.5 (current)** History store + derived snapshot + deltas + trend charts, on sample data → v2 automate: the weekly script appends a real row to History (and extends the Trends date axis). Don't build the pipeline before the columns are proven. **v2 is the `M&A Heartbeat Agent`** (`.agents/agents/ma-heartbeat-agent.md`) — it captures, appends, and flags; it never touches the judgment fields.

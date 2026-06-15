@@ -1,0 +1,64 @@
+# M&A apps — heartbeat source config (EXAMPLE)
+#
+# Copy this to `config/ma-apps.conf` (gitignored) and fill in the per-app
+# identifiers. SECRETS DO NOT GO HERE — they come from environment variables
+# (see scripts/ma-heartbeat/README.md). This file holds only non-secret ids.
+#
+# One [app:<name>] section per M&A app. Omit an id you don't have access to
+# yet — the fetcher will report that field as `n/a (no access)` and keep going.
+#
+# Cost + MAU are NOT configured here: they come from the gcp-spend report's
+# structured export, keyed by `gcp_spend_key` (the app's key in that report).
+
+[thresholds]
+# crash-free % below this fires a red flag (the release floor)
+crash_free_floor = 99.0
+# crash-free % dropping this many points week-on-week fires a red flag
+crash_free_drop_points = 1.0
+# MRR down this many consecutive captures fires a red flag
+mrr_decline_periods = 3
+# a "Next decision" date within this many days fires a yellow flag
+decision_horizon_days = 14
+
+[app:ChatUltra]
+posture          = Govern-in-place
+studio           = Helikanon
+github_repo      = rosseca/chat-ultra
+revenuecat_project = REPLACE_rc_project_id
+# BigQuery table holding the Crashlytics export for this app (see README)
+crashlytics_bq_table = project.firebase_crashlytics.chatultra_ANDROID
+# this app's key in the gcp-spend report export (cost + MAU come from there)
+gcp_spend_key    = chatultra
+
+[app:PDF Editor]
+posture          = Govern-in-place
+studio           = TurboCat
+github_repo      = rosseca/pdf-editor
+revenuecat_project = REPLACE_rc_project_id
+crashlytics_bq_table = project.firebase_crashlytics.pdfeditor_ANDROID
+gcp_spend_key    = pdfeditor
+
+[app:Step Counter]
+posture          = Govern-in-place
+studio           = Helikanon
+github_repo      = rosseca/step-counter
+revenuecat_project = REPLACE_rc_project_id
+crashlytics_bq_table = project.firebase_crashlytics.stepcounter_ANDROID
+gcp_spend_key    = stepcounter
+
+[app:Truth Seeker]
+# pre-launch (Apple-blocked) — most live metrics will be n/a until it ships
+posture          = Sunset
+studio           = Helikanon
+github_repo      = rosseca/truth-seeker
+revenuecat_project =
+crashlytics_bq_table =
+gcp_spend_key    = truthseeker
+
+[app:Music Player]
+posture          = Sunset
+studio           = Helikanon
+github_repo      = rosseca/music-player
+revenuecat_project = REPLACE_rc_project_id
+crashlytics_bq_table = project.firebase_crashlytics.musicplayer_ANDROID
+gcp_spend_key    = musicplayer
