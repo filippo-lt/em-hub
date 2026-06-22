@@ -1,0 +1,14 @@
+[
+  {
+    "app": "ChatUltra",
+    "flag": "\ud83d\udd34",
+    "reasons": [
+      "71 open secret-scanning alert(s)"
+    ],
+    "release_inputs": {
+      "last_release": "v3.5.0",
+      "secret_alerts": 71,
+      "gate_bounces": 0
+    }
+  }
+]

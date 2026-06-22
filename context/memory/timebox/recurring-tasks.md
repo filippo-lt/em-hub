@@ -24,11 +24,16 @@ Box sizes are always one of: **15**, **30**, **60** min (break larger work into 
 
 | Task | Match keywords | Typical box | Actuals (recent, min) | Samples | Last seen | Notes |
 | ---- | -------------- | ----------- | --------------------- | ------- | --------- | ----- |
-| Understand A/B test w/ AI Engineer | a/b test, ab test, understand test, ai engineer | 30 | — | 0 | 2026-06-17 | Estimate only — needs the engineer available; confirm before boxing |
-| Create Jira tickets — repo transfer | jira tickets, repo transfer, transfer backend, create tickets | 30 | — | 0 | 2026-06-17 | Estimate only — scales with number of repos; may become 2×30 |
-| Request device from IT | request device, android device, hardware request | 15 | — | 0 | 2026-06-17 | Estimate only — fire-and-forget; response is async |
-| Vertex / API query | vertex, api query, google api question | 15 | — | 0 | 2026-06-17 | Estimate only — sending the question is 15; researching the answer is separate |
-| Create documentation | documentation, write docs, document, faceai filters | 60 | — | 0 | 2026-06-17 | Estimate only — deep work; break into stacked boxes if it runs past 60 |
+| Understand A/B test w/ AI Engineer | a/b test, ab test, understand test, ai engineer | 30 | — | 0 | 2026-06-17 | Completed 2026-06-17 (duration not logged). Estimate only — needs the engineer available |
+| Create Jira tickets — repo transfer | jira tickets, repo transfer, transfer backend, create tickets | 30 | — | 0 | 2026-06-17 | Completed 2026-06-17 (duration not logged). Scales with number of repos |
+| Request device from IT | request device, android device, hardware request | 15 | — | 0 | 2026-06-17 | Completed 2026-06-17 (duration not logged). Fire-and-forget; response is async |
+| Vertex / API query | vertex, api query, google api question | 15 | — | 0 | 2026-06-17 | Completed 2026-06-17 (duration not logged). Sending the question is 15; researching is separate |
+| Create documentation | documentation, write docs, document, faceai filters | 60 | — | 0 | 2026-06-17 | Completed 2026-06-17 (duration not logged). Deep work; stack boxes if past 60 |
+| Tech debt spreadsheet (per app) | tech debt, tech debt spreadsheet, chatultra, pdf editor | 30 | — | 0 | 2026-06-18 | Estimate only — per-app audit + populate sheet. Two ran today (ChatUltra, PDF editor) |
+| M&A pipelines update | m&a, pipelines update, portfolio tracker, m&a pipeline | 30 | — | 0 | 2026-06-18 | Estimate only — refresh the pipeline/portfolio tracker |
+| Review epic (FaceAI) | review epic, faceai epic, review new epic, new epic | 30 | — | 0 | 2026-06-22 | Estimate only — scope/tickets/acceptance review of an epic |
+| Review backend task | review backend task, backend task, review task, review faceai backend | 15 | — | 0 | 2026-06-22 | Estimate only — single-ticket backend review |
+| PDF editor PROD setup | pdf editor prod, prod setup, production setup, pdf editor deploy | 60 | — | 0 | 2026-06-22 | Estimate only — deep/infra production deployment setup |
 
 > First real rows seeded on 2026-06-17 (estimates, no actuals yet). Tonight's review will append real durations and recompute the typical box.
 

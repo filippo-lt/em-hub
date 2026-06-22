@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today's Timebox</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #faf9f6; color: #1f1d1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px; line-height: 1.45;
+  }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 18px 16px 40px; }
+  header.top { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  header.top h1 { font-size: 19px; margin:0; font-weight:650; }
+  header.top .date { color:#6b675f; font-size:13px; }
+  .layout { display:grid; grid-template-columns: 290px 1fr; gap:18px; align-items:start; }
+  @media (max-width: 760px){ .layout { grid-template-columns: 1fr; } }
+
+  /* ---- Task panel ---- */
+  .panel { background:#fff; border:1px solid #e7e3da; border-radius:14px; padding:14px; }
+  .panel h2 { font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:#8a857b; margin:0 0 10px; }
+  .addrow { display:flex; gap:6px; margin-bottom:10px; }
+  .addrow input[type=text]{ flex:1; min-width:0; padding:7px 9px; border:1px solid #d8d3c8; border-radius:8px; font-size:13px; }
+  .addrow select{ padding:7px 6px; border:1px solid #d8d3c8; border-radius:8px; font-size:13px; background:#fff; }
+  .addrow button{ padding:7px 11px; border:none; border-radius:8px; background:#c96442; color:#fff; font-weight:600; cursor:pointer; font-size:13px; }
+  .addrow button:hover{ background:#b4583a; }
+  ul.tasks{ list-style:none; margin:0; padding:0; }
+  ul.tasks li{ display:flex; align-items:center; gap:8px; padding:7px 4px; border-top:1px solid #f0ece3; }
+  ul.tasks li:first-child{ border-top:none; }
+  ul.tasks li.done .name{ text-decoration:line-through; color:#aaa498; }
+  ul.tasks li.unplaced .name::after{ content:" · no slot"; color:#c0392b; font-size:11px; }
+  ul.tasks .name{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  ul.tasks .sz{ font-size:11px; font-weight:700; color:#c96442; background:#fbeae3; border-radius:6px; padding:1px 6px; }
+  ul.tasks .x{ cursor:pointer; color:#bbb4a8; border:none; background:none; font-size:15px; line-height:1; }
+  ul.tasks .x:hover{ color:#c0392b; }
+  .hint{ font-size:11px; color:#9a958b; margin-top:8px; }
+
+  /* ---- Timeline ---- */
+  .tlpanel{ background:#fff; border:1px solid #e7e3da; border-radius:14px; padding:14px 14px 6px; }
+  .timeline{ position:relative; margin-left:46px; border-left:1px solid #e7e3da; }
+  .hour{ position:absolute; left:-46px; right:0; border-top:1px dashed #efeae0; }
+  .hour .lbl{ position:absolute; left:0; top:-7px; font-size:10px; color:#aaa498; width:42px; text-align:right; padding-right:6px; }
+  .focusband{ position:absolute; left:0; right:0; background:repeating-linear-gradient(45deg,#faf6ed,#faf6ed 7px,#f5efe2 7px,#f5efe2 14px); border-radius:6px; }
+  .focuslbl{ position:absolute; right:8px; bottom:3px; font-size:9.5px; color:#b8a888; letter-spacing:.02em; }
+  .block{ position:absolute; left:6px; right:8px; border-radius:8px; padding:4px 9px; overflow:hidden; font-size:12px; }
+  .block .ti{ font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .block .mt{ font-size:10.5px; opacity:.72; }
+  .b-meet{ background:#e9eff8; border-left:3px solid #3a6bb0; color:#234; }
+  .b-ooo{ background:#f1efe9; border-left:3px solid #c9b79a; color:#6b6357; font-style:italic; }
+  .b-box{ background:#fdeee7; border-left:3px solid #c96442; color:#7a3a25; }
+  .b-box .sz{ font-size:10px; font-weight:700; }
+  .nowline{ position:absolute; left:-46px; right:0; border-top:2px solid #e2483b; z-index:5; }
+  .nowline::before{ content:""; position:absolute; left:-46px; top:-4px; width:7px; height:7px; border-radius:50%; background:#e2483b; }
+
+  .summary{ display:flex; flex-wrap:wrap; gap:14px; margin-top:14px; padding:11px 14px; background:#fff; border:1px solid #e7e3da; border-radius:12px; font-size:12.5px; }
+  .summary b{ font-size:15px; display:block; font-weight:680; }
+  .summary .lab{ color:#8a857b; font-size:11px; text-transform:uppercase; letter-spacing:.03em; }
+  .legend{ display:flex; gap:14px; flex-wrap:wrap; font-size:11px; color:#7a756b; margin:2px 0 12px; }
+  .legend span{ display:inline-flex; align-items:center; gap:5px; }
+  .sw{ width:11px; height:11px; border-radius:3px; display:inline-block; }
+  .state{ padding:30px 10px; text-align:center; color:#8a857b; font-size:13px; }
+  .err{ background:#fdecea; border:1px solid #f5c6c0; color:#9a2b1e; padding:10px 12px; border-radius:10px; font-size:12.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">A live daily timebox dashboard: today's calendar meetings on a timeline, with your task list auto-placed into the free gaps as time boxes.</h2>
+
+  <header class="top">
+    <h1>🗓️ Today's Timebox</h1>
+    <span class="date" id="dateLabel"></span>
+  </header>
+
+  <div class="layout">
+    <!-- Task panel -->
+    <section class="panel">
+      <h2>Tasks to box</h2>
+      <div class="addrow">
+        <input type="text" id="taskName" placeholder="Add a task…" maxlength="60">
+        <select id="taskSize">
+          <option value="15">15</option>
+          <option value="30" selected>30</option>
+          <option value="60">60</option>
+        </select>
+        <button id="addBtn">Add</button>
+      </div>
+      <ul class="tasks" id="taskList"></ul>
+      <div class="hint">Sizes are 15 / 30 / 60 min. Tasks auto-fill your free gaps in order — drag priority by re-adding. Checked = done (skipped). Saved on this device.</div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="tlpanel">
+      <div class="legend">
+        <span><i class="sw" style="background:#e9eff8;border-left:3px solid #3a6bb0"></i> meeting</span>
+        <span><i class="sw" style="background:#fdeee7;border-left:3px solid #c96442"></i> timebox</span>
+        <span><i class="sw" style="background:#f1efe9;border-left:3px solid #c9b79a"></i> lunch / OOO</span>
+        <span><i class="sw" style="background:repeating-linear-gradient(45deg,#faf6ed,#faf6ed 4px,#f5efe2 4px,#f5efe2 8px)"></i> focus window</span>
+      </div>
+      <div id="timelineHost"><div class="state" id="tlState">Loading your calendar…</div></div>
+    </section>
+  </div>
+
+  <div class="summary" id="summary" style="display:none">
+    <div><span class="lab">Meetings</span><b id="sMeet">–</b></div>
+    <div><span class="lab">Boxed work</span><b id="sBox">–</b></div>
+    <div><span class="lab">Slack left</span><b id="sSlack">–</b></div>
+    <div><span class="lab">Unplaced</span><b id="sUnp">–</b></div>
+  </div>
+</div>
+
+<script>
+const CAL_TOOL = "mcp__5d7a7bb4-d528-461c-9c56-0fdd3b8492e6__list_events";
+const TZ = "Europe/Madrid";
+const LS_TASKS = "timebox.tasks.v1";
+const LS_LEDGER = "timebox.ledger.v1"; // remembers last size per task name
+
+// ===================== TODAY_PLAN (auto-written by the /timebox skill) =====================
+// The morning skill run replaces this block with the day's tasks. If its date matches
+// today, it seeds the task list once; your edits during the day are preserved on reload.
+const TODAY_PLAN = {
+  "date": "2026-06-22",
+  "tasks": [
+    { "name":"PDF editor — PROD setup (09:00 focus)", "size":60, "done":false },
+    { "name":"Review new FaceAI epic (10:00)", "size":30, "done":false },
+    { "name":"Review FaceAI backend task (10:30)", "size":15, "done":false },
+    { "name":"Focus block (16:30–17:30) — deep work", "size":60, "done":false },
+    { "name":"Wind-down / overflow / plan tomorrow (17:30)", "size":30, "done":false }
+  ]
+};
+// =================== END TODAY_PLAN ===================
+
+// Fallback seed if no plan has been pushed yet
+const SEED = TODAY_PLAN.tasks.slice();
+
+const PX = 1.15;          // pixels per minute
+const SLACK_FRAC = 0.78;  // fill at most 78% of free time, rest stays slack
+
+let DONE = {};            // {nameKey:true} completion for today — kept separate so a re-push can't wipe it
+let TASKS = loadTasks();
+let LEDGER = loadLedger();
+
+function todayStr(){ const n=new Date(); return `${n.getFullYear()}-${pad(n.getMonth()+1)}-${pad(n.getDate())}`; }
+function doneKey(){ return "timebox.done."+todayStr(); }
+function loadDone(){ try { return JSON.parse(localStorage.getItem(doneKey()))||{}; } catch(e){ return {}; } }
+function saveDone(){ localStorage.setItem(doneKey(), JSON.stringify(DONE)); }
+function nkey(name){ return String(name).trim().toLowerCase(); }
+function applyDone(){ TASKS.forEach(t=>{ if(DONE[nkey(t.name)]) t.done=true; }); }
+
+function loadTasks(){
+  DONE = loadDone();
+  const today=todayStr();
+  const DKEY = LS_TASKS+".date";
+  let list;
+  // If the skill pushed a plan for today, apply it once (seeds the list)
+  if(TODAY_PLAN && TODAY_PLAN.date===today){
+    const appliedKey="timebox.applied."+today;
+    if(!localStorage.getItem(appliedKey)){
+      localStorage.setItem(LS_TASKS, JSON.stringify(TODAY_PLAN.tasks));
+      localStorage.setItem(DKEY, today);
+      localStorage.setItem(appliedKey,"1");
+      list = TODAY_PLAN.tasks.slice();
+    }
+  }
+  // Only reuse a stored list if it belongs to TODAY — never carry yesterday's tasks forward
+  if(!list && localStorage.getItem(DKEY)===today){
+    try { const v = JSON.parse(localStorage.getItem(LS_TASKS)); if(Array.isArray(v)) list=v; } catch(e){}
+  }
+  if(!list) list = (TODAY_PLAN && TODAY_PLAN.date===today) ? TODAY_PLAN.tasks.slice() : [];
+  // Re-apply persisted completion no matter where the list came from (survives daily re-push)
+  list.forEach(t=>{ if(DONE[nkey(t.name)]) t.done=true; });
+  return list;
+}
+function saveTasks(){ localStorage.setItem(LS_TASKS, JSON.stringify(TASKS)); localStorage.setItem(LS_TASKS+".date", todayStr()); }
+function loadLedger(){ try { return JSON.parse(localStorage.getItem(LS_LEDGER))||{}; } catch(e){ return {}; } }
+function saveLedger(){ localStorage.setItem(LS_LEDGER, JSON.stringify(LEDGER)); }
+
+function fmtDur(min){ const h=Math.floor(min/60), m=min%60; return (h?h+"h ":"")+(m?m+"m":(h?"":"0m")); }
+function pad(n){ return String(n).padStart(2,"0"); }
+function minOfDay(d){ return d.getHours()*60 + d.getMinutes(); }
+function hhmm(min){ return pad(Math.floor(min/60))+":"+pad(Math.round(min%60)); }
+
+// ---------- Task panel ----------
+function renderTasks(unplacedSet){
+  const ul = document.getElementById("taskList"); ul.innerHTML="";
+  if(!TASKS.length){
+    const li=document.createElement("li"); li.style.color="#9a958b"; li.style.fontSize="12.5px";
+    li.style.padding="8px 4px"; li.textContent="No plan for today yet — run /timebox, or add tasks here.";
+    ul.appendChild(li); return;
+  }
+  TASKS.forEach((t,i)=>{
+    const li=document.createElement("li");
+    li.className = (t.done?"done ":"") + (unplacedSet && unplacedSet.has(i)?"unplaced":"");
+    const cb=document.createElement("input"); cb.type="checkbox"; cb.checked=!!t.done;
+    cb.onchange=()=>{
+      t.done=cb.checked;
+      if(cb.checked) DONE[nkey(t.name)]=true; else delete DONE[nkey(t.name)];
+      saveDone(); saveTasks(); recompute();
+    };
+    const nm=document.createElement("span"); nm.className="name"; nm.textContent=t.name;
+    const sz=document.createElement("span"); sz.className="sz"; sz.textContent=t.size;
+    const x=document.createElement("button"); x.className="x"; x.innerHTML="&times;";
+    x.onclick=()=>{ TASKS.splice(i,1); saveTasks(); recompute(); };
+    li.append(cb,nm,sz,x); ul.appendChild(li);
+  });
+}
+function addTask(){
+  const nameEl=document.getElementById("taskName"), szEl=document.getElementById("taskSize");
+  const name=nameEl.value.trim(); if(!name) return;
+  let size=parseInt(szEl.value,10);
+  const key=name.toLowerCase();
+  if(LEDGER[key]) size=LEDGER[key];               // suggest last-used size for a known task
+  TASKS.push({name, size, done:false});
+  LEDGER[key]=size; saveLedger(); saveTasks();
+  nameEl.value=""; recompute();
+}
+document.getElementById("addBtn").onclick=addTask;
+document.getElementById("taskName").addEventListener("keydown",e=>{ if(e.key==="Enter") addTask(); });
+document.getElementById("taskSize").addEventListener("change",e=>{
+  const nameEl=document.getElementById("taskName"); const k=nameEl.value.trim().toLowerCase();
+  if(k){ LEDGER[k]=parseInt(e.target.value,10); saveLedger(); }
+});
+
+// ---------- Calendar ----------
+async function fetchEvents(){
+  const now=new Date();
+  const y=now.getFullYear(), mo=pad(now.getMonth()+1), d=pad(now.getDate());
+  const start=`${y}-${mo}-${d}T00:00:00`, end=`${y}-${mo}-${d}T23:59:59`;
+  const r = await window.cowork.callMcpTool(CAL_TOOL, { startTime:start, endTime:end, orderBy:"startTime", timeZone:TZ, pageSize:50 });
+  if(r.isError) throw new Error(typeof r.content?.[0]?.text==="string"? r.content[0].text : "Calendar error");
+  const data = r.structuredContent ?? JSON.parse(r.content[0].text);
+  return data.events || [];
+}
+
+// Keep only events the user is actually attending; classify them.
+function classify(events){
+  const out=[];
+  for(const e of events){
+    if(!e.start?.dateTime || !e.end?.dateTime) continue;          // skip all-day
+    const et=e.eventType||"DEFAULT";
+    if(et==="WORKING_LOCATION"||et==="BIRTHDAY"||et==="FROM_GMAIL") continue;
+    const me=(e.attendees||[]).find(a=>a.self);
+    if(me && me.responseStatus==="declined") continue;            // declined -> free
+    const s=new Date(e.start.dateTime), en=new Date(e.end.dateTime);
+    let kind = et==="OUT_OF_OFFICE" ? "ooo" : et==="FOCUS_TIME" ? "focus" : "meeting";
+    out.push({ summary:e.summary||"(untitled)", start:minOfDay(s), end:minOfDay(en), kind });
+  }
+  return out.sort((a,b)=>a.start-b.start);
+}
+
+// ---------- Placement ----------
+function subtract(dayS,dayE,busy){            // free gaps = [dayS,dayE] minus busy intervals
+  const merged=[]; busy.slice().sort((a,b)=>a.start-b.start).forEach(b=>{
+    const last=merged[merged.length-1];
+    if(last && b.start<=last.end) last.end=Math.max(last.end,b.end); else merged.push({start:b.start,end:b.end});
+  });
+  const gaps=[]; let cur=dayS;
+  for(const b of merged){ if(b.start>cur) gaps.push({start:cur,end:Math.min(b.start,dayE)}); cur=Math.max(cur,b.end); if(cur>=dayE)break; }
+  if(cur<dayE) gaps.push({start:cur,end:dayE});
+  return gaps.filter(g=>g.end>g.start);
+}
+function placeTasks(gaps, focusIntervals, nowMin){
+  // Split each free gap at focus-window boundaries so every segment is wholly
+  // inside or outside a focus block. Focus segments are prime deep-work canvas.
+  let segs=[];
+  gaps.forEach(g=>{
+    let pts=[g.start, g.end];
+    focusIntervals.forEach(f=>{
+      if(f.start>g.start && f.start<g.end) pts.push(f.start);
+      if(f.end>g.start && f.end<g.end) pts.push(f.end);
+    });
+    pts=[...new Set(pts)].sort((a,b)=>a-b);
+    for(let i=0;i<pts.length-1;i++){
+      const s=Math.max(pts[i], nowMin), e=pts[i+1];
+      if(e-s<15) continue;
+      const mid=(pts[i]+pts[i+1])/2;
+      const isFocus=focusIntervals.some(f=>mid>=f.start && mid<f.end);
+      segs.push({start:s, end:e, cur:s, focus:isFocus});
+    }
+  });
+  const totalFree = segs.reduce((a,s)=>a+(s.end-s.start),0);
+  const budget = Math.floor(totalFree*SLACK_FRAC);
+  const placed=[]; const unplaced=new Set(); let used=0;
+  TASKS.forEach((t,i)=>{
+    if(t.done) return;
+    if(used+t.size>budget){ unplaced.add(i); return; }
+    // Deep work (>=30) gets first dibs on focus windows; quick tasks fill the
+    // gaps around meetings first, keeping focus blocks free for deep work.
+    const order = t.size>=30
+      ? segs.filter(s=>s.focus).concat(segs.filter(s=>!s.focus))
+      : segs.filter(s=>!s.focus).concat(segs.filter(s=>s.focus));
+    const g=order.find(s=>s.end-s.cur>=t.size);
+    if(!g){ unplaced.add(i); return; }
+    placed.push({start:g.cur, end:g.cur+t.size, name:t.name, size:t.size, focus:g.focus});
+    g.cur+=t.size; used+=t.size;
+  });
+  return {placed, unplaced, totalFree, used};
+}
+
+// ---------- Render timeline ----------
+function renderTimeline(items, placed, dayS, dayE, nowMin){
+  const host=document.getElementById("timelineHost");
+  const tl=document.createElement("div"); tl.className="timeline";
+  tl.style.height=((dayE-dayS)*PX)+"px";
+  // hour grid
+  for(let h=Math.ceil(dayS/60)*60; h<=dayE; h+=60){
+    const row=document.createElement("div"); row.className="hour"; row.style.top=((h-dayS)*PX)+"px";
+    const lbl=document.createElement("div"); lbl.className="lbl"; lbl.textContent=hhmm(h);
+    row.appendChild(lbl); tl.appendChild(row);
+  }
+  // focus bands (behind) — prime canvas for deep-work boxes
+  items.filter(i=>i.kind==="focus").forEach(f=>{
+    const b=document.createElement("div"); b.className="focusband";
+    b.style.top=((f.start-dayS)*PX)+"px"; b.style.height=((f.end-f.start)*PX)+"px";
+    if((f.end-f.start)>=30){ const t=document.createElement("div"); t.className="focuslbl"; t.textContent="✦ focus — deep work"; b.appendChild(t); }
+    tl.appendChild(b);
+  });
+  // meetings + ooo
+  items.filter(i=>i.kind!=="focus").forEach(ev=>{
+    const b=document.createElement("div"); b.className="block "+(ev.kind==="ooo"?"b-ooo":"b-meet");
+    b.style.top=((ev.start-dayS)*PX)+"px"; b.style.height=Math.max(16,(ev.end-ev.start)*PX)+"px";
+    b.innerHTML=`<div class="ti">${esc(ev.summary)}</div><div class="mt">${hhmm(ev.start)}–${hhmm(ev.end)}</div>`;
+    tl.appendChild(b);
+  });
+  // timeboxes
+  placed.forEach(p=>{
+    const b=document.createElement("div"); b.className="block b-box";
+    b.style.top=((p.start-dayS)*PX)+"px"; b.style.height=Math.max(16,(p.size)*PX)+"px";
+    b.innerHTML=`<div class="ti">${p.focus?"✦ ":""}${esc(p.name)}</div><div class="mt"><span class="sz">${p.size}m</span> · ${hhmm(p.start)}–${hhmm(p.end)}${p.focus?" · in focus":""}</div>`;
+    tl.appendChild(b);
+  });
+  // now line
+  if(nowMin>=dayS && nowMin<=dayE){
+    const n=document.createElement("div"); n.className="nowline"; n.style.top=((nowMin-dayS)*PX)+"px"; tl.appendChild(n);
+  }
+  host.innerHTML=""; host.appendChild(tl);
+}
+function esc(s){ return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+// ---------- Orchestrate ----------
+let STATE=null;
+function recompute(){
+  if(!STATE) return;
+  const {items, dayS, dayE, nowMin} = STATE;
+  const busy = items.filter(i=>i.kind==="meeting"||i.kind==="ooo");
+  const focusIntervals = items.filter(i=>i.kind==="focus").map(f=>({start:f.start, end:f.end}));
+  const gaps = subtract(dayS, dayE, busy);
+  const {placed, unplaced, totalFree, used} = placeTasks(gaps, focusIntervals, nowMin);
+  renderTasks(unplaced);
+  renderTimeline(items, placed, dayS, dayE, nowMin);
+  const meetMin = items.filter(i=>i.kind==="meeting").reduce((s,i)=>s+(i.end-i.start),0);
+  document.getElementById("summary").style.display="flex";
+  document.getElementById("sMeet").textContent=fmtDur(meetMin);
+  document.getElementById("sBox").textContent=fmtDur(used);
+  document.getElementById("sSlack").textContent=fmtDur(Math.max(0,totalFree-used))+" free";
+  document.getElementById("sUnp").textContent=unplaced.size? unplaced.size+" task"+(unplaced.size>1?"s":"") : "none";
+}
+
+async function init(){
+  const now=new Date();
+  document.getElementById("dateLabel").textContent =
+    now.toLocaleDateString(undefined,{weekday:"long", day:"numeric", month:"long"});
+  renderTasks(new Set());
+  try{
+    const events=await fetchEvents();
+    const items=classify(events);
+    let dayS=9*60, dayE=18*60;
+    items.forEach(i=>{ dayS=Math.min(dayS,Math.floor(i.start/60)*60); dayE=Math.max(dayE,Math.ceil(i.end/60)*60); });
+    STATE={items, dayS, dayE, nowMin:minOfDay(now)};
+    recompute();
+  }catch(e){
+    document.getElementById("tlState").outerHTML =
+      `<div class="err">Couldn't load your calendar: ${esc(e.message||String(e))}<br>Use the Reload button once calendar access is granted.</div>`;
+  }
+}
+init();
+</script>
+</body>
+</html>
