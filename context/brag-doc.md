@@ -1,6 +1,6 @@
 # Brag Doc — Filippo
 
-**Last updated:** 2026-06-07
+**Last updated:** 2026-06-22
 **Current period:** 2026 H1
 
 > Cadence: 5–10 min every Friday. Monthly roll-up on the last Friday. Quarterly close = pre-built self-review input.
@@ -42,6 +42,8 @@
 - **2026-05-08 — Inverted my approach to the H2 narrative** — Stakes: I'd deferred the H2 scope conversation with David 8 times because I didn't believe Narrative B (AI-native delivery pipeline). Position I took: belief in a strategic narrative is *downstream* of delivery, not upstream — stop trying to write the story, engineer the evidence points that make it true. Where it landed: decoupled "surface H2 scope as a partnership question" from "pitch Narrative B" — the former doesn't require the latter to be true yet. Removes the deferral block.
 
 - **2026-06-07 — Reframed an unfunded M&A mandate into a zero-resource governance model** — Stakes: David asked me to "establish control" over the 5 M&A apps but wouldn't fund the takeover (≈1 month of delayed ChatUltra externals) — a textbook responsibility-without-authority trap. Position I took: separated *control* (visibility, gates, decision rhythm — deliverable now, zero new resources) from *takeover* (funded execution, gated on business case + resourcing). Where it landed: a full operating model where governance alone shrinks the portfolio 5→3 (two sunsets, one business-case gate), the resource ask flips from expensive-and-denied (externals) to cheap-and-unrefusable (logins/data), and a 3-tier QA strategy mandates quality without fighting the "studios are independent" politics. Designed and saved; deliberately holding presentation to David until it's set up and running (build-to-completion discipline). Evidence: `context/ma-governance-operating-model.md`.
+
+- **2026-06-22 — Ran a privileged-information alignment without leaking the cut, and got full strategic buy-in anyway** — Stakes: Matellano signalled a Q3 scope cut (8 apps → 2: AI Design + TruthSeeker web; sunset the M&A studios) before Sergio's manager (Kristian) had briefed him. Sharing the magnitude myself would have front-run Kristian, put Sergio in an awkward spot, and made me the owner of a decision that isn't mine. Position I took: don't reveal the cut — reach the same destination (concentration) through engineering logic I'm allowed to own (finite capacity, externals underperforming, one-team-per-app unsustainable), then let Sergio rank priorities himself. Where it landed: held the cut through multiple natural openings, and Sergio self-corrected live from "launch everything as soon as ready" to "we need to prioritize or we're not arriving anywhere." Came out with his full Q3 launch calendar, ChatUltra clarified (live/operational, not killed), a co-designed "dedicated launches team + budget" resourcing vehicle to pitch upward, and the coalition intact — all without spending Kristian's news. Best-executed 1:1 in the series; clean reversal of prior-meeting passivity. Evidence: `people/sergio-hueso/transcripts/2026-06-22_analysis.md`.
 
 ---
 
