@@ -122,6 +122,9 @@ def collect() -> tuple[list[dict], int, set[str]]:
     return entries, len(files), skipped
 
 
+DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+
 def build_report(entries: list[dict]) -> dict:
     now = datetime.now().astimezone()
     today = now.date()
@@ -132,6 +135,9 @@ def build_report(entries: list[dict]) -> dict:
     by_model = defaultdict(lambda: [0.0, 0])
     by_project = defaultdict(float)
     by_week = defaultdict(float)
+    by_day = defaultdict(float)
+    by_dow = defaultdict(float)   # 0=Mon .. 6=Sun
+    by_hour = defaultdict(float)  # 0..23 (local time)
     by_session: dict[str, dict] = {}
     tok = defaultdict(int)
 
@@ -158,6 +164,9 @@ def build_report(entries: list[dict]) -> dict:
             if (ts.year, ts.month) == ym:
                 month_c += c
             by_week[f"{ey}-W{ewk:02d}"] += c
+            by_day[ts.date().isoformat()] += c
+            by_dow[ts.weekday()] += c
+            by_hour[ts.hour] += c
             s["date"] = ts.date().isoformat()
 
     r2 = lambda x: round(x, 4)
@@ -178,6 +187,15 @@ def build_report(entries: list[dict]) -> dict:
         "by_week": [
             {"week": w, "cost": r2(c)} for w, c in sorted(by_week.items())
         ],
+        "by_day": [
+            {"day": d, "cost": r2(c)} for d, c in sorted(by_day.items())
+        ],
+        "by_dow": [
+            {"dow": DOW[i], "cost": r2(by_dow.get(i, 0.0))} for i in range(7)
+        ],
+        "by_hour": [
+            {"hour": h, "cost": r2(by_hour.get(h, 0.0))} for h in range(24)
+        ],
         "top_sessions": [
             {"session": sid, "date": s["date"], "project": s["project"], "cost": r2(s["cost"])}
             for sid, s in sorted(by_session.items(), key=lambda kv: -kv[1]["cost"])[:10]
@@ -189,6 +207,14 @@ def build_report(entries: list[dict]) -> dict:
             "cache_write": tok["cache_write"],
         },
     }
+
+
+def sparkline(values: list[float]) -> str:
+    blocks = " ▁▂▃▄▅▆▇█"
+    mx = max(values) if values else 0
+    if mx <= 0:
+        return " " * len(values)
+    return "".join(blocks[min(8, round(v / mx * 8))] for v in values)
 
 
 def pretty(report: dict, files: int, skipped: set[str]) -> None:
@@ -217,6 +243,15 @@ def pretty(report: dict, files: int, skipped: set[str]) -> None:
     print("\nBy week:")
     for row in report["by_week"]:
         print(f"  {row['week']}   {money(row['cost'])}")
+
+    print("\nBy day of week:")
+    for row in report["by_dow"]:
+        print(f"  {row['dow']}  {money(row['cost'])}")
+
+    hours = [row["cost"] for row in report["by_hour"]]
+    print("\nBy hour of day (0–23):")
+    print(f"  {sparkline(hours)}")
+    print("  0         6         12        18      23")
 
     print("\nTop sessions by cost:")
     for row in report["top_sessions"]:

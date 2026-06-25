@@ -11,6 +11,9 @@ struct Report: Codable, Sendable {
     var byModel: [ModelRow] = []
     var byProject: [ProjectRow] = []
     var byWeek: [WeekRow] = []
+    var byDay: [DayRow] = []
+    var byDow: [DowRow] = []
+    var byHour: [HourRow] = []
     var topSessions: [SessionRow] = []
     var tokens: Tokens = .init()
 
@@ -29,6 +32,21 @@ struct Report: Codable, Sendable {
         var week: String
         var cost: Double
         var id: String { week }
+    }
+    struct DayRow: Codable, Sendable, Identifiable {
+        var day: String
+        var cost: Double
+        var id: String { day }
+    }
+    struct DowRow: Codable, Sendable, Identifiable {
+        var dow: String
+        var cost: Double
+        var id: String { dow }
+    }
+    struct HourRow: Codable, Sendable, Identifiable {
+        var hour: Int
+        var cost: Double
+        var id: Int { hour }
     }
     struct SessionRow: Codable, Sendable, Identifiable {
         var session: String

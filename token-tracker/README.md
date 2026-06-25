@@ -58,6 +58,73 @@ keeps it resident; quit from the dropdown or with Ctrl-C in the terminal.
 - **Headline metric** — the menu bar shows `thisWeek`; change `menuTitle` in
   `UsageStore.swift` to `today` or `total` if you prefer.
 
+## Analysis ideas
+
+The logs carry, per turn: token counts (4 buckets), `model`, `cwd` (project),
+`gitBranch`, `sessionId`, and a timestamp. That's enough for a lot of lenses.
+Items marked ✅ are already emitted by `cc_cost.py --json`; the rest are small
+additions.
+
+**Time**
+- ✅ **By day** — daily spend trend; 7- and 30-day rolling average; a
+  GitHub-style calendar heatmap; active-day streaks.
+- ✅ **By week** — week-over-week delta; is this week tracking above or below
+  your running average; burn rate.
+- ✅ **By day of week** — which weekdays you grind; weekday vs weekend split
+  (a quiet overtime signal).
+- ✅ **By hour of day** — when you actually work; peak hours; late-night /
+  early-morning sessions.
+- **Hour × day-of-week heatmap** — the "when do I code with CC" grid; the single
+  most informative view once there's a few weeks of data.
+
+**Work breakdown**
+- ✅ **By project** (`cwd`) — which repos cost most; share of total; per-project
+  trend over time.
+- **By git branch** (`gitBranch`) — cost per feature/PR. Attribute spend to the
+  thing you were building, not just the repo.
+- ✅ **By model** — Opus/Sonnet/Haiku mix; cost share vs token share; are you
+  reaching for Opus when Haiku would do?
+- ✅ **By session** — cost distribution (median vs the heavy tail); a
+  "most expensive sessions" leaderboard; sessions per day.
+
+**Efficiency & economics**
+- **Cache efficiency** — `cache_read / (input + cache_read)`. Claude Code leans
+  hard on caching; this shows how well it's working and lets you estimate the $
+  the cache *saved* vs paying full input price.
+- **Output / input ratio** — how much you generate vs context you feed in.
+- **Tokens per session over time** — are sessions getting heavier (context
+  bloat)?
+- **Break-even vs the Max plan** — compare the hypothetical monthly token cost to
+  the flat subscription. Are you getting your money's worth, and at what usage
+  would per-token pricing actually be cheaper? (The headline "gotcha" metric.)
+- **Projected monthly run-rate** — extrapolate from the rolling daily average.
+- **Web tool usage** — `server_tool_use` web_search / web_fetch counts per
+  session (and their cost, if you price them).
+
+**Signals**
+- **Anomaly flags** — a session or day N× your median → catch runaway loops or
+  unusually heavy work early.
+- **Model-mix drift** — are you trending toward cheaper or pricier models over
+  time?
+
+## Activity states & animation
+
+The menu bar glyph reflects what Claude Code is doing right now, inferred from
+how recently any session log was written (a cheap mtime scan every 2s — no
+parsing):
+
+| State | Menu bar | Meaning |
+|---|---|---|
+| **Working** | green, braille spinner `⠋⠙⠹…` | a log was written in the last ~6s |
+| **Waiting for input** | orange, blinking `●`/`○` | recent activity (<10 min) but not actively writing |
+| **Idle** | gray, static `$` | nothing for 10+ min, or no sessions |
+
+It's a heuristic: it can't perfectly distinguish "awaiting your message" from
+"awaiting a permission prompt" (both look like *recent but not writing*). The
+windows are tunable — `workingWindow`, `idleWindow`, and the animation `frame`
+rate live in `UsageStore.swift`. The dropdown header shows the same state as a
+colored dot + label.
+
 ## Notes & possible next steps
 
 - **Dependency tradeoff:** the app shells out to Python so there's one place that
