@@ -52,4 +52,4 @@ Vendored and self-contained inside em-hub at `scripts/gcp-spend/`:
 - `make setup` — install Python deps (one-time per environment; no interactive login)
 - Auth: service-account key at `secrets/gcp-sa-key.json`, pointed to by `GCP_SA_KEY_FILE` in `.env`. One-time setup in `SETUP-HEADLESS.md`.
 
-Because it's vendored inside em-hub, it runs in the monthly scheduled sandbox (which mounts only em-hub). The older `~/Projects/gcp-spend-report` repo is now redundant for automation — this copy is canonical.
+Automation: a local launchd job (`com.ftosetto.emhub.gcp-spend-refresh`) runs `monthly-refresh.sh` on the 2nd of each month — publish + commit + push — and the "Monthly cost digest" cloud routine then drafts a Gmail digest from the published files. If the service-account key is absent, `run.py` falls back to gcloud ADC. The older `~/Projects/gcp-spend-report` repo is now redundant for automation — this copy is canonical.

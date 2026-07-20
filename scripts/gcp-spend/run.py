@@ -1035,7 +1035,11 @@ def main() -> int:
     amplitude.load_dotenv(DOTENV_PATH)
     _sa_rel = os.environ.get("GCP_SA_KEY_FILE")
     if _sa_rel and not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str((SCRIPT_DIR / _sa_rel).resolve())
+        _sa_path = (SCRIPT_DIR / _sa_rel).resolve()
+        if _sa_path.is_file():
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(_sa_path)
+        else:
+            print(f"  service-account key not found at {_sa_path} — falling back to gcloud ADC")
     client = bigquery.Client(project=billing_project)
     rows = run_query(client, sql, months)
     print(f"  {len(rows)} rows returned")

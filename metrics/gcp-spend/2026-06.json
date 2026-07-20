@@ -1,41 +1,41 @@
 {
   "month": "2026-06",
-  "generated_at": "2026-07-01T06:51:53Z",
+  "generated_at": "2026-07-20T16:13:51Z",
   "apps": {
     "tattooist": {
-      "cost_eur": 30047.65,
-      "mau": 269337
+      "cost_eur": 30342.92,
+      "mau": 270128
     },
     "aihomedesign": {
-      "cost_eur": 944.77,
-      "mau": 73634
+      "cost_eur": 955.34,
+      "mau": 73767
     },
     "chatultra": {
-      "cost_eur": 265.42,
-      "mau": 617081
+      "cost_eur": 268.05,
+      "mau": 619989
     },
     "faceai": {
-      "cost_eur": 126.65,
+      "cost_eur": 127.69,
       "mau": 426
     },
     "goya": {
-      "cost_eur": 1.53,
+      "cost_eur": 1.62,
       "mau": null
     },
     "imote": {
-      "cost_eur": 62.47,
-      "mau": 1238524
+      "cost_eur": 63.61,
+      "mau": 1249359
     },
     "screenmirroring": {
-      "cost_eur": 31.17,
-      "mau": 2637
+      "cost_eur": 31.53,
+      "mau": 2640
     },
     "mirage": {
-      "cost_eur": 6.7,
+      "cost_eur": 6.83,
       "mau": null
     },
     "pdfeditor": {
-      "cost_eur": 35.85,
+      "cost_eur": 36.38,
       "mau": null
     },
     "musicplayer": {

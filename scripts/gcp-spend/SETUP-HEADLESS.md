@@ -1,9 +1,10 @@
 # GCP spend report — headless setup (one-time)
 
 This is the vendored, self-contained copy of the GCP spend tool. It lives inside
-em-hub so the monthly scheduled task — which only ever mounts the em-hub folder —
-can actually reach and run it. Auth is **non-interactive**: instead of
-`gcloud auth application-default login`, it reads a **service-account key**.
+em-hub so the monthly refresh job can reach and run it. Auth prefers a
+**service-account key**; if the key file is absent, `run.py` falls back to
+gcloud **Application Default Credentials** (`gcloud auth application-default login`),
+so the tool works before the key is set up — the key just makes it durable.
 
 You only do this once. After that, the monthly report generates itself.
 
@@ -68,9 +69,22 @@ If it complains the key file isn't found, the path or filename doesn't match
 
 ## After setup
 
-- The **monthly scheduled task** (`monthly-gcp-spend-report`) runs on the 1st,
-  builds last month's report headlessly, and publishes it into
-  `em-hub/metrics/gcp-spend/`. No manual step.
+- The **local launchd job** (`com.ftosetto.emhub.gcp-spend-refresh` — plist
+  versioned in this folder) runs `monthly-refresh.sh` on the **2nd of each month
+  at 07:00**: builds last month's report, publishes it into
+  `em-hub/metrics/gcp-spend/`, and commits + pushes the artifacts. Install once:
+
+  ```bash
+  cp scripts/gcp-spend/com.ftosetto.emhub.gcp-spend-refresh.plist ~/Library/LaunchAgents/
+  launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.ftosetto.emhub.gcp-spend-refresh.plist
+  ```
+
+  Logs go to `scripts/gcp-spend/logs/refresh-YYYY-MM.log` (gitignored). If the
+  Mac is asleep at 07:00, launchd runs the job on wake.
+- The **"Monthly cost digest" cloud routine** (claude.ai/code/routines) runs on
+  the 2nd about an hour later, clones em-hub from GitHub, reads the published
+  `metrics/gcp-spend/` files, and leaves a **Gmail draft** digest (never sends).
+  If the data isn't fresh it drafts an alert instead.
 - The **`/gcp-spend` skill** and the **M&A heartbeat** both read the published
   `metrics/gcp-spend/` files, including the `YYYY-MM.json` export.
 - The separate `~/Projects/gcp-spend-report` repo is now redundant for the

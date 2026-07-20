@@ -4,6 +4,7 @@ secrets/
 
 # Intermediate render output — canonical published copy lives in em-hub/metrics/gcp-spend/
 reports/
+logs/
 __pycache__/
 *.pyc
 .DS_Store
