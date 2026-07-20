@@ -45,7 +45,9 @@ Skills are invoked with `/skill-name` and run in the main conversation. Use thes
 | User says something like…                                                            | Skill      | Command       |
 | ------------------------------------------------------------------------------------ | ---------- | ------------- |
 | "Prep me for my meeting with [name]" / "Help me prepare for [name]"                  | Prep       | `/prep`       |
+| "Draft prep for [name]" / "Auto-prep my 1:1" / "First-pass agenda for [name]" (no question loop) | Prep Draft | `/prep-draft` |
 | "Analyse this transcript" / "How did my meeting go?"                                 | Analyse    | `/analyse`    |
+| "Run the full 1:1 with [name]" / "Process/write up my 1:1" / "I just finished my 1:1" | 1:1 Lifecycle | `/1on1-lifecycle` |
 | "Draft an email/message/doc about…" / "Help me write a status update"                | Write      | `/write`      |
 | "Help me decide between…" / "Think through this decision"                            | Decide     | `/decide`     |
 | "Help me think through…" / "Brainstorm with me" / "What are the scenarios for…"      | Brainstorm | `/brainstorm` |
