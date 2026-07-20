@@ -1,0 +1,8 @@
+task mode: create
+primary deck-profile: product-platform
+secondary profile gates: gtm-growth
+required proof objects: duplicated vendor stacks, before/after shared library, facade architecture, shared event dictionary, distribution/version-bump model, iOS/pilot validation, platform rollout roadmap
+source/asset requirements: use presentations/MartechKit/MartechKit-presentation.md as source story; use attached mau.io screenshot for palette, typography feel, rounded dark panels, wave mesh motif; use mascot as small pixel identity mark on cover/close
+brand authenticity constraints: do not use the live mau.io BrandBucket page as the style reference; use the user-provided screenshot instead
+profile-specific QA gates: each slide has a claim and proof object; no generic feature-card grid without explanatory structure; diagrams must remain readable when projected
+known missing inputs: original mascot file was provided inline only, so the deck recreates it as editable pixel blocks

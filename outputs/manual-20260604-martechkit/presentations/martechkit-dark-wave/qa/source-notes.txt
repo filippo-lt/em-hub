@@ -1,0 +1,2 @@
+Source: presentations/MartechKit/MartechKit-presentation.md
+Visual reference: user-provided mau.io screenshot from 2026-06-04.
