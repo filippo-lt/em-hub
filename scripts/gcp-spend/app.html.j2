@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ name }} — {{ target_month_label }}</title>
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --bg: #ffffff;
+    --card: #fafafa;
+    --border: #e6e6e6;
+    --soft-border: #f0f0f0;
+    --accent: #2563eb;
+    --up:   #c0392b;
+    --down: #1e8449;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.45;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .report-header {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--fg);
+    padding-bottom: 16px; margin-bottom: 28px;
+  }
+  .report-header h1 {
+    font-size: 24px; margin: 0; font-weight: 600; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .report-header h1 .swatch {
+    width: 12px; height: 12px; border-radius: 2px; display: inline-block;
+  }
+  .report-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+  .kpis { display: flex; flex-wrap: wrap; gap: 24px; align-items: baseline; }
+  .kpi { display: flex; flex-direction: column; gap: 2px; min-width: 110px; }
+  .kpi .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .kpi .val   { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .kpi .val.small { font-size: 16px; }
+  .kpi .mom { font-size: 12px; }
+  .mom.up   { color: var(--up); }
+  .mom.down { color: var(--down); }
+  .mom.flat { color: var(--muted); }
+
+  h2.section {
+    font-size: 13px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--muted);
+    margin: 30px 0 12px;
+  }
+
+  .chart {
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 14px;
+    border-radius: 6px;
+  }
+  .chart svg { display: block; width: 100%; height: auto; }
+  .chart .gridline { stroke: var(--soft-border); stroke-width: 1; }
+  .chart .axis-text { fill: var(--muted); font-size: 10px; }
+  .chart .x-label   { fill: var(--muted); font-size: 11px; }
+  .chart .x-label.target { fill: var(--fg); font-weight: 600; }
+  .chart .line { fill: none; stroke-width: 2; }
+  .chart .dot  { stroke: white; stroke-width: 1.5; }
+  .chart .dot.target { stroke-width: 2; }
+  .chart .empty { fill: var(--muted); font-size: 12px; }
+  .chart .bar { transition: opacity 0.15s; }
+  .chart .bar:hover { opacity: 0.78; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 8px 14px;
+    margin-top: 10px; font-size: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; color: var(--fg); }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  .grid-2 {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 6px; }
+  table.history {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  table.history th, table.history td {
+    padding: 6px 10px; border-bottom: 1px solid var(--soft-border);
+    text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  table.history th { color: var(--muted); font-weight: 500; background: var(--card); }
+  table.history th.app, table.history td.app { text-align: left; }
+  table.history tr.target td { background: rgba(37, 99, 235, 0.06); font-weight: 600; }
+  table.history tr:last-child td { border-bottom: none; }
+  table.history td.empty { color: var(--muted); font-style: italic; }
+
+  .gen-info { margin-top: 20px; color: var(--muted); font-size: 12px; text-align: right; }
+
+  .no-data {
+    border: 1px dashed var(--border);
+    background: var(--card);
+    padding: 14px; border-radius: 6px;
+    color: var(--muted); font-size: 13px;
+  }
+
+  .chart .baseline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3,3; opacity: 0.6; }
+  .chart .baseline-label { fill: var(--muted); font-size: 10px; }
+  .overlay-hint {
+    margin-top: 8px; font-size: 11px; color: var(--muted);
+    border-top: 1px dashed var(--soft-border); padding-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+{# ── Reusable macros (defined first so they're callable below) ── #}
+{% macro render_overlay_chart(c) -%}
+<div class="chart">
+  <svg viewBox="0 0 {{ c.width }} {{ c.height }}" preserveAspectRatio="xMidYMid meet">
+    {% for g in c.gridlines %}
+      <line class="gridline" x1="{{ g.x_line_start }}" x2="{{ g.x_line_end }}" y1="{{ g.y }}" y2="{{ g.y }}"/>
+      <text class="axis-text" x="{{ g.x_label }}" y="{{ g.y + 3 }}" text-anchor="end">{{ g.label }}</text>
+    {% endfor %}
+    {# Baseline at 100 (window start = 100) #}
+    <line class="baseline" x1="{{ c.baseline_x_start }}" x2="{{ c.baseline_x_end }}"
+          y1="{{ c.baseline_y }}" y2="{{ c.baseline_y }}"/>
+    <text class="baseline-label" x="{{ c.baseline_x_end }}" y="{{ c.baseline_y - 3 }}" text-anchor="end">= start</text>
+    {% for s in c.series %}
+      {% for poly in s.polylines %}
+        <polyline class="line" points="{{ poly }}" stroke="{{ s.color }}"/>
+      {% endfor %}
+      {% for d in s.dots %}
+        <circle class="dot{% if d.is_target %} target{% endif %}"
+                cx="{{ d.cx }}" cy="{{ d.cy }}"
+                r="{% if d.is_target %}4{% else %}2.5{% endif %}"
+                fill="{{ s.color }}">
+          <title>{{ s.name }} · {{ d.month[:4] }}-{{ d.month[4:] }} · index {{ "%.0f"|format(d.index) }} (raw {{ "{:,.0f}".format(d.raw) }})</title>
+        </circle>
+      {% endfor %}
+    {% endfor %}
+    {% for l in c.x_labels %}
+      <text class="x-label{% if l.is_target %} target{% endif %}" x="{{ l.x }}" y="{{ l.y }}" text-anchor="middle">{{ l.text }}</text>
+    {% endfor %}
+  </svg>
+  <div class="legend">
+    {% for s in c.series %}
+    <span class="legend-item"><span class="swatch" style="background: {{ s.color }}"></span>{{ s.name }}</span>
+    {% endfor %}
+  </div>
+  <div class="overlay-hint">
+    Each series indexed to 100 at {% if c.baseline_month_label %}<strong>{{ c.baseline_month_label }}</strong>{% else %}the first stable month{% endif %} (first month every series has reached 10%+ of its window max — earlier launch months are excluded so the indexing stays meaningful).
+    Lines moving together = spend tracking users; diverging = changing efficiency.
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro render_line_chart(c, fmt="money") -%}
+<div class="chart">
+  <svg viewBox="0 0 {{ c.width }} {{ c.height }}" preserveAspectRatio="xMidYMid meet">
+    {% for g in c.gridlines %}
+      <line class="gridline" x1="{{ g.x_line_start }}" x2="{{ g.x_line_end }}" y1="{{ g.y }}" y2="{{ g.y }}"/>
+      <text class="axis-text" x="{{ g.x_label }}" y="{{ g.y + 3 }}" text-anchor="end">{{ g.label }}</text>
+    {% endfor %}
+    {% if c.has_data %}
+      {% for poly in c.polylines %}
+        <polyline class="line" points="{{ poly }}" stroke="{{ c.color }}"/>
+      {% endfor %}
+      {% for d in c.dots %}
+        <circle class="dot{% if d.is_target %} target{% endif %}"
+                cx="{{ d.cx }}" cy="{{ d.cy }}"
+                r="{% if d.is_target %}4{% else %}3{% endif %}"
+                fill="{{ c.color }}">
+          <title>{{ d.month[:4] }}-{{ d.month[4:] }} · {% if fmt == "money3" %}${{ "%.3f"|format(d.value) }}{% elif fmt == "int" %}{{ "{:,}".format(d.value|int) }}{% else %}${{ "{:,.0f}".format(d.value) }}{% endif %}</title>
+        </circle>
+      {% endfor %}
+    {% else %}
+      <text class="empty" x="{{ c.width // 2 }}" y="{{ c.height // 2 }}" text-anchor="middle">No data</text>
+    {% endif %}
+    {% for l in c.x_labels %}
+      <text class="x-label{% if l.is_target %} target{% endif %}" x="{{ l.x }}" y="{{ l.y }}" text-anchor="middle">{{ l.text }}</text>
+    {% endfor %}
+  </svg>
+</div>
+{%- endmacro %}
+
+<main>
+
+  <div class="crumbs">
+    <a href="../index.html">← Dashboard</a>
+    · <a href="../{{ target_month_iso }}.html">{{ target_month_label }} detail</a>
+  </div>
+
+  <header class="report-header">
+    <div>
+      <h1><span class="swatch" style="background: {{ color }}"></span>{{ name }}</h1>
+      <div class="subtitle">
+        <code>{{ project_id }}</code> ·
+        {{ target_month_label }} ·
+        {{ window_count }}-month window
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi">
+        <span class="label">Spend</span>
+        <span class="val">${{ "{:,.0f}".format(current) }}</span>
+        {% if mom_pct is not none %}
+          {% if mom_pct > 0.5 %}<span class="mom up">▲ {{ "{:,.1f}".format(mom_pct) }}%</span>
+          {% elif mom_pct < -0.5 %}<span class="mom down">▼ {{ "{:,.1f}".format(-mom_pct) }}%</span>
+          {% else %}<span class="mom flat">— flat</span>{% endif %}
+        {% endif %}
+      </div>
+      {% if has_amplitude %}
+      <div class="kpi">
+        <span class="label">MAU</span>
+        <span class="val">{{ "{:,}".format(mau or 0) }}</span>
+        {% if mau_mom_pct is not none %}
+          {% if mau_mom_pct > 0.5 %}<span class="mom up">▲ {{ "{:,.1f}".format(mau_mom_pct) }}%</span>
+          {% elif mau_mom_pct < -0.5 %}<span class="mom down">▼ {{ "{:,.1f}".format(-mau_mom_pct) }}%</span>
+          {% else %}<span class="mom flat">— flat</span>{% endif %}
+        {% endif %}
+      </div>
+      <div class="kpi">
+        <span class="label">New users</span>
+        <span class="val">{{ "{:,}".format(new_users or 0) }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">$/MAU</span>
+        <span class="val small">{% if cost_per_mau is not none %}${{ "%.3f"|format(cost_per_mau) }}{% else %}—{% endif %}</span>
+      </div>
+      {% endif %}
+      <div class="kpi">
+        <span class="label">Avg ({{ window_count }}m)</span>
+        <span class="val small">${{ "{:,.0f}".format(average) }}</span>
+      </div>
+    </div>
+  </header>
+
+  {# ── Spend over time ──────────────────────────────────────────── #}
+  <h2 class="section">Spend over time</h2>
+  {{ render_line_chart(spend_chart, fmt="money") }}
+
+  {# ── Users (MAU + new) ───────────────────────────────────────── #}
+  {% if has_amplitude %}
+  <div class="grid-2">
+    <div>
+      <h2 class="section">Monthly active users</h2>
+      {{ render_line_chart(mau_chart, fmt="int") }}
+    </div>
+    <div>
+      <h2 class="section">New users per month</h2>
+      {{ render_line_chart(new_chart, fmt="int") }}
+    </div>
+  </div>
+
+  <h2 class="section">Trend overlap · spend vs users (indexed to 100)</h2>
+  {{ render_overlay_chart(overlay_chart) }}
+
+  <h2 class="section">$/MAU over time · correlation indicator</h2>
+  {{ render_line_chart(cpm_chart, fmt="money3") }}
+  {% else %}
+  <h2 class="section">Users</h2>
+  <div class="no-data">No Amplitude data configured for this app. Add a row to <code>amplitude.conf</code> + env vars to enable MAU and $/MAU charts.</div>
+  {% endif %}
+
+  {# ── Services breakdown over time ─────────────────────────────── #}
+  <h2 class="section">Services breakdown · stacked monthly cost</h2>
+  <div class="chart">
+    <svg viewBox="0 0 {{ services_chart.width }} {{ services_chart.height }}" preserveAspectRatio="xMidYMid meet">
+      {% for g in services_chart.gridlines %}
+        <line class="gridline" x1="{{ g.x_line_start }}" x2="{{ g.x_line_end }}" y1="{{ g.y }}" y2="{{ g.y }}"/>
+        <text class="axis-text" x="{{ g.x_label }}" y="{{ g.y + 3 }}" text-anchor="end">{{ g.label }}</text>
+      {% endfor %}
+      {% for b in services_chart.bars %}
+        <rect class="bar" x="{{ b.x }}" y="{{ b.y }}" width="{{ b.w }}" height="{{ b.h }}" fill="{{ b.color }}">
+          <title>{{ b.svc }} · {{ b.month[:4] }}-{{ b.month[4:] }} · ${{ "{:,.2f}".format(b.value) }}</title>
+        </rect>
+      {% endfor %}
+      {% for l in services_chart.x_labels %}
+        <text class="x-label{% if l.is_target %} target{% endif %}" x="{{ l.x }}" y="{{ l.y }}" text-anchor="middle">{{ l.text }}</text>
+      {% endfor %}
+    </svg>
+    <div class="legend">
+      {% for s in services_chart.legend %}
+      <span class="legend-item"><span class="swatch" style="background: {{ s.color }}"></span>{{ s.name }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# ── Table ───────────────────────────────────────────────────── #}
+  <h2 class="section">Monthly figures</h2>
+  <div class="table-wrap">
+    <table class="history">
+      <thead>
+        <tr>
+          <th class="app">Month</th>
+          <th>Spend</th>
+          {% if has_amplitude %}
+          <th>MAU</th>
+          <th>New</th>
+          <th>$/MAU</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in table_rows %}
+        <tr class="{% if r.is_target %}target{% endif %}">
+          <td class="app">{{ r.full_label }}</td>
+          <td>${{ "{:,.0f}".format(r.spend) }}</td>
+          {% if has_amplitude %}
+            {% if r.mau is not none %}
+              <td>{{ "{:,}".format(r.mau) }}</td>
+              <td>{{ "{:,}".format(r.new or 0) }}</td>
+              <td>{% if r.cost_per_mau is not none %}${{ "%.3f"|format(r.cost_per_mau) }}{% else %}—{% endif %}</td>
+            {% else %}
+              <td class="empty">—</td><td class="empty">—</td><td class="empty">—</td>
+            {% endif %}
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="gen-info">Generated {{ generated_at }}</div>
+
+</main>
+</body>
+</html>

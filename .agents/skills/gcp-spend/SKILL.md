@@ -22,16 +22,13 @@ Scan `metrics/gcp-spend/` for files matching `YYYY-MM.html`. Find the newest by 
 
 ### Phase 2 — Refresh
 
-Check that `/Users/ftosetto/Projects/gcp-spend-report/` exists.
-
-- **Missing:** tell the user the external project isn't at the expected path. Offer to analyse the most recent stale report instead. Do not invent a path or fall back silently.
-- **Present:** run the publish target. Working directory: `/Users/ftosetto/Projects/gcp-spend-report`.
+The tool is vendored inside em-hub at `scripts/gcp-spend/`. Run the publish target from there:
 
   ```
-  cd /Users/ftosetto/Projects/gcp-spend-report && make publish MONTH=YYYY-MM
+  cd scripts/gcp-spend && make setup && make publish MONTH=YYYY-MM
   ```
 
-  Where `YYYY-MM` is the current month. Surface the command output. If it fails on auth (`gcloud auth application-default login` not done) or env vars, tell the user verbatim and stop.
+  Where `YYYY-MM` is the target month (default: last completed month). `make setup` installs Python deps; skip it if already installed. Surface the command output. Auth is non-interactive via a service-account key at `scripts/gcp-spend/secrets/gcp-sa-key.json` (one-time setup in `scripts/gcp-spend/SETUP-HEADLESS.md`). If it fails because the key is missing/invalid, tell the user verbatim and stop — do not fabricate numbers.
 
 ### Phase 3 — Load and analyse
 
@@ -46,12 +43,13 @@ Ask the user what they want to dig into rather than dumping everything.
 
 ---
 
-## External project
+## The tool
 
-The tool is self-contained at `/Users/ftosetto/Projects/gcp-spend-report/`:
+Vendored and self-contained inside em-hub at `scripts/gcp-spend/`:
 
-- `python run.py --month YYYY-MM [--publish]` — render the focal month and dashboard; `--publish` also copies them into `em-hub/metrics/gcp-spend/`
-- `make report` / `make publish` — same, with the previous month as default
-- `make setup` — install requirements and run ADC login (one-time)
+- `make publish MONTH=YYYY-MM` — render the focal month + dashboard and copy them (plus the `YYYY-MM.json` heartbeat export) into `metrics/gcp-spend/`
+- `make report MONTH=YYYY-MM` — render only, no publish
+- `make setup` — install Python deps (one-time per environment; no interactive login)
+- Auth: service-account key at `secrets/gcp-sa-key.json`, pointed to by `GCP_SA_KEY_FILE` in `.env`. One-time setup in `SETUP-HEADLESS.md`.
 
-The sibling path coupling is hardcoded. If you ever move either project, publish will warn and exit 0 — the report still renders, it just doesn't reach em-hub.
+Because it's vendored inside em-hub, it runs in the monthly scheduled sandbox (which mounts only em-hub). The older `~/Projects/gcp-spend-report` repo is now redundant for automation — this copy is canonical.
