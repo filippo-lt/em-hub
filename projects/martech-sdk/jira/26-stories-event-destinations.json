@@ -1,0 +1,46 @@
+[
+  {
+    "_comment": {
+      "intent": "Story 1 of the SDK Event Destinations epic, and the one Filippo asked to lead with: re-architect the events engine. Decides the destination model once, before either platform builds it, so iOS and Android implement the same shape rather than converging afterwards.",
+      "scope_note": "Decision plus core types. No vendor wiring, no generated rules. Follows the board's existing spike/decide pattern (MTSDK-6, MTSDK-10).",
+      "where_rules_live": "Settled by Filippo 2026-07-15: the destination matrix lives in the martech-guidelines YAML schemas and is generated into both SDKs, matching how core events are already generated (MartechPack's generated Kotlin carries a Python+Jinja2 header dated 2026-06-18 sourced from martech-guidelines; MartechKit's equivalent exists but sits on the unmerged with-generated-code branch). So this story defines what the generated code must express and what the engine does with it - not the schema fields themselves, which sit with Martech.",
+      "parent_placeholder": "MTSDK-75 replaced with the real epic key after 25-epic-event-destinations.json is committed."
+    },
+    "parent": "MTSDK-75",
+    "summary": "Re-architect the event engine around destinations",
+    "priority": "Major",
+    "description": "The event engine cannot express where an event goes. EventTracker is declared on both platforms as a protocol that abstracts Amplitude event tracking, and neither MartechKit nor MartechPack contains any notion of a destination. Amplitude is not the default. It is the only thing the engine can say.\n\nRouting cannot be bolted onto that. An event has to carry its destinations as a first-class part of the model, and the engine has to deliver to that set and refuse the rest. This story decides that model once, before either platform builds it, so that iOS and Android implement the same shape instead of converging afterwards. It is a decision plus the core types: no vendor wiring, no generated rules.\n\nDestination rules live in the martech-guidelines schemas and are generated into both SDKs, the same way core events are generated today. This story defines what the generated code has to express and what the engine does with it. It does not define the schema fields themselves, which sit with Martech and are not tracked on this board.\n\nEverything else in this epic takes its shape from what this decides, so it runs first.\n\nAcceptance criteria:\n- An event carries an explicit set of destinations, drawn from a closed set (Amplitude, AppsFlyer, Firebase) that is extended deliberately rather than by adding a string\n- A destination that is forbidden for an event is expressible and enforceable, not merely absent from the allowed set\n- The shape the generated code has to take is defined, and matches what the martech-guidelines schemas can supply\n- rs_ad_revenue is expressible as a rule under the model, and the hardcoded AppsFlyer path released in 2.0 has a stated path out\n- An event with no declared destination fails at build time or test time, rather than silently reaching nothing or silently reaching everything\n- The model is written up before any iOS or Android work in this epic starts\n- Works on both iOS and Android"
+  },
+  {
+    "_comment": {
+      "intent": "Story 4 of the epic. CI check that the generated routing cannot drift from the schemas it came from.",
+      "rationale": "A generated routing table is only trustworthy if drift is impossible. Without it, a stale regenerate or a hand edit ships wrong destinations and it surfaces in BigQuery afterwards - which is exactly the failure MT-1556 is remediating across seven apps."
+    },
+    "parent": "MTSDK-75",
+    "summary": "CI: generated routing matches the declared destinations",
+    "priority": "Major",
+    "description": "A generated routing table is only worth having if it cannot drift from the schemas it came from. Without a check, a stale regenerate or a hand edit ships the wrong destinations and nobody finds out until the data shows it. That is the failure mode MT-1556 is currently remediating by hand across seven apps: an event reaching a destination it should never have reached, discovered afterwards in BigQuery.\n\nThis makes the drift impossible to ship rather than easy to spot.\n\nBlocked by the iOS and Android routing work in this epic, since there has to be generated routing before it can be checked.\n\nAcceptance criteria:\n- CI fails when the generated routing does not match the destinations declared in the martech-guidelines schemas\n- CI fails when an event reaches a destination that is declared forbidden for it\n- CI fails when a generated routing file has been edited by hand\n- The check runs on both martech-kit and martech-pack\n- The failure names the event and the destination, so the fix is clear without reading the generator\n- Works on both iOS and Android"
+  },
+  {
+    "_comment": {
+      "intent": "Story 5 of the epic. Decide which SDK events AppsFlyer should actually receive. Decision only, not implementation.",
+      "numbers_source": "David Sanchez-Camacho, 2026-07-07, from AppsFlyer Data Locker (af_datalocker.inapps, last 90 days): 188 distinct event names total, splitting ~99 via SDK (~73M events, MartechKit scope) and ~89 via S2S (~22M events, RevenueCat webhooks / Churney / synthetic - out of scope). Exactly one of the ~99 SDK events is AF-canonical in guidelines. Sheet shared: appsflyer_inapps_sdk_by_app_event_2026-07-07.",
+      "blocked_on_martech": "David's own action item, 2026-07-07: 'From my side, I'll try to understand if these SDK events are used for anything at all.' Not tracked on this board."
+    },
+    "parent": "MTSDK-75",
+    "summary": "Decide the AppsFlyer allow-list",
+    "priority": "Major",
+    "description": "About 99 event types currently reach AppsFlyer from the SDK, roughly 73 million events over 90 days. Exactly one of them is a defined AppsFlyer canonical event. The rest reach AppsFlyer because the SDK forwards by default, not because anyone asked for them: onboarding screens, paywall impressions and similar app UX events that most likely nobody uses for user acquisition. Every one of them is a postback surprise waiting to happen and a contract nobody wrote.\n\nThis story decides which SDK events AppsFlyer should actually receive. It is a decision, not an implementation.\n\nMartech is checking whether these events are used for anything at all, and has shared a sheet of what reaches AppsFlyer per app today (appsflyer_inapps_sdk_by_app_event_2026-07-07). This cannot be scoped until that answer lands. That check sits with Martech and is not tracked on this board.\n\nAcceptance criteria:\n- Every SDK event that reaches AppsFlyer today is either on the allow-list or explicitly dropped, each with a reason\n- The allow-list is expressed in the martech-guidelines schemas, not in a document that drifts\n- The attribution and revenue risk of dropping an event is stated rather than assumed\n- Martech signs off on the list before any event stops being sent\n- The decision records who to ask when a new event needs adding to the list"
+  },
+  {
+    "_comment": {
+      "intent": "Story 6 of the epic. Turn off default auto-forwarding to AppsFlyer, so an event is sent because a rule says so rather than because forwarding is the default.",
+      "blast_radius": "~99 event types / ~73M events per 90 days stop being forwarded unless allow-listed. Ships as its own release so a regression is attributable. Deliberately Minor: it is the last step and gated on the allow-list decision.",
+      "recommendation_source": "David Sanchez-Camacho, 2026-07-07: 'Consider not auto-forwarding SDK events by default and maintaining an allow-list of what UA/MarTech actually needs in AppsFlyer. Less noise, fewer postback surprises.'"
+    },
+    "parent": "MTSDK-75",
+    "summary": "Stop auto-forwarding SDK events by default",
+    "priority": "Minor",
+    "description": "Once the allow-list exists, the SDK should send an event to AppsFlyer because a rule says so, not because forwarding is what happens when nobody decided. This closes the loophole where an event reaches AppsFlyer with no contract behind it.\n\nThis is a behaviour change with real blast radius. Around 99 event types and 73 million events over 90 days stop being forwarded unless they are on the allow-list. It ships after the allow-list is agreed, and it goes out as its own release so that if something regresses it is attributable to this change and not to the routing mechanism.\n\nBlocked by the allow-list decision in this epic.\n\nAcceptance criteria:\n- An SDK event reaches AppsFlyer only when its declared destinations say so\n- An event with no declared destinations reaches nothing, and fails CI before it ships\n- The change ships as its own release, separate from the routing mechanism\n- Apps already integrated see no change for events on the allow-list\n- The events that stop being forwarded are named in the release notes\n- Works on both iOS and Android"
+  }
+]

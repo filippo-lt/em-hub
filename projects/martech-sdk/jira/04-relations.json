@@ -1,0 +1,12 @@
+{
+  "blocks": [
+    { "blocker": "MTSDK-25", "blocked": "MTSDK-3" },
+    { "blocker": "MTSDK-9",  "blocked": "MTSDK-6" },
+    { "blocker": "MTSDK-12", "blocked": "MTSDK-6" },
+    { "blocker": "MTSDK-34", "blocked": "MTSDK-6" },
+    { "blocker": "MTSDK-37", "blocked": "MTSDK-6" }
+  ],
+  "reparent": [
+    { "key": "MTSDK-10", "parent": "MTSDK-47" }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "summary": "Integration Confidence",
+  "priority": "Critical",
+  "labels": ["martech-sdk", "integration-confidence"],
+  "description": "Give developers confidence that integrating (or upgrading) the Martech SDK has not broken their app's analytics, attribution or billing wiring.\n\nScope: tooling that runs AROUND the SDK and proves an integration is correct. This epic changes no SDK source code — that belongs in MTSDK-2 (Developer Experience).\n\nThe outcome is threefold:\n- A verification suite that asserts Amplitude events, Amplitude<->RevenueCat identity and AppsFlyer identity wiring are intact\n- That suite running in CI, green, against at least two real apps\n- A playbook that tells an app team how to integrate AND how to prove they didn't break anything\n\nOpen question owned by this epic (see MTSDK-10): whether verification reads back from the vendor APIs, or asserts at the SDK boundary. That is a go/no-go decision, not a build task, and it gates everything else here."
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "parent": "MTSDK-72",
+    "summary": "Integrate flutter_martech into ChatUltra",
+    "priority": "Minor",
+    "labels": ["martech-sdk", "flutter", "app-integrations", "q4"],
+    "description": "Put flutter_martech into ChatUltra. Integration only - proving it works is the verification story.\n\nThis is the first time the Flutter bridge meets a real app. Expect it to surface gaps the example app never could.\n\nBlocked by MTSDK-70: there has to be a published package an app team can actually install.\n\nAcceptance criteria:\n- ChatUltra depends on a published flutter_martech release and calls configure()\n- No 3rd-party SDK (AppsFlyer, Amplitude, RevenueCat, Meta, TikTok, Firebase) is initialised directly by the app\n- A debug build can be driven through the MTSDK-10 journey: configure, consent, fire view_screen_splash, make a purchase\n- Every friction point is written down as it happens\n- Time-to-integrate is recorded and compared against the AI Design iOS and Android baselines"
+  },
+  {
+    "parent": "MTSDK-72",
+    "summary": "Verify ChatUltra: verification suite green",
+    "priority": "Minor",
+    "labels": ["martech-sdk", "flutter", "app-integrations", "q4"],
+    "description": "Run the verification suite against the integrated ChatUltra build and get it green.\n\nThis is the honest test of the Flutter bridge. A bridge can look correct and still break the RevenueCat to AppsFlyer identity ordering in a way only the suite catches.\n\nBlocked by the integration story, and by MTSDK-71 (the suite running against Flutter at all).\n\nAcceptance criteria:\n- All three harnesses run against ChatUltra and pass\n- Every discrepancy is triaged: bridge defect, app defect, or wrong harness assumption\n- A wrong harness assumption is fixed in the harness, not worked around in the app\n- A bridge defect is filed against MTSDK-3, not patched in ChatUltra\n- Time from 'integration complete' to 'suite green' is recorded"
+  }
+]

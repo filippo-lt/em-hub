@@ -1,0 +1,36 @@
+{
+  "reparent": [
+    { "key": "MTSDK-52", "parent": "MTSDK-55" },
+    { "key": "MTSDK-53", "parent": "MTSDK-55" },
+    { "key": "MTSDK-54", "parent": "MTSDK-55" }
+  ],
+  "blocks": [
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-48" },
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-49" },
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-50" },
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-52" },
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-53" },
+
+    { "blocker": "MTSDK-52", "blocked": "MTSDK-51" },
+    { "blocker": "MTSDK-48", "blocked": "MTSDK-51" },
+    { "blocker": "MTSDK-49", "blocked": "MTSDK-51" },
+    { "blocker": "MTSDK-50", "blocked": "MTSDK-51" },
+
+    { "blocker": "MTSDK-52", "blocked": "MTSDK-56" },
+    { "blocker": "MTSDK-48", "blocked": "MTSDK-56" },
+    { "blocker": "MTSDK-49", "blocked": "MTSDK-56" },
+    { "blocker": "MTSDK-50", "blocked": "MTSDK-56" },
+
+    { "blocker": "MTSDK-25", "blocked": "MTSDK-53" },
+    { "blocker": "MTSDK-53", "blocked": "MTSDK-57" },
+    { "blocker": "MTSDK-34", "blocked": "MTSDK-57" },
+    { "blocker": "MTSDK-37", "blocked": "MTSDK-57" },
+
+    { "blocker": "MTSDK-56", "blocked": "MTSDK-54" }
+  ],
+  "relates": [
+    { "a": "MTSDK-52", "b": "MTSDK-48" },
+    { "a": "MTSDK-52", "b": "MTSDK-49" },
+    { "a": "MTSDK-52", "b": "MTSDK-50" }
+  ]
+}

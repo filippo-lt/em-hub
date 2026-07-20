@@ -1,0 +1,6 @@
+{
+  "summary": "App Integrations",
+  "priority": "Critical",
+  "labels": ["martech-sdk", "app-integrations"],
+  "description": "Integrate the Martech SDK into every app in the portfolio.\n\nThis epic IS priority #1. It exists so that the rollout is visible at epic level rather than buried as stories inside a tooling epic.\n\nAI Design is the pilot — the first integration, and the one that will surface every gap in the SDK, the verification suite and the docs. Every subsequent app (Tattooist, AI Home, iMote, FaceAI, ScreenMirroring, ChatUltra, ...) becomes another pair of stories here.\n\nEach app integration is deliberately split in two:\n- INTEGRATE — put the SDK in the app. Depends on nothing but the SDK existing.\n- VERIFY — prove the integration didn't break analytics, attribution or billing. Depends on the harnesses in the Integration Confidence epic.\n\nThat split is not bureaucracy. Without it there is a circular dependency: the verification harnesses cannot be built without a host app that already has the SDK in it (see MTSDK-10 STEP 1), while the integration cannot be declared correct without the harnesses. Integrate first, verify second.\n\nThis epic does not close. It is a rollout programme, and it burns down one app at a time."
+}

@@ -1,0 +1,13 @@
+{
+  "_comment": [
+    "ChatUltra Flutter pilot wiring.",
+    "70 (publish flutter_martech) blocks 73: an app team cannot integrate a package that isn't published.",
+    "73 blocks 74: integrate first, verify second - same shape as the AI Design pilot.",
+    "71 blocks 74: the suite must be proven against the Flutter example app before it is pointed at a real one."
+  ],
+  "blocks": [
+    { "blocker": "MTSDK-70", "blocked": "MTSDK-73" },
+    { "blocker": "MTSDK-73", "blocked": "MTSDK-74" },
+    { "blocker": "MTSDK-71", "blocked": "MTSDK-74" }
+  ]
+}

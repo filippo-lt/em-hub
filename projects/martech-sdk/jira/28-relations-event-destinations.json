@@ -1,0 +1,21 @@
+{
+  "_comment": {
+    "intent": "Wire up the SDK Event Destinations epic: re-parent the two rewritten stories onto it, and record the dependency order.",
+    "dependency_order": "MTSDK-76 (re-architect the event engine) blocks the two platform implementations, because it decides the model they implement. The two platform implementations block MTSDK-77, because there has to be generated routing before drift can be checked. MTSDK-78 blocks MTSDK-79, because nothing can stop being forwarded until it is agreed what should still be sent.",
+    "placeholders": "MTSDK-76 / MTSDK-77 / MTSDK-78 / MTSDK-79 / MTSDK-75 are replaced with real keys once 25 and 26 are committed and Jira assigns them.",
+    "link_direction_warning": "jira-relate.sh applies the link type's OUTWARD description to inwardIssue and the INWARD description to outwardIssue, so 'A blocks B' is inwardIssue: A, outwardIssue: B. The script had this backwards on 2026-07-14 and silently created 22 inverted Blocks links; it was fixed 2026-07-15. This file uses the script's own blocker/blocked keys, which is the corrected interface - but the OK lines it prints are not evidence. Read the graph back with the API and diff it against the dependency_order above before calling this done.",
+    "not_touched": "No links to MTSDK-33, MTSDK-35, MTSDK-36, MTSDK-67 or MT-1480, per Filippo 2026-07-15. Jira links are bidirectional, so linking any of them would modify them. MTSDK-33 and MT-1480 are named in prose in the ticket descriptions instead. The existing MTSDK-13 <-> MTSDK-17 clone link is left untouched.",
+    "run": "~/scripts/jira-relate.sh 28-relations-event-destinations.json [--commit]"
+  },
+  "reparent": [
+    { "key": "MTSDK-13", "parent": "MTSDK-75" },
+    { "key": "MTSDK-17", "parent": "MTSDK-75" }
+  ],
+  "blocks": [
+    { "blocker": "MTSDK-76", "blocked": "MTSDK-13" },
+    { "blocker": "MTSDK-76", "blocked": "MTSDK-17" },
+    { "blocker": "MTSDK-13", "blocked": "MTSDK-77" },
+    { "blocker": "MTSDK-17", "blocked": "MTSDK-77" },
+    { "blocker": "MTSDK-78", "blocked": "MTSDK-79" }
+  ]
+}

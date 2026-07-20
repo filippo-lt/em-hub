@@ -1,0 +1,39 @@
+{
+  "_comment": [
+    "Flutter bridge wiring under MTSDK-3. Written after the 2026-07-15 jira-relate.sh fix,",
+    "so Blocks links land the right way round.",
+    "Shape: MTSDK-6 (binding spike) gates the API freeze (63) and the scaffold (64).",
+    "MTSDK-25 gates 63: you cannot mirror a native surface that is still being reshaped.",
+    "63 + 64 gate every bridge story. The bridge stories gate publish (70) and verify (71).",
+    "MTSDK-6's own blockers (9, 12, 34, 37) already exist and are correct - not repeated here.",
+    "31 gates 66 (consent/ATT) because MTSDK-31 is reshaping that exact call on Android.",
+    "51 gates 71: the suite must be in CI before Flutter can be run through it."
+  ],
+  "blocks": [
+    { "blocker": "MTSDK-6",  "blocked": "MTSDK-63" },
+    { "blocker": "MTSDK-6",  "blocked": "MTSDK-64" },
+    { "blocker": "MTSDK-25", "blocked": "MTSDK-63" },
+
+    { "blocker": "MTSDK-63", "blocked": "MTSDK-65" },
+    { "blocker": "MTSDK-64", "blocked": "MTSDK-65" },
+    { "blocker": "MTSDK-63", "blocked": "MTSDK-66" },
+    { "blocker": "MTSDK-63", "blocked": "MTSDK-67" },
+    { "blocker": "MTSDK-63", "blocked": "MTSDK-68" },
+
+    { "blocker": "MTSDK-31", "blocked": "MTSDK-66" },
+
+    { "blocker": "MTSDK-65", "blocked": "MTSDK-69" },
+    { "blocker": "MTSDK-66", "blocked": "MTSDK-69" },
+    { "blocker": "MTSDK-67", "blocked": "MTSDK-69" },
+    { "blocker": "MTSDK-68", "blocked": "MTSDK-69" },
+
+    { "blocker": "MTSDK-65", "blocked": "MTSDK-70" },
+    { "blocker": "MTSDK-67", "blocked": "MTSDK-70" },
+    { "blocker": "MTSDK-68", "blocked": "MTSDK-70" },
+
+    { "blocker": "MTSDK-65", "blocked": "MTSDK-71" },
+    { "blocker": "MTSDK-67", "blocked": "MTSDK-71" },
+    { "blocker": "MTSDK-68", "blocked": "MTSDK-71" },
+    { "blocker": "MTSDK-51", "blocked": "MTSDK-71" }
+  ]
+}

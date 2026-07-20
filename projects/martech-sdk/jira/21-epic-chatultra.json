@@ -1,0 +1,6 @@
+{
+  "summary": "ChatUltra Integration (Flutter)",
+  "priority": "Minor",
+  "labels": ["martech-sdk", "flutter", "app-integrations", "q4"],
+  "description": "Put the Flutter Martech library into ChatUltra and prove it works.\n\nChatUltra is the pilot for flutter_martech for one reason: it is the only confirmed Flutter app in the portfolio. Everything the bridge claims is untested until a real Flutter app uses it.\n\nSame shape as the AI Design pilot (MTSDK-55): integrate first, verify second.\n\nBlocked by the Flutter library existing and being installable (MTSDK-3).\n\nOpen: ChatUltra is an M&A app worked by an external team, and the Flutter bench is unconfirmed. Who does this integration is not decided.\n\nAcceptance criteria:\n- ChatUltra ships with flutter_martech\n- No 3rd-party SDK is initialised directly by the app\n- The verification suite is green\n- Time-to-integrate is recorded and compared against the AI Design baselines"
+}

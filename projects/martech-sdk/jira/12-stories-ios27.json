@@ -1,0 +1,30 @@
+[
+  {
+    "parent": "MTSDK-58",
+    "summary": "Triage the five unmerged MartechKit branches: land or kill",
+    "priority": "Major",
+    "labels": ["martech-sdk", "ios-27"],
+    "description": "Decide the fate of every unmerged branch on martech-kit before the iOS 27 dependency bumps make them unmergeable.\n\nFive branches are outstanding, all last touched in April:\n- feature/event-tracking - 14 commits ahead (2026-04-29)\n- feat/amplitude-appsflyer-v2-customdata - 3 commits (2026-04-16)\n- feature/amplitude-validation-proxy - 2 commits, adds ProxyDestinationPlugin.swift plus tests\n- feature/martech-kit-onesignal - 1 commit (2026-04-03)\n- feat/rc-amplitude-subscriber-attributes - 1 commit (2026-04-04)\n\nThey are three months stale against a repo that is about to have every vendor dependency bumped. Each week they sit, the rebase gets more expensive and the odds they are silently abandoned go up. Strictly this is not iOS 27 work - it is the debt that will make iOS 27 work painful, which is why it sits here and not in a backlog nobody reads.\n\nRead feature/amplitude-validation-proxy first, and not for this epic's sake: it already implements interception of outbound Amplitude payloads, which is the fallback design MTSDK-10 exists to evaluate. Whoever runs that spike should see it before building anything from scratch.\n\nAcceptance criteria:\n- Every one of the five branches has an explicit decision: land, or delete\n- Each 'land' decision names an owner and a date, and is rebased green against iOS 27\n- Each 'kill' decision records why, so the idea is not rediscovered from cold in six months\n- The relevance of feature/amplitude-validation-proxy to MTSDK-10 is written into that spike before it starts\n- No branch is left undecided"
+  },
+  {
+    "parent": "MTSDK-58",
+    "summary": "Verify vendor SDK behaviour on iOS 27",
+    "priority": "Major",
+    "labels": ["martech-sdk", "ios-27"],
+    "description": "A green build proves MartechKit compiles. This story proves it still works.\n\nDrive a debug build through the MTSDK-10 journey on iOS 27 - Martech.configure, requestATT, fire view_screen_splash, make a purchase - and confirm the identity contract still holds end to end: RevenueCat appUserID to AppsFlyer customerUserID, AppsFlyer.start(), back to RevenueCat and Amplitude.\n\nThat chain is what every Martech incident to date has broken, and a major OS release is exactly when ATT, attribution and StoreKit behaviour shift underneath it. Compiling against a new SDK says nothing about whether the vendors still behave.\n\nBlocked by MTSDK-18: there is nothing to run until it compiles.\n\nAcceptance criteria:\n- The full journey runs on an iOS 27 simulator or device without error\n- RevenueCat appUserID, AppsFlyer customerUserID and Amplitude identity are confirmed aligned after configure, after consent, and after purchase\n- ATT prompt behaviour on iOS 27 is confirmed unchanged, or the change is documented\n- Any vendor behaviour difference against iOS 26 is filed as its own issue with the OS version named\n- Results are recorded against a named iOS 27 seed (beta N, RC, or GA) - 'works on iOS 27' without a seed is not a result"
+  },
+  {
+    "parent": "MTSDK-58",
+    "summary": "Release MartechKit with stated iOS 27 support",
+    "priority": "Major",
+    "labels": ["martech-sdk", "ios-27"],
+    "description": "Cut a MartechKit release that app teams can actually pick up to get onto iOS 27.\n\nUntil this ships, everything above is only true on somebody's branch. The portfolio consumes martech-kit as an exactly-pinned SPM dependency, so 'it builds on iOS 27' reaches nobody without a tag and a changelog entry.\n\nAcceptance criteria:\n- A release is tagged through the existing release-please flow\n- The changelog names iOS 27 support and every vendor SDK bump that came with it\n- README states the supported iOS range and the Xcode version the release was built with\n- Any breaking change carries a migration note, following the convention already used in this repo\n- The release is announced to app teams on the support channel, not just tagged and left"
+  },
+  {
+    "parent": "MTSDK-58",
+    "summary": "Validate iOS 27 support in AI Design (iOS)",
+    "priority": "Major",
+    "labels": ["martech-sdk", "ios-27", "app-integrations"],
+    "description": "Prove iOS 27 support in a real app rather than in the SDK's own test suite. This is the 'thorough test in one app' that makes this epic's claim credible - the SDK test suite only ever tests what we thought to test.\n\nAI Design is the right app: it is the Martech pilot (MTSDK-52), so the integration is fresh and someone on the team understands it end to end. That is also the coupling to watch - this story cannot start until AI Design is actually integrated, so a slip in the pilot is a slip here.\n\nBlocked by MTSDK-52 and by MTSDK-18.\n\nAcceptance criteria:\n- AI Design (iOS) builds against the iOS 27-supporting MartechKit release\n- The app runs the configure, consent, event and purchase journey on iOS 27\n- Analytics, attribution and billing wiring are confirmed intact - via the verification suite if it exists by then, otherwise the manual journey, and which one was used is stated\n- Every problem found is triaged as SDK defect or app defect before this closes, not deferred as 'works on my build'\n- Re-run and confirmed against the iOS 27 GA build once it ships"
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "_comment": [
+    "iOS 27 epic wiring. Uses jira-relate.sh AFTER the 2026-07-15 inward/outward fix,",
+    "so these Blocks links land the right way round (verified on MTSDK-9 -> MTSDK-6).",
+    "Sequence: build goes green (18) -> behaviour verified (60) -> released (61) -> proven in AI Design (62).",
+    "62 also waits on MTSDK-52: no point validating iOS 27 in an app the SDK isn't in yet.",
+    "59 (branch triage) blocks 18: the stale branches must be decided before the",
+    "dependency bumps make them unmergeable, not after."
+  ],
+  "reparent": [
+    { "key": "MTSDK-18", "parent": "MTSDK-58" }
+  ],
+  "blocks": [
+    { "blocker": "MTSDK-59", "blocked": "MTSDK-18" },
+    { "blocker": "MTSDK-18", "blocked": "MTSDK-60" },
+    { "blocker": "MTSDK-60", "blocked": "MTSDK-61" },
+    { "blocker": "MTSDK-61", "blocked": "MTSDK-62" },
+    { "blocker": "MTSDK-52", "blocked": "MTSDK-62" }
+  ]
+}

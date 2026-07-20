@@ -1,0 +1,65 @@
+[
+  {
+    "parent": "MTSDK-3",
+    "summary": "Freeze the Dart-facing public API surface",
+    "priority": "Major",
+    "labels": ["martech-sdk", "flutter"],
+    "description": "Write the Dart API contract the bridge implements, and freeze it.\n\nThis is where the parity work pays off, or does not. The Dart surface can only mirror a native surface that has stopped moving, and MTSDK-25 is actively reshaping the key provider, the module hooks, the DI graph and the public accessors. MTSDK-41 is the emblematic case: Martech.amplitude is public on Android and hidden on iOS. A bridge cannot expose 'whichever one you happen to be standing on'. Every asymmetry like that gets resolved in MTSDK-25 first - it does not get papered over in Dart, because a Dart-side workaround makes the native divergence permanent.\n\nBlocked by MTSDK-25 and by MTSDK-6.\n\nAcceptance criteria:\n- Every public Dart symbol maps to a named equivalent on both MartechKit and MartechPack\n- No Dart-only concept exists: anything not expressible on both platforms is filed against MTSDK-25 rather than invented here\n- Platform-divergent surface (ATT, Superwall, Firebase Remote Config) has an explicit documented Dart shape\n- The shared event dictionary is expressible through the Dart surface\n- Reviewed by Victor and by one engineer from a consuming app team, not only by the SDK team\n- Published as the contract the bridge stories implement against, so 'the bridge is wrong' is a decidable claim"
+  },
+  {
+    "parent": "MTSDK-3",
+    "summary": "Flutter plugin scaffold, example app and CI",
+    "priority": "Major",
+    "labels": ["martech-sdk", "flutter"],
+    "description": "Stand up the flutter_martech package skeleton that every bridge story lands in.\n\nScope: federated plugin structure (Dart, iOS, Android), an example app that builds and runs on both platforms, and a green Codemagic workflow. No marketing functionality - this is the frame, not the picture.\n\nThe example app is not a demo. It is the host the verification suite will later assert against, and standing it up cheaply here avoids the exact 'we need a host app to test against' problem that MTSDK-10 had to work around on native. Build it once, early, and both tracks get to use it.\n\nBlocked by MTSDK-6: the plugin structure follows from the binding approach.\n\nAcceptance criteria:\n- flutter_martech resolves and builds on both platforms from a clean checkout\n- The example app launches on an iOS simulator and an Android emulator in CI\n- Codemagic runs build and test on every PR, green\n- The repo carries the same release-please and changelog convention as martech-kit and martech-pack\n- How app teams consume the package (pub, git dependency, or private hosting) is decided and written down\n- No Martech API is bound yet - that is the stories below"
+  },
+  {
+    "parent": "MTSDK-3",
+    "summary": "Bridge: configure and key provider",
+    "priority": "Major",
+    "labels": ["martech-sdk", "flutter"],
+    "description": "Bind Martech.configure and MartechKeyProvider across the channel, for real this time.\n\nMTSDK-6 proves configure can be bound at all, in a throwaway app. This story does it properly in flutter_martech: error handling, threading, the full key provider surface, and tests.\n\nThis is the riskiest binding in the epic. Initialisation order is the thing the whole SDK exists to get right - the identity contract (RevenueCat appUserID to AppsFlyer customerUserID before AppsFlyer.start()) is an ordering constraint, and MartechPack already documents main-thread constraints on configure(). A bridge that gets ordering subtly wrong reproduces the VideoUp incident on a new platform.\n\nBlocked by MTSDK-6 and by the Dart API freeze.\n\nAcceptance criteria:\n- configure() is callable from Dart and initialises the native SDK on both platforms\n- A Dart-supplied key provider reaches both native SDKs with every key intact\n- Initialisation order is asserted, not assumed: a test fails if AppsFlyer starts before the customer user ID is set\n- Threading constraints are respected on both platforms and documented in the Dart API\n- A configure failure surfaces to Dart as a typed error, not a silent no-op\n- The example app calls configure and reaches both vendor SDKs"
+  },
+  {
+    "parent": "MTSDK-3",
+    "summary": "Bridge: consent and ATT",
+    "priority": "Minor",
+    "labels": ["martech-sdk", "flutter", "q4"],
+    "description": "Bind requestConsentAndStartMarketing and requestATT.\n\nThis is where the Flutter API has to make a decision the native SDKs never had to: ATT is iOS-only. Dart code is one codebase across both platforms, so the surface must either expose a no-op on Android, expose a platform-conditional API, or model consent as a platform-neutral concept that happens to trigger ATT on iOS. Pick one deliberately - this choice leaks into every consuming app.\n\nMTSDK-31 (requestConsentAndStartMarketing takes Application) is reshaping this exact call on Android. Do not bind it before that lands.\n\nBlocked by the Dart API freeze and by MTSDK-31.\n\nAcceptance criteria:\n- The chosen model for the iOS/Android consent asymmetry is documented with its rationale\n- requestATT from Dart triggers the native prompt on iOS and behaves predictably on Android\n- Consent state is readable from Dart on both platforms\n- Marketing SDKs start only after consent resolves, asserted by test on both platforms\n- The example app demonstrates the full consent flow"
+  },
+  {
+    "parent": "MTSDK-3",
+    "summary": "Bridge: event tracking and the shared event dictionary",
+    "priority": "Minor",
+    "labels": ["martech-sdk", "flutter", "q4"],
+    "description": "Bind EventTracker and expose the shared event dictionary to Dart.\n\nThis is the highest-value surface in the epic. Per the platform vision, the biggest unlock is not the wrapper, it is the shared event dictionary - every app tracking the same events with the same names and the same schema, defined once. A Flutter bridge that lets app teams hand-roll event names throws that away and we get purchase_completed and buy_success all over again, this time in Dart.\n\nThe event dictionary must be generated from or checked against the native definition. A hand-maintained Dart copy will drift, and drift here is silent until the numbers are wrong.\n\nBlocked by the Dart API freeze. Related to MTSDK-33 (AppsFlyer canonical events) and MTSDK-36 (reserved event name collision check).\n\nAcceptance criteria:\n- track(event) from Dart reaches Amplitude on both platforms with properties intact\n- The shared event dictionary is available to Dart without being hand-copied - generated or verified against the native source\n- A drift between the Dart dictionary and the native one fails CI\n- Reserved event name collisions are caught on the Dart side, matching MTSDK-36 behaviour\n- Typed events, not stringly-typed calls: an unknown event name is a compile-time or test-time failure\n- The example app fires view_screen_splash and it lands in Amplitude"
+  },
+  {
+    "parent": "MTSDK-3",
+    "summary": "Bridge: identity and purchases accessors",
+    "priority": "Minor",
+    "labels": ["martech-sdk", "flutter", "q4"],
+    "description": "Bind appUserID, the CustomerInfo snapshot and the purchases accessor to Dart.\n\nThis is the identity contract - the thing the entire MTSDK-47 verification suite exists to protect. If Flutter apps cannot read the canonical user ID, they will reach for the vendor SDKs directly, which is precisely the failure mode MTSDK-9 and MTSDK-12 are trying to design out on native. Exposing this properly on Dart is what keeps Flutter apps on the golden path.\n\nBlocked by the Dart API freeze. Related to MTSDK-29 (CustomerInfo snapshot accessor) and MTSDK-32 (Martech.purchases / appUserID accessor) - bind the post-convergence shape, not today's.\n\nAcceptance criteria:\n- appUserID is readable from Dart and matches the native value on both platforms\n- A CustomerInfo snapshot is readable from Dart, with the anonymous-to-identified transition represented correctly\n- Subscription and entitlement state is queryable without touching RevenueCat from app code\n- Identity changes propagate to Dart, rather than only being readable at configure time\n- The accessor is read-only from Dart: identity is set by the SDK, not by the app"
+  },
+  {
+    "parent": "MTSDK-3",
+    "summary": "Bridge: optional modules (Firebase, Meta, TikTok, Superwall)",
+    "priority": "Minor",
+    "labels": ["martech-sdk", "flutter", "q4"],
+    "description": "Bring the optional native modules to Flutter, following the same opt-in shape they have on iOS and Android.\n\nBoth native SDKs ship core plus four optional modules (Firebase, Meta, TikTok, Superwall), and the modularity is deliberate: an app that does not use TikTok should not link it. That property must survive the bridge - a monolithic flutter_martech that drags every vendor in would be a regression against both native SDKs, and app teams will notice in their binary size.\n\nEach module is its own slice of work. Split this into one story per module when it is picked up; it is one story now to keep the Q4 shape visible without pretending the sizing is understood.\n\nBlocked by the core bridge stories. Related to MTSDK-38, MTSDK-39, MTSDK-40 (module-level defects that should be fixed on native before being mirrored).\n\nAcceptance criteria:\n- An app can depend on flutter_martech core without linking Firebase, Meta, TikTok or Superwall\n- Each module has a Dart opt-in mirroring its native counterpart\n- No module is bound while its native parity defect is still open - it gets fixed on native first\n- The example app demonstrates at least one optional module\n- Binary size impact per module is measured and documented"
+  },
+  {
+    "parent": "MTSDK-3",
+    "summary": "Publish flutter_martech and prove an app team can consume it",
+    "priority": "Minor",
+    "labels": ["martech-sdk", "flutter", "q4"],
+    "description": "Cut the first flutter_martech release and have an app team integrate it without our help.\n\nThe scaffold story decides the distribution mechanism. This story proves it works for someone who did not build it. Until an app team outside the SDK team has consumed a published version, we have a package on a branch, not an SDK - and per the platform rule, if using the kit is more annoying than rolling your own, people will roll their own and reuse dies.\n\nBlocked by the core bridge stories.\n\nAcceptance criteria:\n- A versioned release is published through the decided mechanism\n- An engineer outside the SDK team adds it to a Flutter app and calls configure, unaided, following only the written docs\n- Time-to-integrate is recorded and compared against the iOS and Android baselines from MTSDK-52 and MTSDK-53\n- Every friction point they hit is filed, in the order they hit it\n- The release, its owner and its support channel are announced"
+  },
+  {
+    "parent": "MTSDK-3",
+    "summary": "Run the verification suite against the Flutter example app",
+    "priority": "Minor",
+    "labels": ["martech-sdk", "flutter", "q4"],
+    "description": "Point the MTSDK-47 verification suite at the Flutter example app and get it green.\n\nThis closes the loop between the two tracks. The suite asserts that Amplitude events, Amplitude/RevenueCat identity and AppsFlyer identity wiring are intact. Those assertions are about the same vendor SDKs regardless of what language called them, so a Flutter app should be verifiable by the same suite - and if it is not, that tells us something important about either the bridge or the suite.\n\nThis is also the honest test of whether the bridge preserves the identity contract. A bridge can look correct and still break the RevenueCat-to-AppsFlyer ordering in a way only the suite catches.\n\nBlocked by the core bridge stories and by MTSDK-51 (suite wired into CI).\n\nAcceptance criteria:\n- All three harnesses run against the Flutter example app and pass\n- Any harness assumption that turns out to be iOS/Android-specific is fixed in the harness, not worked around in the bridge\n- Any bridge defect the suite finds is filed against the relevant bridge story, not patched in the example app\n- The suite runs against Flutter in CI on every PR, same as native\n- Whether Flutter needs its own harness or reuses the native one is answered on the record"
+  }
+]

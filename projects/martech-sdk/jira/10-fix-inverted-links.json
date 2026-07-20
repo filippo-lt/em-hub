@@ -1,0 +1,71 @@
+{
+  "_comment": [
+    "Repairs 22 Blocks links created inverted on 2026-07-14 by jira-relate.sh.",
+    "Root cause: the script sent outwardIssue=blocker, but Jira applies the OUTWARD",
+    "description to inwardIssue. Every Blocks link it wrote came out reversed.",
+    "Script fixed 2026-07-15; this file re-points the links it already wrote.",
+    "The 25-blocks-3 link is NOT listed here: it was hand-corrected on 07-14 at 16:15",
+    "and is already right. Relates links (52<->48/49/50) are symmetric and unaffected.",
+    "Intent restored verbatim from 04-relations.json and 08-relations-app-integrations.json.",
+    "unlink runs before blocks, so each pair is removed then recreated the right way round."
+  ],
+
+  "unlink": [
+    { "a": "MTSDK-6",  "b": "MTSDK-9",  "type": "Blocks" },
+    { "a": "MTSDK-6",  "b": "MTSDK-12", "type": "Blocks" },
+    { "a": "MTSDK-6",  "b": "MTSDK-34", "type": "Blocks" },
+    { "a": "MTSDK-6",  "b": "MTSDK-37", "type": "Blocks" },
+
+    { "a": "MTSDK-10", "b": "MTSDK-48", "type": "Blocks" },
+    { "a": "MTSDK-10", "b": "MTSDK-49", "type": "Blocks" },
+    { "a": "MTSDK-10", "b": "MTSDK-50", "type": "Blocks" },
+    { "a": "MTSDK-10", "b": "MTSDK-52", "type": "Blocks" },
+    { "a": "MTSDK-10", "b": "MTSDK-53", "type": "Blocks" },
+
+    { "a": "MTSDK-51", "b": "MTSDK-52", "type": "Blocks" },
+    { "a": "MTSDK-51", "b": "MTSDK-48", "type": "Blocks" },
+    { "a": "MTSDK-51", "b": "MTSDK-49", "type": "Blocks" },
+    { "a": "MTSDK-51", "b": "MTSDK-50", "type": "Blocks" },
+
+    { "a": "MTSDK-56", "b": "MTSDK-52", "type": "Blocks" },
+    { "a": "MTSDK-56", "b": "MTSDK-48", "type": "Blocks" },
+    { "a": "MTSDK-56", "b": "MTSDK-49", "type": "Blocks" },
+    { "a": "MTSDK-56", "b": "MTSDK-50", "type": "Blocks" },
+
+    { "a": "MTSDK-25", "b": "MTSDK-53", "type": "Blocks" },
+    { "a": "MTSDK-57", "b": "MTSDK-53", "type": "Blocks" },
+    { "a": "MTSDK-57", "b": "MTSDK-34", "type": "Blocks" },
+    { "a": "MTSDK-57", "b": "MTSDK-37", "type": "Blocks" },
+    { "a": "MTSDK-54", "b": "MTSDK-56", "type": "Blocks" }
+  ],
+
+  "blocks": [
+    { "blocker": "MTSDK-9",  "blocked": "MTSDK-6" },
+    { "blocker": "MTSDK-12", "blocked": "MTSDK-6" },
+    { "blocker": "MTSDK-34", "blocked": "MTSDK-6" },
+    { "blocker": "MTSDK-37", "blocked": "MTSDK-6" },
+
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-48" },
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-49" },
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-50" },
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-52" },
+    { "blocker": "MTSDK-10", "blocked": "MTSDK-53" },
+
+    { "blocker": "MTSDK-52", "blocked": "MTSDK-51" },
+    { "blocker": "MTSDK-48", "blocked": "MTSDK-51" },
+    { "blocker": "MTSDK-49", "blocked": "MTSDK-51" },
+    { "blocker": "MTSDK-50", "blocked": "MTSDK-51" },
+
+    { "blocker": "MTSDK-52", "blocked": "MTSDK-56" },
+    { "blocker": "MTSDK-48", "blocked": "MTSDK-56" },
+    { "blocker": "MTSDK-49", "blocked": "MTSDK-56" },
+    { "blocker": "MTSDK-50", "blocked": "MTSDK-56" },
+
+    { "blocker": "MTSDK-25", "blocked": "MTSDK-53" },
+    { "blocker": "MTSDK-53", "blocked": "MTSDK-57" },
+    { "blocker": "MTSDK-34", "blocked": "MTSDK-57" },
+    { "blocker": "MTSDK-37", "blocked": "MTSDK-57" },
+
+    { "blocker": "MTSDK-56", "blocked": "MTSDK-54" }
+  ]
+}

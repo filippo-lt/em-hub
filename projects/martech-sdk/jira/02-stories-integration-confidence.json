@@ -1,0 +1,51 @@
+[
+  {
+    "parent": "MTSDK-47",
+    "summary": "Verification harness: Amplitude event assertions",
+    "priority": "Major",
+    "labels": ["martech-sdk", "integration-confidence"],
+    "description": "Given a scripted user journey on a debug build, assert that the expected Amplitude events were recorded, with the expected event properties.\n\nThis is the first concrete piece of the suite. The assertion mechanism (vendor API read-back vs SDK-boundary interception) is decided by the MTSDK-10 spike — do not start until that lands.\n\nAcceptance criteria:\n- A journey definition format exists (ordered list of expected events + required properties)\n- The harness can run a journey against a debug build and produce a pass/fail result\n- A missing event, an extra event, and a wrong property value each produce a distinct, readable failure\n- Runs in under 2 minutes end to end\n- Works on both iOS and Android"
+  },
+  {
+    "parent": "MTSDK-47",
+    "summary": "Verification harness: Amplitude <-> RevenueCat identity alignment",
+    "priority": "Major",
+    "labels": ["martech-sdk", "integration-confidence"],
+    "description": "Assert that the RevenueCat appUserID and the Amplitude user/device identity refer to the same person, after configure, after ATT consent, and after a purchase.\n\nThis is the wiring that silently breaks on integration and that nobody notices until revenue reporting is wrong.\n\nAcceptance criteria:\n- Asserts identity alignment at three checkpoints: post-configure, post-consent, post-purchase\n- Fails loudly if RC appUserID is anonymous when it should be identified (and vice versa)\n- Failure message names which side of the wiring is wrong\n- Covers the anonymous-then-identified transition, not just the steady state\n- Works on both iOS and Android"
+  },
+  {
+    "parent": "MTSDK-47",
+    "summary": "Verification harness: AppsFlyer identity wiring",
+    "priority": "Major",
+    "labels": ["martech-sdk", "integration-confidence"],
+    "description": "Assert that the AppsFlyer customer user ID matches the canonical user ID used by Amplitude and RevenueCat.\n\nNote: MTSDK-39 (TikTok doesn't sync RC identify) and MTSDK-40 (Meta doesn't sync RC) are known live defects of exactly this class. They are this harness's first real test cases — it should catch them before they are fixed.\n\nAcceptance criteria:\n- Asserts AppsFlyer customer user ID == canonical user ID after identification\n- Detects the MTSDK-39 / MTSDK-40 defects on an unfixed build (negative control)\n- Passes on a fixed build (positive control)\n- Documents the attribution-window caveat if read-back is used\n- Works on both iOS and Android"
+  },
+  {
+    "parent": "MTSDK-47",
+    "summary": "Wire the verification suite into CI",
+    "priority": "Major",
+    "labels": ["martech-sdk", "integration-confidence", "ci"],
+    "description": "Run the verification suite automatically so that a broken integration is caught by the machine, not by a human noticing bad numbers three weeks later.\n\nAcceptance criteria:\n- Runs on every PR to an integrating app, and nightly on main\n- A failure blocks the PR and names which SDK's wiring broke\n- Total runtime fits a PR gate (target: under 5 minutes)\n- Debug/CI traffic does not pollute production Amplitude or AppsFlyer data (see open question in the roadmap)\n- Can be run locally with a single command, with the same result as CI"
+  },
+  {
+    "parent": "MTSDK-47",
+    "summary": "Pilot integration: AI Design (iOS)",
+    "priority": "Critical",
+    "labels": ["martech-sdk", "integration-confidence", "pilot"],
+    "description": "Integrate the Martech SDK into AI Design (iOS) and get the verification suite green against it.\n\nThis is the first proof that the suite describes reality rather than the SDK team's assumptions.\n\nAcceptance criteria:\n- AI Design (iOS) integrates MartechKit\n- The full verification suite runs against it and is green\n- Every deviation found during integration is captured as a defect or a docs gap — not silently fixed\n- Time-to-integrate is recorded (this is the baseline number for the rollout business case)"
+  },
+  {
+    "parent": "MTSDK-47",
+    "summary": "Pilot integration: AI Design (Android)",
+    "priority": "Critical",
+    "labels": ["martech-sdk", "integration-confidence", "pilot"],
+    "description": "Integrate the Martech SDK into AI Design (Android) and get the verification suite green against it.\n\nBlocked by MTSDK-34 and MTSDK-37: without an injectable dependency graph on Android, the harness cannot assert at the SDK boundary.\n\nAcceptance criteria:\n- AI Design (Android) integrates MartechPack\n- The full verification suite runs against it and is green\n- Any Android-only divergence from the iOS integration path is documented (it is a parity defect, file it against MTSDK-25)\n- Time-to-integrate is recorded and compared against iOS"
+  },
+  {
+    "parent": "MTSDK-47",
+    "summary": "Integration playbook: how to integrate and how to prove it works",
+    "priority": "Major",
+    "labels": ["martech-sdk", "integration-confidence", "docs"],
+    "description": "Write the document an app team reads to integrate the SDK without talking to us.\n\nCoding instructions alone are not enough and are not the hard part. The playbook must cover verification: how to run the suite, how to read a failure, what to do when the numbers look wrong.\n\nAcceptance criteria:\n- Covers integration for iOS, Android and (once it exists) Flutter\n- Covers how to run the verification suite locally and in CI\n- Contains a troubleshooting section keyed on the suite's actual failure messages\n- Validated by having someone outside the SDK team follow it end to end on a third app, unaided\n- Names the owner and the support channel"
+  }
+]

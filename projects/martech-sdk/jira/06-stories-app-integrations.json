@@ -1,0 +1,16 @@
+[
+  {
+    "parent": "MTSDK-55",
+    "summary": "Verify AI Design (iOS): verification suite green",
+    "priority": "Critical",
+    "labels": ["martech-sdk", "app-integrations", "pilot"],
+    "description": "Run the full verification suite against the integrated AI Design (iOS) build and get it green.\n\nThis is phase 2 of the pilot. Phase 1 (MTSDK-52) puts the SDK in the app; this story proves the integration is actually correct. It is separate from MTSDK-52 on purpose: the harnesses (MTSDK-48/49/50) cannot exist until MTSDK-52 has given them something to assert against, so bundling both phases into one story would make that story depend on itself.\n\nThis is also the first honest test of whether the suite describes reality or the SDK team's assumptions.\n\nAcceptance criteria:\n- The Amplitude event assertions, Amplitude<->RevenueCat identity and AppsFlyer identity harnesses all run against AI Design (iOS) and pass\n- Every discrepancy the suite finds is triaged: SDK defect, app defect, or a wrong assumption baked into the harness\n- Any harness assumption that turns out to be wrong is fixed in the harness, not silently worked around in the app\n- Time from 'integration complete' to 'suite green' is recorded — this is the number that tells us how expensive verification actually is"
+  },
+  {
+    "parent": "MTSDK-55",
+    "summary": "Verify AI Design (Android): verification suite green",
+    "priority": "Critical",
+    "labels": ["martech-sdk", "app-integrations", "pilot"],
+    "description": "Run the full verification suite against the integrated AI Design (Android) build and get it green.\n\nBlocked by MTSDK-34 and MTSDK-37: without an injectable dependency graph on Android, the harness has no seam to assert at. If the MTSDK-10 spike lands on SDK-boundary assertion rather than vendor API read-back, these two stories become hard prerequisites, not nice-to-haves.\n\nAcceptance criteria:\n- All three harnesses run against AI Design (Android) and pass\n- Any Android-only divergence from the iOS integration path is filed against MTSDK-25 as a parity defect, not patched in the app\n- MTSDK-39 (TikTok RC sync) and MTSDK-40 (Meta RC sync) are confirmed caught by the suite on an unfixed build, then confirmed passing on a fixed one\n- Time-to-verify is recorded and compared against iOS"
+  }
+]
