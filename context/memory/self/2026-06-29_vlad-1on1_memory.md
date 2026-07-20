@@ -1,0 +1,9 @@
+# Memory — Self, Vlad 1-on-1, 29 June 2026
+
+```
+[2026-06-29] [self] - I delivered genuinely destabilizing news (app parked + org restructuring) and the report left MORE settled, not less — because I answered his fear directly the moment he voiced it instead of smoothing past it. This is the correction of the Jun 15/22 "flatten the earnest moment" pattern. The working move: when he discloses a worry, address the worry substantively, don't joke or generalize.
+[2026-06-29] [self] - "Don't worry" spiked to ~5-6× this meeting (baseline ~1-2×). It's my reflex valve when delivering uncertainty — it scales UP with the stakes. The reassurance content behind each was solid, but the tic is the tell that I'm managing my own discomfort with their anxiety. Catch the urge, not just the phrase.
+[2026-06-29] [self] - Talk-ratio reverted to monologue in the strategic close again (6th confirmation) — I deferred the real performance conversation to Wednesday ("not the right place") and never put FAIOSMAU-584 on screen. Defensible when delivering vision/news, but Wednesday's working session MUST have the artefact (584 + backend analysis) on screen or it reverts.
+[2026-06-29] [self] - Mixed signal I should clean up: I told Vlad loading performance is THE priority, then told him to start beards anyway as interim work. He noticed the mismatch ("I have noticed"). Pragmatic bridge, but the message he left with is double — re-clarify Wednesday so beards doesn't silently become the sprint.
+[2026-06-29] [self] - 7th consecutive non-naming of the escalation/political-cover rung (I again absorbed the Ruben management silently — "I need to talk to Ruben"). Scope has now firmed (parking + restructuring announced), so the naming trigger I set is fully live; next concrete Ruben/Miguel instance is the moment to name it.
+```

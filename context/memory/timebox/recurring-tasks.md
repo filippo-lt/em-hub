@@ -34,6 +34,9 @@ Box sizes are always one of: **15**, **30**, **60** min (break larger work into 
 | Review epic (FaceAI) | review epic, faceai epic, review new epic, new epic | 30 | — | 0 | 2026-06-22 | Estimate only — scope/tickets/acceptance review of an epic |
 | Review backend task | review backend task, backend task, review task, review faceai backend | 15 | — | 0 | 2026-06-22 | Estimate only — single-ticket backend review |
 | PDF editor PROD setup | pdf editor prod, prod setup, production setup, pdf editor deploy | 60 | — | 0 | 2026-06-22 | Estimate only — deep/infra production deployment setup |
+| Prepare 1:1 (any report) | prepare 1:1, prep 1:1, 1:1 prep, prepare weekly, prep meeting | 15 | — | 0 | 2026-06-29 | User estimate 15 min. Quick review of notes + talking points |
+| Procurement tickets | procurement tickets, procurement, removing studios, m&a removal tickets | 30 | — | 0 | 2026-06-29 | User est. 20 min → boxed 30 (similar to Jira tickets in ledger). Review after actuals |
+| Strategy / new structure doc | strategy, new launches, launches structure, new structure, strategic doc | 60 | — | 0 | 2026-06-29 | User est. 45 min → boxed 60 (deep strategic work, no prior record). Shippable = clear direction |
 
 > First real rows seeded on 2026-06-17 (estimates, no actuals yet). Tonight's review will append real durations and recompute the typical box.
 
