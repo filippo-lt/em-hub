@@ -1,6 +1,8 @@
 # External Developers Registry
 
-**Last updated:** 2026-03-08
+**Last updated:** 2026-07-01
+
+> **2026-06:** Face AI moved **fully internal** (Vlad as SE). Gilzor rolled off Face AI — rows below set inactive. Correct if they moved to another project rather than off entirely.
 
 ## Developers
 
@@ -12,11 +14,12 @@
 | Artem Shyianov | Anadea | iOS | iMote | artemshyianov-art | artem.shyianov@ext.leadtech.com | Yes |
 | Viacheslav Lypchenko | Anadea | Android | iMote | slava-lypchenko | viacheslav.lypchenko@ext.leadtech.com | Yes |
 | Serhii Kostrykin | Anadea | iOS | Screen Mirroring, iMote | sk-leadtech | serhii.kostrykin@ext.leadtech.com | Yes |
-| Anton Shkuray | Gilzor | iOS | Face AI | AntonShkurayExtLeadtech | anton.shkuray@ext.leadtech.com | Yes |
-| Andrew Laminski | Gilzor | Backend | Face AI | andrewlaminski-beep | andrew.laminski@ext.leadtech.com | Yes |
+| Anton Shkuray | Gilzor | iOS | Face AI | AntonShkurayExtLeadtech | anton.shkuray@ext.leadtech.com | No (Face AI internal 2026-06) |
+| Andrew Laminski | Gilzor | Backend | Face AI | andrewlaminski-beep | andrew.laminski@ext.leadtech.com | No (Face AI internal 2026-06) |
 | Oleksii Lebediev | Anadea | iOS | AI Design |  | oleksii.lebediev@ext.leadtech.com | Yes |
-| Volodymyr Marienkov | Anadea | Anadea | AI Design | volodymyrmarienkov-cmd | volodymyr.marienkov@ext.leadtech.com | Yes |
-| Dmytro Tkachenko | Anadea | Backedn | AI Design | dmytrotkachenko-leadtech | dmytro.tkachenko@ext.leadtech.com | Yes |
+| Volodymyr Marienkov | Anadea | Android | AI Design | volodymyrmarienkov-cmd | volodymyr.marienkov@ext.leadtech.com | Yes |
+| Dmytro Tkachenko | Anadea | Backend | AI Design | dmytrotkachenko-leadtech | dmytro.tkachenko@ext.leadtech.com | Yes |
+| Oleksii Andrieiev | Anadea | QA | AI Design |  | oleksii.andrieiev@ext.leadtech.com | Yes |
 
 
 
