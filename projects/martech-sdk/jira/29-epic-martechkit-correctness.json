@@ -1,0 +1,12 @@
+{
+  "_comment": {
+    "intent": "Epic holding the six unresolved P0 defects from the July 2026 MartechKit codebase audit. Reviewed and amended by Filippo before creation; drafts live in martech-kit/audit/jira-drafts/.",
+    "why_new_epic": "None of the existing epics fits: MTSDK-25 is Android parity, MTSDK-47 is verification tooling, MTSDK-58 is iOS 27. These are iOS correctness fixes found by audit.",
+    "not_included": "The audit's P1/P2 findings stay in audit/2026-07-28-consolidated-backlog.md. The original P0 'CI can never go red' was refuted by PR #58 and is not ticketed.",
+    "dates_and_assignee": "Start 2026-07-28, due 2026-08-11 (two weeks), assigned to Vladyslav Krut. jira-create-story.sh does not support customfield_11010 (Start date), duedate or assignee, so those are set by a follow-up PUT.",
+    "typos_fixed_from_draft": "'MartechKit in found' -> 'MartechKit in July 2026 found'; 'crash the app' -> 'crashes the app'."
+  },
+  "summary": "MartechKit correctness: the defects blocking further integrations",
+  "priority": "Critical",
+  "description": "A full audit of MartechKit in July 2026 found a set of defects that share one shape: the SDK fails without telling anyone. Attribution stops and the app looks healthy. Identity is resolved twice and the last writer wins. A test suite reports a contract as protected when breaking that contract leaves it green. An event tracked before setup finishes crashes the app on launch, and the integration guide tells people to write exactly that code.\n\nThis epic holds the six that have to be fixed before another app integrates. They are not features and they are not cleanup; each one either loses marketing data that cannot be recovered afterwards, or hides the fact that it is being lost.\n\nAcceptance criteria:\n- Every story in this epic is closed, or dropped with the reason recorded on it\n- No path that fails to start attribution, or fails to resolve identity, is silent - a developer reading the logs can tell whether it worked\n- No documented way of using the SDK can crash a host app\n- Deliberately breaking the identity ordering contract in the source turns the test suite red\n- An engineer can integrate the SDK from the guide alone, without reading the package source\n- A release ships with these fixes, and apps already integrated are told what changed\n- The next app integration starts on a version that contains them"
+}
