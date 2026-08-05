@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team Sync — 28 July 2026</title>
+<style>
+  :root{
+    color-scheme: light;
+    --plane:#f9f9f7; --surface:#fcfcfb;
+    --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#898781;
+    --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+    --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+    --good-ink:#006300;
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --plane:#0d0d0d; --surface:#1a1a19;
+    --ink:#ffffff; --ink-2:#c3c2b7; --ink-3:#898781;
+    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --good-ink:#0ca30c;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--plane); color:var(--ink);
+    font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+    padding:28px 20px 64px;
+  }
+  .wrap{max-width:1180px;margin:0 auto}
+  header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  h1{font-size:26px;margin:0;letter-spacing:-.01em}
+  .sub{color:var(--ink-2);font-size:14px;margin-top:4px}
+  .toggle{border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:8px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+  h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+     margin:34px 0 12px;font-weight:600}
+  .card{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:18px 20px}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .tile .lab{font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+  .tile .val{font-size:30px;font-weight:600;letter-spacing:-.02em;margin:6px 0 2px}
+  .tile .note{font-size:13px;color:var(--ink-2)}
+  ul{margin:8px 0 0;padding-left:18px}
+  li{margin:5px 0}
+  .card h3{margin:0 0 2px;font-size:16px}
+  .who{font-size:13px;color:var(--ink-3);margin-bottom:10px}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
+    padding:3px 9px;border-radius:999px;border:1px solid var(--ring);white-space:nowrap}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--grid);vertical-align:top}
+  th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .muted{color:var(--ink-2)}
+  .cap{font-size:12.5px;color:var(--ink-3);margin-top:10px}
+  /* bar chart */
+  .barrow{display:grid;grid-template-columns:132px 1fr 96px;align-items:center;gap:10px;margin:7px 0}
+  .barname{font-size:13.5px;color:var(--ink-2)}
+  .bartrack{position:relative;height:18px}
+  .bar{height:18px;background:var(--s1);border-radius:0 4px 4px 0;box-shadow:0 0 0 2px var(--surface)}
+  .barval{font-size:13px;font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+  .tickrow{display:grid;grid-template-columns:132px 1fr 96px;gap:10px;margin-top:6px}
+  .ticks{position:relative;height:22px;border-top:1px solid var(--axis)}
+  .tick{position:absolute;top:0;transform:translateX(-50%);font-size:11px;color:var(--ink-3);padding-top:6px;white-space:nowrap}
+  .tickline{position:absolute;top:0;width:1px;height:5px;background:var(--axis)}
+  /* timeline */
+  .tl{position:relative;margin:18px 0 6px;height:190px}
+  .tl .lane{position:absolute;height:22px;border-radius:6px;display:flex;align-items:center;
+    padding:0 9px;font-size:12.5px;font-weight:600;color:#fff;white-space:nowrap;box-shadow:0 0 0 2px var(--surface)}
+  .tl .mark{position:absolute;top:0;bottom:26px;width:2px;background:var(--axis)}
+  .tl .mlab{position:absolute;bottom:4px;transform:translateX(-50%);font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+  .tl .base{position:absolute;left:0;right:0;bottom:24px;height:1px;background:var(--axis)}
+  .flag{position:absolute;bottom:26px;transform:translateX(-50%);font-size:11.5px;font-weight:600;white-space:nowrap;
+    padding:2px 7px;border-radius:6px;border:1px solid var(--ring);background:var(--surface)}
+  .lead{font-size:15.5px;color:var(--ink-2);margin:0 0 4px}
+  .kbd{font-size:12px;color:var(--ink-3)}
+  .decision{border-left:3px solid var(--s2);padding-left:12px;margin:10px 0}
+  .decision b{display:block;font-size:14.5px}
+  .decision span{font-size:13.5px;color:var(--ink-2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>Team Sync — 28 July 2026</h1>
+    <div class="sub">Filippo · Vlad · Andrey — 12:15–13:00 · covering the month since <b>30 June</b></div>
+  </div>
+  <button class="toggle" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark'">Light / dark</button>
+</header>
+
+<!-- ============ 1. THE MONTH IN ONE LINE ============ -->
+<h2>1 · What changed since 30 June</h2>
+<div class="card">
+  <p class="lead">Last month we said: <i>focus down to 2–3 apps, park the rest, exit both studios.</i> July was the month that plan actually landed on people's calendars.</p>
+  <div class="grid g2" style="margin-top:14px">
+    <div>
+      <ul>
+        <li><b>Truth Seeker → TraceCheck</b>, and it moved to the <b>Web division</b>. Engineering essentially done; launch ~early August.</li>
+        <li><b>Vlad went full-time on Martech SDK</b> (up from "~25% support Victor"). Verification approach decided: <b>manual-first</b>.</li>
+        <li><b>Martech Pack announced live 22 Jul.</b> iOS MartechKit already shipped in 4 apps.</li>
+        <li><b>3-month Martech SDK roadmap</b> written and on the MTSDK board (14 Jul) — first time the work has sprints, sequencing and milestones.</li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li><b>ChatUltra PO resolved</b> — Ruben + Carlos. QA lined up; still chasing procurement for a dev.</li>
+        <li><b>Studio exits</b> (Helikanon, TurboCat) target end of July; the parked apps' real fate is now a dated decision: <b>5 September</b>.</li>
+        <li><b>AI Design keeps growing</b> — Sergio has no urgency to hand it to Growth. It got so fast the ad partner couldn't fit a loading-screen ad.</li>
+        <li><b>Face AI parked</b> after the loading-time fix. Watch item: >3 months parked ≈ unmarketable.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 2. WHO'S WORKING ON WHAT ============ -->
+<h2>2 · Who's working on what</h2>
+<div class="grid g3">
+  <div class="card">
+    <h3>Vlad</h3>
+    <div class="who">Full-time · Martech SDK / MartechKit</div>
+    <ul>
+      <li>Debug menu (window into MartechKit state) — piloted on Face AI</li>
+      <li>MartechKit into <b>AI Design, iOS + Android</b> — due <b>Fri 21 Aug</b></li>
+      <li>Duplication linter as a CI step (iOS + Android)</li>
+      <li>Rewrite the two outdated integration guides</li>
+      <li><span class="muted">Holiday 7–16 Aug</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Andrey</h3>
+    <div class="who">~50% TraceCheck · iMote · Screen Mirroring (parked)</div>
+    <ul>
+      <li>TraceCheck: payments + funnel now <b>unparked</b> — spec is final</li>
+      <li>Codebase moves to Web; he carries it until a fresh hire is trained</li>
+      <li>iMote: Android Martech SDK is the one real priority (product-blocked)</li>
+      <li>TV Foundation Kit — under-tested, September risk</li>
+      <li><span class="muted">Alexi out 3 weeks from now → solo</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Filippo</h3>
+    <div class="who">Platform, portfolio, unblocking</div>
+    <ul>
+      <li>Martech mandate + board/roadmap with Victor</li>
+      <li>Parapet PR (RevenueCat alias ↔ original user ID) in review</li>
+      <li>Studio exits with procurement; ChatUltra replacement team</li>
+      <li>Carrying TraceCheck's legal/GDPR + credit-management blockers</li>
+      <li>Web-division relationship (Heitor) — where the apps org is heading</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ 3. NUMBERS ============ -->
+<h2>3 · Numbers</h2>
+<div class="grid g4">
+  <div class="card tile">
+    <div class="lab">iMote — MAU</div>
+    <div class="val">1.25M</div>
+    <div class="note">largest audience in the portfolio, on <b>€64/month</b> of infra</div>
+  </div>
+  <div class="card tile">
+    <div class="lab">AI Design — MAU</div>
+    <div class="val">73.8k</div>
+    <div class="note">the growth story; cheaper + faster image model landed</div>
+  </div>
+  <div class="card tile">
+    <div class="lab">June infra spend</div>
+    <div class="val">€31.8k</div>
+    <div class="note"><b>95.3%</b> of it is Tattooist alone</div>
+  </div>
+  <div class="card tile">
+    <div class="lab">June delivery (Jira)</div>
+    <div class="val">207</div>
+    <div class="note">items closed across the 3 tracked projects · 10 QA bouncebacks</div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:14px">
+  <h3>Cost efficiency — GCP € per 1,000 MAU, June 2026</h3>
+  <div class="who">One bar per app. Log scale, so each gridline is <b>10×</b> the one before — the spread is that wide.</div>
+  <div id="chart"></div>
+  <div class="tickrow"><div></div><div class="ticks" id="ticks"></div><div></div></div>
+  <p class="cap">Read it as: iMote serves 1.25M people for ~5 cents per thousand. Tattooist costs <b>2,200× more per user</b> than iMote, and Face AI — parked, 426 users — still bills €128/month. Two very different conversations: one is a real engineering problem, one is a cleanup.</p>
+  <details style="margin-top:8px">
+    <summary class="kbd" style="cursor:pointer">Table view</summary>
+    <table style="margin-top:8px">
+      <thead><tr><th>App</th><th class="num">MAU</th><th class="num">Cost (€)</th><th class="num">€ / 1k MAU</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </details>
+</div>
+
+<div class="card" style="margin-top:14px">
+  <h3>Portfolio state — where each app sits today</h3>
+  <table style="margin-top:6px">
+    <thead><tr><th>App</th><th>State</th><th>Who</th><th>What it means this month</th></tr></thead>
+    <tbody>
+      <tr><td><b>AI Design</b></td><td><span class="pill"><span class="dot" style="background:var(--good)"></span>Invest</span></td><td>Anadea + Vlad (SDK)</td><td>Growing; stays with us for now — no urgency to hand to Growth</td></tr>
+      <tr><td><b>TraceCheck</b></td><td><span class="pill"><span class="dot" style="background:var(--good)"></span>Launching</span></td><td>Andrey + Maria (QA)</td><td>Early August; blockers are product/legal, not engineering</td></tr>
+      <tr><td><b>ChatUltra</b></td><td><span class="pill"><span class="dot" style="background:var(--warn)"></span>In transition</span></td><td>New vendor + PO Ruben/Carlos</td><td>Helikanon out; KT overlap is the risk</td></tr>
+      <tr><td><b>iMote</b></td><td><span class="pill"><span class="dot" style="background:var(--s1)"></span>Stable</span></td><td>Andrey (thin)</td><td>Huge audience, near-zero cost, low product attention</td></tr>
+      <tr><td><b>Tattooist</b></td><td><span class="pill"><span class="dot" style="background:var(--s1)"></span>Stable</span></td><td>57 Blocks</td><td>Ships a lot — and owns 95% of our cloud bill</td></tr>
+      <tr><td><b>Face AI</b></td><td><span class="pill"><span class="dot" style="background:var(--warn)"></span>Parked</span></td><td>—</td><td>Tech debt from early tool choices; clock is running on marketability</td></tr>
+      <tr><td><b>Screen Mirroring</b></td><td><span class="pill"><span class="dot" style="background:var(--warn)"></span>Parked</span></td><td>Andrey when free</td><td>Infra ready; candidate to resume</td></tr>
+      <tr><td><b>PDF Editor · Step Counter · Music Player</b></td><td><span class="pill"><span class="dot" style="background:var(--crit)"></span>Decision 5 Sep</span></td><td>—</td><td>Fold into the studios decision</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ 4. TIMELINE ============ -->
+<h2>4 · The next six weeks</h2>
+<div class="card">
+  <h3>Everything lands in a 4-week window — with a holiday in the middle</h3>
+  <div class="tl" id="tl"></div>
+  <p class="cap">The squeeze: AI Design SDK is due <b>Sun 23 Aug → really Fri 21 Aug</b>, and Vlad is out 7–16 Aug. That's <b>14 working days</b>, split 9 + 5, with the Android half unproven. Decide the cut now while it's cheap — agreed fallback: <b>Android can slip, iOS 27 support cannot.</b></p>
+</div>
+
+<!-- ============ 5. TECHNICAL CHALLENGES ============ -->
+<h2>5 · Technical challenges — where the interesting problems are</h2>
+<div class="grid g2">
+  <div class="card">
+    <h3>Can we even verify an integration?</h3>
+    <div class="who">Martech SDK · decided this month</div>
+    <p class="muted" style="margin:6px 0 0">Reading identity back from Amplitude / RevenueCat / AppsFlyer is defeated by ingestion latency and attribution windows. We chose <b>manual-first</b>: a debug menu into SDK state, a QA guide in the repo, a triggerable CI lane, plus a duplication linter. Dropped the estimate from ~1 month to ~1 week — and gives a visible result instead of a research project.</p>
+  </div>
+  <div class="card">
+    <h3>One SDK, three platforms, one deadline</h3>
+    <div class="who">iOS ✓ · Android in progress · Flutter next</div>
+    <p class="muted" style="margin:6px 0 0">Most of the portfolio is Flutter, and the Flutter bridge can't be designed against a moving native surface. The roadmap freezes the public API first (10 stories), <i>then</i> builds. The named risk is honest: Android is a real skill gap right now, on a cross-platform deadline.</p>
+  </div>
+  <div class="card">
+    <h3>Nobody is watching the money taps</h3>
+    <div class="who">TraceCheck · rated "a big risk"</div>
+    <p class="muted" style="margin:6px 0 0">Eight third-party vendors integrated, several on <b>prepaid credits</b>, with no monitoring or alerting — and we don't have console access to most of them. A launch traffic spike could silently break core features. Also: no web crash/error monitoring (no Crashlytics equivalent). Datadog is the web standard; that's the fix.</p>
+  </div>
+  <div class="card">
+    <h3>The AI token cliff</h3>
+    <div class="who">Whole team · raised by Andrey</div>
+    <p class="muted" style="margin:6px 0 0">We burned ~1.5–2 months of tokens in a week, sustained only by vendor emergency resets. New models are hungrier. When the resets stop, throughput drops — hard. I'm setting that expectation upward so nobody is measured against a pace that was subsidised.</p>
+  </div>
+</div>
+
+<!-- ============ 6. TEAM / ORG ============ -->
+<h2>6 · Org &amp; team topics</h2>
+<div class="card">
+  <ul>
+    <li><b>Career ladder.</b> Both of you asked. The company is rephrasing the paths; I owe you the detail the moment it's formalised — <span class="muted">give them a date today, not "soon".</span></li>
+    <li><b>Where the apps org is going.</b> Web is getting the investment (faster payback than apps). TraceCheck is our beachhead; there may be a bigger cross-app web project after the summer. <span class="muted">Frame: the code moves, the people stay anchored in apps.</span></li>
+    <li><b>Skill fluidity is now the expectation</b> — iOS/Android engineers touching web and backend is normal. That's the shape of the next 12 months.</li>
+    <li><b>AI tooling.</b> Use freely for now; per-person budgets are likely coming. Open question on Cursor after the ownership change — worth a real conversation, not a shrug.</li>
+    <li><b>QA capacity.</b> Raised 30 June, still unresolved. Maria is on TraceCheck ~70%; a QA is lined up for ChatUltra.</li>
+  </ul>
+</div>
+
+<!-- ============ 7. DECIDE TODAY ============ -->
+<h2>7 · Leave the room with these decided</h2>
+<div class="card">
+  <div class="decision"><b>1 · The 21 August cut line</b><span>If Android slips, what drops? Confirm out loud: iOS 27 support is protected, Android can move. Victor and Matellano need to know the ranking.</span></div>
+  <div class="decision"><b>2 · TV Foundation Kit — tested or September?</b><span>Third week of ambiguity. Pick one today.</span></div>
+  <div class="decision"><b>3 · Vendor console access for TraceCheck</b><span>Named owner + date to get read access and balance alerts on the 8 prepaid vendors, before launch traffic hits.</span></div>
+  <div class="decision"><b>4 · The substitute web hire</b><span>Andrey carries web until someone is hired and trained. Name the owner and the target date, or "temporary" becomes permanent.</span></div>
+  <div class="decision"><b>5 · Carried from 30 June: QA capacity + role</b><span>Either resolve it or formally park it. Don't carry it a third month.</span></div>
+</div>
+
+<p class="cap" style="margin-top:22px">Sources: em-hub 1:1 memory (20 &amp; 27 Jul), <span class="kbd">metrics/gcp-spend/2026-06.json</span>, <span class="kbd">metrics/metrics-2026-06.md</span>, Martech SDK roadmap (14 Jul), Q3 studio-exit decision record (29 Jun), Granola Team Sync 30 Jun.</p>
+
+</div>
+
+<script>
+const apps = [
+  {name:"Face AI",        mau:426,      cost:127.69, note:"parked"},
+  {name:"Tattooist",      mau:270128,   cost:30342.92},
+  {name:"AI Design",      mau:73767,    cost:955.34},
+  {name:"Screen Mirroring",mau:2640,    cost:31.53, note:"parked"},
+  {name:"ChatUltra",      mau:619989,   cost:268.05},
+  {name:"iMote",          mau:1249359,  cost:63.61}
+].map(a=>({...a, per:a.cost/(a.mau/1000)}));
+
+const LO=Math.log10(0.01), HI=Math.log10(1000);
+const pos = v => Math.max(0,(Math.log10(v)-LO)/(HI-LO))*100;
+
+document.getElementById("chart").innerHTML = apps.map(a=>`
+  <div class="barrow">
+    <div class="barname">${a.name}${a.note?` <span class="kbd">(${a.note})</span>`:""}</div>
+    <div class="bartrack"><div class="bar" style="width:${pos(a.per).toFixed(2)}%"></div></div>
+    <div class="barval">€${a.per<1?a.per.toFixed(2):a.per.toLocaleString("en",{maximumFractionDigits:0})}</div>
+  </div>`).join("");
+
+document.getElementById("ticks").innerHTML = [0.01,0.1,1,10,100,1000].map(t=>{
+  const l = pos(t).toFixed(2);
+  return `<div class="tickline" style="left:${l}%"></div>
+          <div class="tick" style="left:${l}%">€${t<1?t:t.toLocaleString()}</div>`;
+}).join("");
+
+document.getElementById("tbody").innerHTML = apps.slice().sort((a,b)=>b.per-a.per).map(a=>`
+  <tr><td>${a.name}</td><td class="num">${a.mau.toLocaleString("en")}</td>
+  <td class="num">${a.cost.toLocaleString("en",{minimumFractionDigits:2})}</td>
+  <td class="num">${a.per.toFixed(2)}</td></tr>`).join("");
+
+// ---- timeline: 28 Jul -> 8 Sep
+const T0=new Date(2026,6,28), T1=new Date(2026,8,8);
+const px = d => ((d-T0)/(T1-T0))*100;
+const bars = [
+  {label:"TraceCheck launch window", a:new Date(2026,7,3),  b:new Date(2026,7,10), top:8,  c:"var(--good)"},
+  {label:"Vlad holiday",             a:new Date(2026,7,7),  b:new Date(2026,7,16), top:44, c:"var(--ink-3)"},
+  {label:"AI Design SDK — iOS + Android", a:new Date(2026,6,28), b:new Date(2026,7,21), top:80, c:"var(--s1)"},
+  {label:"ChatUltra vendor onboarding / KT", a:new Date(2026,6,28), b:new Date(2026,7,31), top:116, c:"var(--s2)"}
+];
+const flags = [
+  {label:"31 Jul · studio exits", d:new Date(2026,6,31)},
+  {label:"21 Aug · SDK deadline", d:new Date(2026,7,21)},
+  {label:"5 Sep · portfolio decision", d:new Date(2026,8,5)}
+];
+document.getElementById("tl").innerHTML =
+  bars.map(b=>{
+    const l=px(b.a), w=px(b.b)-px(b.a), outside = w < 24;
+    return `<div class="lane" style="left:${l}%;width:${w}%;top:${b.top}px;background:${b.c}">${outside?"":b.label}</div>`
+      + (outside?`<div class="lane" style="left:calc(${l+w}% + 8px);top:${b.top}px;background:none;box-shadow:none;color:var(--ink-2);padding:0;font-weight:600">${b.label}</div>`:"");
+  }).join("")
+  + `<div class="base"></div>`
+  + flags.map(f=>`<div class="mark" style="left:${px(f.d)}%"></div>
+       <div class="flag" style="left:${px(f.d)}%">${f.label}</div>`).join("")
+  + [["28 Jul",new Date(2026,6,28)],["10 Aug",new Date(2026,7,10)],["24 Aug",new Date(2026,7,24)],["7 Sep",new Date(2026,8,7)]]
+      .map(([l,d])=>`<div class="mlab" style="left:${px(d)}%">${l}</div>`).join("");
+</script>
+</body>
+</html>
