@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ share_title }}</title>
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --card: #ffffff;
+    --border: #e2e2e7;
+    --row-hover: #fafafa;
+    --billable: #c0392b;
+    --watch: #d68910;
+    --ok: #1e8449;
+    --trend-up-bg: #fecaca;
+    --trend-up-fg: #991b1b;
+    --trend-down-bg: #bbf7d0;
+    --trend-down-fg: #166534;
+    --trend-flat-bg: #e5e7eb;
+    --trend-flat-fg: #4b5563;
+    --tab-active: #1a1a1a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.45;
+  }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 6px; }
+  .meta { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .card .label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .card .value { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .card.danger .value { color: var(--billable); }
+  h2.section {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+  .env-tabs { margin-bottom: 0; }
+  .env-tabs input { position: absolute; opacity: 0; pointer-events: none; }
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-bar label {
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: -1px;
+    background: transparent;
+  }
+  #tab-prod:checked ~ .tab-bar label[for="tab-prod"],
+  #tab-dev:checked ~ .tab-bar label[for="tab-dev"] {
+    color: var(--tab-active);
+    background: var(--card);
+    border-color: var(--border);
+  }
+  .tab-panel { display: none; }
+  #tab-prod:checked ~ .panel-prod { display: block; }
+  #tab-dev:checked ~ .panel-dev { display: block; }
+  .table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 0 8px 8px 8px;
+    overflow-x: auto;
+    background: var(--card);
+  }
+  #tab-prod:checked ~ .panel-prod .table-wrap { border-top-left-radius: 0; }
+  #tab-dev:checked ~ .panel-dev .table-wrap { border-top-left-radius: 8px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  th {
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 12px;
+    background: #fafafb;
+  }
+  .th-sub {
+    display: block;
+    font-weight: 400;
+    font-size: 10px;
+    color: #999;
+    margin-top: 2px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--row-hover); }
+  tr.row-billable td { background: #fff9f9; }
+  tr.row-billable .cost { font-weight: 600; color: var(--billable); }
+  .num { text-align: right; }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: normal;
+    min-width: 200px;
+  }
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .status-dot.billable { background: var(--billable); }
+  .status-dot.watch { background: var(--watch); }
+  .status-dot.ok { background: var(--ok); }
+  .status-dot.na { background: #ccc; }
+  .trend-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid transparent;
+  }
+  .trend-badge.up { background: var(--trend-up-bg); color: var(--trend-up-fg); border-color: #f87171; }
+  .trend-badge.down { background: var(--trend-down-bg); color: var(--trend-down-fg); border-color: #4ade80; }
+  .trend-badge.flat { background: var(--trend-flat-bg); color: var(--trend-flat-fg); border-color: #d1d5db; }
+  .trend-badge.none { color: var(--muted); background: transparent; font-weight: 400; }
+  .err { color: var(--billable); font-size: 12px; }
+  .footnote {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+    max-width: 780px;
+  }
+  .footnote a { color: #2563eb; }
+  @media print {
+    body { background: #fff; }
+    .card { break-inside: avoid; }
+    .tab-panel { display: block !important; page-break-before: always; }
+    .tab-panel:first-of-type { page-break-before: auto; }
+    .tab-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>{{ share_title }}</h1>
+  <p class="meta">Generated {{ generated_at }} · {{ days }}-day window · <code>FetchRemoteConfig</code> client fetches</p>
+
+  <div class="cards">
+    <div class="card{% if total_monthly > 0 %} danger{% endif %}">
+      <div class="label">Projected Blaze overage / month (prod)</div>
+      <div class="value">${{ "%.2f"|format(total_monthly) }}</div>
+    </div>
+    <div class="card">
+      <div class="label">Billable prod projects</div>
+      <div class="value">{{ billable_count }}</div>
+    </div>
+    <div class="card">
+      <div class="label">Free tier (daily)</div>
+      <div class="value">{{ "{:,}".format(daily_free) }}</div>
+    </div>
+  </div>
+
+  <h2 class="section">Cost impact — your apps</h2>
+
+  <div class="env-tabs">
+    <input type="radio" name="env-tab" id="tab-prod" checked>
+    <input type="radio" name="env-tab" id="tab-dev">
+    <div class="tab-bar">
+      <label for="tab-prod">Prod</label>
+      <label for="tab-dev">Dev</label>
+    </div>
+
+    {% macro render_table(env_rows) %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th class="num">Avg fetches/day<span class="th-sub">last {{ days }} days</span></th>
+            <th class="num">Projected $/mo</th>
+            <th>Status</th>
+            <th class="num">Peak/day<span class="th-sub">in window</span></th>
+            <th>Trend<span class="th-sub">{{ trend_label }}</span></th>
+            {% if has_amplitude %}
+            <th class="num">MAU<span class="th-sub">latest month</span></th>
+            <th class="num">Fetches/user/day<span class="th-sub">avg ÷ MAU</span></th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in env_rows %}
+          <tr class="{% if r.status_tier == 'billable' %}row-billable{% endif %}">
+            <td>{{ r.friendly_name }}</td>
+            {% if r.error %}
+            <td colspan="{{ 5 if not has_amplitude else 7 }}" class="err">{{ r.error }} ({{ r.project_id }})</td>
+            {% elif r.avg_daily is none %}
+            <td colspan="{{ 5 if not has_amplitude else 7 }}" class="err">No fetch data ({{ r.project_id }})</td>
+            {% else %}
+            <td class="num">{{ "{:,}".format(r.avg_daily) }}</td>
+            <td class="num cost">${{ "%.2f"|format(r.est_monthly_cost) }}</td>
+            <td>
+              <div class="status">
+                <span class="status-dot {{ r.status_tier }}"></span>
+                <span>{{ r.status_label }}</span>
+              </div>
+            </td>
+            <td class="num">{{ "{:,}".format(r.peak_daily) }}</td>
+            <td>
+              <span class="trend-badge {{ r.trend_kind }}">{{ r.trend }}</span>
+            </td>
+            {% if has_amplitude %}
+            <td class="num">{{ "{:,}".format(r.mau) if r.mau is not none else '—' }}</td>
+            <td class="num">{{ "%.2f"|format(r.fetches_per_user_per_day) if r.fetches_per_user_per_day is not none else '—' }}</td>
+            {% endif %}
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endmacro %}
+
+    {% set prod_rows = rows | selectattr('env', 'equalto', 'prod') | list %}
+    {% set dev_rows = rows | selectattr('env', 'equalto', 'dev') | list %}
+
+    <div class="tab-panel panel-prod">
+      {{ render_table(prod_rows) }}
+    </div>
+    <div class="tab-panel panel-dev">
+      {{ render_table(dev_rows) }}
+    </div>
+  </div>
+
+  <p class="footnote">
+    Sorted by avg daily fetches (high → low) within each tab. Avg and projected cost use the last {{ days }} days.
+    Trend compares {{ trend_label }} (or half-window if sparse):
+    <span class="trend-badge up">Up</span> = more fetches (cost risk),
+    <span class="trend-badge down">Down</span> = fewer fetches,
+    <span class="trend-badge flat">Flat</span> = stable.
+    Status <strong>watch</strong> on prod = ≥{{ warn_peak_pct|int }}% of {{ "{:,}".format(daily_free) }}/day free tier.
+    Pricing: <a href="https://firebase.google.com/docs/remote-config/pricing">Firebase Remote Config (Blaze)</a>.
+    {% if has_amplitude %}
+    <br><br>
+    <strong>MAU</strong> = monthly active users from Amplitude (latest available month in window).
+    <strong>Fetches/user/day</strong> = avg daily fetches ÷ MAU. ~1.0 is healthy (one fetch per active user per day);
+    values well above 1 suggest over-fetching, missing client-side cache, or a retry loop.
+    Apps without Amplitude coverage show "—".
+    {% endif %}
+  </p>
+</main>
+</body>
+</html>

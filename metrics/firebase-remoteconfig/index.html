@@ -1,0 +1,942 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Utilities — Remote Config fetch usage</title>
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --card: #ffffff;
+    --border: #e2e2e7;
+    --row-hover: #fafafa;
+    --billable: #c0392b;
+    --watch: #d68910;
+    --ok: #1e8449;
+    --trend-up-bg: #fecaca;
+    --trend-up-fg: #991b1b;
+    --trend-down-bg: #bbf7d0;
+    --trend-down-fg: #166534;
+    --trend-flat-bg: #e5e7eb;
+    --trend-flat-fg: #4b5563;
+    --tab-active: #1a1a1a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.45;
+  }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 6px; }
+  .meta { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .card .label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .card .value { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .card.danger .value { color: var(--billable); }
+  h2.section {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+  .env-tabs { margin-bottom: 0; }
+  .env-tabs input { position: absolute; opacity: 0; pointer-events: none; }
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-bar label {
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: -1px;
+    background: transparent;
+  }
+  #tab-prod:checked ~ .tab-bar label[for="tab-prod"],
+  #tab-dev:checked ~ .tab-bar label[for="tab-dev"] {
+    color: var(--tab-active);
+    background: var(--card);
+    border-color: var(--border);
+  }
+  .tab-panel { display: none; }
+  #tab-prod:checked ~ .panel-prod { display: block; }
+  #tab-dev:checked ~ .panel-dev { display: block; }
+  .table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 0 8px 8px 8px;
+    overflow-x: auto;
+    background: var(--card);
+  }
+  #tab-prod:checked ~ .panel-prod .table-wrap { border-top-left-radius: 0; }
+  #tab-dev:checked ~ .panel-dev .table-wrap { border-top-left-radius: 8px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  th {
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 12px;
+    background: #fafafb;
+  }
+  .th-sub {
+    display: block;
+    font-weight: 400;
+    font-size: 10px;
+    color: #999;
+    margin-top: 2px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--row-hover); }
+  tr.row-billable td { background: #fff9f9; }
+  tr.row-billable .cost { font-weight: 600; color: var(--billable); }
+  .num { text-align: right; }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: normal;
+    min-width: 200px;
+  }
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .status-dot.billable { background: var(--billable); }
+  .status-dot.watch { background: var(--watch); }
+  .status-dot.ok { background: var(--ok); }
+  .status-dot.na { background: #ccc; }
+  .trend-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid transparent;
+  }
+  .trend-badge.up { background: var(--trend-up-bg); color: var(--trend-up-fg); border-color: #f87171; }
+  .trend-badge.down { background: var(--trend-down-bg); color: var(--trend-down-fg); border-color: #4ade80; }
+  .trend-badge.flat { background: var(--trend-flat-bg); color: var(--trend-flat-fg); border-color: #d1d5db; }
+  .trend-badge.none { color: var(--muted); background: transparent; font-weight: 400; }
+  .err { color: var(--billable); font-size: 12px; }
+  .footnote {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+    max-width: 780px;
+  }
+  .footnote a { color: #2563eb; }
+  @media print {
+    body { background: #fff; }
+    .card { break-inside: avoid; }
+    .tab-panel { display: block !important; page-break-before: always; }
+    .tab-panel:first-of-type { page-break-before: auto; }
+    .tab-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Utilities — Remote Config fetch usage</h1>
+  <p class="meta">Generated 2026-07-20 15:50 UTC · 30-day window · <code>FetchRemoteConfig</code> client fetches</p>
+
+  <div class="cards">
+    <div class="card danger">
+      <div class="label">Projected Blaze overage / month (prod)</div>
+      <div class="value">$217.98</div>
+    </div>
+    <div class="card">
+      <div class="label">Billable prod projects</div>
+      <div class="value">2</div>
+    </div>
+    <div class="card">
+      <div class="label">Free tier (daily)</div>
+      <div class="value">100,000</div>
+    </div>
+  </div>
+
+  <h2 class="section">Cost impact — your apps</h2>
+
+  <div class="env-tabs">
+    <input type="radio" name="env-tab" id="tab-prod" checked>
+    <input type="radio" name="env-tab" id="tab-dev">
+    <div class="tab-bar">
+      <label for="tab-prod">Prod</label>
+      <label for="tab-dev">Dev</label>
+    </div>
+
+    
+
+    
+    
+
+    <div class="tab-panel panel-prod">
+      
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th class="num">Avg fetches/day<span class="th-sub">last 30 days</span></th>
+            <th class="num">Projected $/mo</th>
+            <th>Status</th>
+            <th class="num">Peak/day<span class="th-sub">in window</span></th>
+            <th>Trend<span class="th-sub">7d vs prior 7d</span></th>
+            
+            <th class="num">MAU<span class="th-sub">latest month</span></th>
+            <th class="num">Fetches/user/day<span class="th-sub">avg ÷ MAU</span></th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr class="row-billable">
+            <td>AI Cleaner Android</td>
+            
+            <td class="num">1,091,181</td>
+            <td class="num cost">$178.41</td>
+            <td>
+              <div class="status">
+                <span class="status-dot billable"></span>
+                <span>Billable — 12.4× over free tier</span>
+              </div>
+            </td>
+            <td class="num">1,239,385</td>
+            <td>
+              <span class="trend-badge down">Down 21%</span>
+            </td>
+            
+            <td class="num">1,521,886</td>
+            <td class="num">0.72</td>
+            
+            
+          </tr>
+          
+          <tr class="row-billable">
+            <td>iMote</td>
+            
+            <td class="num">319,794</td>
+            <td class="num cost">$39.56</td>
+            <td>
+              <div class="status">
+                <span class="status-dot billable"></span>
+                <span>Billable — 3.7× over free tier</span>
+              </div>
+            </td>
+            <td class="num">371,002</td>
+            <td>
+              <span class="trend-badge down">Down 8%</span>
+            </td>
+            
+            <td class="num">915,891</td>
+            <td class="num">0.35</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>AI Cleaner</td>
+            
+            <td class="num">60,663</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot watch"></span>
+                <span>~66% of free tier — watch</span>
+              </div>
+            </td>
+            <td class="num">66,203</td>
+            <td>
+              <span class="trend-badge flat">Flat</span>
+            </td>
+            
+            <td class="num">480,377</td>
+            <td class="num">0.13</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Video Up</td>
+            
+            <td class="num">33,741</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot watch"></span>
+                <span>~39% of free tier — watch</span>
+              </div>
+            </td>
+            <td class="num">38,732</td>
+            <td>
+              <span class="trend-badge flat">Flat</span>
+            </td>
+            
+            <td class="num">273,469</td>
+            <td class="num">0.12</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>ChatUltra</td>
+            
+            <td class="num">27,101</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot watch"></span>
+                <span>~31% of free tier — watch</span>
+              </div>
+            </td>
+            <td class="num">30,842</td>
+            <td>
+              <span class="trend-badge up">Up 7%</span>
+            </td>
+            
+            <td class="num">364,192</td>
+            <td class="num">0.07</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Tattooist</td>
+            
+            <td class="num">25,201</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot watch"></span>
+                <span>~43% of free tier — watch</span>
+              </div>
+            </td>
+            <td class="num">42,738</td>
+            <td>
+              <span class="trend-badge up">Up 46%</span>
+            </td>
+            
+            <td class="num">168,403</td>
+            <td class="num">0.15</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Music Player</td>
+            
+            <td class="num">17,481</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">19,278</td>
+            <td>
+              <span class="trend-badge flat">Flat</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>AI Design</td>
+            
+            <td class="num">4,345</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">5,277</td>
+            <td>
+              <span class="trend-badge flat">Flat</span>
+            </td>
+            
+            <td class="num">53,902</td>
+            <td class="num">0.08</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Ereasy</td>
+            
+            <td class="num">4,309</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">5,307</td>
+            <td>
+              <span class="trend-badge down">Down 10%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>PDF Editor</td>
+            
+            <td class="num">3,200</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">9,390</td>
+            <td>
+              <span class="trend-badge down">Down 35%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Photo Up</td>
+            
+            <td class="num">2,824</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">3,651</td>
+            <td>
+              <span class="trend-badge flat">Flat</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>SpamSafe</td>
+            
+            <td class="num">392</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">600</td>
+            <td>
+              <span class="trend-badge flat">Flat</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Mirage</td>
+            
+            <td class="num">157</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">184</td>
+            <td>
+              <span class="trend-badge flat">Flat</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>ScreenMirroring</td>
+            
+            <td class="num">124</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">174</td>
+            <td>
+              <span class="trend-badge down">Down 23%</span>
+            </td>
+            
+            <td class="num">1,544</td>
+            <td class="num">0.08</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Goya</td>
+            
+            <td class="num">103</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">138</td>
+            <td>
+              <span class="trend-badge down">Down 17%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Step Counter</td>
+            
+            <td class="num">77</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">124</td>
+            <td>
+              <span class="trend-badge up">Up 38%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>FaceAI</td>
+            
+            <td class="num">24</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">38</td>
+            <td>
+              <span class="trend-badge up">Up 10%</span>
+            </td>
+            
+            <td class="num">279</td>
+            <td class="num">0.09</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>TruthSeeker</td>
+            
+            <td colspan="7" class="err">No fetch data (ai-truthseeker-prod)</td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+    
+    </div>
+    <div class="tab-panel panel-dev">
+      
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th class="num">Avg fetches/day<span class="th-sub">last 30 days</span></th>
+            <th class="num">Projected $/mo</th>
+            <th>Status</th>
+            <th class="num">Peak/day<span class="th-sub">in window</span></th>
+            <th>Trend<span class="th-sub">7d vs prior 7d</span></th>
+            
+            <th class="num">MAU<span class="th-sub">latest month</span></th>
+            <th class="num">Fetches/user/day<span class="th-sub">avg ÷ MAU</span></th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr class="">
+            <td>iMote</td>
+            
+            <td class="num">122</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">501</td>
+            <td>
+              <span class="trend-badge up">Up 111%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>SpamSafe</td>
+            
+            <td class="num">98</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">303</td>
+            <td>
+              <span class="trend-badge down">Down 76%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>AI Cleaner</td>
+            
+            <td class="num">60</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">89</td>
+            <td>
+              <span class="trend-badge up">Up 34%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>AI Design</td>
+            
+            <td class="num">59</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">139</td>
+            <td>
+              <span class="trend-badge down">Down 17%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Photo Up</td>
+            
+            <td class="num">47</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">130</td>
+            <td>
+              <span class="trend-badge up">Up 13%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Video Up</td>
+            
+            <td class="num">36</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">92</td>
+            <td>
+              <span class="trend-badge up">Up 13%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Ereasy</td>
+            
+            <td class="num">23</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">65</td>
+            <td>
+              <span class="trend-badge up">Up 37%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>AI Cleaner Android</td>
+            
+            <td class="num">21</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">41</td>
+            <td>
+              <span class="trend-badge down">Down 10%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>FaceAI</td>
+            
+            <td class="num">14</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">41</td>
+            <td>
+              <span class="trend-badge up">Up 22%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Step Counter</td>
+            
+            <td class="num">12</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">40</td>
+            <td>
+              <span class="trend-badge up">Up 212%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>Music Player</td>
+            
+            <td class="num">3</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">6</td>
+            <td>
+              <span class="trend-badge up">Up 20%</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>PDF Editor</td>
+            
+            <td class="num">2</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">2</td>
+            <td>
+              <span class="trend-badge flat">Flat</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+          <tr class="">
+            <td>ScreenMirroring</td>
+            
+            <td class="num">1</td>
+            <td class="num cost">$0.00</td>
+            <td>
+              <div class="status">
+                <span class="status-dot ok"></span>
+                <span>under free tier</span>
+              </div>
+            </td>
+            <td class="num">1</td>
+            <td>
+              <span class="trend-badge flat">Flat</span>
+            </td>
+            
+            <td class="num">—</td>
+            <td class="num">—</td>
+            
+            
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+    
+    </div>
+  </div>
+
+  <p class="footnote">
+    Sorted by avg daily fetches (high → low) within each tab. Avg and projected cost use the last 30 days.
+    Trend compares 7d vs prior 7d (or half-window if sparse):
+    <span class="trend-badge up">Up</span> = more fetches (cost risk),
+    <span class="trend-badge down">Down</span> = fewer fetches,
+    <span class="trend-badge flat">Flat</span> = stable.
+    Status <strong>watch</strong> on prod = ≥20% of 100,000/day free tier.
+    Pricing: <a href="https://firebase.google.com/docs/remote-config/pricing">Firebase Remote Config (Blaze)</a>.
+    
+    <br><br>
+    <strong>MAU</strong> = monthly active users from Amplitude (latest available month in window).
+    <strong>Fetches/user/day</strong> = avg daily fetches ÷ MAU. ~1.0 is healthy (one fetch per active user per day);
+    values well above 1 suggest over-fetching, missing client-side cache, or a retry loop.
+    Apps without Amplitude coverage show "—".
+    
+  </p>
+</main>
+</body>
+</html>
