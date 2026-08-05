@@ -113,6 +113,11 @@
     color: var(--muted); font-size: 13px;
   }
 
+  .caveat {
+    margin: 8px 0 0; font-size: 11px; color: var(--muted);
+    border-left: 2px solid var(--soft-border); padding-left: 10px;
+  }
+
   .chart .baseline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3,3; opacity: 0.6; }
   .chart .baseline-label { fill: var(--muted); font-size: 10px; }
   .overlay-hint {
@@ -180,7 +185,7 @@
                 cx="{{ d.cx }}" cy="{{ d.cy }}"
                 r="{% if d.is_target %}4{% else %}3{% endif %}"
                 fill="{{ c.color }}">
-          <title>{{ d.month[:4] }}-{{ d.month[4:] }} · {% if fmt == "money3" %}${{ "%.3f"|format(d.value) }}{% elif fmt == "int" %}{{ "{:,}".format(d.value|int) }}{% else %}${{ "{:,.0f}".format(d.value) }}{% endif %}</title>
+          <title>{{ d.month[:4] }}-{{ d.month[4:] }} · {% if fmt == "money3" %}${{ "%.3f"|format(d.value) }}{% elif fmt == "int" %}{{ "{:,}".format(d.value|int) }}{% elif fmt == "pct" %}{{ "%.2f"|format(d.value) }}%{% elif fmt == "eur" %}€{{ "{:,.0f}".format(d.value) }}{% else %}${{ "{:,.0f}".format(d.value) }}{% endif %}</title>
         </circle>
       {% endfor %}
     {% else %}
@@ -238,6 +243,21 @@
         <span class="val small">{% if cost_per_mau is not none %}${{ "%.3f"|format(cost_per_mau) }}{% else %}—{% endif %}</span>
       </div>
       {% endif %}
+      {% if has_revenue %}
+      <div class="kpi">
+        <span class="label">Net proceeds</span>
+        <span class="val">{% if revenue is not none %}€{{ "{:,.0f}".format(revenue) }}{% else %}—{% endif %}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Cost / revenue</span>
+        <span class="val small">{% if cost_ratio is not none %}{{ "%.2f"|format(cost_ratio) }}%{% else %}—{% endif %}</span>
+        {% if cost_ratio_delta_pp is not none %}
+          {% if cost_ratio_delta_pp > 0.05 %}<span class="mom up">▲ {{ "%.2f"|format(cost_ratio_delta_pp) }}pp</span>
+          {% elif cost_ratio_delta_pp < -0.05 %}<span class="mom down">▼ {{ "%.2f"|format(-cost_ratio_delta_pp) }}pp</span>
+          {% else %}<span class="mom flat">— flat</span>{% endif %}
+        {% endif %}
+      </div>
+      {% endif %}
       <div class="kpi">
         <span class="label">Avg ({{ window_count }}m)</span>
         <span class="val small">${{ "{:,.0f}".format(average) }}</span>
@@ -262,14 +282,37 @@
     </div>
   </div>
 
-  <h2 class="section">Trend overlap · spend vs users (indexed to 100)</h2>
-  {{ render_overlay_chart(overlay_chart) }}
-
   <h2 class="section">$/MAU over time · correlation indicator</h2>
   {{ render_line_chart(cpm_chart, fmt="money3") }}
   {% else %}
   <h2 class="section">Users</h2>
   <div class="no-data">No Amplitude data configured for this app. Add a row to <code>amplitude.conf</code> + env vars to enable MAU and $/MAU charts.</div>
+  {% endif %}
+
+  {# ── Revenue + efficiency ratio ───────────────────────────────── #}
+  {% if has_revenue %}
+  <h2 class="section">Net proceeds per month</h2>
+  {{ render_line_chart(revenue_chart, fmt="eur") }}
+
+  <h2 class="section">Infra cost as % of net proceeds</h2>
+  {{ render_line_chart(ratio_chart, fmt="pct") }}
+  <p class="caveat">
+    <strong>Not margin.</strong> The numerator is GCP infrastructure only — it excludes
+    user acquisition, salaries, RevenueCat fees, and any AI vendor billed outside GCP
+    (FAL.AI, Stability, OpenAI, YouCam, AiLab). Gemini and Vertex AI <em>are</em> included.
+    Read this as an infrastructure efficiency trend, not as profitability.
+    Months where RevenueCat still considers revenue unsettled are omitted rather than
+    plotted low.
+  </p>
+  {% else %}
+  <h2 class="section">Revenue</h2>
+  <div class="no-data">No RevenueCat data configured for this app. Add a project id to <code>revenuecat.conf</code> + the matching env var to enable revenue and cost-ratio charts.</div>
+  {% endif %}
+
+  {# ── Indexed overlay (spend + whatever else has data) ─────────── #}
+  {% if show_overlay %}
+  <h2 class="section">Trend overlap · indexed to 100</h2>
+  {{ render_overlay_chart(overlay_chart) }}
   {% endif %}
 
   {# ── Services breakdown over time ─────────────────────────────── #}
@@ -309,6 +352,10 @@
           <th>New</th>
           <th>$/MAU</th>
           {% endif %}
+          {% if has_revenue %}
+          <th>Net proceeds</th>
+          <th>Cost %</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
@@ -323,6 +370,14 @@
               <td>{% if r.cost_per_mau is not none %}${{ "%.3f"|format(r.cost_per_mau) }}{% else %}—{% endif %}</td>
             {% else %}
               <td class="empty">—</td><td class="empty">—</td><td class="empty">—</td>
+            {% endif %}
+          {% endif %}
+          {% if has_revenue %}
+            {% if r.revenue is not none %}
+              <td>€{{ "{:,.0f}".format(r.revenue) }}</td>
+              <td>{% if r.cost_ratio is not none %}{{ "%.2f"|format(r.cost_ratio) }}%{% else %}—{% endif %}</td>
+            {% else %}
+              <td class="empty">—</td><td class="empty">—</td>
             {% endif %}
           {% endif %}
         </tr>

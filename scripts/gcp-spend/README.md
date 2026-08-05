@@ -19,9 +19,16 @@ Everything lives under `scripts/gcp-spend/`.
 scripts/gcp-spend/
 ├── run.py              ← entrypoint
 ├── config.conf         ← app → BigQuery dataset mapping
+├── amplitude.py        ← MAU + new users (Amplitude Dashboard API)
+├── amplitude.conf      ← app → Amplitude credentials
+├── revenuecat.py       ← net proceeds (RevenueCat Charts API v2)
+├── revenuecat.conf     ← app → RevenueCat project + credential
 ├── query.sql.j2        ← BigQuery query (Jinja2 template)
 ├── template.html.j2    ← monthly detail HTML
 ├── dashboard.html.j2   ← multi-month dashboard HTML
+├── app.html.j2         ← per-app detail HTML
+├── test_revenuecat.py  ← unit tests (stdlib unittest, no deps)
+├── test_metrics.py     ← unit tests for the derived metrics
 ├── requirements.txt
 ├── README.md           ← this file
 └── reports/            ← generated output
@@ -47,6 +54,72 @@ query.sql.j2      ──┘
 - "Net cost" = `cost + SUM(credits)`. Credits are stored as negative values, so this
   matches what hits the invoice.
 - Filter is on `invoice.month` (YYYYMM), the canonical "billed this month" partition.
+
+## Revenue (RevenueCat)
+
+Per-app monthly **net proceeds** are fetched from RevenueCat's Charts API v2 and
+used to derive **infra cost as % of net proceeds** — an efficiency trend showing
+whether infrastructure is taking a growing share of revenue.
+
+### This is not margin
+
+The numerator is GCP infrastructure only. It excludes user acquisition,
+salaries, RevenueCat's own fee, and — importantly — **any AI vendor billed
+outside GCP**. Gemini and Vertex AI do appear on the GCP bill, but FAL.AI,
+Stability AI, OpenAI, YouCam and AiLab do not, and those are primary providers
+for AI Home Design and FaceAI. For those apps the ratio understates real
+variable cost by an unknown factor. Read it as an infrastructure efficiency
+trend, never as profitability.
+
+The denominator is *proceeds* (`revenue_type=proceeds`) — revenue after refunds,
+minus the stores' taxes and commission. That is the money actually received, not
+gross billings.
+
+### Unsettled months are dropped, on purpose
+
+RevenueCat builds these charts from live receipt streams, so the current period
+is still settling and arrives flagged `incomplete`. Those months are recorded as
+`None` and render as a gap.
+
+This matters more than it sounds. On 2026-08-03, Chat Ultra's settled July
+proceeds were €176,151 while August — two days in — read €14,152 as incomplete.
+Plotted as real, that is a 92% apparent revenue collapse, which would push the
+cost ratio up twelvefold and fire the degradation alarm every single month.
+
+### Config
+
+`revenuecat.conf`, one row per app:
+
+```
+FRIENDLY_NAME | REVENUECAT_PROJECT_ID | API_KEY_ENV_VAR
+```
+
+`FRIENDLY_NAME` must match `config.conf` exactly — it is the join key. Leave the
+project id empty for an app you don't have access to yet; it is skipped with a
+warning and the report renders exactly as before.
+
+Secrets go in `.env` (gitignored), following the same
+`<APP>_REVENUECAT_API_KEY` convention as `scripts/ma-heartbeat`:
+
+```bash
+echo 'CHATULTRA_REVENUECAT_API_KEY=sk_...' >> scripts/gcp-spend/.env
+```
+
+**Requires a RevenueCat Pro plan** — the Charts API is gated on it.
+
+### Throttling
+
+The charts domain allows 15 requests/minute, so calls are spaced
+`THROTTLE_SECONDS` (4.1s) apart. A full portfolio adds roughly 75 seconds to a
+run. Fine for a monthly report; don't lower it.
+
+### Tests
+
+Stdlib `unittest`, no new dependencies:
+
+```bash
+cd scripts/gcp-spend && python3 -m unittest test_revenuecat test_metrics -v
+```
 
 ## One-time setup
 

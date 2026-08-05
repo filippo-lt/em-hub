@@ -43,6 +43,7 @@ except ImportError as exc:  # pragma: no cover
     sys.exit(1)
 
 import amplitude
+import revenuecat
 
 
 # ── Paths ─────────────────────────────────────────────────────────────────
@@ -50,6 +51,7 @@ SCRIPT_DIR  = Path(__file__).resolve().parent
 REPO_ROOT   = SCRIPT_DIR
 CONFIG_PATH = SCRIPT_DIR / "config.conf"
 AMP_CONFIG_PATH = SCRIPT_DIR / "amplitude.conf"
+RC_CONFIG_PATH  = SCRIPT_DIR / "revenuecat.conf"
 DOTENV_PATH = REPO_ROOT / ".env"
 OUTPUT_DIR  = SCRIPT_DIR / "reports"
 # Vendored inside em-hub (scripts/gcp-spend/). Walk up to the em-hub root
@@ -177,6 +179,36 @@ def run_query(
     return list(client.query(sql, job_config=job_config).result())
 
 
+def run_queries_per_app(
+    client: bigquery.Client,
+    active_apps: list[AppConfig],
+    jinja_env: Environment,
+    invoice_months: list[str],
+) -> list[bigquery.Row]:
+    """Run one BigQuery job per app so a missing billing export doesn't fail the whole report."""
+    job_config = bigquery.QueryJobConfig(
+        query_parameters=[
+            bigquery.ArrayQueryParameter("invoice_months", "STRING", invoice_months),
+        ],
+    )
+    rows: list[bigquery.Row] = []
+    print(f"  Querying {len(active_apps)} app(s), {len(invoice_months)} months "
+          f"(billed to {client.project})...", flush=True)
+    for app in active_apps:
+        sql = render_query([app], jinja_env)
+        try:
+            app_rows = list(client.query(sql, job_config=job_config).result())
+            rows.extend(app_rows)
+        except Exception as exc:
+            msg = str(exc)
+            if "Not found" in msg or "was not found" in msg:
+                print(f"  ⚠ {app.friendly_name}: billing export not found "
+                      f"({app.project_id}) — included with €0 until export is live")
+                continue
+            raise
+    return rows
+
+
 # ── Aggregation ───────────────────────────────────────────────────────────
 @dataclass
 class ServiceRow:
@@ -194,6 +226,8 @@ class AppHistory:
     # Amplitude — None means no creds configured for this app
     mau_by_month: list[int | None] = field(default_factory=list)
     new_by_month: list[int | None] = field(default_factory=list)
+    # RevenueCat net proceeds — None means unknown or still-unsettled
+    revenue_by_month: list[float | None] = field(default_factory=list)
 
 
 def aggregate(
@@ -201,6 +235,7 @@ def aggregate(
     active_apps: list[AppConfig],
     months: list[str],
     amp_data: dict[str, dict[str, dict[str, int]]] | None = None,
+    rev_data: dict[str, dict[str, float | None]] | None = None,
 ) -> tuple[list[AppHistory], list[dict], str]:
     """
     Return:
@@ -227,10 +262,14 @@ def aggregate(
               file=sys.stderr)
     currency = next(iter(currencies)) if currencies else "USD"
 
-    totals = {a: sum(spend[a].get(m, 0.0) for m in months) for a in spend}
+    totals = {
+        a.friendly_name: sum(spend.get(a.friendly_name, {}).get(m, 0.0) for m in months)
+        for a in active_apps
+    }
     ranked = sorted(totals.items(), key=lambda kv: kv[1], reverse=True)
 
     amp_data = amp_data or {}
+    rev_data = rev_data or {}
     histories: list[AppHistory] = []
     for idx, (app_name, total) in enumerate(ranked):
         # services within each month: sort by amount desc
@@ -245,6 +284,8 @@ def aggregate(
         else:
             mau_by_month = [None] * len(months)
             new_by_month = [None] * len(months)
+        app_rev = rev_data.get(app_name) or {}
+        revenue_by_month = [app_rev.get(m) for m in months]
         histories.append(AppHistory(
             name=app_name,
             project_id=project_by_name.get(app_name, "?"),
@@ -254,6 +295,7 @@ def aggregate(
             total_in_window=total,
             mau_by_month=mau_by_month,
             new_by_month=new_by_month,
+            revenue_by_month=revenue_by_month,
         ))
 
     monthly_totals = [
@@ -342,6 +384,26 @@ def build_hero_svg(
     }
 
 
+def cost_ratio(spend: float, revenue: float | None) -> float | None:
+    """Infra cost as a percentage of net proceeds.
+
+    None when revenue is unknown or non-positive — a zero or negative
+    denominator has no meaningful ratio, and a number there would read as a real
+    signal.
+    """
+    if revenue is None or revenue <= 0:
+        return None
+    return spend / revenue * 100.0
+
+
+def cost_ratio_delta_pp(cur: float | None, prev: float | None) -> float | None:
+    """Month-over-month change in the cost ratio, in percentage points.
+    Positive means infra is taking a growing share of revenue."""
+    if cur is None or prev is None:
+        return None
+    return cur - prev
+
+
 def slugify(name: str) -> str:
     """'AI Home Design' → 'ai-home-design'."""
     out = []
@@ -365,7 +427,7 @@ def build_line_chart(
     pad_bottom: int = 30,
     pad_left: int = 64,
     pad_right: int = 12,
-    fmt_y: str = "money",     # "money" | "int"
+    fmt_y: str = "money",     # "money" | "int" | "pct"
     color: str = "#2563eb",
 ) -> dict:
     """
@@ -420,6 +482,8 @@ def build_line_chart(
         y_px  = (height - pad_bottom) - (i / nlines) * plot_h
         if fmt_y == "int":
             label = (f"{y_val/1000:,.0f}K" if y_val >= 1000 else f"{y_val:,.0f}")
+        elif fmt_y == "pct":
+            label = f"{y_val:,.0f}%"
         else:
             label = (f"${y_val/1000:,.1f}K" if y_val >= 1000 else f"${y_val:,.0f}")
         gridlines.append({
@@ -612,6 +676,24 @@ def build_overlay_chart(
     }
 
 
+# build_overlay_chart shares one baseline month across every series, taken as the
+# latest point at which all of them have stabilised. A short revenue series would
+# drag that baseline right and shrink the usable window for spend and MAU too, so
+# revenue only joins once it has enough months to be worth that cost.
+MIN_REVENUE_MONTHS_FOR_OVERLAY = 3
+
+
+def build_overlay_series(h: AppHistory, has_amplitude: bool) -> list[dict]:
+    """Series list for the indexed overlay, including only what has data."""
+    series = [{"name": "Spend", "color": h.color, "values": h.by_month}]
+    if has_amplitude:
+        series.append({"name": "MAU",       "color": "#1e8449", "values": h.mau_by_month})
+        series.append({"name": "New users", "color": "#b07aa1", "values": h.new_by_month})
+    if sum(1 for v in h.revenue_by_month if v is not None) >= MIN_REVENUE_MONTHS_FOR_OVERLAY:
+        series.append({"name": "Revenue",   "color": "#d97706", "values": h.revenue_by_month})
+    return series
+
+
 def build_services_stacked(
     h: "AppHistory",
     months: list[str],
@@ -749,8 +831,6 @@ def monthly_report_context(
     for h in histories:
         services = h.services_by_month.get(target_month, [])
         total = sum(s.amount for s in services)
-        if total == 0 and not services:
-            continue  # no data this month for this app — omit
         grand_total += total
         max_amt = max((s.amount for s in services), default=0.0) or 1.0
         apps_ctx.append({
@@ -820,6 +900,12 @@ def dashboard_context(
         mau_cur  = h.mau_by_month[cur_idx] if cur_idx < len(h.mau_by_month) else None
         new_cur  = h.new_by_month[cur_idx] if cur_idx < len(h.new_by_month) else None
         cost_per_mau = (cur / mau_cur) if (mau_cur and mau_cur > 0) else None
+        rev_cur  = h.revenue_by_month[cur_idx] if cur_idx < len(h.revenue_by_month) else None
+        rev_prev = h.revenue_by_month[cur_idx - 1] if cur_idx > 0 else None
+        ratio_cur = cost_ratio(cur, rev_cur)
+        ratio_delta = cost_ratio_delta_pp(
+            ratio_cur, cost_ratio(prev, rev_prev) if prev is not None else None,
+        )
         apps_ctx.append({
             "name":         h.name,
             "slug":         slugify(h.name),
@@ -835,6 +921,9 @@ def dashboard_context(
             "mau":          mau_cur,
             "new_users":    new_cur,
             "cost_per_mau": cost_per_mau,
+            "revenue":             rev_cur,
+            "cost_ratio":          ratio_cur,
+            "cost_ratio_delta_pp": ratio_delta,
         })
 
     # Table: show last 6 months + average + delta vs prior
@@ -918,16 +1007,32 @@ def app_page_context(
         cpm_series, months, target_month, fmt_y="money", color="#2563eb",
     ) if has_amplitude else None
 
-    # Indexed overlay: spend + MAU + new users on a single normalised axis
-    overlay_chart = build_overlay_chart(
-        series=[
-            {"name": "Spend",     "color": h.color,    "values": h.by_month},
-            {"name": "MAU",       "color": "#1e8449",  "values": h.mau_by_month},
-            {"name": "New users", "color": "#b07aa1",  "values": h.new_by_month},
-        ],
+    # Revenue + the derived efficiency ratio
+    has_revenue = any(v is not None for v in h.revenue_by_month)
+    rev_cur  = h.revenue_by_month[cur_idx] if cur_idx < len(h.revenue_by_month) else None
+    rev_prev = h.revenue_by_month[cur_idx - 1] if cur_idx > 0 else None
+    ratio_cur   = cost_ratio(cur, rev_cur)
+    ratio_prev  = cost_ratio(prev, rev_prev) if prev is not None else None
+    ratio_delta = cost_ratio_delta_pp(ratio_cur, ratio_prev)
+
+    ratio_series = [cost_ratio(s, r) for s, r in zip(h.by_month, h.revenue_by_month)]
+    ratio_chart = build_line_chart(
+        ratio_series, months, target_month, fmt_y="pct", color="#d97706",
+    ) if has_revenue else None
+
+    revenue_chart = build_line_chart(
+        h.revenue_by_month, months, target_month, fmt_y="money", color="#d97706",
+    ) if has_revenue else None
+
+    # Indexed overlay: whichever of spend, users and revenue actually have data.
+    # A single series would be a flat line at 100 and carry no information.
+    overlay_series = build_overlay_series(h, has_amplitude)
+    show_overlay   = len(overlay_series) >= 2
+    overlay_chart  = build_overlay_chart(
+        series=overlay_series,
         months=months,
         target_month=target_month,
-    ) if has_amplitude else None
+    ) if show_overlay else None
 
     services_chart = build_services_stacked(h, months, target_month, PALETTE)
 
@@ -936,6 +1041,7 @@ def app_page_context(
     for i, m in enumerate(months):
         mau = h.mau_by_month[i] if i < len(h.mau_by_month) else None
         new = h.new_by_month[i] if i < len(h.new_by_month) else None
+        rev = h.revenue_by_month[i] if i < len(h.revenue_by_month) else None
         spend_v = h.by_month[i]
         table_rows.append({
             "month":      m,
@@ -946,6 +1052,8 @@ def app_page_context(
             "mau":        mau,
             "new":        new,
             "cost_per_mau": (spend_v / mau) if (mau and mau > 0) else None,
+            "revenue":    rev,
+            "cost_ratio": cost_ratio(spend_v, rev),
             "is_target":  m == target_month,
         })
 
@@ -968,6 +1076,13 @@ def app_page_context(
         "mau_mom_pct":      mau_mom,
         "cost_per_mau":     cost_per_mau,
         "has_amplitude":    has_amplitude,
+        "has_revenue":         has_revenue,
+        "revenue":             rev_cur,
+        "cost_ratio":          ratio_cur,
+        "cost_ratio_delta_pp": ratio_delta,
+        "ratio_chart":         ratio_chart,
+        "revenue_chart":       revenue_chart,
+        "show_overlay":        show_overlay,
         "spend_chart":      spend_chart,
         "mau_chart":        mau_chart,
         "new_chart":        new_chart,
@@ -1027,7 +1142,6 @@ def main() -> int:
         undefined=StrictUndefined,
         autoescape=False,
     )
-    sql = render_query(active, sql_env)
     # Headless auth: load .env before building the BigQuery client so the
     # service-account credential is in the environment in time. A repo-relative
     # GCP_SA_KEY_FILE is resolved to an absolute path so the same .env works on
@@ -1041,13 +1155,16 @@ def main() -> int:
         else:
             print(f"  service-account key not found at {_sa_path} — falling back to gcloud ADC")
     client = bigquery.Client(project=billing_project)
-    rows = run_query(client, sql, months)
+    rows = run_queries_per_app(client, active, sql_env, months)
     print(f"  {len(rows)} rows returned")
 
     amp_apps = amplitude.load_amplitude_config(AMP_CONFIG_PATH, DOTENV_PATH)
     amp_data = amplitude.fetch_all(amp_apps, months) if amp_apps else {}
 
-    histories, monthly_totals, currency = aggregate(rows, active, months, amp_data)
+    rc_apps  = revenuecat.load_revenuecat_config(RC_CONFIG_PATH, DOTENV_PATH)
+    rev_data = revenuecat.fetch_all(rc_apps, months) if rc_apps else {}
+
+    histories, monthly_totals, currency = aggregate(rows, active, months, amp_data, rev_data)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     html_env = Environment(

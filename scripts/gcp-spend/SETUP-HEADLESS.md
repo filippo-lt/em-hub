@@ -14,6 +14,9 @@ You only do this once. After that, the monthly report generates itself.
 
 - The tool is at `em-hub/scripts/gcp-spend/` (this folder).
 - `.env` here holds your Amplitude keys (copied from `~/Projects/gcp-spend-report`)
+  and your RevenueCat secret keys (`<APP>_REVENUECAT_API_KEY`, e.g.
+  `CHATULTRA_REVENUECAT_API_KEY`). RevenueCat is optional: apps without a key are
+  skipped with a warning and the report renders without revenue for them.
   and a line `GCP_SA_KEY_FILE=secrets/gcp-sa-key.json`.
 - `run.py` loads that `.env` before building the BigQuery client and resolves the
   key path to an absolute path at runtime, so the same `.env` works both on your
