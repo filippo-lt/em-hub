@@ -68,14 +68,14 @@ Complete list of repositories I manage, organized by project.
 ---
 
 ## TraceCheck
-**Status:** Web division — TypeScript monorepo on GCP, launching early August
+**Status:** Launched — Web division, TypeScript monorepo on GCP, launched second week of August
 
 | Repo | Type | GitHub URL |
 |------|------|------------|
 | `tracecheck-web` | TypeScript monorepo (code) | https://github.com/rosseca/tracecheck-web.git |
 | `truthseeker-web-doc` | Documentation/Architecture | https://github.com/rosseca/truthseeker-web-doc.git |
 
-**Note:** Formerly "Truth Seeker". Moved to Web division. Engineering complete; launch ~early August.
+**Note:** Formerly "Truth Seeker". Moved to Web division. Engineering complete; launched second week of August.
 
 ---
 
