@@ -46,14 +46,15 @@ revenuecat_project = REPLACE_rc_project_id
 crashlytics_bq_table = project.firebase_crashlytics.stepcounter_ANDROID
 gcp_spend_key    = stepcounter
 
-[app:Truth Seeker]
-# pre-launch (Apple-blocked) — most live metrics will be n/a until it ships
-posture          = Sunset
+[app:TraceCheck]
+# Formerly "Truth Seeker"; now owned by the Web division, not the M&A mobile
+# portfolio — see docs/repos-by-project.md for its repos.
+posture          = Keep
 studio           = Helikanon
-github_repo      = rosseca/truth-seeker
+github_repo      = rosseca/tracecheck-web
 revenuecat_project =
 crashlytics_bq_table =
-gcp_spend_key    = truthseeker
+gcp_spend_key    = tracecheck
 
 [app:Music Player]
 posture          = Sunset
