@@ -1,5 +1,7 @@
 # M&A Governance Operating Model — v1
 
+> **Historical** — This doc captured the M&A governance model as of June 2026. For current M&A portfolio status, see `config/ma-apps.conf.example` and `context/m-and-a-status.md`.
+
 **Owner:** Filippo (EM, Mobile App Unit)
 **Author date:** 2026-06-07
 **Status:** Draft — for Q3. Operationalises the App Portfolio Framework for the M&A apps.
