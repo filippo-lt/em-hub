@@ -79,6 +79,6 @@ Complete list of repositories I manage, organized by project.
 
 ---
 
-**Total:** 21 repos across 6 projects
+**Total:** 23 repos across 6 projects
 
 **Last updated:** 2026-08-26
