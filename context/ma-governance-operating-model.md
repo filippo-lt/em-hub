@@ -5,7 +5,7 @@
 **Status:** Draft — for Q3. Operationalises the App Portfolio Framework for the M&A apps.
 **Relation to other docs:**
 - Parent framework: `context/app-portfolio-framework.md` (the 2×2, tiers, cadence)
-- Portfolio state: `context/m-and-a-status.md` (the 5 apps, studios, tech profile)
+- Portfolio state: `config/ma-apps.conf` (the live app list — posture, studio, source ids; see `config/ma-apps.conf.example`). `context/m-and-a-status.md` is now a June-2026 historical record, not the live list.
 - Live heartbeat: `templates/ma-portfolio-tracker.md` (one row per app — the monthly review)
 - Per-app decision doc: `templates/app-scorecard-template.md`
 - Per-app technical evidence: `templates/ma-app-technical-scorecard.md`

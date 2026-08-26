@@ -3,7 +3,9 @@
 Last updated: 2026-08-26
 
 > **Historical record** — this doc captures the Q3 2026 studio exit plan as of late June 2026.
-> For current portfolio status, see `docs/repos-by-project.md`.
+> For the current app list (posture, studio, source ids), see `config/ma-apps.conf`
+> (example: `config/ma-apps.conf.example`); for the live numbers, see `templates/ma-portfolio-tracker.md`.
+> For repos by project, see `docs/repos-by-project.md`.
 > For current team structure and launch status, see `status-updates/`.
 
 ## Summary (June 2026 snapshot)
