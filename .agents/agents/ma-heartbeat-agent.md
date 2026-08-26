@@ -31,7 +31,6 @@ This boundary is the guard against the model's own risk: a multiplier that makes
 
 Context loads per the **Context Loading Protocol** in CLAUDE.md. Always load:
 - `context/ma-governance-operating-model.md` — the model this serves
-- `context/m-and-a-status.md` — the app/studio/tech inventory
 - `templates/ma-portfolio-tracker.md` — the column spec + History contract
 
 ---
