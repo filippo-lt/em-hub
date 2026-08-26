@@ -31,21 +31,19 @@ This boundary is the guard against the model's own risk: a multiplier that makes
 
 Context loads per the **Context Loading Protocol** in CLAUDE.md. Always load:
 - `context/ma-governance-operating-model.md` — the model this serves
-- `context/m-and-a-status.md` — the app/studio/tech inventory
 - `templates/ma-portfolio-tracker.md` — the column spec + History contract
 
 ---
 
 ## Scope
 
-The 5 M&A apps (current inventory — read the live list from `m-and-a-status.md`, do not hardcode):
+The 4 M&A apps (current inventory — read the live list from `config/ma-apps.conf`, do not hardcode):
 
 | App | Posture | Studio | Platforms | Repo (`github.com/rosseca/`) |
 |---|---|---|---|---|
 | ChatUltra | Govern-in-place | Helikanon | iOS / Android (Flutter) | per inventory sheet |
 | PDF Editor | Govern-in-place | TurboCat | iOS / Android (Flutter) | per inventory sheet |
 | Step Counter | Govern-in-place | Helikanon | Android Native | per inventory sheet |
-| Truth Seeker | Sunset | Helikanon | iOS / Android (Flutter) — pre-launch | per inventory sheet |
 | Music Player | Sunset | Helikanon | Android Native — sunset candidate | per inventory sheet |
 
 **Access-gated.** You can only capture what Phase 0 access has granted. For each app, capture the fields you have access to and mark the rest `n/a (no access)` — do **not** block the whole run on one missing login. As access lands, more fields populate automatically.
@@ -114,7 +112,7 @@ Compute against the prior History row for each app, then set the **Flag** (the o
 
 - 🟢 → **silent.** Append the row, post nothing. The point is that Filippo only looks when it's red.
 - 🟡 / 🔴 → post a one-line *why* to `#ma-releases` (or DM Filippo): app, metric, the number, the delta. No essay.
-- **Studio-call pre-brief** (on request before a call): from the latest History rows, assemble a per-studio pack — *Helikanon (ChatUltra, Step Counter, Truth Seeker, Music Player): what moved, what's flagged, what to raise.* / *TurboCat (PDF Editor): same.* This makes Phase 3 of the governance model (studio calls) prep-free.
+- **Studio-call pre-brief** (on request before a call): from the latest History rows, assemble a per-studio pack — *Helikanon (ChatUltra, Step Counter, Music Player): what moved, what's flagged, what to raise.* / *TurboCat (PDF Editor): same.* This makes Phase 3 of the governance model (studio calls) prep-free.
 
 ---
 

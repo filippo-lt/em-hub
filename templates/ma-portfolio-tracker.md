@@ -19,7 +19,6 @@ Numbers (Cost/MRR/MAU/Crash-free) auto-pull the latest row from History; the **�
 | ChatUltra | Govern-in-place | Helikanon | ⟵History | ⟵History | ▲▼ | ⟵History | ⟵History | ▲▼ | 🟢 | Standing: fund takeover when ready | 🟢 |
 | PDF Editor | Govern-in-place | TurboCat | ⟵History | ⟵History | ▲▼ | ⟵History | ⟵History | ▲▼ | 🟡 | Business case · [date] | 🟡 |
 | Step Counter | Govern-in-place | Helikanon | ⟵History | ⟵History | ▲▼ | ⟵History | ⟵History | ▲▼ | 🟢 | — | 🟢 |
-| Truth Seeker | Sunset | Helikanon | — | — | — | — | — | — | n/a | Sunset sign-off · [date] | 🔴 |
 | Music Player | Sunset | Helikanon | ⟵History | ⟵History | ▲▼ | ⟵History | ⟵History | ▲▼ | n/a | Sunset sign-off · [date] | 🔴 |
 
 ---

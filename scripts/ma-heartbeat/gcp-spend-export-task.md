@@ -28,7 +28,6 @@ then include it in the publish copy.
        "chatultra":   { "cost_eur": 1234.56, "mau": 45000 },
        "pdfeditor":   { "cost_eur":  210.00, "mau":  8000 },
        "stepcounter": { "cost_eur":   80.00, "mau": 12000 },
-       "truthseeker": { "cost_eur":    0.00, "mau":     0 },
        "musicplayer": { "cost_eur":   40.00, "mau":  3000 }
      }
    }
@@ -45,7 +44,7 @@ then include it in the publish copy.
 2. **App keys must be stable.** Whatever string keys the report uses here are
    what the heartbeat maps to via `gcp_spend_key` in `config/ma-apps.conf`.
    Keep them lowercase and unchanging. Current heartbeat keys:
-   `chatultra, pdfeditor, stepcounter, truthseeker, musicplayer`.
+   `chatultra, pdfeditor, stepcounter, musicplayer`.
 
 3. **Publish it.** The existing publish step copies the rendered HTML into
    `../em-hub/metrics/gcp-spend/`. Copy `<YYYY-MM>.json` the same way, into the
