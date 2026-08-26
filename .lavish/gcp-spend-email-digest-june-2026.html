@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GCP Spend · June 2026 email digest</title>
+  <style>
+    :root {
+      --ink: #17212b;
+      --muted: #637083;
+      --line: #dfe5ec;
+      --paper: #ffffff;
+      --canvas: #eef2f6;
+      --navy: #15283e;
+      --blue: #4e79a7;
+      --orange: #f28e2b;
+      --red: #c0392b;
+      --green: #1e8449;
+      --soft-blue: #edf4fb;
+      --soft-orange: #fff5e9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--canvas);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .review-label {
+      width: min(680px, calc(100% - 28px));
+      margin: 26px auto 10px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .email {
+      width: min(680px, calc(100% - 28px));
+      margin: 0 auto 42px;
+      overflow: hidden;
+      border: 1px solid #d8dee7;
+      border-radius: 14px;
+      background: var(--paper);
+      box-shadow: 0 14px 36px rgba(30, 45, 65, .11);
+    }
+
+    .meta {
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meta strong { color: var(--ink); }
+
+    .hero {
+      padding: 34px 34px 30px;
+      color: white;
+      background:
+        radial-gradient(circle at 86% 12%, rgba(78,121,167,.72), transparent 34%),
+        linear-gradient(135deg, #112236, var(--navy));
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #b8c9dc;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 540px;
+      font-size: 30px;
+      line-height: 1.16;
+      letter-spacing: -.025em;
+    }
+
+    .hero p {
+      margin: 13px 0 0;
+      max-width: 560px;
+      color: #d6e1ed;
+      font-size: 15px;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kpi {
+      min-width: 0;
+      padding: 22px 22px 20px;
+      background: white;
+    }
+
+    .kpi-label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .kpi-value {
+      display: block;
+      font-size: 23px;
+      font-weight: 750;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+    }
+
+    .kpi-note {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .up { color: var(--red); }
+
+    .content { padding: 30px 34px 34px; }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      letter-spacing: -.012em;
+    }
+
+    .lead {
+      margin: 0 0 26px;
+      color: #3e4a58;
+      font-size: 15px;
+    }
+
+    .callout {
+      margin: 0 0 28px;
+      padding: 18px 19px;
+      border-left: 4px solid var(--orange);
+      border-radius: 0 8px 8px 0;
+      background: var(--soft-orange);
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #7a4611;
+      font-size: 14px;
+    }
+
+    .callout p {
+      margin: 0;
+      color: #5e4a34;
+      font-size: 14px;
+    }
+
+    .apps {
+      margin: 0 0 30px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .app-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .app-row:last-child { border-bottom: 0; }
+
+    .app-row.compact {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    .app-name {
+      margin-bottom: 3px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .app-note {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .app-value {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .app-value strong {
+      display: block;
+      font-size: 16px;
+    }
+
+    .app-value span {
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .action {
+      margin: 0 0 28px;
+      padding: 20px;
+      border: 1px solid #cfe0f1;
+      border-radius: 10px;
+      background: var(--soft-blue);
+    }
+
+    .action h2 { color: #244d74; }
+
+    .action ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #334f69;
+      font-size: 14px;
+    }
+
+    .action li + li { margin-top: 7px; }
+
+    .trend {
+      margin: 0 0 30px;
+      padding: 20px 18px 15px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcfe;
+    }
+
+    .trend-chart {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      align-items: end;
+      height: 190px;
+      padding-top: 24px;
+      border-bottom: 1px solid #bdc7d3;
+    }
+
+    .trend-month {
+      display: flex;
+      min-width: 0;
+      height: 100%;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .trend-value {
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .trend-bar {
+      width: min(44px, 72%);
+      min-height: 5px;
+      border-radius: 5px 5px 0 0;
+      background: linear-gradient(180deg, #6d98c3, var(--blue));
+    }
+
+    .trend-label {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .trend-caption {
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .coverage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 10px;
+      margin: 0 0 28px;
+    }
+
+    .coverage-item {
+      min-width: 0;
+      padding: 13px 15px;
+      border: 1px dashed #c6ced8;
+      border-radius: 8px;
+      color: #495566;
+      background: #fafbfd;
+      font-size: 13px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 7px;
+      color: white;
+      background: var(--blue);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .caveat {
+      margin: 28px 0 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 18px 34px;
+      color: var(--muted);
+      background: #f7f9fb;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 560px) {
+      .hero, .content { padding-left: 22px; padding-right: 22px; }
+      .kpis { grid-template-columns: 1fr; }
+      .coverage { grid-template-columns: 1fr; }
+      .app-row { gap: 10px; }
+      h1 { font-size: 25px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="review-label">Email draft · ready for review</div>
+  <article class="email">
+    <div class="meta">
+      <strong>Subject:</strong> GCP spend digest · June 2026 — €31.8k, up 19.5%
+    </div>
+
+    <header class="hero">
+      <p class="eyebrow">Monthly cloud cost digest · June 2026</p>
+      <h1>Spend increased 19.5%, driven primarily by Tattooist</h1>
+      <p>A concise view of what changed, where attention is needed, and the gaps still remaining in our cost coverage.</p>
+    </header>
+
+    <section class="kpis" aria-label="Headline metrics">
+      <div class="kpi">
+        <span class="kpi-label">Total spend</span>
+        <span class="kpi-value">€31,834</span>
+        <span class="kpi-note">June 2026</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">Month on month</span>
+        <span class="kpi-value up">▲ 19.5%</span>
+        <span class="kpi-note">€26,647 → €31,834</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">Largest cost driver</span>
+        <span class="kpi-value">Tattooist</span>
+        <span class="kpi-note">95.3% of total spend</span>
+      </div>
+    </section>
+
+    <main class="content">
+      <h2>Executive summary</h2>
+      <p class="lead">
+        GCP spend closed at <strong>€31.8k in June</strong>, an increase of <strong>€5.2k</strong> from May.
+        Tattooist contributed virtually all of the absolute increase and now represents roughly 95% of our GCP bill.
+        The central question this month is whether that growth is proportional to expected product usage and revenue.
+      </p>
+
+      <aside class="callout">
+        <strong>Primary watchpoint</strong>
+        <p>Tattooist has risen from €1.4k in January to €30.3k in June. That trajectory deserves an explicit owner, explanation and forward cost expectation.</p>
+      </aside>
+
+      <h2>Spend by app</h2>
+      <section class="apps" aria-label="Application movements">
+        <div class="app-row">
+          <div>
+            <div class="app-name">Tattooist</div>
+            <div class="app-note">€0.112 per MAU · 270,128 MAU</div>
+          </div>
+          <div class="app-value">
+            <strong>€30,343</strong>
+            <span class="up">▲ 20.3%</span>
+          </div>
+        </div>
+        <div class="app-row">
+          <div>
+            <div class="app-name">AI Home Design</div>
+            <div class="app-note">€0.013 per MAU · 73,767 MAU</div>
+          </div>
+          <div class="app-value">
+            <strong>€955</strong>
+            <span class="up">▲ 15.6%</span>
+          </div>
+        </div>
+        <div class="app-row">
+          <div>
+            <div class="app-name">Chat Ultra</div>
+            <div class="app-note">Down from €326 in May</div>
+          </div>
+          <div class="app-value">
+            <strong>€268</strong>
+            <span style="color: var(--green)">▼ 17.8%</span>
+          </div>
+        </div>
+        <div class="app-row compact">
+          <div>
+            <div class="app-name">Face AI</div>
+            <div class="app-note">€0.300 per MAU · 426 MAU</div>
+          </div>
+          <div class="app-value">
+            <strong>€128</strong>
+          </div>
+        </div>
+        <div class="app-row compact">
+          <div>
+            <div class="app-name">iMote</div>
+            <div class="app-note">1,249,359 MAU</div>
+          </div>
+          <div class="app-value">
+            <strong>€64</strong>
+          </div>
+        </div>
+        <div class="app-row compact">
+          <div>
+            <div class="app-name">PDF Editor</div>
+            <div class="app-note">No Amplitude data</div>
+          </div>
+          <div class="app-value">
+            <strong>€36</strong>
+          </div>
+        </div>
+        <div class="app-row compact">
+          <div>
+            <div class="app-name">Screen Mirroring</div>
+            <div class="app-note">€0.012 per MAU · 2,640 MAU</div>
+          </div>
+          <div class="app-value">
+            <strong>€32</strong>
+          </div>
+        </div>
+        <div class="app-row compact">
+          <div>
+            <div class="app-name">Mirage</div>
+            <div class="app-note">No Amplitude data</div>
+          </div>
+          <div class="app-value">
+            <strong>€7</strong>
+          </div>
+        </div>
+        <div class="app-row compact">
+          <div>
+            <div class="app-name">Goya</div>
+            <div class="app-note">No Amplitude data</div>
+          </div>
+          <div class="app-value">
+            <strong>€2</strong>
+          </div>
+        </div>
+        <div class="app-row compact">
+          <div>
+            <div class="app-name">Music Player</div>
+            <div class="app-note">No Amplitude data</div>
+          </div>
+          <div class="app-value">
+            <strong>€0</strong>
+          </div>
+        </div>
+      </section>
+
+      <h2>Spend month by month</h2>
+      <section class="trend" aria-label="Monthly total GCP spend from January to June 2026">
+        <div class="trend-chart">
+          <div class="trend-month">
+            <span class="trend-value">€2.2k</span>
+            <span class="trend-bar" style="height: 7%"></span>
+            <span class="trend-label">Jan</span>
+          </div>
+          <div class="trend-month">
+            <span class="trend-value">€5.4k</span>
+            <span class="trend-bar" style="height: 17%"></span>
+            <span class="trend-label">Feb</span>
+          </div>
+          <div class="trend-month">
+            <span class="trend-value">€11.6k</span>
+            <span class="trend-bar" style="height: 36%"></span>
+            <span class="trend-label">Mar</span>
+          </div>
+          <div class="trend-month">
+            <span class="trend-value">€15.9k</span>
+            <span class="trend-bar" style="height: 50%"></span>
+            <span class="trend-label">Apr</span>
+          </div>
+          <div class="trend-month">
+            <span class="trend-value">€26.6k</span>
+            <span class="trend-bar" style="height: 84%"></span>
+            <span class="trend-label">May</span>
+          </div>
+          <div class="trend-month">
+            <span class="trend-value">€31.8k</span>
+            <span class="trend-bar" style="height: 100%"></span>
+            <span class="trend-label">Jun</span>
+          </div>
+        </div>
+        <p class="trend-caption">Total GCP spend: €2,175 → €5,385 → €11,572 → €15,896 → €26,647 → €31,834.</p>
+      </section>
+
+      <h2>Coverage gaps</h2>
+      <div class="coverage">
+        <div class="coverage-item"><strong>TruthSeeker</strong><br>Billing export not enabled</div>
+        <div class="coverage-item"><strong>StepCounter</strong><br>Billing export not enabled</div>
+      </div>
+
+      <a class="button" href="#" aria-label="Open full GCP spend dashboard">Explore the full dashboard →</a>
+
+      <p class="caveat">
+        <strong>About cost per MAU:</strong> these figures cover GCP spend only. Tattooist routes AI workloads through GCP,
+        while AI Home Design uses a separate provider. Cross-app cost-per-MAU comparisons are therefore not like-for-like.
+      </p>
+    </main>
+
+    <footer class="footer">
+      Data generated 20 July 2026 · Source: GCP billing export and Amplitude
+    </footer>
+  </article>
+</body>
+</html>
