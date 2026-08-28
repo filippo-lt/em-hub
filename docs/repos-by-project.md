@@ -11,7 +11,7 @@ Complete list of repositories I manage, organized by project.
 |----------|-----------|------------|
 | iOS | `AIDesign/aihomedesigner` | https://github.com/rosseca/aihomedesigner.git |
 | Android | `AIDesign/aihomedesigner_android` | https://github.com/rosseca/aihomedesigner_android.git |
-| Infra | `AIDesign/aihomedesigner_infra` | https://github.com/leadtechcorp/aihomedesigner_infra.git |
+| Infra | `AIDesign/aihomedesigner_infra` | https://github.com/rosseca/aihomedesigner_infra.git |
 
 ---
 
@@ -31,7 +31,7 @@ Complete list of repositories I manage, organized by project.
 | Platform | Repo Path | GitHub URL |
 |----------|-----------|------------|
 | iOS | `FaceAI/faceai_ios` | https://github.com/rosseca/faceai_ios.git |
-| Backend | `FaceAI/faceai_backend` | https://github.com/leadtechcorp/faceai_backend.git |
+| Backend | `FaceAI/faceai_backend` | https://github.com/rosseca/faceai_backend.git |
 
 ---
 
