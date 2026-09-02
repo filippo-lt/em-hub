@@ -1,0 +1,46 @@
+{
+  "month": "2026-08",
+  "generated_at": "2026-09-02T05:24:08Z",
+  "apps": {
+    "aihomedesign": {
+      "cost_eur": 1292.68,
+      "mau": 143026
+    },
+    "chatultra": {
+      "cost_eur": 901.68,
+      "mau": 1229879
+    },
+    "faceai": {
+      "cost_eur": 426.88,
+      "mau": 4250
+    },
+    "tracecheck": {
+      "cost_eur": 204.89,
+      "mau": null
+    },
+    "goya": {
+      "cost_eur": 0.61,
+      "mau": null
+    },
+    "imote": {
+      "cost_eur": 55.47,
+      "mau": 1366202
+    },
+    "screenmirroring": {
+      "cost_eur": 34.21,
+      "mau": 1965
+    },
+    "mirage": {
+      "cost_eur": 5.71,
+      "mau": null
+    },
+    "pdfeditor": {
+      "cost_eur": 43.25,
+      "mau": null
+    },
+    "musicplayer": {
+      "cost_eur": 0.0,
+      "mau": null
+    }
+  }
+}

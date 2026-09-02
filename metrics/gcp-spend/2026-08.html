@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GCP Spend — August 2026</title>
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --bg: #ffffff;
+    --card: #fafafa;
+    --card-2: #f0f0f0;
+    --border: #e6e6e6;
+    --bar: #4a7fb0;
+    --bar-bg: #eef2f7;
+    --accent: #2563eb;
+    --warn-bg: #fff8e6;
+    --warn-border: #f0d68b;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.45;
+  }
+  main { max-width: 920px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  /* ── Report header ─────────────────────────────────────────────── */
+  .report-header {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: 12px;
+    border-bottom: 2px solid var(--fg);
+    padding-bottom: 16px; margin-bottom: 24px;
+  }
+  .report-header h1 { font-size: 24px; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+  .report-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .grand-total { font-size: 32px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .grand-total .currency { color: var(--muted); font-size: 18px; margin-left: 4px; }
+
+  /* ── Tabs (CSS-only, radio-button trick) ───────────────────────── */
+  .tabs { position: relative; }
+  .tabs > input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px; height: 1px;
+  }
+  .tab-bar {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 0;
+  }
+  .tab-label {
+    display: inline-flex; flex-direction: column; align-items: flex-start;
+    padding: 8px 14px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    background: var(--card-2);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: -2px;        /* overlap the bottom border */
+    transition: background 0.12s, color 0.12s;
+    user-select: none;
+  }
+  .tab-label .tab-amt {
+    font-size: 11px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
+  }
+  .tab-label:hover { background: #e8e8e8; }
+
+  .tab-panel {
+    display: none;
+    border: 1px solid var(--border);
+    border-top: none;
+    background: var(--card);
+    padding: 18px 20px;
+    border-radius: 0 0 6px 6px;
+  }
+
+  /* Selected-tab styling: bind each radio to its label + panel. */
+  
+  #tab-1:checked ~ .tab-bar label[for="tab-1"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-1:checked ~ .tab-bar label[for="tab-1"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-1:checked ~ [data-panel="tab-1"] { display: block; }
+  
+  #tab-2:checked ~ .tab-bar label[for="tab-2"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-2:checked ~ .tab-bar label[for="tab-2"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-2:checked ~ [data-panel="tab-2"] { display: block; }
+  
+  #tab-3:checked ~ .tab-bar label[for="tab-3"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-3:checked ~ .tab-bar label[for="tab-3"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-3:checked ~ [data-panel="tab-3"] { display: block; }
+  
+  #tab-4:checked ~ .tab-bar label[for="tab-4"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-4:checked ~ .tab-bar label[for="tab-4"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-4:checked ~ [data-panel="tab-4"] { display: block; }
+  
+  #tab-5:checked ~ .tab-bar label[for="tab-5"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-5:checked ~ .tab-bar label[for="tab-5"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-5:checked ~ [data-panel="tab-5"] { display: block; }
+  
+  #tab-6:checked ~ .tab-bar label[for="tab-6"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-6:checked ~ .tab-bar label[for="tab-6"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-6:checked ~ [data-panel="tab-6"] { display: block; }
+  
+  #tab-7:checked ~ .tab-bar label[for="tab-7"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-7:checked ~ .tab-bar label[for="tab-7"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-7:checked ~ [data-panel="tab-7"] { display: block; }
+  
+  #tab-8:checked ~ .tab-bar label[for="tab-8"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-8:checked ~ .tab-bar label[for="tab-8"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-8:checked ~ [data-panel="tab-8"] { display: block; }
+  
+  #tab-9:checked ~ .tab-bar label[for="tab-9"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-9:checked ~ .tab-bar label[for="tab-9"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-9:checked ~ [data-panel="tab-9"] { display: block; }
+  
+  #tab-10:checked ~ .tab-bar label[for="tab-10"] {
+    background: var(--card);
+    color: var(--fg);
+    border-bottom: 2px solid var(--card);
+    font-weight: 600;
+  }
+  #tab-10:checked ~ .tab-bar label[for="tab-10"] .tab-amt {
+    color: var(--fg);
+  }
+  #tab-10:checked ~ [data-panel="tab-10"] { display: block; }
+  
+
+  /* Keyboard focus visible on the hidden radio's label */
+  .tabs > input[type="radio"]:focus-visible + .tab-label {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ── Panel content (per-app) ───────────────────────────────────── */
+  .panel-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .panel-header h2 { margin: 0; font-size: 18px; font-weight: 600; }
+  .panel-header .project-id {
+    color: var(--muted); font-size: 12px; margin-left: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: normal;
+  }
+  .panel-total { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .services { width: 100%; border-collapse: collapse; }
+  .services td { padding: 5px 0; font-size: 14px; }
+  .services td.svc { width: 30%; }
+  .services td.amt {
+    width: 110px; text-align: right;
+    font-variant-numeric: tabular-nums;
+    padding-right: 12px;
+  }
+  .services td.bar-cell { width: auto; padding-left: 4px; }
+  .bar-bg { background: var(--bar-bg); border-radius: 2px; height: 10px; }
+  .bar    { background: var(--bar);    border-radius: 2px; height: 10px; min-width: 2px; }
+
+  /* ── Pending footer ────────────────────────────────────────────── */
+  .pending {
+    margin-top: 28px;
+    padding: 14px 18px;
+    border: 1px solid var(--warn-border);
+    background: var(--warn-bg);
+    border-radius: 6px;
+  }
+  .pending h2 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+  .pending p  { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+  .pending ul { margin: 0; padding-left: 18px; font-size: 13px; }
+  .pending code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); }
+
+  .gen-info { margin-top: 20px; color: var(--muted); font-size: 12px; text-align: right; }
+
+  /* ── Print ─────────────────────────────────────────────────────── */
+  @media print {
+    .tab-bar { display: none; }
+    .tab-panel { display: block !important; page-break-inside: avoid; margin-bottom: 16px; border-radius: 6px; border-top: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <header class="report-header">
+    <div>
+      <h1>GCP Spend — August 2026</h1>
+      <div class="subtitle">10 apps reporting · net cost (credits applied)</div>
+    </div>
+    <div class="grand-total">
+      $2,965.38<span class="currency">EUR</span>
+    </div>
+  </header>
+
+  <div class="tabs">
+
+    
+    
+    <input type="radio" name="tabs" id="tab-1" checked>
+    
+    <input type="radio" name="tabs" id="tab-2">
+    
+    <input type="radio" name="tabs" id="tab-3">
+    
+    <input type="radio" name="tabs" id="tab-4">
+    
+    <input type="radio" name="tabs" id="tab-5">
+    
+    <input type="radio" name="tabs" id="tab-6">
+    
+    <input type="radio" name="tabs" id="tab-7">
+    
+    <input type="radio" name="tabs" id="tab-8">
+    
+    <input type="radio" name="tabs" id="tab-9">
+    
+    <input type="radio" name="tabs" id="tab-10">
+    
+
+    
+    <div class="tab-bar">
+      
+      <label class="tab-label" for="tab-1">
+        <span class="tab-name">AI Home Design</span>
+        <span class="tab-amt">$1,292.68</span>
+      </label>
+      
+      <label class="tab-label" for="tab-2">
+        <span class="tab-name">Chat Ultra</span>
+        <span class="tab-amt">$901.68</span>
+      </label>
+      
+      <label class="tab-label" for="tab-3">
+        <span class="tab-name">FaceAI</span>
+        <span class="tab-amt">$426.88</span>
+      </label>
+      
+      <label class="tab-label" for="tab-4">
+        <span class="tab-name">TraceCheck</span>
+        <span class="tab-amt">$204.89</span>
+      </label>
+      
+      <label class="tab-label" for="tab-5">
+        <span class="tab-name">iMote</span>
+        <span class="tab-amt">$55.47</span>
+      </label>
+      
+      <label class="tab-label" for="tab-6">
+        <span class="tab-name">PDF Editor</span>
+        <span class="tab-amt">$43.25</span>
+      </label>
+      
+      <label class="tab-label" for="tab-7">
+        <span class="tab-name">ScreenMirroring</span>
+        <span class="tab-amt">$34.21</span>
+      </label>
+      
+      <label class="tab-label" for="tab-8">
+        <span class="tab-name">Mirage</span>
+        <span class="tab-amt">$5.71</span>
+      </label>
+      
+      <label class="tab-label" for="tab-9">
+        <span class="tab-name">Goya</span>
+        <span class="tab-amt">$0.61</span>
+      </label>
+      
+      <label class="tab-label" for="tab-10">
+        <span class="tab-name">Music Player</span>
+        <span class="tab-amt">$0.00</span>
+      </label>
+      
+    </div>
+
+    
+    
+    <section class="tab-panel" data-panel="tab-1">
+      <div class="panel-header">
+        <h2>AI Home Design<span class="project-id">aihomedesign-prod</span></h2>
+        <span class="panel-total">$1,292.68</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Cloud Run</td>
+          <td class="amt">$840.96</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Storage</td>
+          <td class="amt">$373.05</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 44.4%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Networking</td>
+          <td class="amt">$37.94</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 4.5%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Compute Engine</td>
+          <td class="amt">$19.73</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 2.3%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Secret Manager</td>
+          <td class="amt">$7.19</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.9%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Artifact Registry</td>
+          <td class="amt">$4.69</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.6%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Firebase Hosting</td>
+          <td class="amt">$4.27</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.5%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">App Engine</td>
+          <td class="amt">$4.12</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.5%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Container Registry Vulnerability Scanning</td>
+          <td class="amt">$0.46</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.1%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">BigQuery</td>
+          <td class="amt">$0.27</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.0%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-2">
+      <div class="panel-header">
+        <h2>Chat Ultra<span class="project-id">chatai2-32311</span></h2>
+        <span class="panel-total">$901.68</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Vertex AI</td>
+          <td class="amt">$408.94</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Run</td>
+          <td class="amt">$197.13</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 48.2%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Speech API</td>
+          <td class="amt">$182.76</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 44.7%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">App Engine</td>
+          <td class="amt">$85.15</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 20.8%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Networking</td>
+          <td class="amt">$16.89</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 4.1%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Storage</td>
+          <td class="amt">$4.46</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 1.1%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">BigQuery</td>
+          <td class="amt">$2.91</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.7%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Container Registry Vulnerability Scanning</td>
+          <td class="amt">$2.05</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.5%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Artifact Registry</td>
+          <td class="amt">$1.21</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.3%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Secret Manager</td>
+          <td class="amt">$0.17</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Pub/Sub</td>
+          <td class="amt">$0.01</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.0%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-3">
+      <div class="panel-header">
+        <h2>FaceAI<span class="project-id">faceai-prod</span></h2>
+        <span class="panel-total">$426.88</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Gemini API</td>
+          <td class="amt">$312.25</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Run</td>
+          <td class="amt">$67.12</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 21.5%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Networking</td>
+          <td class="amt">$34.27</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 11.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Artifact Registry</td>
+          <td class="amt">$10.07</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 3.2%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Compute Engine</td>
+          <td class="amt">$1.99</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.6%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Secret Manager</td>
+          <td class="amt">$0.72</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.2%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Storage</td>
+          <td class="amt">$0.45</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.1%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">BigQuery</td>
+          <td class="amt">$0.01</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.0%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-4">
+      <div class="panel-header">
+        <h2>TraceCheck<span class="project-id">ai-truthseeker-prod</span></h2>
+        <span class="panel-total">$204.89</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Cloud Run</td>
+          <td class="amt">$148.64</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Networking</td>
+          <td class="amt">$41.00</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 27.6%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Secret Manager</td>
+          <td class="amt">$6.24</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 4.2%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Monitoring</td>
+          <td class="amt">$4.07</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 2.7%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Artifact Registry</td>
+          <td class="amt">$3.38</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 2.3%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Compute Engine</td>
+          <td class="amt">$1.55</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 1.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Build</td>
+          <td class="amt">$0.01</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.0%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-5">
+      <div class="panel-header">
+        <h2>iMote<span class="project-id">imote-prod</span></h2>
+        <span class="panel-total">$55.47</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Cloud Logging</td>
+          <td class="amt">$38.24</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">BigQuery</td>
+          <td class="amt">$13.49</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 35.3%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">App Engine</td>
+          <td class="amt">$3.08</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 8.1%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Firebase Hosting</td>
+          <td class="amt">$0.52</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 1.4%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Storage</td>
+          <td class="amt">$0.14</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.4%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-6">
+      <div class="panel-header">
+        <h2>PDF Editor<span class="project-id">main-pdf-editor</span></h2>
+        <span class="panel-total">$43.25</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Networking</td>
+          <td class="amt">$33.71</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Run</td>
+          <td class="amt">$8.02</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 23.8%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Secret Manager</td>
+          <td class="amt">$1.04</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 3.1%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Container Registry Vulnerability Scanning</td>
+          <td class="amt">$0.46</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 1.4%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">BigQuery</td>
+          <td class="amt">$0.01</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Compute Engine</td>
+          <td class="amt">$0.01</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 0.0%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-7">
+      <div class="panel-header">
+        <h2>ScreenMirroring<span class="project-id">screenmirroring-prod</span></h2>
+        <span class="panel-total">$34.21</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Networking</td>
+          <td class="amt">$33.71</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Artifact Registry</td>
+          <td class="amt">$0.50</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 1.5%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-8">
+      <div class="panel-header">
+        <h2>Mirage<span class="project-id">mirageai-prod</span></h2>
+        <span class="panel-total">$5.71</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Cloud Storage</td>
+          <td class="amt">$2.73</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Cloud Vision API</td>
+          <td class="amt">$1.73</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 63.4%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Secret Manager</td>
+          <td class="amt">$0.85</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 31.1%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Artifact Registry</td>
+          <td class="amt">$0.31</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 11.4%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">BigQuery</td>
+          <td class="amt">$0.09</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 3.3%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-9">
+      <div class="panel-header">
+        <h2>Goya<span class="project-id">goyaai-prod</span></h2>
+        <span class="panel-total">$0.61</span>
+      </div>
+      <table class="services">
+        
+        <tr>
+          <td class="svc">Cloud Vision API</td>
+          <td class="amt">$0.35</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 100.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">Artifact Registry</td>
+          <td class="amt">$0.21</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 60.0%"></div></div>
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="svc">API Gateway</td>
+          <td class="amt">$0.05</td>
+          <td class="bar-cell">
+            <div class="bar-bg"><div class="bar" style="width: 14.3%"></div></div>
+          </td>
+        </tr>
+        
+      </table>
+    </section>
+    
+    <section class="tab-panel" data-panel="tab-10">
+      <div class="panel-header">
+        <h2>Music Player<span class="project-id">mesut-music-player</span></h2>
+        <span class="panel-total">$0.00</span>
+      </div>
+      <table class="services">
+        
+      </table>
+    </section>
+    
+
+  </div>
+
+  
+
+  <div class="gen-info">Generated 2026-09-02 05:24 UTC</div>
+
+</main>
+</body>
+</html>
