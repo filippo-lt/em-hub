@@ -225,7 +225,7 @@ test("nextPriority cycles P0 to P1 to P2 and back", () => {
 
 - [ ] **Step 2: Run the test to verify it fails**
 
-Run: `cd /Users/ftosetto/Projects/em-hub && node --test todos/`
+Run: `cd /Users/ftosetto/Projects/em-hub && node --test todos/logic.test.mjs`
 Expected: FAIL. The run cannot resolve `./logic.js`, so every test errors before asserting.
 
 - [ ] **Step 3: Write the implementation**
@@ -401,7 +401,7 @@ Create `todos/logic.js`:
 
 - [ ] **Step 4: Run the test to verify it passes**
 
-Run: `cd /Users/ftosetto/Projects/em-hub && node --test todos/`
+Run: `cd /Users/ftosetto/Projects/em-hub && node --test todos/logic.test.mjs`
 Expected: PASS, 19 tests.
 
 If `isDuplicate` fails the "across different meetings" case, do not weaken the test. The wording match is the point: the Sept 15 David analysis shows the August metrics sheet raised in five consecutive meetings, and five inbox rows for one loop would make the dashboard worse than the notes.
@@ -1109,6 +1109,13 @@ Load the `ArtifactData` tool: `ToolSearch(query: "select:ArtifactData", max_resu
 For each entry in `seed.json`, call `ArtifactData` with `action: "set"`, the artifact `url` from `todos/ARTIFACT.md`, and `path` of `items/<slug>` or `inbox/<slug>` where `<slug>` is a short kebab-case id derived from the text. Use `action: "batch"` if the tool's schema accepts a list, which is one call instead of many.
 
 Expected: the browser tab, still open, updates live without a reload.
+
+> **Finding, 2026-09-16:** the published artifact renders inside a cross-origin
+> sandboxed iframe that rejects synthetic input. Coordinate clicks, ref-based
+> clicks and scrolls all register with the browser but never reach the page, and
+> `read_page` cannot see inside the frame. Steps 3 and 4 below therefore cannot
+> be automated. Verify the read path from screenshots, verify writes by reading
+> the db back with `ArtifactData`, and hand the click-through to the user.
 
 - [ ] **Step 3: Verify every interaction against real data**
 

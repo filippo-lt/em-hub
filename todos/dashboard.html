@@ -1,0 +1,480 @@
+<title>Open Loops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=JetBrains+Mono:wght@500&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#F2F4F1; --card:#FFFFFF; --ink:#1A1F1C; --muted:#5F6B63; --rule:#D8DED8;
+  --accent:#2F4858; --on-accent:#FFFFFF;
+  --overdue:#A3402B; --overdue-bg:#F7E9E5;
+  --waiting:#8A6410; --waiting-bg:#F7F0DD;
+  --ok:#2F6B4F; --ok-bg:#E6F0EA;
+  --chip:#EAEEE9;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14181A; --card:#1C2225; --ink:#E4E9E4; --muted:#94A199; --rule:#2C3438;
+    --accent:#7FB0C4; --on-accent:#10161A;
+    --overdue:#E08A72; --overdue-bg:#341F1A;
+    --waiting:#D4A544; --waiting-bg:#332A15;
+    --ok:#6FBF95; --ok-bg:#16291F;
+    --chip:#252D30;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14181A; --card:#1C2225; --ink:#E4E9E4; --muted:#94A199; --rule:#2C3438;
+  --accent:#7FB0C4; --on-accent:#10161A;
+  --overdue:#E08A72; --overdue-bg:#341F1A;
+  --waiting:#D4A544; --waiting-bg:#332A15;
+  --ok:#6FBF95; --ok-bg:#16291F;
+  --chip:#252D30;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font:16px/1.5 "Source Sans 3",system-ui,-apple-system,sans-serif;
+  padding-inline:16px; padding-block:24px 72px;
+}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+h1,h2,h3{font-family:Archivo,system-ui,sans-serif;margin:0;text-wrap:balance}
+h1{font-size:30px;font-weight:700;letter-spacing:-.015em}
+h2{font-size:17px;font-weight:600}
+h3{font-size:14px;font-weight:600}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font:500 11px "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+a{color:var(--accent)}
+
+header p{margin:6px 0 0;color:var(--muted);max-width:62ch}
+#status{margin-top:10px;font:500 12px "JetBrains Mono",monospace;color:var(--muted)}
+#status[data-bad="1"]{color:var(--overdue)}
+
+/* The four figures are the point of the top of the page, so they get the
+   only genuinely card-like treatment on it. */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:1px}
+.stat b{font:700 26px Archivo,sans-serif;font-variant-numeric:tabular-nums;line-height:1.15}
+.stat span{color:var(--muted);font-size:13px}
+.stat.is-overdue b{color:var(--overdue)}
+.stat.is-waiting b{color:var(--waiting)}
+.stat.is-pending b{color:var(--accent)}
+
+.controls{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.group{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.group>.eyebrow{margin-right:2px}
+.chip{
+  font:500 13px "Source Sans 3",sans-serif;border:1px solid var(--rule);
+  background:var(--card);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer;
+}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.chip:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* The list is a ledger, not a stack of cards: hairlines between rows, one
+   surface per group, a severity stripe only where it means something. */
+.ledger{background:var(--card);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.grouphead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:12px 14px 10px;border-bottom:1px solid var(--rule)}
+.grouphead .count{color:var(--muted);font:500 12px "JetBrains Mono",monospace}
+section.grp{display:flex;flex-direction:column;gap:0}
+section.grp.sev .ledger{border-left:3px solid var(--overdue)}
+.rows{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:auto 40px 1fr auto;gap:12px;align-items:start;padding:11px 14px;border-top:1px solid var(--rule)}
+.rows>.row:first-child{border-top:0}
+.row input[type=checkbox]{width:17px;height:17px;margin-top:3px;accent-color:var(--accent);cursor:pointer}
+.pri{font:500 11px "JetBrains Mono",monospace;text-align:center;border:0;border-radius:4px;padding:3px 0;margin-top:2px;cursor:pointer;width:100%}
+.pri.P0{background:var(--overdue-bg);color:var(--overdue)}
+.pri.P1{background:var(--waiting-bg);color:var(--waiting)}
+.pri.P2{background:var(--chip);color:var(--muted)}
+.txt{min-width:0;cursor:pointer}
+.txt .t{font-weight:400}
+.meta{color:var(--muted);font-size:13px;margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.tag{font:500 10px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;background:var(--chip);border-radius:3px;padding:1px 6px;color:var(--muted)}
+.tag.wait{background:var(--waiting-bg);color:var(--waiting)}
+.tag.age{background:var(--overdue-bg);color:var(--overdue)}
+.due{font:500 13px "JetBrains Mono",monospace;white-space:nowrap;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.due.late{color:var(--overdue)}
+.row.done .t{text-decoration:line-through;color:var(--muted)}
+.row.done{opacity:.6}
+
+#empty{background:var(--card);border:1px dashed var(--rule);border-radius:8px;padding:28px 18px;text-align:center;color:var(--muted)}
+
+.inboxband{background:var(--card);border:1px solid var(--accent);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.inboxband .meeting{display:flex;flex-direction:column;gap:6px}
+.prop{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;border:1px solid var(--rule);border-radius:6px;padding:9px 11px}
+.prop .why{color:var(--muted);font-size:13px;font-style:italic;margin-top:3px}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.btn{font:500 13px "Source Sans 3",sans-serif;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:6px;padding:6px 12px;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn[disabled]{opacity:.5;cursor:default}
+.addbox summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:14px}
+.addform{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.addform input[type=text]{flex:1 1 220px;min-width:0}
+.addform input,.addform select{font:14px "Source Sans 3",sans-serif;padding:7px 9px;border:1px solid var(--rule);border-radius:6px;background:var(--card);color:var(--ink)}
+
+@media (max-width:560px){
+  .row{grid-template-columns:auto 40px 1fr}
+  .due{grid-column:3;text-align:left;margin-top:2px}
+  .prop{grid-template-columns:40px 1fr}
+  .acts{grid-column:1/-1;justify-content:flex-start}
+  .addform input[type=text]{flex:1 1 100%}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="asof">Open loops</div>
+    <h1>Open Loops</h1>
+    <p>Everything you owe and everything you are owed, in one place. Items proposed from your meetings wait in the review band until you add them.</p>
+    <div id="status">Connecting to your list…</div>
+  </header>
+
+  <div class="strip" id="strip"></div>
+
+  <section class="inboxband" id="inboxband" hidden></section>
+
+  <details class="addbox" id="addbox">
+    <summary>Add an item by hand</summary>
+    <form class="addform" id="addform">
+      <input type="text" id="add-text" placeholder="What needs to happen" required>
+      <input type="text" id="add-project" list="known-projects" placeholder="Project">
+      <datalist id="known-projects"></datalist>
+      <input type="text" id="add-owner" list="known-people" placeholder="Owner (blank = you)">
+      <datalist id="known-people"></datalist>
+      <select id="add-pri" aria-label="Priority">
+        <option>P0</option><option selected>P1</option><option>P2</option>
+      </select>
+      <input type="date" id="add-due" aria-label="Due date">
+      <button class="btn primary" type="submit">Add</button>
+    </form>
+  </details>
+
+  <div class="controls">
+    <div class="group" role="group" aria-label="Group by">
+      <span class="eyebrow">Group</span>
+      <button class="chip" data-mode="horizon" aria-pressed="true">When</button>
+      <button class="chip" data-mode="person" aria-pressed="false">Person</button>
+      <button class="chip" data-mode="project" aria-pressed="false">Project</button>
+    </div>
+    <div class="group" role="group" aria-label="Filter by owner">
+      <span class="eyebrow">Show</span>
+      <button class="chip" data-own="all" aria-pressed="true">All</button>
+      <button class="chip" data-own="me" aria-pressed="false">Mine</button>
+      <button class="chip" data-own="others" aria-pressed="false">Waiting on</button>
+    </div>
+    <div class="group" role="group" aria-label="Filter by priority">
+      <span class="eyebrow">Priority</span>
+      <button class="chip" data-pri="all" aria-pressed="true">All</button>
+      <button class="chip" data-pri="P0" aria-pressed="false">P0</button>
+      <button class="chip" data-pri="P1" aria-pressed="false">P0+P1</button>
+    </div>
+    <div class="group">
+      <button class="chip" id="hidedone" aria-pressed="false">Hide done</button>
+    </div>
+  </div>
+
+  <main id="board" style="display:flex;flex-direction:column;gap:20px"></main>
+  <div id="empty" hidden>Nothing open. Add something below, or wait for the next sweep of your meetings.</div>
+</div>
+
+<script src="logic.js"></script>
+<script>
+const L = globalThis.TodoLogic;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+
+let db = null;
+let items = [];
+let inbox = [];
+let view = { mode: "horizon", owner: "all", pri: "all", hideDone: false };
+
+function today() {
+  const d = new Date();
+  return [d.getFullYear(), String(d.getMonth() + 1).padStart(2, "0"), String(d.getDate()).padStart(2, "0")].join("-");
+}
+
+function status(text, bad) {
+  const el = $("status");
+  el.textContent = text;
+  if (bad) el.dataset.bad = "1"; else delete el.dataset.bad;
+}
+
+/* Errors say what happened and what to do about it. */
+function reportWriteFailure(err) {
+  const code = err && err.code;
+  if (code === "quota_exceeded") return status("Your list is full. Delete some finished items to add more.", true);
+  if (code === "revoked") return status("Your access to this list ended. Reload the page.", true);
+  if (code === "invalid_argument") return status("That change was rejected. Reload and try again.", true);
+  status("That change did not save. Try again.", true);
+}
+
+function visible() {
+  return items.filter((i) => {
+    if (view.hideDone && i.done) return false;
+    if (view.owner === "me" && i.owner !== "me") return false;
+    if (view.owner === "others" && i.owner === "me") return false;
+    if (view.pri !== "all" && (L.PRIORITY_RANK[i.priority] ?? 9) > L.PRIORITY_RANK[view.pri]) return false;
+    return true;
+  });
+}
+
+function dueLabel(item, now) {
+  if (!item.due) return "—";
+  const d = new Date(item.due + "T00:00:00Z");
+  const sameYear = item.due.slice(0, 4) === now.slice(0, 4);
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", ...(sameYear ? {} : { year: "numeric" }), timeZone: "UTC" });
+}
+
+function rowHTML(item, now) {
+  const age = L.ageDays(item, now);
+  const overdue = L.horizonOf(item, now) === "overdue";
+  const waiting = item.owner && item.owner !== "me";
+  const src = item.source || {};
+  const where = src.meetingTitle || (src.kind === "manual" ? "Added by hand" : "");
+  const bits = [];
+  if (item.project) bits.push('<span class="tag">' + esc(item.project) + "</span>");
+  if (waiting) bits.push('<span class="tag wait">waiting on ' + esc(item.owner) + "</span>");
+  if (where) bits.push("<span>" + esc(where) + (src.date ? " · " + esc(src.date) : "") + "</span>");
+  if (!item.done && age >= 21) bits.push('<span class="tag age">open ' + age + "d</span>");
+  if (item.verify) bits.push('<span class="tag">check if done</span>');
+
+  return (
+    '<li class="row' + (item.done ? " done" : "") + '" data-id="' + esc(item.id) + '">' +
+      '<input type="checkbox" id="cb-' + esc(item.id) + '" ' + (item.done ? "checked" : "") + ' aria-label="Mark done">' +
+      '<button class="pri ' + esc(item.priority) + '" data-act="cycle" title="Change priority">' + esc(item.priority) + "</button>" +
+      '<label class="txt" for="cb-' + esc(item.id) + '"><div class="t">' + esc(item.text) + "</div>" +
+        '<div class="meta">' + bits.join("") + "</div></label>" +
+      '<div class="due' + (overdue && !item.done ? " late" : "") + '">' + esc(dueLabel(item, now)) + "</div>" +
+    "</li>"
+  );
+}
+
+function renderInbox() {
+  const band = $("inboxband");
+  if (!inbox.length) {
+    band.hidden = true;
+    band.innerHTML = "";
+    return;
+  }
+  band.hidden = false;
+  const byMeeting = new Map();
+  inbox.forEach((x) => {
+    const key = (x.source && x.source.meetingTitle) || "Proposed";
+    if (!byMeeting.has(key)) byMeeting.set(key, []);
+    byMeeting.get(key).push(x);
+  });
+
+  let html =
+    '<div><div class="eyebrow">Review \u00b7 ' + inbox.length + " proposed</div>" +
+    "<h2>From your recent meetings. Which ones go on the list?</h2></div>";
+
+  for (const [meeting, list] of byMeeting) {
+    html += '<div class="meeting"><h3>' + esc(meeting) + "</h3>";
+    list.forEach((x) => {
+      const waiting = x.owner && x.owner !== "me";
+      html +=
+        '<div class="prop" data-id="' + esc(x.id) + '">' +
+          '<button class="pri ' + esc(x.priority) + '" data-act="cyclep" title="Change priority">' + esc(x.priority) + "</button>" +
+          '<div><div class="t">' + esc(x.text) + "</div>" +
+            '<div class="meta">' +
+              (x.project ? '<span class="tag">' + esc(x.project) + "</span>" : "") +
+              (waiting ? '<span class="tag wait">waiting on ' + esc(x.owner) + "</span>" : "") +
+              (x.due ? "<span>due " + esc(x.due) + "</span>" : "") +
+            "</div>" +
+            (x.why ? '<div class="why">\u201c' + esc(x.why) + "\u201d</div>" : "") +
+          "</div>" +
+          '<div class="acts"><button class="btn primary" data-act="accept">Add</button>' +
+          '<button class="btn" data-act="skip">Skip</button></div>' +
+        "</div>";
+    });
+    html += "</div>";
+  }
+  html += '<div class="acts" style="justify-content:flex-start">' +
+    '<button class="btn primary" data-act="acceptall">Add all</button>' +
+    '<button class="btn" data-act="skipall">Skip all</button></div>';
+  band.innerHTML = html;
+}
+
+function render() {
+  const now = today();
+  const c = L.counts(items, inbox, now);
+  $("strip").innerHTML =
+    '<div class="stat is-overdue"><b>' + c.overdue + "</b><span>overdue</span></div>" +
+    '<div class="stat"><b>' + c.week + "</b><span>due this week</span></div>" +
+    '<div class="stat is-waiting"><b>' + c.waiting + "</b><span>waiting on someone</span></div>" +
+    '<div class="stat is-pending"><b>' + c.pending + "</b><span>proposed, not yet added</span></div>";
+
+  const groups = L.groupsOf(visible(), view.mode, now);
+  $("board").innerHTML = groups
+    .map(
+      (g) =>
+        '<section class="grp' + (g.key === "overdue" ? " sev" : "") + '">' +
+          '<div class="ledger">' +
+            '<div class="grouphead"><h2>' + esc(g.label) + '</h2><span class="count">' + g.open + " open</span></div>" +
+            '<ul class="rows">' + g.items.map((i) => rowHTML(i, now)).join("") + "</ul>" +
+          "</div>" +
+        "</section>",
+    )
+    .join("");
+  $("empty").hidden = groups.length > 0;
+
+  renderInbox();
+  const known = (pick) => [...new Set(items.map(pick).filter(Boolean))].sort();
+  const options = (vals) => vals.map((v) => '<option value="' + esc(v) + '">').join("");
+  $("known-projects").innerHTML = options(known((i) => i.project));
+  $("known-people").innerHTML = options(known((i) => (i.source && i.source.person) || (i.owner !== "me" ? i.owner : null)));
+}
+
+render();
+
+(async () => {
+  db = await claude.use("db");
+  if (!db) {
+    status("This list only runs inside Claude. Open the artifact there to see and edit it.");
+    return;
+  }
+  const onErr = () => status("Lost the connection to your list. Reload the page.", true);
+  const rows = (snap) => snap.docs.map((d) => ({ ...d.data(), id: d.id }));
+
+  db.collection("items").onSnapshot((snap) => {
+    items = rows(snap);
+    status("Live. Changes save as you make them.");
+    render();
+  }, onErr);
+
+  db.collection("inbox").onSnapshot((snap) => {
+    inbox = rows(snap);
+    render();
+  }, onErr);
+
+  db.doc("meta/sync").onSnapshot((snap) => {
+    const m = snap.exists ? snap.data() : null;
+    if (m && m.lastRun) {
+      $("asof").textContent = "Open loops · meetings last checked " +
+        new Date(m.lastRun).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    }
+  }, onErr);
+})();
+
+document.querySelectorAll(".chip").forEach((b) => {
+  b.addEventListener("click", () => {
+    const set = (key, val, attr) => {
+      view[key] = val;
+      document.querySelectorAll("[data-" + attr + "]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    };
+    if (b.dataset.mode) set("mode", b.dataset.mode, "mode");
+    else if (b.dataset.own) set("owner", b.dataset.own, "own");
+    else if (b.dataset.pri) set("pri", b.dataset.pri, "pri");
+    else if (b.id === "hidedone") {
+      view.hideDone = !view.hideDone;
+      b.setAttribute("aria-pressed", String(view.hideDone));
+    }
+    render();
+  });
+});
+</script>
+<script>
+/* Accepting fills the fields inbox rows do not carry and drops the two they
+   carry only for triage. Keep this in step with the /todos skill, which
+   performs the same transform from the terminal. */
+async function accept(proposal) {
+  const { id, why, proposedAt, ...rest } = proposal;
+  await db.collection("items").add({
+    ...rest,
+    done: false,
+    doneAt: null,
+    order: Date.now(),
+    createdAt: (proposedAt || new Date().toISOString()).slice(0, 10),
+  });
+  await db.doc("inbox/" + id).delete();
+}
+
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest("button[data-act]");
+  if (!btn || !db) return;
+  const act = btn.dataset.act;
+  try {
+    if (act === "cycle") {
+      const id = btn.closest(".row").dataset.id;
+      const it = items.find((x) => x.id === id);
+      await db.doc("items/" + id).update({ priority: L.nextPriority(it.priority) });
+      return;
+    }
+    if (act === "cyclep") {
+      const id = btn.closest(".prop").dataset.id;
+      const p = inbox.find((x) => x.id === id);
+      await db.doc("inbox/" + id).update({ priority: L.nextPriority(p.priority) });
+      return;
+    }
+    if (act === "accept") {
+      btn.disabled = true;
+      await accept(inbox.find((x) => x.id === btn.closest(".prop").dataset.id));
+      status("Added to your list.");
+      return;
+    }
+    if (act === "skip") {
+      await db.doc("inbox/" + btn.closest(".prop").dataset.id).delete();
+      return;
+    }
+    if (act === "acceptall") {
+      btn.disabled = true;
+      for (const p of inbox.slice()) await accept(p);
+      status("All added.");
+      return;
+    }
+    if (act === "skipall") {
+      btn.disabled = true;
+      for (const p of inbox.slice()) await db.doc("inbox/" + p.id).delete();
+      status("Cleared the review band.");
+    }
+  } catch (err) {
+    btn.disabled = false;
+    reportWriteFailure(err);
+  }
+});
+
+document.addEventListener("change", async (e) => {
+  const cb = e.target;
+  if (cb.type !== "checkbox" || !db) return;
+  const row = cb.closest(".row");
+  if (!row) return;
+  try {
+    await db.doc("items/" + row.dataset.id).update({
+      done: cb.checked,
+      doneAt: cb.checked ? new Date().toISOString() : null,
+    });
+  } catch (err) {
+    cb.checked = !cb.checked;
+    reportWriteFailure(err);
+  }
+});
+
+$("addform").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!db) return;
+  const text = $("add-text").value.trim();
+  if (!text) return;
+  const owner = $("add-owner").value.trim() || "me";
+  const candidate = { text, source: { kind: "manual" } };
+  if (L.isDuplicate(candidate, items)) {
+    status("That looks like something already on your list.", true);
+    return;
+  }
+  try {
+    await db.collection("items").add({
+      text,
+      project: $("add-project").value.trim() || "",
+      owner,
+      priority: $("add-pri").value,
+      due: $("add-due").value || null,
+      source: { kind: "manual", person: owner !== "me" ? owner : null, date: today(), meetingTitle: null, granolaId: null },
+      verify: false,
+      done: false,
+      doneAt: null,
+      order: Date.now(),
+      createdAt: today(),
+    });
+    $("addform").reset();
+    status("Added.");
+  } catch (err) {
+    reportWriteFailure(err);
+  }
+});
+</script>

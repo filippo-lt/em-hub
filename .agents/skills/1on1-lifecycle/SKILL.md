@@ -50,6 +50,43 @@ Immediately run the Memory Agent on this session's transcript + analysis. Apply 
 
 **Append, never overwrite** — if a dated file already exists, read it and add the new entries beneath the existing ones.
 
+### 4.5 Push action items to the Open Loops list
+
+Read `todos/ARTIFACT.md` for the artifact URL and load `ArtifactData` with
+`ToolSearch(query: "select:ArtifactData", max_results: 1)`.
+
+Take the `## Action items` table you just wrote into the analysis file. For each
+row, write one document to `inbox/`, never to `items/`. The user accepts or skips
+each one on the dashboard.
+
+```json
+{
+  "text": "<the action, one imperative sentence>",
+  "project": "<project name, or \"\">",
+  "owner": "me | <the person who owns it>",
+  "priority": "P0 | P1 | P2",
+  "due": "YYYY-MM-DD, or null when the analysis says not specified",
+  "source": {"kind": "1on1", "person": "<name>", "date": "<meeting date>", "meetingTitle": "<Name> 1:1", "granolaId": "<Granola meeting id>"},
+  "verify": false,
+  "why": "<the short transcript quote the action came from>",
+  "proposedAt": "<ISO timestamp>"
+}
+```
+
+Priority: a stated deadline inside a week is P0, further out is P1, none is P2.
+An item the analysis flags as missed or repeated is P0 regardless of its date.
+
+Before writing, list open `items/` and pending `inbox/`. Skip any candidate whose
+wording already appears there, compared lowercased and stripped of punctuation.
+A commitment carried across several meetings is one open loop, not one per
+meeting.
+
+Report the count: "Queued N items for review on the dashboard."
+
+**This step never blocks the write-up.** If `ArtifactData` is unavailable, or
+`todos/ARTIFACT.md` is missing, say so in one line and carry on to step 5. The
+transcript, analysis and memory files are the deliverable. The todo push is not.
+
 ### 5. Keep source docs current
 If `profile.md` has gone stale (e.g. "Current Situation" describes a now-resolved issue, or "Open Questions" were answered), update those sections to match reality. Per the brag-doc rule, if a clear win by the user surfaced, offer to append it to `context/brag-doc.md`.
 
