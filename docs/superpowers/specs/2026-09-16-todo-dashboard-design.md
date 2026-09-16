@@ -213,7 +213,11 @@ at phone width with a 16px gutter and no horizontal scroll.
 
 | File | Change |
 | --- | --- |
-| `todos/dashboard.html` | New. The page. |
+| `todos/logic.js` | New. Pure functions for horizon, dedupe, grouping, counts. Published alongside the page as a supporting file. |
+| `todos/logic.test.mjs` | New. `node --test` suite for `logic.js`. |
+| `todos/dashboard.html` | New. The page. Markup, styling, db wiring. |
+| `todos/ARTIFACT.md` | New. Records the published artifact URL and the publish arguments, so later sessions redeploy rather than create a second artifact. |
+| `todos/seed.json` | New. The rows loaded from the September analyses, kept as the record of the first seed. |
 | `.agents/agents/todo-sweep-agent.md` | New. Extraction prompt, shared by routine and manual runs. |
 | `.agents/skills/todos/SKILL.md` | New. `/todos` for adding and querying from the terminal. |
 | `.claude/skills/todos` | New symlink into `.agents/skills/todos`. |
