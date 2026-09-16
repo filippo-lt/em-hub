@@ -19,3 +19,22 @@ Publish arguments that must stay stable:
 
 Collections: `items/`, `inbox/`, `meta/sync`. Shapes are in
 `docs/superpowers/specs/2026-09-16-todo-dashboard-design.md`.
+
+## Scheduled sweep
+
+Status: needs one manual step from Filippo.
+
+The existing Cowork routine `trig_01VTR6GzHAFjRboFqkUG8LgE`
+("Open Loops — propose items after each 1:1", daily 09:30 Europe/Rome) still
+points at the previous artifact `GWpgojE8wLJx6tGwYqJ21m`. It proves a cloud
+routine reaches both the Granola connector and the artifact database, so no local
+launchd job is needed.
+
+It cannot be repointed from a Claude Code session: its `job_config` is ~88KB,
+including a ~77KB Cowork system prompt that a full replace would have to resend
+verbatim, and whether a partial `job_config` update merges or replaces is
+undocumented. Guessing wrong breaks a live routine that cannot be deleted from a
+session.
+
+To repoint it, open the routine in Cowork and replace its prompt with
+`todos/routine-prompt.md`.
