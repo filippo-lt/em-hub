@@ -96,9 +96,25 @@ section.grp.sev .ledger{border-left:3px solid var(--overdue)}
 
 #empty{background:var(--card);border:1px dashed var(--rule);border-radius:8px;padding:28px 18px;text-align:center;color:var(--muted)}
 
+.inboxband{background:var(--card);border:1px solid var(--accent);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.inboxband .meeting{display:flex;flex-direction:column;gap:6px}
+.prop{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;border:1px solid var(--rule);border-radius:6px;padding:9px 11px}
+.prop .why{color:var(--muted);font-size:13px;font-style:italic;margin-top:3px}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.btn{font:500 13px "Source Sans 3",sans-serif;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:6px;padding:6px 12px;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn[disabled]{opacity:.5;cursor:default}
+.addbox summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:14px}
+.addform{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.addform input[type=text]{flex:1 1 220px;min-width:0}
+.addform input,.addform select{font:14px "Source Sans 3",sans-serif;padding:7px 9px;border:1px solid var(--rule);border-radius:6px;background:var(--card);color:var(--ink)}
+
 @media (max-width:560px){
   .row{grid-template-columns:auto 40px 1fr}
   .due{grid-column:3;text-align:left;margin-top:2px}
+  .prop{grid-template-columns:40px 1fr}
+  .acts{grid-column:1/-1;justify-content:flex-start}
+  .addform input[type=text]{flex:1 1 100%}
 }
 </style>
 
@@ -111,6 +127,24 @@ section.grp.sev .ledger{border-left:3px solid var(--overdue)}
   </header>
 
   <div class="strip" id="strip"></div>
+
+  <section class="inboxband" id="inboxband" hidden></section>
+
+  <details class="addbox" id="addbox">
+    <summary>Add an item by hand</summary>
+    <form class="addform" id="addform">
+      <input type="text" id="add-text" placeholder="What needs to happen" required>
+      <input type="text" id="add-project" list="known-projects" placeholder="Project">
+      <datalist id="known-projects"></datalist>
+      <input type="text" id="add-owner" list="known-people" placeholder="Owner (blank = you)">
+      <datalist id="known-people"></datalist>
+      <select id="add-pri" aria-label="Priority">
+        <option>P0</option><option selected>P1</option><option>P2</option>
+      </select>
+      <input type="date" id="add-due" aria-label="Due date">
+      <button class="btn primary" type="submit">Add</button>
+    </form>
+  </details>
 
   <div class="controls">
     <div class="group" role="group" aria-label="Group by">
@@ -212,6 +246,52 @@ function rowHTML(item, now) {
   );
 }
 
+function renderInbox() {
+  const band = $("inboxband");
+  if (!inbox.length) {
+    band.hidden = true;
+    band.innerHTML = "";
+    return;
+  }
+  band.hidden = false;
+  const byMeeting = new Map();
+  inbox.forEach((x) => {
+    const key = (x.source && x.source.meetingTitle) || "Proposed";
+    if (!byMeeting.has(key)) byMeeting.set(key, []);
+    byMeeting.get(key).push(x);
+  });
+
+  let html =
+    '<div><div class="eyebrow">Review \u00b7 ' + inbox.length + " proposed</div>" +
+    "<h2>From your recent meetings. Which ones go on the list?</h2></div>";
+
+  for (const [meeting, list] of byMeeting) {
+    html += '<div class="meeting"><h3>' + esc(meeting) + "</h3>";
+    list.forEach((x) => {
+      const waiting = x.owner && x.owner !== "me";
+      html +=
+        '<div class="prop" data-id="' + esc(x.id) + '">' +
+          '<button class="pri ' + esc(x.priority) + '" data-act="cyclep" title="Change priority">' + esc(x.priority) + "</button>" +
+          '<div><div class="t">' + esc(x.text) + "</div>" +
+            '<div class="meta">' +
+              (x.project ? '<span class="tag">' + esc(x.project) + "</span>" : "") +
+              (waiting ? '<span class="tag wait">waiting on ' + esc(x.owner) + "</span>" : "") +
+              (x.due ? "<span>due " + esc(x.due) + "</span>" : "") +
+            "</div>" +
+            (x.why ? '<div class="why">\u201c' + esc(x.why) + "\u201d</div>" : "") +
+          "</div>" +
+          '<div class="acts"><button class="btn primary" data-act="accept">Add</button>' +
+          '<button class="btn" data-act="skip">Skip</button></div>' +
+        "</div>";
+    });
+    html += "</div>";
+  }
+  html += '<div class="acts" style="justify-content:flex-start">' +
+    '<button class="btn primary" data-act="acceptall">Add all</button>' +
+    '<button class="btn" data-act="skipall">Skip all</button></div>';
+  band.innerHTML = html;
+}
+
 function render() {
   const now = today();
   const c = L.counts(items, inbox, now);
@@ -234,6 +314,12 @@ function render() {
     )
     .join("");
   $("empty").hidden = groups.length > 0;
+
+  renderInbox();
+  const known = (pick) => [...new Set(items.map(pick).filter(Boolean))].sort();
+  const options = (vals) => vals.map((v) => '<option value="' + esc(v) + '">').join("");
+  $("known-projects").innerHTML = options(known((i) => i.project));
+  $("known-people").innerHTML = options(known((i) => (i.source && i.source.person) || (i.owner !== "me" ? i.owner : null)));
 }
 
 render();
@@ -282,5 +368,113 @@ document.querySelectorAll(".chip").forEach((b) => {
     }
     render();
   });
+});
+</script>
+<script>
+/* Accepting fills the fields inbox rows do not carry and drops the two they
+   carry only for triage. Keep this in step with the /todos skill, which
+   performs the same transform from the terminal. */
+async function accept(proposal) {
+  const { id, why, proposedAt, ...rest } = proposal;
+  await db.collection("items").add({
+    ...rest,
+    done: false,
+    doneAt: null,
+    order: Date.now(),
+    createdAt: (proposedAt || new Date().toISOString()).slice(0, 10),
+  });
+  await db.doc("inbox/" + id).delete();
+}
+
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest("button[data-act]");
+  if (!btn || !db) return;
+  const act = btn.dataset.act;
+  try {
+    if (act === "cycle") {
+      const id = btn.closest(".row").dataset.id;
+      const it = items.find((x) => x.id === id);
+      await db.doc("items/" + id).update({ priority: L.nextPriority(it.priority) });
+      return;
+    }
+    if (act === "cyclep") {
+      const id = btn.closest(".prop").dataset.id;
+      const p = inbox.find((x) => x.id === id);
+      await db.doc("inbox/" + id).update({ priority: L.nextPriority(p.priority) });
+      return;
+    }
+    if (act === "accept") {
+      btn.disabled = true;
+      await accept(inbox.find((x) => x.id === btn.closest(".prop").dataset.id));
+      status("Added to your list.");
+      return;
+    }
+    if (act === "skip") {
+      await db.doc("inbox/" + btn.closest(".prop").dataset.id).delete();
+      return;
+    }
+    if (act === "acceptall") {
+      btn.disabled = true;
+      for (const p of inbox.slice()) await accept(p);
+      status("All added.");
+      return;
+    }
+    if (act === "skipall") {
+      btn.disabled = true;
+      for (const p of inbox.slice()) await db.doc("inbox/" + p.id).delete();
+      status("Cleared the review band.");
+    }
+  } catch (err) {
+    btn.disabled = false;
+    reportWriteFailure(err);
+  }
+});
+
+document.addEventListener("change", async (e) => {
+  const cb = e.target;
+  if (cb.type !== "checkbox" || !db) return;
+  const row = cb.closest(".row");
+  if (!row) return;
+  try {
+    await db.doc("items/" + row.dataset.id).update({
+      done: cb.checked,
+      doneAt: cb.checked ? new Date().toISOString() : null,
+    });
+  } catch (err) {
+    cb.checked = !cb.checked;
+    reportWriteFailure(err);
+  }
+});
+
+$("addform").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!db) return;
+  const text = $("add-text").value.trim();
+  if (!text) return;
+  const owner = $("add-owner").value.trim() || "me";
+  const candidate = { text, source: { kind: "manual" } };
+  if (L.isDuplicate(candidate, items)) {
+    status("That looks like something already on your list.", true);
+    return;
+  }
+  try {
+    await db.collection("items").add({
+      text,
+      project: $("add-project").value.trim() || "",
+      owner,
+      priority: $("add-pri").value,
+      due: $("add-due").value || null,
+      source: { kind: "manual", person: owner !== "me" ? owner : null, date: today(), meetingTitle: null, granolaId: null },
+      verify: false,
+      done: false,
+      doneAt: null,
+      order: Date.now(),
+      createdAt: today(),
+    });
+    $("addform").reset();
+    status("Added.");
+  } catch (err) {
+    reportWriteFailure(err);
+  }
 });
 </script>
