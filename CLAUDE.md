@@ -21,6 +21,7 @@ em-hub/
 ├── .claude/         ← Claude Code config; skills/agents are symlinks into .agents/
 ├── .cursor/         ← Cursor config; skills/rules are symlinks into .agents/
 ├── templates/       ← document templates for common outputs
+├── todos/           ← Open Loops dashboard source (published as an artifact)
 ├── people/          ← per-person context (profiles, transcripts, talking points)
 ├── teams/           ← team-level context (rosters, OKRs, context docs)
 ├── contractors/     ← external dev registry, project mappings, and performance reports
@@ -56,6 +57,7 @@ Skills are invoked with `/skill-name` and run in the main conversation. Use thes
 | "We had an incident" / "Help me write a postmortem" / "Draft incident comms"         | Incident   | `/incident`   |
 | "Help me plan the quarter" / "Roadmap review" / "Sprint planning prep" / "Set OKRs"  | Planning   | `/planning`   |
 | "Timebox my day" / "Plan my day" / "Morning planning" / "Box my time" / "Timebox today" | Timebox | `/timebox` |
+| "What's on my list" / "Add a todo" / "What's overdue" / "What do I owe [name]" / "What am I waiting on" | Todos      | `/todos`      |
 | "Get developer metrics" / "Run dev metrics" / "Pull Jira/GitHub metrics for [month]" | Metrics    | `/metrics`    |
 | "Convert Xray tests to Gherkin" / "Turn Xray export into feature files" / "Xray to Gherkin" | Xray to Gherkin | `/xray-to-gherkin` |
 | "GCP spend" / "Show the GCP report" / "Cloud cost per app" / "Refresh the GCP report"        | GCP Spend  | `/gcp-spend`  |
@@ -71,6 +73,7 @@ Agents run autonomously and return a result. Use these for non-interactive tasks
 | "Extract memory from this" / "Save to memory" / "What should I remember?"                                | Memory          | `.claude/agents/memory-agent.md`          |
 | "Contractor metrics" / "How is [dev] performing?" / "Dev performance report" / "Run a contractor review" | Contractor Perf | `.claude/agents/contractor-perf-agent.md` |
 | "Run the M&A heartbeat" / "Capture the M&A weekly numbers" / "Refresh the portfolio tracker"             | M&A Heartbeat   | `.claude/agents/ma-heartbeat-agent.md`    |
+| "Sweep my meetings" / "Check for new todos" / "What did I commit to this week"                            | Todo Sweep      | `.claude/agents/todo-sweep-agent.md`      |
 
 
 > **Note:** Memory can also be triggered as the final phase of any skill. If the user says "extract memory" during a hiring, planning, incident, or review session, run the Memory Agent with that session's context.
