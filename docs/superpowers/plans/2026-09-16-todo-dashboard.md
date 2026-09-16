@@ -1110,6 +1110,13 @@ For each entry in `seed.json`, call `ArtifactData` with `action: "set"`, the art
 
 Expected: the browser tab, still open, updates live without a reload.
 
+> **Finding, 2026-09-16:** the published artifact renders inside a cross-origin
+> sandboxed iframe that rejects synthetic input. Coordinate clicks, ref-based
+> clicks and scrolls all register with the browser but never reach the page, and
+> `read_page` cannot see inside the frame. Steps 3 and 4 below therefore cannot
+> be automated. Verify the read path from screenshots, verify writes by reading
+> the db back with `ArtifactData`, and hand the click-through to the user.
+
 - [ ] **Step 3: Verify every interaction against real data**
 
 With Playwright MCP on the artifact URL, check each of these and record the result:
