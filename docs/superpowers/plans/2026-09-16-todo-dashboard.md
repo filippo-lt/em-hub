@@ -225,7 +225,7 @@ test("nextPriority cycles P0 to P1 to P2 and back", () => {
 
 - [ ] **Step 2: Run the test to verify it fails**
 
-Run: `cd /Users/ftosetto/Projects/em-hub && node --test todos/`
+Run: `cd /Users/ftosetto/Projects/em-hub && node --test todos/logic.test.mjs`
 Expected: FAIL. The run cannot resolve `./logic.js`, so every test errors before asserting.
 
 - [ ] **Step 3: Write the implementation**
@@ -401,7 +401,7 @@ Create `todos/logic.js`:
 
 - [ ] **Step 4: Run the test to verify it passes**
 
-Run: `cd /Users/ftosetto/Projects/em-hub && node --test todos/`
+Run: `cd /Users/ftosetto/Projects/em-hub && node --test todos/logic.test.mjs`
 Expected: PASS, 19 tests.
 
 If `isDuplicate` fails the "across different meetings" case, do not weaken the test. The wording match is the point: the Sept 15 David analysis shows the August metrics sheet raised in five consecutive meetings, and five inbox rows for one loop would make the dashboard worse than the notes.
