@@ -1,18 +1,22 @@
 {
   "month": "2026-08",
-  "generated_at": "2026-09-02T05:24:08Z",
+  "generated_at": "2026-09-08T10:42:51Z",
   "apps": {
+    "tattooist": {
+      "cost_eur": 26453.39,
+      "mau": 230477
+    },
     "aihomedesign": {
       "cost_eur": 1292.68,
-      "mau": 143026
+      "mau": 143221
     },
     "chatultra": {
       "cost_eur": 901.68,
-      "mau": 1229879
+      "mau": 1233162
     },
     "faceai": {
       "cost_eur": 426.88,
-      "mau": 4250
+      "mau": 4253
     },
     "tracecheck": {
       "cost_eur": 204.89,
@@ -24,11 +28,11 @@
     },
     "imote": {
       "cost_eur": 55.47,
-      "mau": 1366202
+      "mau": 1369128
     },
     "screenmirroring": {
       "cost_eur": 34.21,
-      "mau": 1965
+      "mau": 1969
     },
     "mirage": {
       "cost_eur": 5.71,
