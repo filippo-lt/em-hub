@@ -1,0 +1,21 @@
+{
+  "_comment": "Links for the MTSDK-140 stories (34-stories-android-diagnostics.json). Replace MTSDK-141..MTSDK-146 with the created keys before running. 'blocker' blocks 'blocked'. Read the graph back afterwards.",
+  "blocks": [
+    {"blocker": "MTSDK-141", "blocked": "MTSDK-143"},
+    {"blocker": "MTSDK-142", "blocked": "MTSDK-143"},
+    {"blocker": "MTSDK-143", "blocked": "MTSDK-144"},
+    {"blocker": "MTSDK-145", "blocked": "MTSDK-144"},
+    {"blocker": "MTSDK-104", "blocked": "MTSDK-141"},
+    {"blocker": "MTSDK-104", "blocked": "MTSDK-142"},
+    {"blocker": "MTSDK-137", "blocked": "MTSDK-144"},
+    {"blocker": "MTSDK-138", "blocked": "MTSDK-144"},
+    {"blocker": "MTSDK-143", "blocked": "MTSDK-145"},
+    {"blocker": "MTSDK-143", "blocked": "MTSDK-146"},
+    {"blocker": "MTSDK-145", "blocked": "MTSDK-146"},
+    {"blocker": "MTSDK-104", "blocked": "MTSDK-146"},
+    {"blocker": "MTSDK-112", "blocked": "MTSDK-142"}
+  ],
+  "relates": [
+    {"a": "MTSDK-146", "b": "MTSDK-50"}
+  ]
+}

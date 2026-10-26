@@ -1,0 +1,12 @@
+{
+  "_comment": "Links for MTSDK-140 (Android diagnostics epic). 104 blocks 140; 140 blocks 53 and 57; 140 relates to 137 and 138 (iOS reporting still changing, Android mirrors after they close).",
+  "blocks": [
+    {"blocker": "MTSDK-104", "blocked": "MTSDK-140"},
+    {"blocker": "MTSDK-140", "blocked": "MTSDK-53"},
+    {"blocker": "MTSDK-140", "blocked": "MTSDK-57"}
+  ],
+  "relates": [
+    {"a": "MTSDK-140", "b": "MTSDK-137"},
+    {"a": "MTSDK-140", "b": "MTSDK-138"}
+  ]
+}

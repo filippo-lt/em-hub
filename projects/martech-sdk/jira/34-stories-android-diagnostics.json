@@ -1,0 +1,79 @@
+[
+  {
+    "_comment": {
+      "intent": "S1. Android equivalent of iOS MartechDiagnostics.snapshot() + prettyFormatted(). Foundation for S3 and S4.",
+      "ios_reference": "martech-kit main: Sources/MartechKit/Diagnostics/ (PR #57, 2026-07-24..29). Snapshot fields: configuration, attribution, att, appsFlyer (startup, UID), modules (meta, tiktokPhase1/2), revenueCat appUserID, health (notConfigured|healthy|awaitingPhase2|degraded[reasons]), bufferedEventCount, schemaVersion.",
+      "android_mapping": "Status words map to iOS health: not set up=notConfigured, waiting for consent=awaitingPhase2, healthy, not healthy=degraded. ATT -> Android consent step (requestConsentAndStartMarketing; and whether startAttribution ran with ad-id collection off). Modules on Android also include superwall and firebase. Fake summary = host-app test double, as iOS ships in MartechKitTestUtils. Once MTSDK-112 merges Android has a pre-configure buffer, so bufferedEventCount has an equivalent too.",
+      "draft_status": "Replace MTSDK-141..MTSDK-146 with real keys after creation, as with __EPIC__ in RUN-3.",
+      "comprehension_check": "Four rounds 2026-09-10. R1: one status vocabulary; developer named as checker; list size; failure cases; concrete same-as-iOS situation; S6 pass lines. R2: S1/S4 add-on split (reported error vs silent); S1/S2 order; S2 export and 300-event check; S3 shows S4 status; S5 absence check owned by a developer. R3: 'still starting' renamed 'waiting for consent' (it is iOS awaitingPhase2, not 'setup running'); S2 held-event visibility and MTSDK-112 made a blocker; S3 checker named and consent AC added; S4 failure trigger named and unverified 'app is told' claim for the missing-piece case removed; S4 owns re-running S1/S3 iOS checks and the S5 QA-section update; S5 absence check made concrete; S6 expected-events list attached up front. iMote chosen for same-as-iOS checks because it uses both SDKs (MTSDK-62 validates iMote iOS)."
+    },
+    "parent": "MTSDK-140",
+    "summary": "Developers can read the SDK's setup status in code and in the logs",
+    "priority": "Major",
+    "labels": ["integration-confidence", "martech-sdk"],
+    "description": "Before a screen can show anything, the Android SDK has to keep track of what happened during setup and let a developer ask for it. iOS already has this, and its debug screen is built on it.\n\nA developer reads it in code or prints it to the logs as one summary. It shows:\n- the overall status: not set up, waiting for consent, healthy, or not healthy with the reasons\n- whether each marketing service started\n- the id each service uses for this person\n- whether the consent step has run - the point where the app asks the user's permission and marketing tracking fully starts\n- whether each optional add-on the app installed ran or failed\n\nReading it never changes anything in the SDK, so it is safe at any moment.\n\nThe statuses match iOS as it is today. Startup failures that iOS is still redesigning are added later, in MTSDK-144.\n\nThe screen (MTSDK-143) and failure reporting (MTSDK-144) build on it. The event list (MTSDK-142) can be built at the same time.\n\nBlocked by MTSDK-104: those fixes change how the SDK starts up, which is what this reports on.\n\nAcceptance criteria:\n- Setup: a developer adds one line to an Android test app that prints the summary to the logs\n- Printed before setup finishes, the summary says not set up; after setup but before the consent step, waiting for consent; after the consent step, healthy\n- When an add-on reports an error during setup, the summary says not healthy and names that add-on and the reason. Add-ons that fail without reporting anything are covered in MTSDK-144\n- The summary shows each service's id for this person, whether the consent step has run, and whether each installed add-on ran\n- In iMote, which uses the SDK on both iOS and Android, the two summaries show the same status at each of those three moments\n- An app's own automated tests can use a fake summary, for example one that says not healthy, with no real services running"
+  },
+  {
+    "_comment": {
+      "intent": "S2. Android equivalent of iOS event ledger + exportEventLedgerJSON().",
+      "ios_reference": "EventLedgerStore (ring buffer, capacity 250), MartechLedgerEntry (timestamp, name, properties, destination amplitude|appsFlyerCanonical, outcome sent|dropped(reason), discardedPropertyKeys), LedgerJSONEncoder. Ledger records transmission attempts, so held events appear at flush time.",
+      "android_note": "On main, Martech.track() silently drops non-canonical events before configure and canonical ones throw. MTSDK-112 (branch fix/MTSDK-112, in review 2026-09-10) replaces that with a 250-event ordered buffer flushed after configure, matching iOS. JSON export must use the iOS schema so one reader works for both.",
+      "sequencing": "Blocked by MTSDK-112. Can run alongside S1."
+    },
+    "parent": "MTSDK-140",
+    "summary": "Keep a list of the events the app tried to send, and whether each one went out",
+    "priority": "Major",
+    "labels": ["integration-confidence", "martech-sdk"],
+    "description": "When an event is missing from a dashboard, nobody can tell today whether the app never sent it, the SDK dropped it, or the service lost it. On iOS the SDK keeps the last 250 send attempts, one line for each event and service, each marked sent or not sent with the reason.\n\nAndroid needs the same list. It is also how a developer confirms that events tracked before setup finishes still arrive once it does - the fix in MTSDK-112.\n\nEach line holds the event name, the time, its details (the extra values sent with it) and whether it was sent. The list can be exported as a file in the same format as iOS, so a bug report reads the same on both platforms.\n\nUntil the screen in MTSDK-143 exists, a developer checks this by printing the list to the logs.\n\nBlocked by MTSDK-104 and MTSDK-112. Can be built alongside MTSDK-141.\n\nAcceptance criteria:\n- Setup: a developer prints the list to the logs from an Android test app, then tracks two custom events and makes a test purchase\n- Each of those events appears once for every service it was sent to, marked sent, with its name, time and details\n- An event tracked before setup finishes is not in the list yet; once setup finishes it appears, marked sent\n- A developer exports the list to a file, and it has the same format and fields as a file exported from an iOS test build\n- After a developer sends 300 test events in a row, the list holds the latest 250 lines"
+  },
+  {
+    "_comment": {
+      "intent": "S3. Android equivalent of MartechDiagnosticsView / MartechDiagnosticsViewController.",
+      "ios_reference": "DiagnosticsUI/: Overview, PerSDK, EventLedger, LedgerEntryDetail screens; health banner; share button exporting ledger JSON; polls every 0.5s while visible, stops when not (PR #71). iOS requires iOS 17.",
+      "android_note": "UI toolkit is an implementation choice; martech-pack has no Compose today and minSdk is 24. Must be embeddable in a host's existing debug menu. Should only poll while visible, as iOS does.",
+      "sequencing": "Blocked by S1 and S2."
+    },
+    "parent": "MTSDK-140",
+    "summary": "A debug screen testers can open inside a test build",
+    "priority": "Major",
+    "labels": ["integration-confidence", "martech-sdk"],
+    "description": "The screen puts the setup status (MTSDK-141) and the event list (MTSDK-142) in front of a QA tester, with no developer needed. It mirrors the iOS screen: an overview with the status, a page per marketing service, the event list, a detail page per event, and a share button that sends the event list file into a bug report. It uses the same status words as MTSDK-141, and shows failed to start once MTSDK-144 lands.\n\nThe SDK provides the screen. Each app team adds it to their test build and decides where it opens from, such as their existing debug menu.\n\nBlocked by MTSDK-141 and MTSDK-142.\n\nAcceptance criteria:\n- Setup: a developer adds the screen to the debug menu of an Android test build, and a QA tester runs these checks. Opening it shows the status and, when not healthy, the reason\n- The overview shows whether the consent step has run\n- Each marketing service has its own page showing whether it started and its id for this person\n- Tapping an event in the list opens its name, time and details\n- The share button sends the event list file to email or a chat app\n- Opened again after using the app, the screen shows the events sent in between, without restarting the app\n- In iMote on iOS and Android, after the consent step, both screens show the same status"
+  },
+  {
+    "_comment": {
+      "intent": "S4. Mirror the iOS launch-failure reporting once it settles.",
+      "ios_reference": "MTSDK-137 (Meta hook installed without keys: no log, diagnostics says healthy) and MTSDK-138 (launchConfiguration reports failures to an onBlocked handler; blocked/degraded recorded in diagnostics; branch MTSDK-138-launch-configuration-failure-reporting, in progress 2026-09-10).",
+      "android_note": "Some Android silent paths are already ticketed under MTSDK-104 (e.g. MTSDK-127 TikTok with no key). This story is the reporting side, not those fixes. 'failed to start' maps to the iOS blocked state from MTSDK-138 - confirm the name once 138 merges. 'First launch with no network' is the documented Android configure failure (RevenueCatOriginalIdUnavailable, README on fix/MTSDK-112); iOS 138 is still moving here (commit ce7b86b starts AppsFlyer without a CUID), so re-check the trigger when 138 closes.",
+      "sequencing": "Blocked by MTSDK-137, MTSDK-138, S3 and S5 (it re-runs S3's iOS check and extends S5's QA section). S1 is implied through S3. Round 4 check findings fixed without a fifth run."
+    },
+    "parent": "MTSDK-140",
+    "summary": "Report a startup that failed or only partly worked, instead of staying silent",
+    "priority": "Major",
+    "labels": ["integration-confidence", "martech-sdk"],
+    "description": "iOS is changing how it reports a startup that did not fully work. There are two cases:\n- The SDK starts with a piece missing and nothing reports it, such as an add-on installed without its account keys. Today iOS shows this as healthy.\n- The SDK cannot finish starting, for example on a first launch with no network, when it cannot fetch the user's id.\n\nThe setup status now says what went wrong in both cases, and a startup that cannot finish is reported to the app straight away so it can retry. That work is MTSDK-137 and MTSDK-138.\n\nAndroid needs the same. This adds one status to the ones in MTSDK-141: failed to start. A piece missing shows as not healthy. This story also re-runs the same-as-iOS checks from MTSDK-141 and MTSDK-143 against the updated iOS, and adds the new status to the guide's QA section (MTSDK-145).\n\nStart once MTSDK-137 and MTSDK-138 are closed. Starting earlier means copying a design that is still changing.\n\nBlocked by MTSDK-137, MTSDK-138, MTSDK-143 and MTSDK-145.\n\nAcceptance criteria:\n- Setup: a developer builds an Android test app with an add-on installed but its account keys left out. The status says not healthy and names that add-on\n- On a first launch with no network, the app receives an error it can use to retry, and the status says failed to start with the reason\n- A startup that fully works still says healthy\n- In iMote, both cases above show the same status and reason on Android and iOS, and the same-as-iOS checks from MTSDK-141 and MTSDK-143 still pass\n- The guide's QA section explains failed to start and what to do about it\n- Automated tests cover both cases"
+  },
+  {
+    "_comment": {
+      "intent": "S5. Android equivalent of the iOS INTEGRATION_GUIDE 'Diagnostics' / 'The debug screen' sections and TROUBLESHOOTING 'Getting diagnostics to QA'.",
+      "ios_rules_to_carry": "Internal builds only, never the store build; never forward diagnostics to Crashlytics or other external vendors; attach exported JSON to internal bug reports by hand. 'Ledger entries' is current buffer size, not a session total.",
+      "sequencing": "Blocked by S3. S4 adds its status to the QA section."
+    },
+    "parent": "MTSDK-140",
+    "summary": "Integration guide: add the debug screen and explain it for QA",
+    "priority": "Major",
+    "labels": ["integration-confidence", "martech-sdk"],
+    "description": "App teams need to know how to add the screen, how to keep it out of the released app, and how QA should use it. iOS covers this in its integration and troubleshooting guides.\n\nThe screen shows the real details of every event and can send them to any app on the phone. Keeping it out of the Play Store build is the app team's job, and the guide has to say so plainly. The same goes for never sending this information to crash-reporting or other outside services.\n\nBlocked by MTSDK-143. MTSDK-144 adds its new status to the QA section when it lands.\n\nAcceptance criteria:\n- An engineer who has not worked on the SDK adds the screen to a test build using only the Android integration guide\n- A developer checks that a Play Store build made by following the guide does not contain the screen\n- The guide says not to send this information to crash-reporting or other outside services, and to attach the exported file to bug reports instead\n- A QA section explains each status and what to do when it is not healthy\n- Every code sample in the guide builds"
+  },
+  {
+    "_comment": {
+      "intent": "S6. Android equivalent of MTSDK-50 (FaceAI test run on iOS): trial in an app that already uses MartechPack before other teams rely on it.",
+      "why_imote": "iMote Android is the integration MartechPack was hardened against and where the MTSDK-104 audit findings were exposed.",
+      "sequencing": "Blocked by S3, S5 and MTSDK-104. Does not wait for S4."
+    },
+    "parent": "MTSDK-140",
+    "summary": "Try the debug screen in iMote before other apps rely on it",
+    "priority": "Major",
+    "labels": ["integration-confidence", "martech-sdk"],
+    "description": "iMote is the Android app the SDK was tested against, so it is the right place to prove the tool is useful before other teams depend on it. On iOS the same kind of trial runs in FaceAI (MTSDK-50).\n\nBlocked by MTSDK-143 and MTSDK-145, and by MTSDK-104, the fixes from the Android SDK review: no app should take a new SDK version until those land. It does not wait for MTSDK-144.\n\nAcceptance criteria:\n- Setup: an iMote Android test build with the debug screen, a test purchase account, and the list of events the iMote team expects for the journey, attached to this ticket. The iMote team tells a QA tester where the screen opens from; the tester reads it using only the guide's QA section\n- For one journey - first launch, consent, a test purchase - the tester confirms from the screen that every expected event was sent and every service has an id for this person\n- The exported event list is attached to the test report on this ticket\n- By the time this ticket closes, every problem found with the screen or the guide is fixed or has its own ticket linked here\n- The time from starting the trial to a confirmed result is recorded on this ticket"
+  }
+]
