@@ -1,0 +1,7 @@
+# Planning memory — Andrey 1-on-1, 21 September 2026
+
+```
+[2026-09-21] [planning] - iMOTE WEBSITE: the static site built with Claude Design (product-driven, shared by Herman) is mostly implemented by Andrey. imot.app today serves an auto-generated single page that all live marketing campaigns link to; the standard SRE Terraform deploy (push to dev → dev.imot.app → main → live) would break them, so PR 1599 (merged) carries the old campaign pages into the new site until marketing moves over. SRE/Julen can build the pipeline in parallel with the dev build. Ticket confusion: Andrey was on #1583, which is not the story Filippo means.
+[2026-09-21] [planning] - iMOTE AFTER HERMAN: no dailies since Herman left (he organised them); David Martos has not engaged Andrey beyond a Braze note in chat. Filippo agrees daily is too much for iMote's current volume but product must own incoming requests; proposal is 2–3 syncs a week. TV Foundation Kit regression has stalled and needs Martos to prioritise it before Andrey leaves (30 Oct).
+[2026-09-21] [planning] - iMOTE BRAZE: MartechKit 4.0 released by Victor on 18 Sep. Andrey's agent-built iMote integration PR is up; Victor was asked live to open his own — two PRs for one integration, no decision on which lands. Push notifications: Martos asked for certificates; Braze accepts an APNs .p8 key or a .p12 certificate, so it's a choice, not an error. Keys possibly already in Bitwarden.
+```
