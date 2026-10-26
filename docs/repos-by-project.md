@@ -15,6 +15,18 @@ Complete list of repositories I manage, organized by project.
 
 ---
 
+## Tattooist
+**Jira:** TTIOSMAU, TATA
+**Vendor:** 57 Blocks
+
+| Platform | Repo Path | GitHub URL |
+|----------|-----------|------------|
+| iOS | `Tattoo/tattoo` | https://github.com/rosseca/tattoo.git |
+| Android | `Tattoo/tattoo-android` | https://github.com/rosseca/tattoo-android.git |
+| Infra | `Tattoo/tattoo_infra` | https://github.com/leadtechcorp/tattoo_infra.git |
+
+---
+
 ## iMote
 **Jira:** IMANDMAU, IMIOSMAU, IMOEXT
 
@@ -79,6 +91,6 @@ Complete list of repositories I manage, organized by project.
 
 ---
 
-**Total:** 23 repos across 6 projects
+**Total:** 26 repos across 7 projects
 
-**Last updated:** 2026-08-26
+**Last updated:** 2026-09-08

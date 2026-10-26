@@ -2,7 +2,7 @@
 
 Repo index for the **M&A portfolio apps that sit outside the projects I manage**.
 
-> **Owner doc:** the repos for the projects I manage — AI Design, iMote, Face AI,
+> **Owner doc:** the repos for the projects I manage — AI Design, Tattooist, iMote, Face AI,
 > Screen Mirroring, ChatUltra / ChatBot and TraceCheck — live in
 > [`docs/repos-by-project.md`](../docs/repos-by-project.md). Don't duplicate them here.
 
@@ -25,4 +25,4 @@ division — see the owner doc for its repos.
 
 ---
 
-**Total:** 4 repos across 3 apps here; see the owner doc for the other 23.
+**Total:** 4 repos across 3 apps here; see the owner doc for the other 26.
