@@ -1,7 +1,8 @@
 # Victor Jalencas — Profile
 
 **Role:** Staff Engineer
-**Relationship to me:** Peer (not a direct report). I coordinate with him as EM on cross-cutting engineering initiatives, primarily the Martech SDK.
+**Relationship to me:** Direct report since Sep 2026 (Matellano announced it to him on 9 Sep; first official 1:1 on 10 Sep). Before that, a peer I coordinated with on the Martech SDK.
+**Scope from Sep 2026:** iMote iOS (hands-on), iMote Android (advisory), iMote web, ScreenMirroring — plus MartechKit.
 **Created:** 2026-06-25
 
 ---
