@@ -1,6 +1,6 @@
 ---
 name: prep
-description: "Prepare for an upcoming 1-on-1 meeting. Use when the user says things like: 'prep for my meeting with [name]', 'help me prepare for [name]', 'get ready for my 1-on-1'."
+description: "Prepare for an upcoming 1-on-1 meeting through a full grill-me session — relentless one-at-a-time questioning, with a recommended answer for each, until every agenda topic is resolved. Use when the user says things like: 'prep for my meeting with [name]', 'help me prepare for [name]', 'get ready for my 1-on-1', 'grill me before my 1:1 with [name]'. For a non-interactive draft, use /prep-draft instead."
 user_invocable: true
 ---
 
@@ -62,42 +62,50 @@ If there's no history, say so clearly and move straight to Phase 3.
 
 ---
 
-### Phase 3 — Question Loop
+### Phase 3 — Grill-Me Session
 
-Ask the user questions ONE AT A TIME to help them think about what to bring to the meeting.
+Interview the user relentlessly about this meeting until you both share a clear understanding of what they want from it. This is a full grill-me session, not a light check-in.
 
-Cover these domains (but adapt based on context and relationship type):
+**How it works**
 
-**For meetings with a MANAGER:**
-- What do you need from them right now? (unblocking, visibility, support, decision)
-- Is there anything you've been avoiding bringing up?
-- What's your current biggest pressure and do they know about it?
-- Are there any political or organisational dynamics they should be aware of?
-- What do you want them to think about you / your team after this meeting?
+1. **Build the topic tree first.** From Phase 1–2, list the candidate topics (carry-overs, open commitments, tensions, gaps, the user's own goals). Show it as a short tree, then grill one branch at a time.
+2. **One question at a time.** Never batch questions. Wait for the answer before the next one.
+3. **Always give your recommended answer.** Every question ends with *"My take: …"* — your best guess based on context, so the user can just confirm, correct, or push back.
+4. **Answer from context before asking.** If the answer is already in transcripts, analysis files, memory, delivery reports or todos, look it up and state it instead of asking. Only ask what the files cannot tell you.
+5. **Walk each branch to the bottom.** For each topic, resolve in order:
+   - **Why** — why does this matter now? What happens if it is not raised?
+   - **Outcome** — what exactly do you want to leave with? (decision, commitment, information, support, a changed belief)
+   - **Their side** — how will they likely react? What do they want from this topic? What objections will they raise?
+   - **Your position** — what is your opening line? What will you concede? What is non-negotiable?
+   - **Evidence** — what concrete facts, data or examples back you up?
+   - **Next step** — who does what by when if it goes well? What if it goes badly?
+   Resolve dependencies between topics as you go (e.g. "if David says no to X, does topic Y still make sense?").
+6. **Push on weak answers.** Vague, hedged or "I'll see how it goes" answers are not accepted. Ask: *"What specifically?"*, *"What would you actually say?"*, *"What evidence do you have?"*. If the user's reasoning has a gap, say so directly.
+7. **Challenge the agenda itself.** Ask what they are avoiding, what they are over-preparing, and whether a topic belongs in this meeting at all. Cut topics that do not earn a place.
 
-**For meetings with a DIRECT REPORT:**
-- How is this person performing right now? Any concerns or standouts?
-- What do they need from you that they may not be asking for?
-- Are there growth or development topics to address?
-- Are there any tensions — with other team members, with the work, with expectations?
-- What's the most important thing you need to communicate to them this cycle?
+**Domains to cover** (adapt to relationship type; skip what clearly does not apply)
 
-**For meetings with a PEER / CROSS-FUNCTIONAL:**
-- What's the shared goal or dependency between you?
-- Is anything blocked or misaligned?
-- What do you need from them vs. what they probably need from you?
+**MANAGER:** what you need from them (unblocking, visibility, support, decision) · what you are avoiding · your biggest pressure and whether they know it · political/org dynamics · what you want them to think about you/your team afterwards.
 
-**Both:**
-- Is there anything from last time that needs to be followed up on?
-- What would make this meeting feel like a success?
+**DIRECT REPORT:** performance right now (concerns, standouts) · what they need but are not asking for · growth topics · tensions (people, work, expectations) · the single most important message this cycle.
 
-**Exit criteria:** Stop after 4–6 solid topics, or when the user says they're ready. Maximum 8 questions before offering to generate the doc.
+**PEER / CROSS-FUNCTIONAL:** shared goal or dependency · what is blocked or misaligned · what you need from them vs. what they need from you.
+
+**All:** follow-ups from last time · what success looks like.
+
+**Self-awareness check:** use the `[self]` memory patterns actively. If the user is repeating a known pattern (e.g. over-reporting to a manager, avoiding a hard topic), name it in the moment.
+
+**Imposter-syndrome check:** if the user undersells their position, apologises for asking, or frames a legitimate need as a favour, call it out and help them restate it as a clear ask backed by evidence.
+
+**Progress tracking:** after each branch is resolved, give a one-line recap (`✅ [Topic] — outcome: …`) and show which branches remain.
+
+**Exit criteria:** there is no question cap. Stop only when every branch in the tree is resolved (why, outcome, position, next step all clear), or when the user says they are ready. Before moving to Phase 4, show the final resolved tree and ask: *"Anything missing, or shall I write the doc?"*
 
 ---
 
 ### Phase 4 — Generate Talking Points Doc
 
-Create a structured document using the template at `templates/talking-points.md`:
+Create a structured document using the template at `templates/talking-points.md`. Build it from the resolved branches of the grill-me session — each Priority Topic carries its agreed outcome, opening line and next step:
 
 ```markdown
 # 1-on-1 with [Name] — [Date]
@@ -138,5 +146,5 @@ After generating, ask:
 Behavioral Standards from CLAUDE.md apply. Additionally:
 
 - Don't ask questions just to ask them — skip domains that are clearly not relevant given the context.
-- If the user gives a vague answer, gently push: *"Can you say more about that? What specifically?"*
+- If the user gives a vague answer, push: *"What specifically? What would you actually say?"* Do not move on until it is concrete.
 - If a topic comes up that the user keeps avoiding or dismissing, flag it: *"You've mentioned [X] a couple of times but moved past it — is there something there worth putting on the agenda?"*
